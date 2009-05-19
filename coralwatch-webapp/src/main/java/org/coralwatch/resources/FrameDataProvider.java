@@ -4,9 +4,9 @@ import au.edu.uq.itee.maenad.restlet.auth.User;
 import au.edu.uq.itee.maenad.restlet.model.FrameData;
 import au.edu.uq.itee.maenad.restlet.model.NavigationItem;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * @autho alabri
@@ -37,7 +37,7 @@ public class FrameDataProvider implements au.edu.uq.itee.maenad.restlet.model.Fr
         navItems.add(new NavigationItem("About", "${baseUrl}/about"));
 //        navItems.add(new NavigationItem("Related", "${baseUrl}/related"));
 
-        return new FrameData("Pronto", navItems, currentUser);
+        return new FrameData("CoralWatch", navItems, currentUser);
 
     }
 }

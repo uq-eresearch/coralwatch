@@ -6,8 +6,8 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.model.FrameDataProvider;
 import org.coralwatch.resources.AboutResource;
 import org.coralwatch.resources.FrontpageResource;
-import org.coralwatch.resources.StyleResource;
 import org.coralwatch.resources.LinksResource;
+import org.coralwatch.resources.StyleResource;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
@@ -52,6 +52,8 @@ public class CoralwatchApplication extends Application {
         router.attach("/style.css", StyleResource.class);
         router.attach("/icons",new CachingDirectory(getContext(),
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/icons")));
+        router.attach("/documents",new CachingDirectory(getContext(),
+                LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/documents")));
         router.attach("/images", new CachingDirectory(getContext(),
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/images")));
         return router;
