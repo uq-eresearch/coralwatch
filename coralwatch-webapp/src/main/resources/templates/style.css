@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     background: url('${baseUrl}/images/pattern.gif');
-    font-family: Arial, Verdana, helvetica;
+    font-family: Geneva,Arial,Helvetica,sans-serif;
     font-size: 11px;
     color: #2F4F4F;
 }
@@ -17,19 +17,19 @@ img {
 }
 
 h1 {
-    font-family: "Trebuchet MS", "Lucida Grande", verdana, arial, helvetica, sans-serif;
+    font-family: Geneva,Arial,Helvetica,sans-serif;
     font-size: 22px;
     margin-bottom: 14px;
 }
 
 h2 {
-    font-family: "Trebuchet MS", "Lucida Grande", verdana, arial, helvetica, sans-serif;
+    font-family: Geneva,Arial,Helvetica,sans-serif;
     font-size: 18px;
     margin-bottom: 8px;
 }
 
 h3 {
-    font-family: "Trebuchet MS", "Lucida Grande", verdana, arial, helvetica, sans-serif;
+    font-family: Geneva,Arial,Helvetica,sans-serif;
     font-size: 16px;
     margin-bottom: 8px;
 }
@@ -37,6 +37,10 @@ h3 {
 p {
     margin-bottom: 15px;
     line-height: 17px;
+}
+
+p.small {
+    font-size: 10px;
 }
 
 ul {
@@ -87,22 +91,29 @@ li a {
     float: left;
 }
 
-
-
-
-
-#footer
+.main
 {
-    text-align:center;
-    margin:30px;
-    clear:both;
+    margin: 20px;
 }
 
-.footerList li
-{
-    list-style-type:none;
-    display:inline;
+.frontTable {
+    margin: 0 auto;
+}
+
+.frontTable td {
+    padding: 0 9px;
+}
+
+#footer {
+    text-align: center;
+    margin: 30px;
+    clear: both;
+}
+
+.footerList li {
+    list-style-type: none;
+    display: inline;
     margin: auto 10px;
     height: 80px;
-    vertical-align:middle;
+    vertical-align: middle;
 }

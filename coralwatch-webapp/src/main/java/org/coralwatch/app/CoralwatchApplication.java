@@ -7,6 +7,7 @@ import au.edu.uq.itee.maenad.restlet.model.FrameDataProvider;
 import org.coralwatch.resources.AboutResource;
 import org.coralwatch.resources.FrontpageResource;
 import org.coralwatch.resources.StyleResource;
+import org.coralwatch.resources.LinksResource;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
@@ -47,9 +48,12 @@ public class CoralwatchApplication extends Application {
         }
         router.attachDefault(FrontpageResource.class);
         router.attach("/about", AboutResource.class);
+        router.attach("/links", LinksResource.class);
         router.attach("/style.css", StyleResource.class);
+        router.attach("/icons",new CachingDirectory(getContext(),
+                LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/icons")));
         router.attach("/images", new CachingDirectory(getContext(),
-                        LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/images")));
+                LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/images")));
         return router;
     }
 
