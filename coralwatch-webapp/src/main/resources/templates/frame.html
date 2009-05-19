@@ -3,34 +3,61 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <title>${frameData.title}</title>
-    <link rel="stylesheet" type="text/css" href="${baseUrl}/style.css" />
+    <link rel="stylesheet" type="text/css" href="${baseUrl}/layout.css"/>
+    <link rel="stylesheet" type="text/css" href="${baseUrl}/style.css"/>
+    <script src="${baseUrl}/javascript/maxheight.js" type="text/javascript"></script>
 </head>
-<body>
+<body id="index" onload="new ElementMaxHeight();">
+<div id="header_tall">
+    <div id="main">
+        <div id="header">
+            <div class="h_logo">
+                <div class="left">
 
-<div class="container">
-    <div id="header">
-        <a href="">
-            <img src="${baseUrl}/images/coralwatch.gif" alt="CoralWatch" class="homeLogo"/>
-        </a>
-    </div>
-
-    <div class="main">
-        <#include "${contentTemplate}"/>
-    </div>
-
-    <div id="footer">
-        <ul class="footerList">
-            <li><a href="http://www.crctourism.com.au" target="_blank">
-                <img src="${baseUrl}/images/crclogo_trans.gif" alt="Sustainable Tourism"></a></li>
-            <li><a href="http://www.uq.edu.au" target="_blank">
-                <img src="${baseUrl}/images/uq_med.png" alt="The University of Queensland">
-            </a></li>
-            <li><a href="http://www.projectaware.org" target="_blank">
-                <img src="${baseUrl}/images/projectaware.jpg" alt="Project Aware">
-            </a></li>
-        </ul>
+                </div>
+            </div>
+            <div id="menu">
+                <div class="rightbg">
+                    <div class="leftbg">
+                        <div class="padding">
+                            <ul>
+                                <#list frameData.navigationItems as nav>
+                                    <#if nav.url!?has_content>
+                                        <#assign navUrlTemplate = nav.url?interpret/>
+                                        <li onclick="window.location='<@navUrlTemplate/>'" class="link" width="180"><a
+                                                href="<@navUrlTemplate/>">${nav.name}</a>
+                                        </li>
+                                    </#if>
+                                </#list>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main_content">
+            <#include "${contentTemplate}"/>
+        </div>
+        <div id="footer_banner">
+            <ul class="footer_banner_list">
+                <li><a href="http://www.crctourism.com.au" target="_blank">
+                    <img src="${baseUrl}/images/crclogo_trans.gif" alt="Sustainable Tourism"></a></li>
+                <li><a href="http://www.uq.edu.au" target="_blank">
+                    <img src="${baseUrl}/images/uq_med.png" alt="The University of Queensland">
+                </a></li>
+                <li><a href="http://www.projectaware.org" target="_blank">
+                    <img src="${baseUrl}/images/projectaware.jpg" alt="Project Aware">
+                </a></li>
+            </ul>
+        </div>
+        <div style=" height: 61px;"></div>
+        <div id="footer">
+            <div class="indent">
+                <div align="center">&copy;2009 CoralWatch</div>
+            </div>
+        </div>
     </div>
 </div>
-
+</div>
 </body>
 </html>

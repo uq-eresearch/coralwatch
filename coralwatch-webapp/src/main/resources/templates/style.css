@@ -1,98 +1,20 @@
-body {
-    margin: 0;
-    padding: 0;
-    background: url('${baseUrl}/images/pattern.gif');
-    font-family: Geneva, Arial, Helvetica, sans-serif;
-    font-size: 11px;
-    color: #2F4F4F;
+#footer_banner {
+    text-align: center;
+    margin: 30px;
+    clear: both;
 }
 
-* {
-    margin: 0;
-    padding: 0;
+div.main_content {
+    margin: 0 0 0 10px;
+    padding: 0 1em 4ex 1em;
 }
 
-img {
-    border: 0;
-}
-
-h1 {
-    font-family: Geneva, Arial, Helvetica, sans-serif;
-    font-size: 22px;
-    margin-bottom: 14px;
-}
-
-h2 {
-    font-family: Geneva, Arial, Helvetica, sans-serif;
-    font-size: 18px;
-    margin-bottom: 8px;
-}
-
-h3 {
-    font-family: Geneva, Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    margin-bottom: 8px;
-}
-
-p {
-    margin-bottom: 15px;
-    line-height: 17px;
-}
-
-p.small {
-    font-size: 10px;
-}
-
-ul {
-    margin-left: 30px;
-    list-style-type: square;
-}
-
-li {
-    margin-bottom: 5px;
-}
-
-#menu li {
-    margin: 0
-}
-
-ol {
-    margin-left: 30px;
-}
-
-a {
-    color: #1654A7;
-}
-
-li a {
-    text-decoration: none;
-}
-
-.container {
-    width: 800px;
-    margin-right: 20%;
-    margin-left: 20%;
-    margin-top: 20px;
-    background-color: White;
-    border: solid 1px Aqua;
-}
-
-#header {
-    height: 105px;
-    background-color: #1654A7;
-    border-bottom: solid 1px white;
-    padding-left: 12px;
-    background-image: url('${baseUrl}/images/coralhealth.jpg');
-    background-position: right;
-    background-repeat: no-repeat;
-}
-
-.homeLogo {
-    float: left;
-}
-
-.main {
-    margin: 20px;
+.footer_banner_list li {
+    list-style-type: none;
+    display: inline;
+    margin: auto 10px;
+    height: 80px;
+    vertical-align: middle;
 }
 
 .frontTable {
@@ -137,28 +59,10 @@ li a {
     font-size: 10px;
 }
 
-.clear {
-    clear: both;
-}
-
 #heron {
     float: left;
     margin-right: 15px;
     margin-bottom: 20px;
     width: 305px;
     height: 800px;
-}
-
-#footer {
-    text-align: center;
-    margin: 30px;
-    clear: both;
-}
-
-.footerList li {
-    list-style-type: none;
-    display: inline;
-    margin: auto 10px;
-    height: 80px;
-    vertical-align: middle;
 }

@@ -20,22 +20,13 @@ public class FrameDataProvider implements au.edu.uq.itee.maenad.restlet.model.Fr
 
     public FrameData getFrameData(User currentUser) {
         List<NavigationItem> navItems = new ArrayList<NavigationItem>(Arrays.asList(new NavigationItem("Home", "${baseUrl}")));
-//        if (currentUser != null) {
-//            navItems.add(new NavigationItem("New Entry", "${baseUrl}/ontologies?new"));
-//            if (currentUser.isSuperUser()) {
-//                navItems.add(new NavigationItem("Admin", "${baseUrl}/admin"));
-//            }
-//            navItems.add(new NavigationItem("Logout", "${baseUrl}/logout"));
-//        } else {
-//            if (Pronto.getConfiguration().getSubmissionEmailAddress() != null) {
-//                navItems.add(new NavigationItem("Submit", "${baseUrl}/submit"));
-//            }
-//            navItems.add(new NavigationItem("Login", "${baseUrl}/login?redirectUrl=${currentUrl?url}"));
-//        }
-        navItems.add(new NavigationItem("", ""));
-//        navItems.add(new NavigationItem("Overview", "${baseUrl}/overview"));
+        navItems.add(new NavigationItem("Data", "${baseUrl}/data"));
+        navItems.add(new NavigationItem("Education", "${baseUrl}/education"));
+        navItems.add(new NavigationItem("Going Green", "${baseUrl}/goinggreen"));
+        navItems.add(new NavigationItem("Graphs", "${baseUrl}/graphs"));
         navItems.add(new NavigationItem("About", "${baseUrl}/about"));
-//        navItems.add(new NavigationItem("Related", "${baseUrl}/related"));
+        navItems.add(new NavigationItem("Related", "${baseUrl}/links"));
+        navItems.add(new NavigationItem("Login", "${baseUrl}/login"));
 
         return new FrameData("CoralWatch", navItems, currentUser);
 
