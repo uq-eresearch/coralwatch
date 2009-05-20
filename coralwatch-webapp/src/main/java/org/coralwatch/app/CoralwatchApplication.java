@@ -7,6 +7,7 @@ import au.edu.uq.itee.maenad.restlet.model.FrameDataProvider;
 import org.coralwatch.resources.AboutResource;
 import org.coralwatch.resources.EducationResource;
 import org.coralwatch.resources.FrontpageResource;
+import org.coralwatch.resources.GoingGreenResource;
 import org.coralwatch.resources.GraphsResource;
 import org.coralwatch.resources.LinksResource;
 import org.coralwatch.resources.StyleResource;
@@ -52,6 +53,7 @@ public class CoralwatchApplication extends Application {
         router.attach("/about", AboutResource.class);
         router.attach("/graphs", GraphsResource.class);
         router.attach("/education", EducationResource.class);
+        router.attach("/goinggreen", GoingGreenResource.class);
         router.attach("/links", LinksResource.class);
         router.attach("/style.css", StyleResource.class);
         router.attach("/icons", new CachingDirectory(getContext(),
