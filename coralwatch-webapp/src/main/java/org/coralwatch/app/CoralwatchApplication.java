@@ -10,6 +10,7 @@ import org.coralwatch.resources.FrontpageResource;
 import org.coralwatch.resources.GoingGreenResource;
 import org.coralwatch.resources.GraphsResource;
 import org.coralwatch.resources.LinksResource;
+import org.coralwatch.resources.MapResource;
 import org.coralwatch.resources.StyleResource;
 import org.restlet.Application;
 import org.restlet.Component;
@@ -51,6 +52,7 @@ public class CoralwatchApplication extends Application {
         }
         router.attachDefault(FrontpageResource.class);
         router.attach("/about", AboutResource.class);
+        router.attach("/map", MapResource.class);
         router.attach("/graphs", GraphsResource.class);
         router.attach("/education", EducationResource.class);
         router.attach("/goinggreen", GoingGreenResource.class);

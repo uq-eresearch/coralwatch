@@ -1,15 +1,15 @@
 package org.coralwatch.app;
 
-import java.util.Properties;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.io.InputStream;
-import java.io.IOException;
+import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-
-import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @autho alabri
@@ -64,15 +64,6 @@ public class ApplicationContext implements Configuration {
              }
 
          }
-//         final String persistenceUnitName = getProperty(properties, "persistenceUnitName");
-//         final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
-//         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-//
-//             public void run() {
-//                 emf.close();
-//             }
-//         }));
-
 
          this.httpPort = Integer.valueOf(getProperty(properties, "httpPort", "8181"));
          this.baseUrl = getProperty(properties, "baseUrl", null);
