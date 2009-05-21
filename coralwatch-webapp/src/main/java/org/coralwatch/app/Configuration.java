@@ -1,5 +1,9 @@
 package org.coralwatch.app;
 
+import org.coralwatch.dataaccess.RoleAssignmentDao;
+import org.coralwatch.dataaccess.UserDao;
+import org.restlet.service.ConnectorService;
+
 /**
  * @autho alabri
  * Date: 18/05/2009
@@ -9,6 +13,11 @@ public interface Configuration {
 
     int getHttpPort();
 
+    ConnectorService getConnectorService();
+
+    UserDao getUserDao();
+
+    RoleAssignmentDao getRoleAssignmentDao();
 
     /**
      * An explicitly configured base URL.

@@ -1,0 +1,38 @@
+<div dojoType="dijit.form.Form" method="post" action="">
+    <script type="dojo/method" event="onSubmit">
+        if(!this.validate()){
+        alert('Form contains invalid data. Please correct first');
+        return false;
+        }
+        return true;
+    </script>
+    <input type="hidden" name="redirectUrl" value="${redirectUrl!}"/>
+    <table class="form centered">
+        <tr>
+            <th>
+                <label for="username">Username:</label>
+            </th>
+            <td>
+                <input type="text" id="username" name="username" required="true" dojoType="dijit.form.ValidationTextBox"
+                       regExp="....*" invalidMessage="Please enter a username"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="password">Password:</label>
+            </th>
+            <td>
+                <input type="password" id="password" name="password" required="true"
+                       dojoType="dijit.form.ValidationTextBox" regExp="....*" invalidMessage="Please enter a password"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <button dojoType="dijit.form.Button" type="submit" name="login" value="Login">Login</button>
+            </th>
+            <td>
+                <a href="${baseUrl}/signup">or Sign Up Now</a>
+            </td>
+        </tr>
+    </table>
+</div>

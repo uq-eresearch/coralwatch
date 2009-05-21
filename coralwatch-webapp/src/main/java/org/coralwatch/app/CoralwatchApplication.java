@@ -10,7 +10,9 @@ import org.coralwatch.resources.FrontpageResource;
 import org.coralwatch.resources.GoingGreenResource;
 import org.coralwatch.resources.GraphsResource;
 import org.coralwatch.resources.LinksResource;
+import org.coralwatch.resources.LoginResource;
 import org.coralwatch.resources.MapResource;
+import org.coralwatch.resources.SignUpResource;
 import org.coralwatch.resources.StyleResource;
 import org.restlet.Application;
 import org.restlet.Component;
@@ -57,6 +59,8 @@ public class CoralwatchApplication extends Application {
         router.attach("/education", EducationResource.class);
         router.attach("/goinggreen", GoingGreenResource.class);
         router.attach("/links", LinksResource.class);
+        router.attach("/login", LoginResource.class);
+        router.attach("/signup", SignUpResource.class);
         router.attach("/style.css", StyleResource.class);
         router.attach("/icons", new CachingDirectory(getContext(),
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/icons")));
@@ -66,6 +70,9 @@ public class CoralwatchApplication extends Application {
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/javascript")));
         router.attach("/images", new CachingDirectory(getContext(),
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/images")));
+
+        setConnectorService(getConfiguration().getConnectorService());
+
         return router;
     }
 
