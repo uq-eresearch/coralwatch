@@ -1,6 +1,7 @@
 package org.coralwatch.app;
 
 import au.edu.uq.itee.maenad.restlet.CachingDirectory;
+import au.edu.uq.itee.maenad.restlet.ErrorResource;
 import au.edu.uq.itee.maenad.restlet.auth.AccessPolicy;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.model.FrameDataProvider;
@@ -11,6 +12,7 @@ import org.coralwatch.resources.GoingGreenResource;
 import org.coralwatch.resources.GraphsResource;
 import org.coralwatch.resources.LinksResource;
 import org.coralwatch.resources.LoginResource;
+import org.coralwatch.resources.LogoutResource;
 import org.coralwatch.resources.MapResource;
 import org.coralwatch.resources.SignUpResource;
 import org.coralwatch.resources.StyleResource;
@@ -61,6 +63,8 @@ public class CoralwatchApplication extends Application {
         router.attach("/links", LinksResource.class);
         router.attach("/login", LoginResource.class);
         router.attach("/signup", SignUpResource.class);
+        router.attach("/logout", LogoutResource.class);
+        router.attach("/error", ErrorResource.class);        
         router.attach("/style.css", StyleResource.class);
         router.attach("/icons", new CachingDirectory(getContext(),
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/icons")));
