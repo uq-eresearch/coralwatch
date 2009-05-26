@@ -1,0 +1,18 @@
+<#include "macros/basic.html"/>
+
+<h1>User "${user.username!}"</h1>
+<table>
+    <tr>
+        <th>Display Name:</th>
+        <td>${user.displayName!}</td>
+    </tr>
+    <tr>
+        <th>Registered since:</th>
+        <td>${(user.registrationDate)!?datetime}</td>
+    </tr>
+</table>
+
+<#if canUpdate>
+<button dojoType="dijit.form.Button"
+        onClick="window.location='${baseUrl}/users/${user.id}?edit'">Edit</button>
+</#if>

@@ -14,6 +14,7 @@ import org.coralwatch.resources.LinksResource;
 import org.coralwatch.resources.LoginResource;
 import org.coralwatch.resources.LogoutResource;
 import org.coralwatch.resources.MapResource;
+import org.coralwatch.resources.PostSignUpResource;
 import org.coralwatch.resources.SignUpResource;
 import org.coralwatch.resources.StyleResource;
 import org.restlet.Application;
@@ -63,6 +64,7 @@ public class CoralwatchApplication extends Application {
         router.attach("/links", LinksResource.class);
         router.attach("/login", LoginResource.class);
         router.attach("/signup", SignUpResource.class);
+        router.attach("/postsignup", PostSignUpResource.class);
         router.attach("/logout", LogoutResource.class);
         router.attach("/error", ErrorResource.class);        
         router.attach("/style.css", StyleResource.class);

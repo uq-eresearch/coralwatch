@@ -1,13 +1,18 @@
 <div dojoType="dijit.form.Form" method="post" action="">
     <script type="dojo/method" event="onSubmit">
+        dojo.require("dijit.form.ValidationTextBox");
+        dojo.require("dojox.validate.regexp");
+        dojo.require("dojo.parser");
+        
+
         if(!this.validate()){
         alert('Form contains invalid data. Please correct first');
         return false;
         }
         return true;
     </script>
-    <input type="hidden" name="redirectUrl" value="${redirectUrl!}"/>
-    <table class="form">
+    <input type="hidden" name="redirectUrl" value="${baseUrl}/postsignup"/>
+    <table class="form centered">
         <tr>
             <th>
                 <label for="username">Username:</label>
@@ -40,20 +45,20 @@
                 <input type="text" id="email" name="email" class="long"
                        dojoType="dijit.form.ValidationTextBox"
                        required="true"
-                       regExpGen="dojox.regexp.emailAddress"
+                       regExpGen="dojox.validate.regexp.emailAddress"
                        trim="true"
                        invalidMessage="Enter a valid email address."/>
             </td>
         </tr>
         <tr>
             <th>
-                <label for="email">Confirm Email:</label>
+                <label for="email2">Confirm Email:</label>
             </th>
             <td>
-                <input type="text" id="email2" name="email2"
+                <input type="text" id="email2" name="email2" class="long"
                        dojoType="dijit.form.ValidationTextBox"
                        required="true"
-                       regExpGen="dojox.regexp.emailAddress"
+                       regExpGen="dojox.validate.regexp.emailAddress"
                        trim="true"
                        invalidMessage="Re-enter your email address."/>
             </td>
@@ -72,7 +77,7 @@
         </tr>
         <tr>
             <th>
-                <label for="password">Retype Password:</label>
+                <label for="password2">Retype Password:</label>
             </th>
             <td>
                 <input type="password" id="password2" name="password2"

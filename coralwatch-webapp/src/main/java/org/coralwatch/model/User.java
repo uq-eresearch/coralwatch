@@ -18,6 +18,7 @@ public class User implements au.edu.uq.itee.maenad.restlet.auth.User, Serializab
     private long id;
     private String username;
     private String displayName;
+    private String email;
     private String passwordHash;
     @Temporal(TemporalType.TIMESTAMP)
     private Date registrationDate;
@@ -26,9 +27,10 @@ public class User implements au.edu.uq.itee.maenad.restlet.auth.User, Serializab
     public User() {
     }
 
-    public User(String username, String displayName, String passwordHash, boolean superUser) {
+    public User(String username, String displayName, String email, String passwordHash, boolean superUser) {
         this.username = username;
         this.displayName = displayName;
+        this.email = email;
         this.passwordHash = passwordHash;
         this.superUser = superUser;
         this.registrationDate = new Date();
@@ -64,6 +66,14 @@ public class User implements au.edu.uq.itee.maenad.restlet.auth.User, Serializab
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public boolean isSuperUser() {
@@ -103,4 +113,5 @@ public class User implements au.edu.uq.itee.maenad.restlet.auth.User, Serializab
         hash = 43 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
+
 }
