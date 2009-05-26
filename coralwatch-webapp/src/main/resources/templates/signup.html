@@ -1,0 +1,91 @@
+<div dojoType="dijit.form.Form" method="post" action="">
+    <script type="dojo/method" event="onSubmit">
+        if(!this.validate()){
+        alert('Form contains invalid data. Please correct first');
+        return false;
+        }
+        return true;
+    </script>
+    <input type="hidden" name="redirectUrl" value="${redirectUrl!}"/>
+    <table class="form">
+        <tr>
+            <th>
+                <label for="username">Username:</label>
+            </th>
+            <td>
+                <input type="text" id="username" name="username"
+                       required="true"
+                       dojoType="dijit.form.ValidationTextBox"
+                       regExp="....*"
+                       invalidMessage="Enter your prefered username."/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="displayName">Display Name:</label>
+            </th>
+            <td>
+                <input type="text" id="displayName" name="displayName"
+                       required="true"
+                       dojoType="dijit.form.ValidationTextBox"
+                       regExp="....*"
+                       invalidMessage="Enter your full name."/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="email">Email:</label>
+            </th>
+            <td>
+                <input type="text" id="email" name="email" class="long"
+                       dojoType="dijit.form.ValidationTextBox"
+                       required="true"
+                       regExpGen="dojox.regexp.emailAddress"
+                       trim="true"
+                       invalidMessage="Enter a valid email address."/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="email">Confirm Email:</label>
+            </th>
+            <td>
+                <input type="text" id="email2" name="email2"
+                       dojoType="dijit.form.ValidationTextBox"
+                       required="true"
+                       regExpGen="dojox.regexp.emailAddress"
+                       trim="true"
+                       invalidMessage="Re-enter your email address."/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="password">Password:</label>
+            </th>
+            <td>
+                <input type="password" id="password" name="password"
+                       dojoType="dijit.form.ValidationTextBox"
+                       required="true"
+                       regExp="....*"
+                       invalidMessage="Enter a password."/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="password">Retype Password:</label>
+            </th>
+            <td>
+                <input type="password" id="password2" name="password2"
+                       dojoType="dijit.form.ValidationTextBox"
+                       required="true"
+                       regExp="....*"
+                       invalidMessage="Re-enter your password again."/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <button dojoType="dijit.form.Button" type="submit" name="register" value="register">Register</button>
+            </th>
+        </tr>
+    </table>
+</div>

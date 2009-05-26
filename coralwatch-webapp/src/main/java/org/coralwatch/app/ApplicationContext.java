@@ -12,6 +12,8 @@ import org.restlet.service.ConnectorService;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,13 +28,14 @@ import java.util.logging.Logger;
  * Date: 18/05/2009
  * Time: 12:08:38 PM
  */
-public class ApplicationContext implements Configuration {
-
+public class ApplicationContext implements Configuration, ServletContextListener {
+    private final EntityManagerFactory emf;
     private final int httpPort;
     private final String baseUrl;
     private JpaConnectorService connectorService;
     private UserDao userDao;
     private RoleAssignmentDao roleAssignmentDao;
+    private Logger logger = Logger.getLogger(ApplicationContext.class.getName());
 
     public ApplicationContext() throws InitializationException {
         Properties properties = new Properties();
@@ -79,7 +82,7 @@ public class ApplicationContext implements Configuration {
         }
 
         final String persistenceUnitName = getProperty(properties, "persistenceUnitName");
-        final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+        emf = Persistence.createEntityManagerFactory(persistenceUnitName);
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
                 emf.close();
@@ -100,6 +103,7 @@ public class ApplicationContext implements Configuration {
         this.httpPort = Integer.valueOf(getProperty(properties, "httpPort", "8181"));
         this.baseUrl = getProperty(properties, "baseUrl", null);
     }
+
 
     @Override
     public int getHttpPort() {
@@ -144,10 +148,26 @@ public class ApplicationContext implements Configuration {
         String result = properties.getProperty(propertyName);
         if (result == null) {
             result = defaultValue;
-            Logger.getLogger(ApplicationContext.class.getName()).log(
-                    Level.INFO,
+
+            Logger.getLogger(ApplicationContext.class.getName()).log(Level.INFO,
                     String.format("No value for property '%s' found, falling back to default of '%s'", propertyName, defaultValue));
         }
         return result;
+    }
+
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        logger.log(Level.INFO, "Initialized Coralwatch application.........OK");
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        try {
+            emf.close();
+            connectorService.stop();
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Error while closing Coralwatch application", ex);
+        }
+        logger.log(Level.INFO, "Closed Coralwatch application.........OK");
     }
 }

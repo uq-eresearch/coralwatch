@@ -15,6 +15,10 @@
         </servlet-class>
     </servlet>
 
+    <listener>
+        <listener-class>org.coralwatch.app.ApplicationContext</listener-class>
+    </listener>
+
     <context-param>
         <param-name>org.restlet.component</param-name>
         <param-value>org.coralwatch.app.CoralwatchComponent</param-value>
