@@ -29,9 +29,9 @@ public class FrameDataProvider implements au.edu.uq.itee.maenad.restlet.model.Fr
         navItems.add(new NavigationItem("Related", "${baseUrl}/links"));
 
         if (currentUser != null) {
-            navItems.add(new NavigationItem("Logout", "${baseUrl}/logout"));
+            navItems.add(new NavigationItem("Dashboard", "${baseUrl}/dashboard"));
         } else {
-            navItems.add(new NavigationItem("Login", "${baseUrl}/login?redirectUrl=${currentUrl?url}"));
+            navItems.add(new NavigationItem("Login", "${baseUrl}/login?redirectUrl=${baseUrl}/dashboard"));
         }
 
         return new FrameData("CoralWatch", navItems, currentUser);
