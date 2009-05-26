@@ -1,10 +1,14 @@
 <#include "macros/basic.html"/>
 
-<h1>User "${user.username!}"</h1>
+<h3>Profile for: ${user.username!}</h3>
 <table>
     <tr>
         <th>Display Name:</th>
         <td>${user.displayName!}</td>
+    </tr>
+    <tr>
+        <th>Email:</th>
+        <td><a href="mailto:${user.email!}">${user.email!}</a></td>
     </tr>
     <tr>
         <th>Registered since:</th>

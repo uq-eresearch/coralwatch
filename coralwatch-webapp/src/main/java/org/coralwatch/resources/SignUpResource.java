@@ -31,7 +31,7 @@ public class SignUpResource extends AbstractFreemarkerResource<User> {
     public SignUpResource() throws InitializationException {
         super();
         this.userDao = CoralwatchApplication.getConfiguration().getUserDao();
-        setContentTemplateName("signup.html");
+        setContentTemplateName("user_edit.html");
         setModifiable(true);
     }
 

@@ -1,0 +1,8 @@
+<h3>List of All Users</h3>
+<ul>
+    <#list userList as user>
+        <li><a href="${baseUrl}/users/${user.id}">${user.username}</a>:
+            ${user.displayName}
+        </li>
+    </#list>
+</ul>

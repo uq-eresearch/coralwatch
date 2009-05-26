@@ -47,7 +47,7 @@
 <body class="${dijitTheme}" id="index" onload="new ElementMaxHeight();">
 <div id="header_tall">
     <#if frameData.currentUser??>
-        <p style="font-size: 10px; text-align:left; margin: 1px;">Logged in as ${frameData.currentUser.displayName}</p>
+        <p style="font-size: 10px; text-align:left; margin: 1px;">Logged in as <a href="${baseUrl}/users/${frameData.currentUser.id}" style="font-size: 10px;">${frameData.currentUser.displayName}</a></p>
     </#if>
     <div id="main">
         <div id="header">
