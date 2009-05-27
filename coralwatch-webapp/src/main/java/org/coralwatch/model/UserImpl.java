@@ -1,27 +1,46 @@
 package org.coralwatch.model;
 
+import org.hibernate.validator.NotNull;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity(name = "AppUser")
+@NamedQueries({
+        @NamedQuery(name = "User.getSurveyCreated",
+                query = "SELECT o FROM Survey o WHERE o.creator = :user ORDER BY o.id")
+})
 public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @NotNull
     private String username;
     private String displayName;
+
+    @NotNull
     private String email;
+
+    @NotNull
     private String passwordHash;
+
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
     private Date registrationDate;
+
+    @NotNull
     private boolean superUser;
 
     public UserImpl() {
@@ -93,25 +112,32 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final UserImpl other = (UserImpl) obj;
-        if (this.id != other.id) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserImpl user = (UserImpl) o;
+
+        if (id != user.id) return false;
+        if (superUser != user.superUser) return false;
+        if (!displayName.equals(user.displayName)) return false;
+        if (!email.equals(user.email)) return false;
+        if (!passwordHash.equals(user.passwordHash)) return false;
+        if (!registrationDate.equals(user.registrationDate)) return false;
+        if (!username.equals(user.username)) return false;
+
         return true;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 43 * hash + (int) (this.id ^ (this.id >>> 32));
-        return hash;
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + username.hashCode();
+        result = 31 * result + displayName.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + passwordHash.hashCode();
+        result = 31 * result + registrationDate.hashCode();
+        result = 31 * result + (superUser ? 1 : 0);
+        return result;
     }
-
 }

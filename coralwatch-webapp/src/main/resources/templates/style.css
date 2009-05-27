@@ -22,7 +22,6 @@ p.small {
 
 a {
     color: #3d6f92;
-    font-size: 12px;
 }
 
 a:hover {
@@ -110,6 +109,11 @@ li.link {
 }
 
 /*Customized layout */
+
+.headercell {
+    text-align: left;
+    font-weight: bold;
+}
 
 #main {
     width: 800px;
