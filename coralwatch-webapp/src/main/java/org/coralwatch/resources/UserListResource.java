@@ -7,7 +7,7 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
 import au.edu.uq.itee.maenad.util.BCrypt;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
-import org.coralwatch.model.User;
+import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
 import org.restlet.resource.Variant;
 
@@ -19,21 +19,21 @@ import java.util.List;
  * Date: 26/05/2009
  * Time: 3:37:01 PM
  */
-public class UserListResource extends ModifiableListResource<User, UserDao, User> {
+public class UserListResource extends ModifiableListResource<UserImpl, UserDao, UserImpl> {
 
     public UserListResource() throws InitializationException {
         super(CoralwatchApplication.getConfiguration().getUserDao(), true);
     }
 
     @Override
-    protected User createObject(Form form) throws SubmissionException {
+    protected UserImpl createObject(Form form) throws SubmissionException {
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
         String username = form.getFirstValue("username");
         if ((username == null) || username.isEmpty()) {
             errors.add(new SubmissionError(("Username must not be empty")));
         } else {
-            for (User user : getDao().getAll()) {
-                if (username.equals(user.getUsername())) {
+            for (UserImpl userImpl : getDao().getAll()) {
+                if (username.equals(userImpl.getUsername())) {
                     errors.add(new SubmissionError("Username already exists"));
                 }
             }
@@ -58,16 +58,16 @@ public class UserListResource extends ModifiableListResource<User, UserDao, User
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         }
-        return new User(username, displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
+        return new UserImpl(username, displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
     }
 
     @Override
-    protected String getRedirectLocation(User object) {
+    protected String getRedirectLocation(UserImpl object) {
         return String.valueOf("users/" + object.getId());
     }
 
     @Override
-    protected boolean getAllowed(User user, Variant variant) {
-        return (user != null) && user.isSuperUser();
+    protected boolean getAllowed(UserImpl userImpl, Variant variant) {
+        return (userImpl != null) && userImpl.isSuperUser();
     }
 }

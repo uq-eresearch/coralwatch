@@ -7,7 +7,7 @@ import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.dataaccess.jpa.JpaConnectorService;
 import org.coralwatch.dataaccess.jpa.JpaRoleAssignmentDao;
 import org.coralwatch.dataaccess.jpa.JpaUserDao;
-import org.coralwatch.model.User;
+import org.coralwatch.model.UserImpl;
 import org.restlet.service.ConnectorService;
 
 import javax.persistence.EntityManagerFactory;
@@ -93,10 +93,10 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.roleAssignmentDao = new JpaRoleAssignmentDao(this.connectorService);
         if (userDao.getAll().isEmpty()) {
             // ensure that there's always one user to begin with
-            User defaultAdmin = new User("admin", "Abdul Alabri", "alabri@itee.uq.edu.au", BCrypt.hashpw("admin", BCrypt.gensalt()), true);
+            UserImpl defaultAdmin = new UserImpl("admin", "Abdul Alabri", "alabri@itee.uq.edu.au", BCrypt.hashpw("admin", BCrypt.gensalt()), true);
             userDao.save(defaultAdmin);
             Logger.getLogger(getClass().getName()).log(Level.INFO, "Created new default admin user with username and password 'admin'.");
-            User defaultUser = new User("user", "Dave Logan", "d.logan@uq.edu.au", BCrypt.hashpw("user", BCrypt.gensalt()), false);
+            UserImpl defaultUser = new UserImpl("user", "Dave Logan", "d.logan@uq.edu.au", BCrypt.hashpw("user", BCrypt.gensalt()), false);
             userDao.save(defaultUser);
             Logger.getLogger(getClass().getName()).log(Level.INFO, "Created new default user with username and password 'user'.");
         }

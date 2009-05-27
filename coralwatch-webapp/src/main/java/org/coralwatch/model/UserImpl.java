@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity(name = "AppUser")
-public class User implements au.edu.uq.itee.maenad.restlet.auth.User, Serializable {
+public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -24,10 +24,10 @@ public class User implements au.edu.uq.itee.maenad.restlet.auth.User, Serializab
     private Date registrationDate;
     private boolean superUser;
 
-    public User() {
+    public UserImpl() {
     }
 
-    public User(String username, String displayName, String email, String passwordHash, boolean superUser) {
+    public UserImpl(String username, String displayName, String email, String passwordHash, boolean superUser) {
         this.username = username;
         this.displayName = displayName;
         this.email = email;
@@ -100,7 +100,7 @@ public class User implements au.edu.uq.itee.maenad.restlet.auth.User, Serializab
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final User other = (User) obj;
+        final UserImpl other = (UserImpl) obj;
         if (this.id != other.id) {
             return false;
         }

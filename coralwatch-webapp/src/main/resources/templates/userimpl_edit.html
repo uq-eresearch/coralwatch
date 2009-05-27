@@ -1,8 +1,8 @@
-<#assign newObject=!(user??)/>
+<#assign newObject=!(userimpl??)/>
 <#if newObject>
     <h3>Sign Up</h3>
     <#else>
-        <h3>Editing User ${user.username}</h3>
+        <h3>Editing User ${userimpl.username}</h3>
 </#if>
 <div dojoType="dijit.form.Form" method="post">
     <script type="dojo/method" event="onSubmit">
@@ -41,7 +41,7 @@
                        dojoType="dijit.form.ValidationTextBox"
                        regExp=".......*"
                        invalidMessage="Please enter a display name with at least 6 characters"
-                       value="${(user.displayName)!}"/> <em>e.g. John Smith</em>
+                       value="${(userimpl.displayName)!}"/> <em>e.g. John Smith</em>
             </td>
         </tr>
         <tr>
@@ -85,7 +85,7 @@
                        regExp="[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]{2,6}"
                        trim="true"
                        invalidMessage="Enter a valid email address."
-                        value="${(user.email)!}"/> <em>e.g. address@organisation.com</em>
+                        value="${(userimpl.email)!}"/> <em>e.g. address@organisation.com</em>
             </td>
         </tr>
         <tr>

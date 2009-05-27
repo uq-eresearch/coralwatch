@@ -1,0 +1,22 @@
+<#include "macros/basic.html"/>
+
+<h3>Profile for: ${userimpl.username!}</h3>
+<table>
+    <tr>
+        <th>Display Name:</th>
+        <td>${userimpl.displayName!}</td>
+    </tr>
+    <tr>
+        <th>Email:</th>
+        <td><a href="mailto:${userimpl.email!}">${userimpl.email!}</a></td>
+    </tr>
+    <tr>
+        <th>Registered since:</th>
+        <td>${(userimpl.registrationDate)!?datetime}</td>
+    </tr>
+</table>
+
+<#if canUpdate>
+<button dojoType="dijit.form.Button"
+        onClick="window.location='${baseUrl}/users/${userimpl.id}?edit'">Edit</button>
+</#if>

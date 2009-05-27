@@ -8,7 +8,7 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
 import au.edu.uq.itee.maenad.util.BCrypt;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
-import org.coralwatch.model.User;
+import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.Map;
  * Date: 26/05/2009
  * Time: 2:38:28 PM
  */
-public class UserResource extends ModifiableEntityResource<User, UserDao, User> {
+public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, UserImpl> {
 
     public UserResource() throws InitializationException {
         super(CoralwatchApplication.getConfiguration().getUserDao());
@@ -29,17 +29,17 @@ public class UserResource extends ModifiableEntityResource<User, UserDao, User> 
     @Override
     protected void fillDatamodel(Map<String, Object> datamodel) throws NoDataFoundException {
         super.fillDatamodel(datamodel);
-//        User user = (User) datamodel.get(getTemplateObjectName());
+//        UserImpl user = (UserImpl) datamodel.get(getTemplateObjectName());
     }
 
     @Override
-    protected void updateObject(User user, Form form) throws SubmissionException {
+    protected void updateObject(UserImpl userImpl, Form form) throws SubmissionException {
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
         String newDisplayName = form.getFirstValue("displayName");
         if ((newDisplayName == null) || newDisplayName.length() < 6) {
             errors.add(new SubmissionError("No display name was provided. A display name of at least 6 characters must be supplied."));
         } else {
-            user.setDisplayName(newDisplayName);
+            userImpl.setDisplayName(newDisplayName);
         }
         String newPassword = form.getFirstValue("password");
         if ((newPassword != null) && (!newPassword.isEmpty())) {
@@ -48,7 +48,7 @@ public class UserResource extends ModifiableEntityResource<User, UserDao, User> 
             } else if (!newPassword.equals(form.getFirstValue("password2"))) {
                 errors.add(new SubmissionError("Passwords don't match"));
             } else {
-                user.setPasswordHash(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+                userImpl.setPasswordHash(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
             }
         }
 
@@ -56,7 +56,7 @@ public class UserResource extends ModifiableEntityResource<User, UserDao, User> 
         if ((email == null) || email.isEmpty()) {
             errors.add(new SubmissionError("No email was provided. An email address must be supplied."));
         } else {
-            user.setEmail(email);
+            userImpl.setEmail(email);
         }
 
         if (!errors.isEmpty()) {

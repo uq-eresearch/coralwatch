@@ -8,7 +8,7 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
 import au.edu.uq.itee.maenad.util.BCrypt;
 import org.coralwatch.app.CoralwatchApplication;
-import org.coralwatch.model.User;
+import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
 import org.restlet.resource.Representation;
 import org.restlet.resource.ResourceException;
@@ -23,9 +23,9 @@ import java.util.Map;
  * Date: 21/05/2009
  * Time: 11:16:55 AM
  */
-public class LoginResource extends AbstractFreemarkerResource<User> {
+public class LoginResource extends AbstractFreemarkerResource<UserImpl> {
 
-    private Dao<User> userDao;
+    private Dao<UserImpl> userDao;
 
     public LoginResource() throws InitializationException {
         super();
@@ -54,11 +54,11 @@ public class LoginResource extends AbstractFreemarkerResource<User> {
         if (password == null || password.isEmpty()) {
             errors.add(new SubmissionError("No password was provided"));
         }
-        List<User> users = userDao.getAll();
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                if (BCrypt.checkpw(password, user.getPasswordHash())) {
-                    login(user);
+        List<UserImpl> userImpls = userDao.getAll();
+        for (UserImpl userImpl : userImpls) {
+            if (userImpl.getUsername().equals(username)) {
+                if (BCrypt.checkpw(password, userImpl.getPasswordHash())) {
+                    login(userImpl);
                 }
                 break;
             }
@@ -79,12 +79,12 @@ public class LoginResource extends AbstractFreemarkerResource<User> {
 
 
     @Override
-    protected boolean getAllowed(User user, Variant variant) throws ResourceException {
+    protected boolean getAllowed(UserImpl userImpl, Variant variant) throws ResourceException {
         return true;
     }
 
     @Override
-    protected boolean postAllowed(User user, Representation representation) {
+    protected boolean postAllowed(UserImpl userImpl, Representation representation) {
         return true;
     }
 }

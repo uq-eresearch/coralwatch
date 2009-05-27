@@ -5,7 +5,7 @@ import au.edu.uq.itee.maenad.restlet.AbstractFreemarkerResource;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.NoDataFoundException;
 import org.coralwatch.app.CoralwatchApplication;
-import org.coralwatch.model.User;
+import org.coralwatch.model.UserImpl;
 import org.restlet.resource.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
@@ -13,9 +13,9 @@ import org.restlet.resource.Variant;
 import java.util.Map;
 
 
-public class LogoutResource extends AbstractFreemarkerResource<User> {
+public class LogoutResource extends AbstractFreemarkerResource<UserImpl> {
 
-    private Dao<User> userDao;
+    private Dao<UserImpl> userDao;
 
     public LogoutResource() throws InitializationException {
         super();
@@ -35,7 +35,7 @@ public class LogoutResource extends AbstractFreemarkerResource<User> {
     }
 
     @Override
-    protected boolean getAllowed(User user, Variant variant) {
+    protected boolean getAllowed(UserImpl userImpl, Variant variant) {
         return true;
     }
 }
