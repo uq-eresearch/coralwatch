@@ -80,7 +80,6 @@ textarea {
     overflow: auto;
     font-family: tahoma;
     line-height: 13px;
-    color: #a4a4a4;
 }
 
 form .div {
@@ -113,6 +112,18 @@ li.link {
 .headercell {
     text-align: left;
     font-weight: bold;
+}
+
+.list_table {
+    
+    border: solid 1px #ededed;
+}
+.list_table td {
+    border: solid 1px #ededed;
+}
+.list_table th {
+    border: solid 1px #ededed;
+    background-color: #e8e8e8;
 }
 
 #main {
