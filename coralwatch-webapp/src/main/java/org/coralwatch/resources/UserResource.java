@@ -10,6 +10,7 @@ import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
+import org.restlet.resource.Variant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,13 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         }
+    }
+
+    @Override
+    protected boolean getAllowed(UserImpl userImpl, Variant variant) {
+        //Only logged in users and super users can edit profiles
+        long id = Long.valueOf((String) getRequest().getAttributes().get("id"));
+        return getCurrentUser().getId() == id || userImpl.isSuperUser();
     }
 
 }

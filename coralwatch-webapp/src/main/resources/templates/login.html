@@ -6,6 +6,11 @@
         }
         return true;
     </script>
+    <script type="text/javascript">
+        dojo.addOnLoad(function() {
+            dijit.byId("username").focus();
+        });
+    </script>
     <input type="hidden" name="redirectUrl" value="${redirectUrl!}"/>
     <table class="form centered">
         <tr>

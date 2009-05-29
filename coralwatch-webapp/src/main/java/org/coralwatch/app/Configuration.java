@@ -1,6 +1,7 @@
 package org.coralwatch.app;
 
 import org.coralwatch.dataaccess.RoleAssignmentDao;
+import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.restlet.service.ConnectorService;
 
@@ -16,6 +17,8 @@ public interface Configuration {
     ConnectorService getConnectorService();
 
     UserDao getUserDao();
+
+    SurveyDao getSurveyDao();
 
     RoleAssignmentDao getRoleAssignmentDao();
 

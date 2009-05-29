@@ -1,0 +1,6 @@
+<h3>List of All Surveys</h3>
+<ul>
+    <#list surveyList as survey>
+        <li><a href="${baseUrl}/surveys/${survey.id}">${survey.id}</a>: ${survey.date}</li>
+    </#list>
+</ul>

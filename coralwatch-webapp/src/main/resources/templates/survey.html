@@ -1,2 +1,66 @@
+<#include "macros/basic.html"/>
+
 <h3>Coral Bleaching Survey</h3>
-<p>Thanks for participating in this survey, please complete the following information before you enter your data for each sample.</p>        
+
+<table>
+    <tr>
+        <td class="headercell">Creator:</td>
+        <td>${(survey.creator.username)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Organisation:</td>
+        <td>${(survey.organisation)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Organisation Type:</td>
+        <td>${(survey.organisationType)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Country:</td>
+        <td>${(survey.country)!}</td>
+    </tr>
+
+    <tr>
+        <td class="headercell">Reef Name:</td>
+        <td>${(survey.reefName)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Latitude:</td>
+        <td>${(survey.latitude)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Longitude:</td>
+        <td>${(survey.longitude)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Date Created:</td>
+        <td>${(survey.date)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Time Conducted:</td>
+        <td>${(survey.time)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Weather:</td>
+        <td>${(survey.weather)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Temperature:</td>
+        <td>${(survey.temperature)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Activity:</td>
+        <td>${(survey.activity)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Comments:</td>
+        <td>${(survey.comments)!}</td>
+    </tr>
+</table>
+
+
+<#if canUpdate>
+    <button dojoType="dijit.form.Button"
+            onClick="window.location='${baseUrl}/surveys/${survey.id}?edit'">Edit
+    </button>
+</#if>

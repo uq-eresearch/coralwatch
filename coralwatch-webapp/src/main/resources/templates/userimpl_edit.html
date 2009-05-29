@@ -4,6 +4,7 @@
     <#else>
         <h3>Editing User ${userimpl.username}</h3>
 </#if>
+
 <div dojoType="dijit.form.Form" method="post">
     <script type="dojo/method" event="onSubmit">
         if(!this.validate()){
@@ -12,6 +13,15 @@
         }
         return true;
     </script>
+    <script type="text/javascript">
+    dojo.addOnLoad(function() {
+        <#if newObject>
+        dijit.byId("username").focus();
+        <#else>
+        dijit.byId("displayName").focus();
+        </#if>
+    });
+</script>  
     <table>
         <#if newObject>
             <tr>

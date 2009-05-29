@@ -7,8 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -44,9 +42,11 @@ public class Survey implements Serializable {
     @NotNull
     private float longitude;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     private Date date;
+
+    @NotNull
+    private String time;
 
     @NotNull
     private String weather;
@@ -131,6 +131,14 @@ public class Survey implements Serializable {
         this.date = date;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public String getWeather() {
         return weather;
     }
@@ -209,5 +217,5 @@ public class Survey implements Serializable {
         result = 31 * result + (comments != null ? comments.hashCode() : 0);
         return result;
     }
-    
+
 }
