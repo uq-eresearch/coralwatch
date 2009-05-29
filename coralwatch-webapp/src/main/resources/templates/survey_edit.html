@@ -48,7 +48,8 @@
                 id="organisationType"
                 dojoType="dijit.form.ComboBox"
                 required="true"
-                hasDownArrow="true">
+                hasDownArrow="true"
+                value="${(survey.organisationType)!}">
             <option selected="selected" value="DiveCentre">Dive Centre</option>
             <option value="Scientist">Scientist</option>
             <option value="Eco">Ecological Manufacturing Group</option>
@@ -66,7 +67,8 @@
         id="country"
         dojoType="dijit.form.ComboBox"
         required="true"
-        hasDownArrow="true">
+        hasDownArrow="true"
+        value="${(survey.country)!}">
                 <option value="Afghanistan">Afghanistan</option>
                 <option value="Albania">Albania</option>
                 <option value="Algeria">Algeria</option>
@@ -356,9 +358,9 @@
                     id="reefName"
                     dojoType="dijit.form.ComboBox"
                     required="true"
-                    hasDownArrow="true">
+                    hasDownArrow="true"
+                    value="${(survey.reefName)!}">
             <option value=" Parker Point Rottnest Island WA"> Parker Point Rottnest Island WA</option>
-
             <option value=" Rottnest Island Fay's Bay WA"> Rottnest Island Fay's Bay WA</option>
             <option value="100th site 3m">100th site 3m</option>
             <option value="12">12</option>
@@ -747,7 +749,12 @@
                     required="true"
                     promptMessage="dd/mm/yyyy"
                     invalidMessage="Invalid date. Use dd/mm/yyyy format."
-                    value="${(survey.date)!}"/>
+                    <#if !newObject>
+                        value="${(survey.date)!?date}"
+                     <#else>
+                         value="${(survey.date)!}"
+                    </#if>
+                    />
         </td>
     </tr>
     <tr>
@@ -758,7 +765,8 @@
                     id="time"
                     required="true"
                     dojoType="dijit.form.ComboBox"
-                    hasDownArrow="true">
+                    hasDownArrow="true"
+                    value="${(survey.time)!}">
                 <option value="Early Morning">Early Morning</option>
                 <option value="Late Morning">Late Morning</option>
                 <option value="Midday">Midday</option>
@@ -777,7 +785,8 @@
                     id="weather"
                     required="true"
                     dojoType="dijit.form.ComboBox"
-                    hasDownArrow="true">
+                    hasDownArrow="true"
+                    value="${(survey.weather)!}">
                 <option value="Full Sunshine">Full Sunshine</option>
                 <option value="Broken Cloud">Broken Cloud</option>
                 <option value="Cloudy">Cloudy</option>
@@ -807,7 +816,8 @@
                     id="activity"
                     required="true"
                     dojoType="dijit.form.ComboBox"
-                    hasDownArrow="true">
+                    hasDownArrow="true"
+                    value="${(survey.activity)!}">
                 <option value="Reef_walking">Reef walking</option>
                 <option value="Snorkeling">Snorkeling</option>
                 <option value="Diving">Diving</option>

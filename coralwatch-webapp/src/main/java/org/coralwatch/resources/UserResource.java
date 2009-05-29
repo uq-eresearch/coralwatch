@@ -30,7 +30,8 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
     @Override
     protected void fillDatamodel(Map<String, Object> datamodel) throws NoDataFoundException {
         super.fillDatamodel(datamodel);
-//        UserImpl user = (UserImpl) datamodel.get(getTemplateObjectName());
+        UserImpl user = (UserImpl) datamodel.get(getTemplateObjectName());
+        datamodel.put("conductedSurveys", getDao().getSurveyEntriesCreated(user));
     }
 
     @Override
@@ -68,8 +69,13 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
     @Override
     protected boolean getAllowed(UserImpl userImpl, Variant variant) {
         //Only logged in users and super users can edit profiles
+        //Logged in users can only edit their own profile
         long id = Long.valueOf((String) getRequest().getAttributes().get("id"));
-        return getCurrentUser().getId() == id || userImpl.isSuperUser();
+        if (userImpl != null && (userImpl.getId() == id || userImpl.isSuperUser())){
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

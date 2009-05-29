@@ -15,7 +15,7 @@ import java.util.Date;
 
 @Entity(name = "AppUser")
 @NamedQueries({
-        @NamedQuery(name = "User.getSurveyCreated",
+        @NamedQuery(name = "User.getConductedSurveys",
                 query = "SELECT o FROM Survey o WHERE o.creator = :user ORDER BY o.id")
 })
 public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serializable {

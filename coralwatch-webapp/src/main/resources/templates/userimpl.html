@@ -1,9 +1,13 @@
 <#include "macros/basic.html"/>
 
-<h3>Profile for: ${userimpl.username!}</h3>
+<h3>${userimpl.displayName!}</h3>
 <table>
     <tr>
-        <td class="headercell">Display Name:</td>
+        <td class="headercell">Username:</td>
+        <td>${userimpl.username!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Display:</td>
         <td>${userimpl.displayName!}</td>
     </tr>
     <tr>
@@ -12,11 +16,21 @@
     </tr>
     <tr>
         <td class="headercell">Member since:</td>
-        <td>${(userimpl.registrationDate)!?datetime}</td>
+        <td>${(userimpl.registrationDate)!?date}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td align="right">
+            <#if canUpdate>
+                <button dojoType="dijit.form.Button"
+                        onClick="window.location='${baseUrl}/users/${userimpl.id}?edit'">Edit
+                </button>
+            </#if>
+        </td>
     </tr>
 </table>
 
-<#if canUpdate>
-<button dojoType="dijit.form.Button"
-        onClick="window.location='${baseUrl}/users/${userimpl.id}?edit'">Edit</button>
-</#if>
+<br/>
+<h3>Contributions:<h3>
+    <@createList "Surveys" conductedSurveys; item><a href="${baseUrl}/surveys/${item.id}">${item.id}</a> Conducted on
+    ${(item.date)!?date}</@createList>

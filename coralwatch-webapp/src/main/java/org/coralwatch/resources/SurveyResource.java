@@ -10,6 +10,7 @@ import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
+import org.restlet.resource.Variant;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -137,6 +138,20 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
 
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
+        }
+    }
+
+    @Override
+    protected boolean getAllowed(UserImpl userImpl, Variant variant) {
+        //Only logged in users and super users can edit profiles
+        //Logged in users can only edit their own survey
+        long id = Long.valueOf((String) getRequest().getAttributes().get("id"));
+        SurveyDao dao = CoralwatchApplication.getConfiguration().getSurveyDao();
+        Survey survey = dao.load(id);
+        if (userImpl != null && (userImpl.getId() == survey.getCreator().getId() || userImpl.isSuperUser())) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

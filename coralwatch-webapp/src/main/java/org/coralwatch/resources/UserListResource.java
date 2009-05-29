@@ -68,10 +68,12 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
 
     @Override
     protected boolean getAllowed(UserImpl userImpl, Variant variant) {
-        //Only logged in users and super users can edit profiles
+        //For access level on editing users see UserResource.getAllowed
+        //Any one can create a new User
         if (userImpl == null && getRequest().getResourceRef().getQueryAsForm().getFirst("new") != null) {
             return true;
         }
+        //Only super user can see the list of users
         if (userImpl != null && getCurrentUser().isSuperUser()) {
             return true;
         }

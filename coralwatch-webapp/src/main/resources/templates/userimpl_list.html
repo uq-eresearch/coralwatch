@@ -1,8 +1,7 @@
 <h3>List of All Users</h3>
 <ul>
     <#list userimplList as userimpl>
-        <li><a href="${baseUrl}/users/${userimpl.id}">${userimpl.username}</a>:
-            ${userimpl.displayName}
+        <li><a href="${baseUrl}/users/${userimpl.id}">${userimpl.username}</a>: ${userimpl.displayName} member since ${(userimpl.registrationDate)!?date}
         </li>
     </#list>
 </ul>
