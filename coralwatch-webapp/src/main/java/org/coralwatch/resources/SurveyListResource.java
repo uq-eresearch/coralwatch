@@ -37,14 +37,6 @@ public class SurveyListResource extends ModifiableListResource<Survey, SurveyDao
     protected boolean getAllowed(UserImpl userImpl, Variant variant) {
         //For access level on editing surveys see SurveyResource.getAllowed
         //Only logged in users can create a new User
-        if (userImpl != null && getRequest().getResourceRef().getQueryAsForm().getFirst("new") != null) {
-            return true;
-        }
-        //Only super user can see the list of surveys
-        if (userImpl != null && getCurrentUser().isSuperUser()) {
-            return true;
-        }
-        getCurrentUser();
-        return false;
+        return userImpl != null;
     }
 }

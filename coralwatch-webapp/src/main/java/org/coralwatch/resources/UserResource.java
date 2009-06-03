@@ -22,7 +22,6 @@ import java.util.Map;
  * Time: 2:38:28 PM
  */
 public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, UserImpl> {
-
     public UserResource() throws InitializationException {
         super(CoralwatchApplication.getConfiguration().getUserDao());
     }
@@ -30,8 +29,8 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
     @Override
     protected void fillDatamodel(Map<String, Object> datamodel) throws NoDataFoundException {
         super.fillDatamodel(datamodel);
-        UserImpl user = (UserImpl) datamodel.get(getTemplateObjectName());
-        datamodel.put("conductedSurveys", getDao().getSurveyEntriesCreated(user));
+        UserImpl userImpl = (UserImpl) datamodel.get(getTemplateObjectName());
+        datamodel.put("conductedSurveys", getDao().getSurveyEntriesCreated(userImpl));
     }
 
     @Override
@@ -71,11 +70,14 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         //Only logged in users and super users can edit profiles
         //Logged in users can only edit their own profile
         long id = Long.valueOf((String) getRequest().getAttributes().get("id"));
-        if (userImpl != null && (userImpl.getId() == id || userImpl.isSuperUser())){
-            return true;
-        } else {
-            return false;
-        }
+        UserDao dao = getDao();
+        UserImpl userObj = dao.load(id);
+//        
+//        if (userImpl != null && (userImpl.getId() == id || userImpl.isSuperUser())){
+            return getAccessPolicy().getAccessLevelForInstance(userImpl, userObj).canRead();
+//        } else {
+//            return false;
+//        }
     }
 
 }

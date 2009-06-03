@@ -56,14 +56,11 @@
         <td class="headercell">Comments:</td>
         <td>${(survey.comments)!}</td>
     </tr>
-    <tr>
-        <td></td>
-        <td align="right">
-            <#if canUpdate>
-                <button dojoType="dijit.form.Button"
-                        onClick="window.location='${baseUrl}/surveys/${survey.id}?edit'">Edit
-                </button>
-            </#if>
-        </td>
-    </tr>
 </table>
+<#if canUpdate>
+    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id}?edit'">Add Data</button>
+    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id}?edit'">Edit</button>
+</#if>
+<#if canDelete>
+    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id}?edit'">Delete</button>
+</#if>

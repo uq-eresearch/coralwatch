@@ -14,14 +14,14 @@
         return true;
     </script>
     <script type="text/javascript">
-    dojo.addOnLoad(function() {
+        dojo.addOnLoad(function() {
         <#if newObject>
-        dijit.byId("username").focus();
+             dijit.byId("username").focus();
         <#else>
-        dijit.byId("displayName").focus();
+            dijit.byId("displayName").focus();
         </#if>
-    });
-</script>  
+        });
+    </script>
     <table>
         <#if newObject>
             <tr>
@@ -95,7 +95,7 @@
                        regExp="[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]{2,6}"
                        trim="true"
                        invalidMessage="Enter a valid email address."
-                        value="${(userimpl.email)!}"/> <em>e.g. address@organisation.com</em>
+                       value="${(userimpl.email)!}"/> <em>e.g. address@organisation.com</em>
             </td>
         </tr>
         <tr>
@@ -116,7 +116,5 @@
     </table>
     <button dojoType="dijit.form.Button" type="submit" name="submit">${newObject?string("Create","Update")}</button>
     <#assign plainUrl=currentUrl?substring(0,currentUrl?last_index_of("?")) />
-    <button dojoType="dijit.form.Button"
-            onClick="window.location='${plainUrl}'">Cancel
-    </button>
+    <button dojoType="dijit.form.Button" onClick="window.location='${plainUrl}'">Cancel</button>
 </div>

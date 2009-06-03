@@ -48,7 +48,6 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
             errors.add(new SubmissionError(("Email must not be empty")));
         }
 
-        // TODO extract password policy into one place (currently here and on UserResource class
         String password = form.getFirstValue("password");
         if ((password == null) || password.length() < 6) {
             errors.add(new SubmissionError("A password of at least 6 characters needs to be given"));
@@ -74,7 +73,7 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
             return true;
         }
         //Only super user can see the list of users
-        if (userImpl != null && getCurrentUser().isSuperUser()) {
+        if (userImpl != null) {
             return true;
         }
         return false;

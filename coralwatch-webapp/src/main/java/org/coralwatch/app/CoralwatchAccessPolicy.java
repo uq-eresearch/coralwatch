@@ -18,7 +18,9 @@ public class CoralwatchAccessPolicy implements AccessPolicy<UserImpl> {
         NORMAL_USERS_CAN_CREATE_INSTANCES.add(Survey.class);
         NORMAL_USERS_CAN_CREATE_INSTANCES.add(UserImpl.class);
     }
+
     public AccessLevel getAccessLevelForClass(UserImpl userImpl, Class<?> clazz) {
+
         if (userImpl == null) {
             return ANONYMOUS_CAN_CREATE_ONLY;
         }
@@ -41,21 +43,24 @@ public class CoralwatchAccessPolicy implements AccessPolicy<UserImpl> {
     }
 
     public AccessLevel getAccessLevelForInstance(UserImpl user, Object instance) {
-        if (user == null) {
-            return ANONYMOUS_CAN_READ_ONLY;
+        boolean canCreate = false;
+        boolean canRead = false;
+        boolean canUpdate = false;
+        boolean canDelete = false;
+
+        if (instance instanceof UserImpl) {
+            canCreate = true; //Any one can create users
+            canRead = user != null; //Only logged in users can read users
+            canUpdate = user.equals(instance); //Users can edit their own profiles
+            canDelete = user.isSuperUser(); //Super users can delete profiles
         }
-        boolean canChange;
-        if (user.isSuperUser()) {
-            canChange = true;
-        } else {
-            canChange = false;
-            if (instance instanceof Survey) {
-                canChange = user.equals(((Survey) instance).getCreator());
-            }
-            if (instance instanceof UserImpl) {
-                canChange = user.equals(instance);
-            }
+        if (instance instanceof Survey) {
+            canCreate = user !=null;
+            canRead = user !=null;
+            canUpdate = user.equals(((Survey)instance).getCreator()); //Users can edit their own profiles
+            canDelete = user.isSuperUser(); //Super users can delete profiles
         }
-        return new AccessLevel(true, true, canChange, canChange);
+
+        return new AccessLevel(canCreate, canRead, canUpdate, canDelete);
     }
 }

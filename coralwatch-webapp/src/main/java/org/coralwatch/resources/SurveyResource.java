@@ -20,11 +20,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @autho alabri
- * Date: 27/05/2009
- * Time: 4:48:11 PM
- */
 public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, UserImpl> {
 
 
@@ -146,12 +141,7 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
         //Only logged in users and super users can edit profiles
         //Logged in users can only edit their own survey
         long id = Long.valueOf((String) getRequest().getAttributes().get("id"));
-        SurveyDao dao = CoralwatchApplication.getConfiguration().getSurveyDao();
-        Survey survey = dao.load(id);
-        if (userImpl != null && (userImpl.getId() == survey.getCreator().getId() || userImpl.isSuperUser())) {
-            return true;
-        } else {
-            return false;
-        }
+        Survey survey = getDao().load(id);
+        return getAccessPolicy().getAccessLevelForInstance(userImpl, survey).canRead();
     }
 }

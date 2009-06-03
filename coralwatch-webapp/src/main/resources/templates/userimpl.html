@@ -7,7 +7,7 @@
         <td>${userimpl.username!}</td>
     </tr>
     <tr>
-        <td class="headercell">Display:</td>
+        <td class="headercell">Display Name:</td>
         <td>${userimpl.displayName!}</td>
     </tr>
     <tr>
@@ -19,11 +19,17 @@
         <td>${(userimpl.registrationDate)!?date}</td>
     </tr>
     <tr>
-        <td></td>
-        <td align="right">
+        <td>
             <#if canUpdate>
                 <button dojoType="dijit.form.Button"
                         onClick="window.location='${baseUrl}/users/${userimpl.id}?edit'">Edit
+                </button>
+            </#if>
+        </td>
+        <td align="right">
+            <#if canDelete>
+                <button dojoType="dijit.form.Button"
+                        onClick="window.location='${baseUrl}/users/${userimpl.id}?delete'">Delete
                 </button>
             </#if>
         </td>
@@ -31,6 +37,5 @@
 </table>
 
 <br/>
-<h3>Contributions:<h3>
-    <@createList "Surveys" conductedSurveys; item><a href="${baseUrl}/surveys/${item.id}">${item.id}</a> Conducted on
-    ${(item.date)!?date}</@createList>
+<@createList "Surveys" conductedSurveys; item><a href="${baseUrl}/surveys/${item.id}">${item.id}</a> Conducted on
+${(item.date)!?date}</@createList>
