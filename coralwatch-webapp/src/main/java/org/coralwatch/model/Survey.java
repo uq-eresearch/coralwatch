@@ -2,16 +2,27 @@ package org.coralwatch.model;
 
 import org.hibernate.validator.NotNull;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Survey.getData",
+                query = "SELECT o FROM SurveyRecord o WHERE o.survey = :survey ORDER BY o.id")
+})
 public class Survey implements Serializable {
 
     private static final long serialVersionUID = 1;
@@ -58,6 +69,13 @@ public class Survey implements Serializable {
     private double temperature;
 
     private String comments;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey", fetch = FetchType.LAZY)
+    private List<SurveyRecord> dataset = new ArrayList<SurveyRecord>();
+
+    public Survey() {
+        
+    }
 
     public long getId() {
         return id;
@@ -169,6 +187,14 @@ public class Survey implements Serializable {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public List<SurveyRecord> getDataset() {
+        return dataset;
+    }
+
+    public void setDataset(List<SurveyRecord> dataset) {
+        this.dataset = dataset;
     }
 
     @Override

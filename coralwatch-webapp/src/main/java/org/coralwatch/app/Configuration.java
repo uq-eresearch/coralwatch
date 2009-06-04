@@ -1,7 +1,7 @@
 package org.coralwatch.app;
 
-import org.coralwatch.dataaccess.RoleAssignmentDao;
 import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.restlet.service.ConnectorService;
 
@@ -20,7 +20,7 @@ public interface Configuration {
 
     SurveyDao getSurveyDao();
 
-    RoleAssignmentDao getRoleAssignmentDao();
+    SurveyRecordDao getSurveyRecordDao();
 
     /**
      * An explicitly configured base URL.

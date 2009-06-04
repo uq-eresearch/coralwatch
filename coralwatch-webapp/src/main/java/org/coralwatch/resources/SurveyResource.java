@@ -31,6 +31,8 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
     @Override
     protected void fillDatamodel(Map<String, Object> datamodel) throws NoDataFoundException {
         super.fillDatamodel(datamodel);
+        Survey survey = (Survey) datamodel.get(getTemplateObjectName());
+        datamodel.put("surveyRecs", getDao().getSurveyRecords(survey));
     }
 
     @Override

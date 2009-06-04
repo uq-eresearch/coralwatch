@@ -2,12 +2,12 @@ package org.coralwatch.app;
 
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.util.BCrypt;
-import org.coralwatch.dataaccess.RoleAssignmentDao;
 import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.dataaccess.jpa.JpaConnectorService;
-import org.coralwatch.dataaccess.jpa.JpaRoleAssignmentDao;
 import org.coralwatch.dataaccess.jpa.JpaSurveyDao;
+import org.coralwatch.dataaccess.jpa.JpaSurveyRecordDao;
 import org.coralwatch.dataaccess.jpa.JpaUserDao;
 import org.coralwatch.model.UserImpl;
 import org.restlet.service.ConnectorService;
@@ -36,9 +36,9 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private final String baseUrl;
     private JpaConnectorService connectorService;
     private UserDao userDao;
-    private RoleAssignmentDao roleAssignmentDao;
     private Logger logger = Logger.getLogger(ApplicationContext.class.getName());
     private SurveyDao surveyDao;
+    private SurveyRecordDao surveyRecordDao;
 
     public ApplicationContext() throws InitializationException {
         Properties properties = new Properties();
@@ -93,8 +93,8 @@ public class ApplicationContext implements Configuration, ServletContextListener
         }));
         this.connectorService = new JpaConnectorService(emf);
         this.surveyDao = new JpaSurveyDao(this.connectorService);
+        this.surveyRecordDao = new JpaSurveyRecordDao(this.connectorService);
         this.userDao = new JpaUserDao(this.connectorService);
-        this.roleAssignmentDao = new JpaRoleAssignmentDao(this.connectorService);
         if (userDao.getAll().isEmpty()) {
             // ensure that there's always one user to begin with
             UserImpl defaultAdmin = new UserImpl("admin", "Abdul Alabri", "alabri@itee.uq.edu.au", BCrypt.hashpw("admin", BCrypt.gensalt()), true);
@@ -125,17 +125,17 @@ public class ApplicationContext implements Configuration, ServletContextListener
     }
 
     @Override
-    public RoleAssignmentDao getRoleAssignmentDao() {
-        return roleAssignmentDao;
-    }
-
-    @Override
     public String getBaseUrl() {
         return baseUrl;
     }
 
     public SurveyDao getSurveyDao() {
         return surveyDao;
+    }
+
+    @Override
+    public SurveyRecordDao getSurveyRecordDao() {
+        return surveyRecordDao;
     }
 
     private static String getProperty(Properties properties, String propertyName) throws InitializationException {

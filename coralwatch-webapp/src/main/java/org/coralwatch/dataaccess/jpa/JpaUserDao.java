@@ -16,7 +16,7 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao {
     }
 
     @Override
-     @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     public List<Survey> getSurveyEntriesCreated(UserImpl userImpl) {
         return entityManagerSource.getEntityManager().createNamedQuery("User.getConductedSurveys").setParameter("user",
                 userImpl).getResultList();
