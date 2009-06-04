@@ -713,6 +713,7 @@
                     id="latitude"
                     name="latitude"
                     required="true"
+                    constraints="{places:6}"
                     dojoType="dijit.form.NumberTextBox"
                     trim="true"
                     invalidMessage="Enter a valid latitude value."
@@ -728,6 +729,7 @@
                     id="longitude"
                     name="longitude"
                     required="true"
+                    constraints="{places:6}"
                     dojoType="dijit.form.NumberTextBox"
                     trim="true"
                     invalidMessage="Enter a valid longitude value."
@@ -759,7 +761,7 @@
     </tr>
     <tr>
         <td class="headercell">
-            <label for="time">Time Conducted:</label></td>
+            <label for="time">Time:</label></td>
         <td>
             <select name="time"
                     id="time"
