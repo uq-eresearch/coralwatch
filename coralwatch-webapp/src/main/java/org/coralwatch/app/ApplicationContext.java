@@ -1,7 +1,19 @@
 package org.coralwatch.app;
 
-import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
-import au.edu.uq.itee.maenad.util.BCrypt;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
@@ -12,18 +24,8 @@ import org.coralwatch.dataaccess.jpa.JpaUserDao;
 import org.coralwatch.model.UserImpl;
 import org.restlet.service.ConnectorService;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
+import au.edu.uq.itee.maenad.util.BCrypt;
 
 /**
  * @autho alabri
@@ -34,11 +36,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private final EntityManagerFactory emf;
     private final int httpPort;
     private final String baseUrl;
-    private JpaConnectorService connectorService;
-    private UserDao userDao;
-    private Logger logger = Logger.getLogger(ApplicationContext.class.getName());
-    private SurveyDao surveyDao;
-    private SurveyRecordDao surveyRecordDao;
+    private final JpaConnectorService connectorService;
+    private final UserDao userDao;
+    private final Logger logger = Logger.getLogger(ApplicationContext.class.getName());
+    private final SurveyDao surveyDao;
+    private final SurveyRecordDao surveyRecordDao;
 
     public ApplicationContext() throws InitializationException {
         Properties properties = new Properties();
@@ -144,7 +146,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
 
     private static String getProperty(Properties properties, String propertyName, boolean allowEmpty) throws InitializationException {
         String result = properties.getProperty(propertyName);
-        if (result == null && (allowEmpty || !result.isEmpty())) {
+        if (result == null || (!allowEmpty && result.isEmpty())) {
             throw new InitializationException(String.format("Failed to load required property '%s', " +
                     "please check configuration", propertyName));
         }
