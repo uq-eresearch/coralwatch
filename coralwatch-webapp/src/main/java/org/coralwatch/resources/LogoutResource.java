@@ -1,25 +1,21 @@
 package org.coralwatch.resources;
 
-import au.edu.uq.itee.maenad.dataaccess.Dao;
-import au.edu.uq.itee.maenad.restlet.AbstractFreemarkerResource;
-import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
-import au.edu.uq.itee.maenad.restlet.errorhandling.NoDataFoundException;
-import org.coralwatch.app.CoralwatchApplication;
+import java.util.Map;
+
 import org.coralwatch.model.UserImpl;
 import org.restlet.resource.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
-import java.util.Map;
+import au.edu.uq.itee.maenad.restlet.AbstractFreemarkerResource;
+import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
+import au.edu.uq.itee.maenad.restlet.errorhandling.NoDataFoundException;
 
 
 public class LogoutResource extends AbstractFreemarkerResource<UserImpl> {
 
-    private Dao<UserImpl> userDao;
-
     public LogoutResource() throws InitializationException {
         super();
-        this.userDao = CoralwatchApplication.getConfiguration().getUserDao();
         setContentTemplateName("logout.html");
     }
 
