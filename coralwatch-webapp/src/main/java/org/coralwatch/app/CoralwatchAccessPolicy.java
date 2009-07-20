@@ -1,18 +1,19 @@
 package org.coralwatch.app;
 
-import au.edu.uq.itee.maenad.restlet.auth.AccessLevel;
-import au.edu.uq.itee.maenad.restlet.auth.AccessPolicy;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
 
-import java.util.HashSet;
-import java.util.Set;
+import au.edu.uq.itee.maenad.restlet.auth.AccessLevel;
+import au.edu.uq.itee.maenad.restlet.auth.AccessPolicy;
 
 
 public class CoralwatchAccessPolicy implements AccessPolicy<UserImpl> {
     private static final AccessLevel ANONYMOUS_CAN_READ_ONLY = new AccessLevel(false, true, false, false);
     private static final AccessLevel ANONYMOUS_CAN_CREATE_ONLY = new AccessLevel(true, false, false, false);
-    private static final Set<Class> NORMAL_USERS_CAN_CREATE_INSTANCES = new HashSet<Class>();
+    private static final Set<Class<?>> NORMAL_USERS_CAN_CREATE_INSTANCES = new HashSet<Class<?>>();
 
     static {
         NORMAL_USERS_CAN_CREATE_INSTANCES.add(Survey.class);
