@@ -5,7 +5,7 @@
     <artifactId>coralwatch-webapp</artifactId>
     <packaging>war</packaging>
     <name>coralwatch-webapp</name>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
     <url>http://coralwatch.org</url>
     <distributionManagement>
       <repository>
