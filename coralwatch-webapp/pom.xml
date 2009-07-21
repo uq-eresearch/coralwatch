@@ -7,6 +7,19 @@
     <name>coralwatch-webapp</name>
     <version>1.0</version>
     <url>http://coralwatch.org</url>
+    <distributionManagement>
+      <repository>
+        <id>maenad-releases</id>
+        <name>maenad-releases</name>
+        <url>http://maenad.itee.uq.edu.au:9024/artifactory/libs-releases-local</url>
+      </repository>
+      <snapshotRepository>
+        <id>maenad-snapshots</id>
+        <name>maenad-snapshots</name>
+        <url>http://maenad.itee.uq.edu.au:9024/artifactory/libs-snapshots-local</url>
+      </snapshotRepository>
+    </distributionManagement>
+    <inceptionYear>2009</inceptionYear>
     <build>
         <finalName>coralwatch</finalName>
         <plugins>
