@@ -1,7 +1,8 @@
 package org.coralwatch.app;
 
+import au.edu.uq.itee.maenad.restlet.AccessDeniedResource;
 import au.edu.uq.itee.maenad.restlet.CachingDirectory;
-import au.edu.uq.itee.maenad.restlet.ErrorResource;
+import au.edu.uq.itee.maenad.restlet.SubmissionErrorResource;
 import au.edu.uq.itee.maenad.restlet.auth.AccessPolicy;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.model.FrameDataProvider;
@@ -76,7 +77,8 @@ public class CoralwatchApplication extends Application {
         router.attach("/login", LoginResource.class);
         router.attach("/postsignup", PostSignUpResource.class);
         router.attach("/logout", LogoutResource.class);
-        router.attach("/error", ErrorResource.class);        
+        router.attach("/submissionError", SubmissionErrorResource.class);
+        router.attach("/accessDenied", AccessDeniedResource.class);
         router.attach("/style.css", StyleResource.class);
         router.attach("/icons", new CachingDirectory(getContext(),
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/icons")));
