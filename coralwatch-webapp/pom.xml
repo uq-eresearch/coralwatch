@@ -43,8 +43,6 @@
             </plugin>
         </plugins>
     </build>
-
-
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -58,7 +56,6 @@
             <version>2.5</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>transaction-api</artifactId>
@@ -110,9 +107,14 @@
             <layout>default</layout>
         </repository>
         <repository>
-            <id>maven-restlet</id>
-            <name>Public online Restlet repository</name>
-            <url>http://maven.restlet.org</url>
+            <id>eresearch_snapshots</id>
+            <name>Internal eResearch repository for snapshots</name>
+            <url>http://maenad.itee.uq.edu.au:9024/artifactory/libs-snapshots-local</url>
+        </repository>
+        <repository>
+            <id>eresearch_releases</id>
+            <name>Internal eResearch repository for releases</name>
+            <url>http://maenad.itee.uq.edu.au:9024/artifactory/libs-releases-local</url>
         </repository>
     </repositories>
 </project>
