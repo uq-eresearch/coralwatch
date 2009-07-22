@@ -11,7 +11,8 @@ import au.edu.uq.itee.maenad.restlet.auth.AccessPolicy;
 
 
 public class CoralwatchAccessPolicy implements AccessPolicy<UserImpl> {
-    private static final AccessLevel ANONYMOUS_CAN_CREATE_ONLY = new AccessLevel(true, false, false, false);
+    private static final AccessLevel CREATE_ONLY = new AccessLevel(true, false, false, false);
+    private static final AccessLevel EVERYTHING_ALLOWED = new AccessLevel(true, true, true, true);
     private static final Set<Class<?>> NORMAL_USERS_CAN_CREATE_INSTANCES = new HashSet<Class<?>>();
 
     static {
@@ -21,31 +22,18 @@ public class CoralwatchAccessPolicy implements AccessPolicy<UserImpl> {
 
     public AccessLevel getAccessLevelForClass(UserImpl userImpl, Class<?> clazz) {
         if (userImpl == null) {
-            return ANONYMOUS_CAN_CREATE_ONLY;
+            return CREATE_ONLY;
         }
-        boolean canRead = true;
-        boolean canCreate;
-        if (NORMAL_USERS_CAN_CREATE_INSTANCES.contains(clazz)) {
-            canCreate = true;
-        } else {
-            // superusers can create everything
-            canCreate = userImpl.isSuperUser();
-        }
-        boolean canChange;
-        // only superusers get the generic write access
         if (userImpl.isSuperUser()) {
-            canChange = true;
-        } else {
-            canChange = false;
+            return EVERYTHING_ALLOWED;
         }
-        return new AccessLevel(canCreate, canRead, canChange, canChange);
+        return new AccessLevel(NORMAL_USERS_CAN_CREATE_INSTANCES.contains(clazz), true, false, false);
     }
 
     public AccessLevel getAccessLevelForInstance(UserImpl user, Object instance) {
-        if (user == null) {
-            return ANONYMOUS_CAN_CREATE_ONLY;
+        if (user != null && user.isSuperUser()) {
+            return EVERYTHING_ALLOWED;
         }
-
         boolean canCreate = false;
         boolean canRead = false;
         boolean canUpdate = false;
@@ -54,14 +42,14 @@ public class CoralwatchAccessPolicy implements AccessPolicy<UserImpl> {
         if (instance instanceof UserImpl) {
             canCreate = true; //Any one can create users
             canRead = user != null; //Only logged in users can read users
-            canUpdate = user.equals(instance); //Users can edit their own profiles
-            canDelete = user.isSuperUser(); //Super users can delete profiles
+            canUpdate = instance.equals(user); //Users can edit their own profiles
+            canDelete = false; // only super users can delete profiles
         }
         if (instance instanceof Survey) {
-            canCreate = user !=null;
+            canCreate = true;
             canRead = user !=null;
-            canUpdate = user.equals(((Survey)instance).getCreator()); //Users can edit their own profiles
-            canDelete = user.isSuperUser(); //Super users can delete profiles
+            canUpdate = (user != null) && user.equals(((Survey) instance).getCreator()); //Users can edit their own profiles
+            canDelete = false; // only super users can delete profiles
         }
 
         return new AccessLevel(canCreate, canRead, canUpdate, canDelete);
