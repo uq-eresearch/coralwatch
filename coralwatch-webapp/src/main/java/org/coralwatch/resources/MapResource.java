@@ -13,7 +13,7 @@ public class MapResource extends AbstractFreemarkerResource<User> {
 
     public MapResource() throws InitializationException {
         super();
-        setContentTemplateName("map.html");
+        setContentTemplateName("map.html.ftl");
     }
 
     @Override

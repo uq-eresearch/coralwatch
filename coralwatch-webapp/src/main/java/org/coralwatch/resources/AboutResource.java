@@ -13,7 +13,7 @@ public class AboutResource extends AbstractFreemarkerResource<User> {
 
     public AboutResource() throws InitializationException {
         super();
-        setContentTemplateName("about.html");
+        setContentTemplateName("about.html.ftl");
     }
 
     @Override

@@ -12,7 +12,7 @@ public class PostSignUpResource extends AbstractFreemarkerResource<User> {
 
     public PostSignUpResource() throws InitializationException {
         super();
-        setContentTemplateName("postsignup.html");
+        setContentTemplateName("postsignup.html.ftl");
     }
 
     @Override

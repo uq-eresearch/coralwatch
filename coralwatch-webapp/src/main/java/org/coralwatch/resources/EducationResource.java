@@ -13,7 +13,7 @@ public class EducationResource extends AbstractFreemarkerResource<User> {
 
     public EducationResource() throws InitializationException {
         super();
-        setContentTemplateName("education.html");
+        setContentTemplateName("education.html.ftl");
     }
 
     @Override

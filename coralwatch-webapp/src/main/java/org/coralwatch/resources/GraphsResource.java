@@ -13,7 +13,7 @@ public class GraphsResource extends AbstractFreemarkerResource<User> {
 
     public GraphsResource() throws InitializationException {
         super();
-        setContentTemplateName("graphs.html");
+        setContentTemplateName("graphs.html.ftl");
     }
 
     @Override

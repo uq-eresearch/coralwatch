@@ -13,7 +13,7 @@ public class LinksResource  extends AbstractFreemarkerResource<User> {
 
     public LinksResource() throws InitializationException {
         super();
-        setContentTemplateName("links.html");
+        setContentTemplateName("links.html.ftl");
     }
 
     @Override

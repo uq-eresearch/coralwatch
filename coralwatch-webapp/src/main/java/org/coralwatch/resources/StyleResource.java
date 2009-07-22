@@ -17,7 +17,7 @@ import java.util.Map;
 public class StyleResource extends Resource {
 
     private final String templatePath = "/templates/";
-    private final String templateName = "style.css";
+    private final String templateName = "style.css.ftl";
 
     public StyleResource() {
         super();

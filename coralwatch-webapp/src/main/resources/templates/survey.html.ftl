@@ -1,4 +1,4 @@
-<#include "macros/basic.html"/>
+<#include "macros/basic.html.ftl"/>
 
 <h3>Coral Bleaching Survey</h3>
 

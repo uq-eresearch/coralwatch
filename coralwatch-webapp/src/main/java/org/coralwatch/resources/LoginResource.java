@@ -25,7 +25,7 @@ public class LoginResource extends AbstractFreemarkerResource<UserImpl> {
     public LoginResource() throws InitializationException {
         super();
         this.userDao = CoralwatchApplication.getConfiguration().getUserDao();
-        setContentTemplateName("login.html");
+        setContentTemplateName("login.html.ftl");
         setModifiable(true);
     }
 

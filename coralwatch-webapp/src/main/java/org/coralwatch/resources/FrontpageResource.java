@@ -12,7 +12,7 @@ public class FrontpageResource extends AbstractFreemarkerResource<User> {
 
     public FrontpageResource() throws InitializationException {
         super();
-        setContentTemplateName("index.html");
+        setContentTemplateName("index.html.ftl");
     }
 
     @Override

@@ -16,7 +16,7 @@ public class LogoutResource extends AbstractFreemarkerResource<UserImpl> {
 
     public LogoutResource() throws InitializationException {
         super();
-        setContentTemplateName("logout.html");
+        setContentTemplateName("logout.html.ftl");
     }
 
     @Override

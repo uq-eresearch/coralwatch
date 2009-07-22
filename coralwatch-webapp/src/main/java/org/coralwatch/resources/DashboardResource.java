@@ -13,7 +13,7 @@ public class DashboardResource extends AbstractFreemarkerResource<User> {
 
     public DashboardResource() throws InitializationException {
         super();
-        setContentTemplateName("dashboard.html");
+        setContentTemplateName("dashboard.html.ftl");
     }
 
     @Override

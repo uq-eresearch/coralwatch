@@ -13,7 +13,7 @@ public class GoingGreenResource extends AbstractFreemarkerResource<User> {
 
     public GoingGreenResource() throws InitializationException {
         super();
-        setContentTemplateName("goinggreen.html");
+        setContentTemplateName("goinggreen.html.ftl");
     }
 
     @Override
