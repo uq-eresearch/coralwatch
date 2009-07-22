@@ -20,7 +20,6 @@ public class CoralwatchAccessPolicy implements AccessPolicy<UserImpl> {
     }
 
     public AccessLevel getAccessLevelForClass(UserImpl userImpl, Class<?> clazz) {
-
         if (userImpl == null) {
             return ANONYMOUS_CAN_CREATE_ONLY;
         }
@@ -43,6 +42,10 @@ public class CoralwatchAccessPolicy implements AccessPolicy<UserImpl> {
     }
 
     public AccessLevel getAccessLevelForInstance(UserImpl user, Object instance) {
+        if (user == null) {
+            return ANONYMOUS_CAN_CREATE_ONLY;
+        }
+
         boolean canCreate = false;
         boolean canRead = false;
         boolean canUpdate = false;
