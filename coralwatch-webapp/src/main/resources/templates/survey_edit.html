@@ -763,20 +763,12 @@
         <td class="headercell">
             <label for="time">Time:</label></td>
         <td>
-            <select name="time"
-                    id="time"
-                    required="true"
-                    dojoType="dijit.form.ComboBox"
-                    hasDownArrow="true"
-                    value="${(survey.time)!}">
-                <option value="Early Morning">Early Morning</option>
-                <option value="Late Morning">Late Morning</option>
-                <option value="Midday">Midday</option>
-
-                <option value="Early afternoon">Early afternoon</option>
-                <option value="Late afternoon">Late afternoon</option>
-                <option value="Evening">Evening</option>
-            </select>
+            <input id="time"
+                   name="time"
+                   type="text"
+                   required="true"
+                   dojoType="dijit.form.TimeTextBox"
+                   value="${(survey.time)!}"/>
         </td>
     </tr>
     <tr>
