@@ -16,11 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @autho alabri
- * Date: 26/05/2009
- * Time: 2:38:28 PM
- */
+
 public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, UserImpl> {
     public UserResource() throws InitializationException {
         super(CoralwatchApplication.getConfiguration().getUserDao());
@@ -72,12 +68,7 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         long id = Long.valueOf((String) getRequest().getAttributes().get("id"));
         UserDao dao = getDao();
         UserImpl userObj = dao.load(id);
-//        
-//        if (userImpl != null && (userImpl.getId() == id || userImpl.isSuperUser())){
-            return getAccessPolicy().getAccessLevelForInstance(userImpl, userObj).canRead();
-//        } else {
-//            return false;
-//        }
+        return getAccessPolicy().getAccessLevelForInstance(userImpl, userObj).canRead();
     }
 
 }

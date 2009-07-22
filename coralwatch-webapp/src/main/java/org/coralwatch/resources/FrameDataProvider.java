@@ -8,11 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @autho alabri
- * Date: 18/05/2009
- * Time: 12:03:30 PM
- */
+
 public class FrameDataProvider implements au.edu.uq.itee.maenad.restlet.model.FrameDataProvider<UserImpl> {
 
     public FrameDataProvider() {

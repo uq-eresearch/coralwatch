@@ -8,11 +8,7 @@ import org.restlet.resource.Variant;
 
 import java.util.Map;
 
-/**
- * @autho alabri
- * Date: 19/05/2009
- * Time: 4:22:12 PM
- */
+
 public class GraphsResource extends AbstractFreemarkerResource<User> {
 
     public GraphsResource() throws InitializationException {

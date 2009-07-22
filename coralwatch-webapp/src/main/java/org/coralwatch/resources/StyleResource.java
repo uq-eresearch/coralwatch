@@ -1,23 +1,19 @@
 package org.coralwatch.resources;
 
-import org.restlet.resource.Resource;
-import org.restlet.resource.Variant;
-import org.restlet.resource.Representation;
-import org.restlet.resource.ResourceException;
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.template.Configuration;
+import org.coralwatch.app.CoralwatchApplication;
 import org.restlet.data.MediaType;
 import org.restlet.ext.freemarker.TemplateRepresentation;
-import org.coralwatch.app.CoralwatchApplication;
-import freemarker.template.Configuration;
-import freemarker.cache.ClassTemplateLoader;
+import org.restlet.resource.Representation;
+import org.restlet.resource.Resource;
+import org.restlet.resource.ResourceException;
+import org.restlet.resource.Variant;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
-/**
- * @autho alabri
- * Date: 18/05/2009
- * Time: 4:21:09 PM
- */
+
 public class StyleResource extends Resource {
 
     private final String templatePath = "/templates/";

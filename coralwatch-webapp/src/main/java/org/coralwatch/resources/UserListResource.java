@@ -14,11 +14,7 @@ import org.restlet.resource.Variant;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @autho alabri
- * Date: 26/05/2009
- * Time: 3:37:01 PM
- */
+
 public class UserListResource extends ModifiableListResource<UserImpl, UserDao, UserImpl> {
 
     public UserListResource() throws InitializationException {

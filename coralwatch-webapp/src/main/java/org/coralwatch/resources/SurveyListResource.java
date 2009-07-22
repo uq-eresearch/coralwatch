@@ -10,11 +10,7 @@ import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
 import org.restlet.resource.Variant;
 
-/**
- * @autho alabri
- * Date: 27/05/2009
- * Time: 4:55:18 PM
- */
+
 public class SurveyListResource extends ModifiableListResource<Survey, SurveyDao, UserImpl> {
     public SurveyListResource() throws InitializationException {
         super(CoralwatchApplication.getConfiguration().getSurveyDao(), true);

@@ -1,19 +1,7 @@
 package org.coralwatch.app;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
+import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
+import au.edu.uq.itee.maenad.util.BCrypt;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
@@ -24,14 +12,20 @@ import org.coralwatch.dataaccess.jpa.JpaUserDao;
 import org.coralwatch.model.UserImpl;
 import org.restlet.service.ConnectorService;
 
-import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
-import au.edu.uq.itee.maenad.util.BCrypt;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- * @autho alabri
- * Date: 18/05/2009
- * Time: 12:08:38 PM
- */
+
 public class ApplicationContext implements Configuration, ServletContextListener {
     private final EntityManagerFactory emf;
     private final int httpPort;

@@ -18,11 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @autho alabri
- * Date: 21/05/2009
- * Time: 11:16:55 AM
- */
 public class LoginResource extends AbstractFreemarkerResource<UserImpl> {
 
     private Dao<UserImpl> userDao;

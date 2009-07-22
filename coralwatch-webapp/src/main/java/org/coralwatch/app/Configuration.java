@@ -5,11 +5,7 @@ import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.restlet.service.ConnectorService;
 
-/**
- * @autho alabri
- * Date: 18/05/2009
- * Time: 12:07:43 PM
- */
+
 public interface Configuration {
 
     int getHttpPort();
