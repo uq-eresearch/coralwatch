@@ -149,16 +149,19 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
     }
 
     private static float parseLonLat(String lonLatStr) {
-        if (lonLatStr.endsWith("E")) {
-            lonLatStr = lonLatStr.substring(0, lonLatStr.length() - 1);
-        } else if (lonLatStr.endsWith("W")) {
-            lonLatStr = "-" + lonLatStr.substring(0, lonLatStr.length() - 1);
-        }
         if (lonLatStr.contains("d")) {
+            int sign = 1;
+            if (lonLatStr.endsWith("E") || lonLatStr.endsWith("N")) {
+                lonLatStr = lonLatStr.substring(0, lonLatStr.length() - 1);
+            } else if (lonLatStr.endsWith("W") || lonLatStr.endsWith("S")) {
+                lonLatStr = lonLatStr.substring(0, lonLatStr.length() - 1);
+                sign = -1;
+            }
             String[] segments = lonLatStr.split("d|m|s");
             assert segments.length == 3;
-            return Float.parseFloat(segments[0]) + Float.parseFloat(segments[1]) / 60 + Float.parseFloat(segments[2])
-                    / 360;
+            return sign
+                    * (Float.parseFloat(segments[0]) + Float.parseFloat(segments[1]) / 60 + Float
+                            .parseFloat(segments[2]) / 360);
         } else {
             return Float.parseFloat(lonLatStr);
         }
