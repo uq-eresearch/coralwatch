@@ -1,11 +1,15 @@
 <#include "macros/basic.html.ftl"/>
 
 <h3>${userimpl.displayName!}</h3>
-<table>
+<table style="width:100%">
     <tr>
-        <td rowspan="4"><img src="${userimpl.gravatarUrl!}"/></td>
         <td class="headercell">Username:</td>
-        <td>${userimpl.username!}</td>
+        <td style="width:60%">${userimpl.username!}</td>
+        <td rowspan="4" style="text-align:right">
+            <img src="${userimpl.gravatarUrl!}"/>
+            <br/>
+            <a href="http://www.gravatar.com">Change Image</a>
+        </td>
     </tr>
     <tr>
         <td class="headercell">Display Name:</td>
