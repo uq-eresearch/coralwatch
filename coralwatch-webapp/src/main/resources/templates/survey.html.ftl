@@ -2,6 +2,9 @@
 
 <h3>Coral Bleaching Survey</h3>
 
+<div style="float:right;">
+<img src="${survey.creator.gravatarUrl}"/>
+</div>
 <table>
     <tr>
         <td class="headercell">Creator:</td>
