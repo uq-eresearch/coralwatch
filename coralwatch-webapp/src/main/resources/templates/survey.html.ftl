@@ -5,7 +5,7 @@
 <#else>
 <#assign absValue = value/> 
 </#if>
-${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;${((absValue*60 -(absValue*60)?floor)*60)?floor}&quot; <#if (value < 0)>${negSym}<#else>${posSym}</#if>)
+${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;${((absValue*60 -(absValue*60)?floor)*60)?round}&quot; <#if (value < 0)>${negSym}<#else>${posSym}</#if>)
 </#macro>
 <h3>Coral Bleaching Survey</h3>
 
