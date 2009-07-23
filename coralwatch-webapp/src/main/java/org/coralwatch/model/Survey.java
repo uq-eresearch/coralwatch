@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,10 +56,12 @@ public class Survey implements Serializable {
     private float longitude;
 
     @NotNull
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     @NotNull
-    private String time;
+    @Temporal(TemporalType.TIME)
+    private Date time;
 
     @NotNull
     private String weather;
@@ -149,11 +153,11 @@ public class Survey implements Serializable {
         this.date = date;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

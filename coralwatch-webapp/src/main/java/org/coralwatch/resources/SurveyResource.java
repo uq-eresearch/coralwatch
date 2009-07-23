@@ -19,8 +19,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, UserImpl> {
+    private static final Logger LOGGER = Logger.getLogger(SurveyResource.class.getName());
 
 
     public SurveyResource() throws InitializationException {
@@ -100,11 +103,18 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
             }
         }
 
-        String time = form.getFirstValue("time");
-        if ((time == null) || time.isEmpty()) {
+        String timeStr = form.getFirstValue("time");
+        if ((timeStr == null) || timeStr.isEmpty()) {
             errors.add(new SubmissionError("No time was provided. Time must be supplied."));
         } else {
-            survey.setTime(time);
+            try {
+                DateFormat df = new SimpleDateFormat("'T'HH:mm:ss");
+                Date time = df.parse(timeStr);
+                survey.setTime(time);
+            } catch (ParseException ex) {
+                LOGGER.log(Level.INFO, "Faild to parse time for survey. Time entered: " + timeStr, ex);
+                errors.add(new SubmissionError("Time value supplied is invalid."));
+            }
         }
 
         String weather = form.getFirstValue("weather");

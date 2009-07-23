@@ -768,7 +768,9 @@
                    type="text"
                    required="true"
                    dojoType="dijit.form.TimeTextBox"
-                   value="${(survey.time)!}"/>
+                   <#if !newObject>
+                        value="${(survey.time)!?time}"/>
+                   </#if>
         </td>
     </tr>
     <tr>

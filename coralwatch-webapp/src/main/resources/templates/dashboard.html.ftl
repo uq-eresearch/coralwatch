@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="baseUrl" type="java.lang.String" -->
 <ul>
     <li><a href="${baseUrl}/logout">Logout</a></li>
     <li><a href="${baseUrl}/users">All Users</a></li>

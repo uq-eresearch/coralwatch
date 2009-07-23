@@ -33,6 +33,12 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
     @NotNull
     private String email;
 
+    private String address;
+
+    private String occupation;
+
+    private String country;
+
     @NotNull
     private String passwordHash;
 
@@ -69,6 +75,30 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getPasswordHash() {

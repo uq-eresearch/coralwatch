@@ -38,7 +38,7 @@
     </tr>
     <tr>
         <td class="headercell">Time:</td>
-        <td>${(survey.time)!}</td>
+        <td>${(survey.time)!?time}</td>
     </tr>
     <tr>
         <td class="headercell">Weather:</td>
