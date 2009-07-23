@@ -161,7 +161,7 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
             assert segments.length == 3;
             return sign
                     * (Float.parseFloat(segments[0]) + Float.parseFloat(segments[1]) / 60 + Float
-                            .parseFloat(segments[2]) / 360);
+                            .parseFloat(segments[2]) / 3600);
         } else {
             return Float.parseFloat(lonLatStr);
         }
