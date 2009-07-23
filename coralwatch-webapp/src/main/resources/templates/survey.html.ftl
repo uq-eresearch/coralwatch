@@ -1,11 +1,11 @@
 <#include "macros/basic.html.ftl"/>
-<#macro lonLat value>
+<#macro lonLat value posSym negSym>
 <#if (value < 0)>
 <#assign absValue = -value/> 
 <#else>
 <#assign absValue = value/> 
 </#if>
-${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;${((absValue*60 -(absValue*60)?floor)*60)?floor}&quot; <#if (value < 0)>W<#else>E</#if>)
+${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;${((absValue*60 -(absValue*60)?floor)*60)?floor}&quot; <#if (value < 0)>${negSym}<#else>${posSym}</#if>)
 </#macro>
 <h3>Coral Bleaching Survey</h3>
 
@@ -36,11 +36,11 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     </tr>
     <tr>
         <td class="headercell">Latitude:</td>
-        <td><@lonLat (survey.latitude)/></td>
+        <td><@lonLat (survey.latitude) 'N' 'S'/></td>
     </tr>
     <tr>
         <td class="headercell">Longitude:</td>
-        <td><@lonLat (survey.longitude)/></td>
+        <td><@lonLat (survey.longitude) 'E' 'W'/></td>
     </tr>
     <tr>
         <td class="headercell">Date:</td>

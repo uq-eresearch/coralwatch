@@ -1,5 +1,9 @@
 <#assign newObject=!(survey??)/>
-<#assign lonLatRegExp=r"((\+|-)?(\d{1,3}(.\d{1,6})?|\d{1,3}d[0-5]?\dm[0-5]?\ds))|(\d{1,3}(.\d{1,6})?|\d{1,3}d[0-5]?\dm[0-5]?\ds)(E|W)"/>
+<#-- TODO: only longitudes should have the E/W -->
+<#assign lonLatRegExpBase=r"(\d{1,3}(.\d{1,6})?|\d{1,3}d[0-5]?\dm[0-5]?\ds)"/>
+<#assign lonLatRegExpSigned="(\\+|-)?${lonLatRegExpBase}"/>
+<#assign lonRegExp="${lonLatRegExpSigned}|${lonLatRegExpBase}(E|W)"/>
+<#assign latRegExp="${lonLatRegExpSigned}|${lonLatRegExpBase}(N|S)"/>
 <#if newObject>
     <h3>Create New Survey</h3>
     <#else>
@@ -716,7 +720,7 @@
                     required="true"
                     dojoType="dijit.form.ValidationTextBox"
                     trim="true"
-                    regExp="${lonLatRegExp}"
+                    regExp="${latRegExp}"
                     invalidMessage="Enter a latitude either in decimal form or as '123d45m67s'."
                     value="${(survey.latitude)!}"/>
         </td>
@@ -732,7 +736,7 @@
                     required="true"
                     dojoType="dijit.form.ValidationTextBox"
                     trim="true"
-                    regExp="${lonLatRegExp}"
+                    regExp="${lonRegExp}"
                     invalidMessage="Enter a longitude either in decimal form or as '123d45m67s'."
                     value="${(survey.longitude)!}"/>
         </td>
