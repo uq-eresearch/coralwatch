@@ -1,5 +1,12 @@
 <#include "macros/basic.html.ftl"/>
-
+<#macro lonLat value>
+<#if (value < 0)>
+<#assign absValue = -value/> 
+<#else>
+<#assign absValue = value/> 
+</#if>
+${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;${((absValue*60 -(absValue*60)?floor)*60)?floor}&quot; <#if (value < 0)>W<#else>E</#if>)
+</#macro>
 <h3>Coral Bleaching Survey</h3>
 
 <div style="float:right;">
@@ -29,11 +36,11 @@
     </tr>
     <tr>
         <td class="headercell">Latitude:</td>
-        <td>${(survey.latitude)!}</td>
+        <td><@lonLat (survey.latitude)/></td>
     </tr>
     <tr>
         <td class="headercell">Longitude:</td>
-        <td>${(survey.longitude)!}</td>
+        <td><@lonLat (survey.longitude)/></td>
     </tr>
     <tr>
         <td class="headercell">Date:</td>
