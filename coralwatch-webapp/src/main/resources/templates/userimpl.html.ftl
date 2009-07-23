@@ -7,8 +7,10 @@
         <td style="width:60%">${userimpl.username!}</td>
         <td rowspan="4" style="text-align:right">
             <img src="${userimpl.gravatarUrl!}"/>
-            <br/>
-            <a href="http://www.gravatar.com">Change Image</a>
+            <#if userimpl == currentUser><#-- only the user themselves can change, not admins -->
+                <br/>
+                <a href="http://www.gravatar.com">Change Image</a>
+            </#if>
         </td>
     </tr>
     <tr>
