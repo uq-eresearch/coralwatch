@@ -1,4 +1,5 @@
 <#assign newObject=!(survey??)/>
+<#assign lonLatRegExp=r"((\+|-)?(\d{1,3}(.\d{1,6})?|\d{1,3}d[0-5]?\dm[0-5]?\ds))|(\d{1,3}(.\d{1,6})?|\d{1,3}d[0-5]?\dm[0-5]?\ds)(E|W)"/>
 <#if newObject>
     <h3>Create New Survey</h3>
     <#else>
@@ -713,11 +714,11 @@
                     id="latitude"
                     name="latitude"
                     required="true"
-                    constraints="{places:6}"
-                    dojoType="dijit.form.NumberTextBox"
+                    dojoType="dijit.form.ValidationTextBox"
                     trim="true"
-                    invalidMessage="Enter a valid latitude value."
-                   value="${(survey.latitude)!}"/>
+                    regExp="${lonLatRegExp}"
+                    invalidMessage="Enter a latitude either in decimal form or as '123d45m67s'."
+                    value="${(survey.latitude)!}"/>
         </td>
     </tr>
     <tr>
@@ -729,11 +730,11 @@
                     id="longitude"
                     name="longitude"
                     required="true"
-                    constraints="{places:6}"
-                    dojoType="dijit.form.NumberTextBox"
+                    dojoType="dijit.form.ValidationTextBox"
                     trim="true"
-                    invalidMessage="Enter a valid longitude value."
-                   value="${(survey.longitude)!}"/>
+                    regExp="${lonLatRegExp}"
+                    invalidMessage="Enter a longitude either in decimal form or as '123d45m67s'."
+                    value="${(survey.longitude)!}"/>
         </td>
     </tr>
     <tr>

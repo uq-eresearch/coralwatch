@@ -78,7 +78,7 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
         if (latitudeStr == null || latitudeStr.isEmpty()) {
             errors.add(new SubmissionError("No latitude value was provided. Latitude value must be supplied."));
         } else {
-            float latitude = Float.parseFloat(latitudeStr);
+            float latitude = parseLonLat(latitudeStr);
             survey.setLatitude(latitude);
         }
 
@@ -86,7 +86,7 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
         if (longitudeStr == null || longitudeStr.isEmpty()) {
             errors.add(new SubmissionError("No longitude value was provided. Longitude value must be supplied."));
         } else {
-            float longitude = Float.parseFloat(longitudeStr);
+            float longitude = parseLonLat(longitudeStr);
             survey.setLongitude(longitude);
         }
 
@@ -145,6 +145,22 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
 
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
+        }
+    }
+
+    private static float parseLonLat(String lonLatStr) {
+        if (lonLatStr.endsWith("W")) {
+            lonLatStr = lonLatStr.substring(0, lonLatStr.length() - 1);
+        } else if (lonLatStr.endsWith("E")) {
+            lonLatStr = "-" + lonLatStr.substring(0, lonLatStr.length() - 1);
+        }
+        if (lonLatStr.contains("d")) {
+            String[] segments = lonLatStr.split("d|m|s");
+            assert segments.length == 3;
+            return Float.parseFloat(segments[0]) + Float.parseFloat(segments[1]) / 60 + Float.parseFloat(segments[2])
+                    / 360;
+        } else {
+            return Float.parseFloat(lonLatStr);
         }
     }
 
