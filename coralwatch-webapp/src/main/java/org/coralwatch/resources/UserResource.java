@@ -6,7 +6,6 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.NoDataFoundException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
 import au.edu.uq.itee.maenad.util.BCrypt;
-import au.edu.uq.itee.maenad.util.HashGenerator;
 
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
@@ -29,8 +28,6 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         super.fillDatamodel(datamodel);
         UserImpl userImpl = (UserImpl) datamodel.get(getTemplateObjectName());
         datamodel.put("conductedSurveys", getDao().getSurveyEntriesCreated(userImpl));
-        String emailHash = HashGenerator.createMD5Hash(userImpl.getEmail());
-        datamodel.put("gravatarUrl", "http://www.gravatar.com/avatar/" + emailHash + "?s=80&d=wavatar");
     }
 
     @Override

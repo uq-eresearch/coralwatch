@@ -2,14 +2,19 @@ package org.coralwatch.model;
 
 import org.hibernate.validator.NotNull;
 
+import au.edu.uq.itee.maenad.util.HashGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PostLoad;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +24,17 @@ import java.util.Date;
                 query = "SELECT o FROM Survey o WHERE o.creator = :user ORDER BY o.id")
 })
 public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serializable {
+
+    /**
+     * The type of image Gravatar generates if no image is attached to an email address.
+     *
+     * At the time of writing Gravatar offers three generation schemes: "identicon"
+     * (geometric patterns), "monsterid" (monsters) and "wavatar" (cartoony characters).
+     * Alternatively a URL for a fallback image can be provided.
+     *
+     * If the value is not provided (or invalid), the Gravatar icon will be rendered.
+     */
+    private static final String GRAVATAR_FALLBACK = "monsterid";
 
     private static final long serialVersionUID = 1L;
 
@@ -49,6 +65,9 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
     @NotNull
     private boolean superUser;
 
+    @Transient
+    private String gravatarUrl;
+
     public UserImpl() {
     }
 
@@ -56,9 +75,16 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
         this.username = username;
         this.displayName = displayName;
         this.email = email;
+        updateGravatarUrl();
         this.passwordHash = passwordHash;
         this.superUser = superUser;
         this.registrationDate = new Date();
+    }
+
+    @PostLoad
+    private void updateGravatarUrl() {
+        String emailHash = HashGenerator.createMD5Hash(getEmail());
+        gravatarUrl = "http://www.gravatar.com/avatar/" + emailHash + "?s=80&d=" + GRAVATAR_FALLBACK;
     }
 
     public String getDisplayName() {
@@ -123,6 +149,7 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     public void setEmail(String email) {
         this.email = email;
+        updateGravatarUrl();
     }
 
     public boolean isSuperUser() {
@@ -139,6 +166,10 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public String getGravatarUrl() {
+        return gravatarUrl;
     }
 
     @Override

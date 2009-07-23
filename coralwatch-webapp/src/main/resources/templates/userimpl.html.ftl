@@ -3,7 +3,7 @@
 <h3>${userimpl.displayName!}</h3>
 <table>
     <tr>
-        <td rowspan="4"><img src="${gravatarUrl}"/></td>
+        <td rowspan="4"><img src="${userimpl.gravatarUrl!}"/></td>
         <td class="headercell">Username:</td>
         <td>${userimpl.username!}</td>
     </tr>
