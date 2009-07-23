@@ -149,9 +149,9 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
     }
 
     private static float parseLonLat(String lonLatStr) {
-        if (lonLatStr.endsWith("W")) {
+        if (lonLatStr.endsWith("E")) {
             lonLatStr = lonLatStr.substring(0, lonLatStr.length() - 1);
-        } else if (lonLatStr.endsWith("E")) {
+        } else if (lonLatStr.endsWith("W")) {
             lonLatStr = "-" + lonLatStr.substring(0, lonLatStr.length() - 1);
         }
         if (lonLatStr.contains("d")) {
