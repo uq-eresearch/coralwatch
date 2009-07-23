@@ -28,7 +28,7 @@
             isDebug:false, parseOnLoad:true, locale:"en"
         };
     </script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.3.1/dojo/dojo.xd.js">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.3.2/dojo/dojo.xd.js">
         // leave separate begin+end tag, otherwise the browser will ignore
         // the next /script/ section
     </script>
