@@ -26,14 +26,12 @@
         <td>${(userimpl.registrationDate)!?date}</td>
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <#if canUpdate>
                 <button dojoType="dijit.form.Button"
                         onClick="window.location='${baseUrl}/users/${userimpl.id}?edit'">Edit
                 </button>
             </#if>
-        </td>
-        <td align="right">
             <#if canDelete>
                 <button dojoType="dijit.form.Button"
                         onClick="window.location='${baseUrl}/users/${userimpl.id}?delete'">Delete
