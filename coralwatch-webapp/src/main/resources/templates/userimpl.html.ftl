@@ -18,12 +18,24 @@
         <td>${userimpl.displayName!}</td>
     </tr>
     <tr>
+        <td class="headercell">Occupation:</td>
+        <td>${userimpl.occupation!}</td>
+    </tr>
+    <tr>
         <td class="headercell">Email:</td>
         <td><a href="mailto:${userimpl.email!}">${userimpl.email!}</a></td>
     </tr>
     <tr>
         <td class="headercell">Member since:</td>
         <td>${(userimpl.registrationDate)!?date}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Address:</td>
+        <td>${userimpl.address!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Country:</td>
+        <td>${userimpl.country!}</td>
     </tr>
     <tr>
         <td colspan="2">

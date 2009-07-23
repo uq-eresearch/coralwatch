@@ -50,10 +50,21 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
         } else if (!password.equals(form.getFirstValue("password2"))) {
             errors.add(new SubmissionError("Passwords don't match"));
         }
+
+        String occupation = form.getFirstValue("occupation");
+        String address = form.getFirstValue("address");
+        String country = form.getFirstValue("country");
+
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         }
-        return new UserImpl(username, displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
+
+        UserImpl userImpl = new UserImpl(username, displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
+        userImpl.setOccupation(occupation == null? "" : occupation);
+        userImpl.setAddress(address == null? "" : address);
+        userImpl.setCountry(country == null? "" : country);
+
+        return userImpl;
     }
 
     @Override

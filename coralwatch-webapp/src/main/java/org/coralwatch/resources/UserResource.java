@@ -6,7 +6,6 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.NoDataFoundException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
 import au.edu.uq.itee.maenad.util.BCrypt;
-
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.UserImpl;
@@ -56,6 +55,13 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         } else {
             userImpl.setEmail(email);
         }
+
+        String occupation = form.getFirstValue("occupation");
+        userImpl.setOccupation(occupation == null? "" : occupation);
+        String address = form.getFirstValue("address");
+        userImpl.setAddress(address == null? "" : address);
+        String country = form.getFirstValue("country");
+        userImpl.setCountry(country == null? "" : country);
 
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
