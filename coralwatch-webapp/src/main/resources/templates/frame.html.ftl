@@ -22,7 +22,7 @@
 
 
     <link rel="stylesheet" type="text/css"
-          href="http://ajax.googleapis.com/ajax/libs/dojo/1.3.1/dijit/themes/${dijitTheme}/${dijitTheme}.css"/>
+          href="http://ajax.googleapis.com/ajax/libs/dojo/1.3.2/dijit/themes/${dijitTheme}/${dijitTheme}.css"/>
     <script type="text/javascript">
         var djConfig = {
             isDebug:false, parseOnLoad:true, locale:"en"
