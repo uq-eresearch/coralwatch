@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="surveyrecordList" type="java.util.List<org.coralwatch.model.SurveyRecord>" -->
 <table width="100%" class="list_table" cellspacing="0" cellpadding="2">
     <tr>
         <td class="headercell">Coral Type</td>
@@ -8,8 +9,8 @@
         <tr>
             <td>${surveyrecord.coralType!}
             <td>
-            <td>${surveyrecord.lightest!}</td>
-            <td>${surveyrecord.darkest!}</td>
+            <td>${surveyrecord.lightestLetter!}${surveyrecord.lightestNumber!}</td>
+            <td>${surveyrecord.darkestLetter!}${surveyrecord.darkestNumber!}</td>
         </tr>
     </#list>
 </table>

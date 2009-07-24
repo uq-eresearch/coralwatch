@@ -49,21 +49,21 @@ public class SurveyRecordResource extends AccessControlledResource<UserImpl> {
             errors.add(new SubmissionError("No coral type was provided. Coral type must be supplied."));
         }
 
-        String lightestLetter = form.getFirstValue("lightestLetter");
-        String lightestNumber = form.getFirstValue("lightestNumber");
-        if ((lightestLetter == null) || lightestLetter.isEmpty() || (lightestNumber == null) || lightestNumber.isEmpty()) {
+        char lightestLetter = form.getFirstValue("lightestLetter").trim().charAt(0);
+        int lightestNumber = Integer.parseInt(form.getFirstValue("lightestNumber"));
+        if (lightestLetter < 'B' || lightestLetter > 'E' || lightestNumber < 1 || lightestNumber > 6) {
             errors.add(new SubmissionError("Lightest colour code was not provided correctly. Colour code must be supplied."));
         }
 
-        String darkestLetter = form.getFirstValue("darkestLetter");
-        String darkestNumber = form.getFirstValue("darkestNumber");
-        if ((darkestLetter == null) || darkestLetter.isEmpty() || (darkestNumber == null) || darkestNumber.isEmpty()) {
+        char darkestLetter = form.getFirstValue("darkestLetter").trim().charAt(0);
+        int darkestNumber = Integer.parseInt(form.getFirstValue("darkestNumber"));
+        if (darkestLetter < 'B' || darkestLetter > 'E' || darkestNumber < 1 || darkestNumber > 6) {
             errors.add(new SubmissionError("Darkest colour code was not provided correctly. Colour code must be supplied."));
         }
 
         if (errors.isEmpty()) {
             Survey survey = this.surveyDao.load(surveyId);
-            SurveyRecord surveyRecord = new SurveyRecord(survey, coralType, lightestLetter+lightestNumber, darkestLetter+darkestNumber);
+            SurveyRecord surveyRecord = new SurveyRecord(survey, coralType, lightestLetter, lightestNumber, darkestLetter, darkestNumber);
             this.surveyRecordDao.save(surveyRecord);
             String baseUrl = CoralwatchApplication.getConfiguration().getBaseUrl();
             if(baseUrl!= null) {

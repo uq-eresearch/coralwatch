@@ -25,20 +25,28 @@ public class SurveyRecord implements Serializable {
     private String coralType;
 
     @NotNull
-    private String lightest;
+    private char lightestLetter;
 
     @NotNull
-    private String darkest;
+    private int lightestNumber;
+
+    @NotNull
+    private char darkestLetter;
+
+    @NotNull
+    private int darkestNumber;
+
 
     public SurveyRecord() {
     }
 
-    public SurveyRecord(Survey survey, String coralType, String lightest, String darkest) {
-
+    public SurveyRecord(Survey survey, String coralType, char lightestLetter, int lightestNumber, char darkestLetter, int darkestNumber) {
         this.survey = survey;
         this.coralType = coralType;
-        this.lightest = lightest;
-        this.darkest = darkest;
+        this.lightestLetter = lightestLetter;
+        this.lightestNumber = lightestNumber;
+        this.darkestLetter = darkestLetter;
+        this.darkestNumber = darkestNumber;
     }
 
     public long getId() {
@@ -65,19 +73,35 @@ public class SurveyRecord implements Serializable {
         this.coralType = coralType;
     }
 
-    public String getLightest() {
-        return lightest;
+    public char getLightestLetter() {
+        return lightestLetter;
     }
 
-    public void setLightest(String lightest) {
-        this.lightest = lightest;
+    public void setLightestLetter(char lightestLetter) {
+        this.lightestLetter = lightestLetter;
     }
 
-    public String getDarkest() {
-        return darkest;
+    public int getLightestNumber() {
+        return lightestNumber;
     }
 
-    public void setDarkest(String darkest) {
-        this.darkest = darkest;
+    public void setLightestNumber(int lightestNumber) {
+        this.lightestNumber = lightestNumber;
+    }
+
+    public char getDarkestLetter() {
+        return darkestLetter;
+    }
+
+    public void setDarkestLetter(char darkestLetter) {
+        this.darkestLetter = darkestLetter;
+    }
+
+    public int getDarkestNumber() {
+        return darkestNumber;
+    }
+
+    public void setDarkestNumber(int darkestNumber) {
+        this.darkestNumber = darkestNumber;
     }
 }

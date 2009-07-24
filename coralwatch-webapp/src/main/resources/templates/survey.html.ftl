@@ -1,3 +1,5 @@
+<#-- @ftlvariable name="survey" type="org.coralwatch.model.Survey" -->
+<#-- @ftlvariable name="surveyRecs" type="java.util.List<org.coralwatch.model.SurveyRecord>" -->
 <#include "macros/basic.html.ftl"/>
 <#macro lonLat value posSym negSym>
 <#if (value < 0)>
@@ -88,8 +90,8 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
         <#list surveyRecs as item>
             <tr>
                 <td>${item.coralType!}</td>
-                <td>${item.lightest!}</td>
-                <td>${item.darkest!}</td>
+                <td>${item.lightestLetter!}${item.lightestNumber!}</td>
+            <td>${item.darkestLetter!}${item.darkestNumber!}</td>
             </tr>
         </#list>
     </table>
