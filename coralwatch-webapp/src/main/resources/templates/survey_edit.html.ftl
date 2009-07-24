@@ -750,18 +750,16 @@
                     id="date"
                     name="date"
                     required="true"
+                    isDate="true"
+                    <#if !newObject>
+                        value="${(survey.date)?string("yyyy-MM-dd")!}"
+                    </#if>
                     dojoType="dijit.form.DateTextBox"
                     constraints="{datePattern: 'dd/MM/yyyy', min:'2000-01-01'}"
                     lang="en-au"
                     required="true"
                     promptMessage="dd/mm/yyyy"
-                    invalidMessage="Invalid date. Use dd/mm/yyyy format."
-                    <#if !newObject>
-                        value="${(survey.date)!?date}"
-                     <#else>
-                         value="${(survey.date)!}"
-                    </#if>
-                    />
+                    invalidMessage="Invalid date. Use dd/mm/yyyy format."/>
         </td>
     </tr>
     <tr>
@@ -771,11 +769,11 @@
             <input id="time"
                    name="time"
                    type="text"
-                   required="true"
-                   dojoType="dijit.form.TimeTextBox"
                    <#if !newObject>
-                        value="${(survey.time)!?time}"/>
+                   value="${(survey.time)?string("'T'HH:mm:ss")!}"
                    </#if>
+                   required="true"
+                   dojoType="dijit.form.TimeTextBox"/>
         </td>
     </tr>
     <tr>
