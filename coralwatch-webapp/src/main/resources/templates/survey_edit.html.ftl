@@ -47,7 +47,7 @@
 </tr>
 <tr>
     <td class="headercell">
-        <label for="organisationType">Organisation Type:</label></td>
+        <label for="organisationType">Participating As:</label></td>
     <td>
         <select name="organisationType"
                 id="organisationType"

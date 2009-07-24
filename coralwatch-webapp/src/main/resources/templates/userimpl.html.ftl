@@ -1,7 +1,20 @@
 <#include "macros/basic.html.ftl"/>
-
-<h3>${userimpl.displayName!}</h3>
 <table style="width:100%">
+
+    <tr>
+        <td><h3>${userimpl.displayName!}</h3></td>
+        <td>
+            <#if canUpdate>
+                <button dojoType="dijit.form.Button"
+                        onClick="window.location='${baseUrl}/users/${userimpl.id}?edit'">Edit
+                </button>
+            </#if>
+            <#if canDelete>
+                <button dojoType="dijit.form.Button"
+                        onClick="window.location='${baseUrl}/users/${userimpl.id}?delete'">Delete
+                </button>
+            </#if>
+        </td></tr>
     <tr>
         <td class="headercell">Username:</td>
         <td style="width:60%">${userimpl.username!}</td>
@@ -38,18 +51,8 @@
         <td>${userimpl.country!}</td>
     </tr>
     <tr>
-        <td colspan="2">
-            <#if canUpdate>
-                <button dojoType="dijit.form.Button"
-                        onClick="window.location='${baseUrl}/users/${userimpl.id}?edit'">Edit
-                </button>
-            </#if>
-            <#if canDelete>
-                <button dojoType="dijit.form.Button"
-                        onClick="window.location='${baseUrl}/users/${userimpl.id}?delete'">Delete
-                </button>
-            </#if>
-        </td>
+        <td class="headercell">Surveys:</td>
+        <td>${conductedSurveys?size!}</td>
     </tr>
 </table>
 <br/>
