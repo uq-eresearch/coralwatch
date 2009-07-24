@@ -2,7 +2,7 @@
     <li><a class="links" href="http://www.uq.edu.au/" target="_blank">The University of Queensland</a></li>
     <li><a class="links" href="http://www.projectaware.org/" target="_blank">Project AWARE</a></li>
     <li><a class="links" href="http://www.bom.gov.au/" target="_blank">Bureau of Meteorology</a></li>
-    <li><a class="links" href="http://www.gbrmpa.gov.au/corp_site/info_services/science/bleaching/" target="_blank">Great Barrier Reef Marine Park Authority</a></li>
+    <li><a class="links" href="http://www.gbrmpa.gov.au/" target="_blank">Great Barrier Reef Marine Park Authority</a></li>
     <li><a class="links" href="http://www.uq.edu.au/ecovis" target="_blank">UQ - Sensory Neurobiology Group</a></li>
     <li><a class="links" href="http://www.marine.uq.edu.au/" target="_blank">UQ - Centre for Marine Studies</a></li>
     <li><a class="links" href="http://www.crctourism.com.au/" target="_blank">Sustainable Tourism CRC</a></li>
