@@ -47,6 +47,8 @@
         dojo.require("dijit.form.TextBox");
         dojo.require("dijit.form.NumberTextBox");
         dojo.require("dijit.form.ValidationTextBox");
+        dojo.require("dijit.layout.ContentPane");
+        dojo.require("dijit.layout.TabContainer");
         dojo.require("dijit.Menu");
         dojo.require("dijit.Tooltip");
     </script>
@@ -80,8 +82,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div> <!-- end menu -->
+        </div> <!-- end header -->
 
         <div class="border">
             <div class="btall">
@@ -101,7 +103,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> <!-- end border -->
 
         <div id="footer_banner">
             <ul class="footer_banner_list">
@@ -115,15 +117,15 @@
                 </a></li>
             </ul>
             <p class="small" style="text-align:center;"><br/>Coralwatch Supporters</p>
-        </div>
+        </div> <!-- end footer_banner -->
+
         <div style=" height: 61px;"></div>
         <div id="footer">
             <div class="indent">
                 <div align="center">&copy;2009 CoralWatch</div>
             </div>
         </div>
-    </div>
-</div>
-</div>
+    </div> <!-- end main -->
+</div><!-- end header_tall -->
 </body>
 </html>

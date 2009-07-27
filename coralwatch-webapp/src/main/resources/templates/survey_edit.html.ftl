@@ -21,7 +21,66 @@
 <script type="text/javascript">
     dojo.addOnLoad(function() {
         dijit.byId("organisation").focus();
+        updateLonFromDecimal();
+        updateLatFromDecimal();
     });
+    
+    function updateLonFromDecimal() {
+        var dec = dijit.byId("longitude").getValue();
+        var sign = (dec>=0)?1:-1;
+        dec = dec * sign;
+        var deg = Math.floor(dec);
+        dec = (dec - deg)*60;
+        var min = Math.floor(dec);
+        dec = (dec - min)*60;
+        var sec = Math.round(dec);
+        dijit.byId("longitudeDeg").setValue(deg);
+        dijit.byId("longitudeMin").setValue(min);
+        dijit.byId("longitudeSec").setValue(sec);
+        if(sign == 1) {
+            dijit.byId("longitudeDir").setValue("E");
+        } else {
+            dijit.byId("longitudeDir").setValue("W");
+        }
+    }
+    function updateLatFromDecimal() {
+        var dec = dijit.byId("latitude").getValue();
+        var sign = (dec>=0)?1:-1;
+        dec = dec * sign;
+        var deg = Math.floor(dec);
+        dec = (dec - deg)*60;
+        var min = Math.floor(dec);
+        dec = (dec - min)*60;
+        var sec = Math.round(dec);
+        dijit.byId("latitudeDeg").setValue(deg);
+        dijit.byId("latitudeMin").setValue(min);
+        dijit.byId("latitudeSec").setValue(sec);
+        if(sign == 1) {
+            dijit.byId("latitudeDir").setValue("N");
+        } else {
+            dijit.byId("latitudeDir").setValue("S");
+        }
+    }
+    function updateLonFromDegrees() {
+        var deg = parseInt(dijit.byId("longitudeDeg").getValue());
+        var min = parseInt(dijit.byId("longitudeMin").getValue());
+        var sec = parseInt(dijit.byId("longitudeSec").getValue());
+        var dec = deg + min/60 + sec/3600;
+        if(dijit.byId("longitudeDir").getValue() == "W") {
+           dec = -dec;
+        }
+        dijit.byId("longitude").setValue(dec);
+    }
+    function updateLatFromDegrees() {
+        var deg = parseInt(dijit.byId("latitudeDeg").getValue());
+        var min = parseInt(dijit.byId("latitudeMin").getValue());
+        var sec = parseInt(dijit.byId("latitudeSec").getValue());
+        var dec = deg + min/60 + sec/3600;
+        if(dijit.byId("latitudeDir").getValue() == "S") {
+           dec = -dec;
+        }
+        dijit.byId("latitude").setValue(dec);
+    }
 </script>
 <table>
 <#if !newObject>
@@ -711,34 +770,153 @@
     </tr>
     <tr>
         <td class="headercell">
-            <label for="latitude">Latitude:</label>
+            <label>Position:</label>
         </td>
         <td>
-            <input type="text"
-                    id="latitude"
-                    name="latitude"
-                    required="true"
-                    dojoType="dijit.form.ValidationTextBox"
-                    trim="true"
-                    regExp="${latRegExp}"
-                    invalidMessage="Enter a latitude either in decimal form or as '123d45m67s'."
-                    value="${(survey.latitude)!}"/>
-        </td>
-    </tr>
-    <tr>
-        <td class="headercell">
-            <label for="longitude">Longitude:</label>
-        </td>
-        <td>
-            <input type="text"
-                    id="longitude"
-                    name="longitude"
-                    required="true"
-                    dojoType="dijit.form.ValidationTextBox"
-                    trim="true"
-                    regExp="${lonRegExp}"
-                    invalidMessage="Enter a longitude either in decimal form or as '123d45m67s'."
-                    value="${(survey.longitude)!}"/>
+            <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:33em;height:12ex">
+			    <div id="tabDecimal" dojoType="dijit.layout.ContentPane" title="Decimal">
+                    <table>
+                        <tr>
+                            <td class="headercell">
+                                <label for="latitude">Latitude:</label>
+                            </td>
+                            <td>
+                                <input type="text"
+                                        id="latitude"
+                                        name="latitude"
+                                        required="true"
+                                        dojoType="dijit.form.NumberTextBox"
+                                        constraints="{places:6}"
+                                        trim="true"
+                                        onBlur="updateLatFromDecimal()"
+                                        invalidMessage="Enter a valid latitude value."
+                                        value="${(survey.latitude)!}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="headercell">
+                                <label for="longitude">Longitude:</label>
+                            </td>
+                            <td>
+                                <input type="text"
+                                        id="longitude"
+                                        name="longitude"
+                                        required="true"
+                                        dojoType="dijit.form.NumberTextBox"
+                                        constraints="{places:6}"
+                                        trim="true"
+                                        onBlur="updateLonFromDecimal()"
+                                        invalidMessage="Enter a valid longitude value."
+                                        value="${(survey.longitude)!}"/>
+                            </td>
+                        </tr>
+                    </table>                            
+			    </div>
+			    <div id="tabDegrees" dojoType="dijit.layout.ContentPane" title="Degrees">
+                    <table>
+                        <tr>
+                            <td class="headercell">
+                                <label for="latitudeDeg">Latitude:</label>
+                            </td>
+                            <td>
+                                <input type="text"
+                                        id="latitudeDeg"
+                                        name="latitudeDeg"
+                                        required="true"
+                                        dojoType="dijit.form.NumberTextBox"
+                                        constraints="{places:0,min:0,max:180}"
+                                        trim="true"
+                                        style="width:6em;"
+                                        onBlur="updateLatFromDegrees()"
+                                        invalidMessage="Enter a valid degree value."/>
+                                    &deg;
+                                <input type="text"
+                                        id="latitudeMin"
+                                        name="latitudeMin"
+                                        required="true"
+                                        dojoType="dijit.form.NumberTextBox"
+                                        constraints="{places:0,min:0,max:59}"
+                                        trim="true"
+                                        style="width:6em;"
+                                        onBlur="updateLatFromDegrees()"
+                                        invalidMessage="Enter a valid minute value."/>
+                                    &apos;
+                                <input type="text"
+                                        id="latitudeSec"
+                                        name="latitudeSec"
+                                        required="true"
+                                        dojoType="dijit.form.NumberTextBox"
+                                        constraints="{places:0,min:0,max:59}"
+                                        trim="true"
+                                        style="width:6em;"
+                                        onBlur="updateLatFromDegrees()"
+                                        invalidMessage="Enter a valid second value."/>
+                                    &quot;
+                                <select name="latitudeDir"
+                                        id="latitudeDir"
+                                        required="true"
+                                        dojoType="dijit.form.ComboBox"
+                                        hasDownArrow="true"
+                                        onBlur="updateLatFromDegrees()"
+                                        style="width:4.5em;">
+                                    <option value="north">N</option>
+                                    <option value="south">S</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="headercell">
+                                <label for="longitudeDeg">Longitude:</label>
+                            </td>
+                            <td>
+                                <input type="text"
+                                        id="longitudeDeg"
+                                        name="longitudeDeg"
+                                        required="true"
+                                        dojoType="dijit.form.NumberTextBox"
+                                        constraints="{places:0,min:0,max:180}"
+                                        trim="true"
+                                        style="width:6em;"
+                                        onBlur="updateLonFromDegrees()"
+                                        invalidMessage="Enter a valid degree value."/>
+                                    &deg;
+                                <input type="text"
+                                        id="longitudeMin"
+                                        name="longitudeMin"
+                                        required="true"
+                                        dojoType="dijit.form.NumberTextBox"
+                                        constraints="{places:0,min:0,max:59}"
+                                        trim="true"
+                                        style="width:6em;"
+                                        onBlur="updateLonFromDegrees()"
+                                        invalidMessage="Enter a valid minute value."/>
+                                    &apos;
+                                <input type="text"
+                                        id="longitudeSec"
+                                        name="longitudeSec"
+                                        required="true"
+                                        dojoType="dijit.form.NumberTextBox"
+                                        constraints="{places:0,min:0,max:59}"
+                                        trim="true"
+                                        style="width:6em;"
+                                        onBlur="updateLonFromDegrees()"
+                                        invalidMessage="Enter a valid second value."/>
+                                    &quot;
+							    <select name="longitudeDir"
+							            id="longitudeDir"
+							            required="true"
+							            dojoType="dijit.form.ComboBox"
+                                        hasDownArrow="true"
+                                        onBlur="updateLonFromDegrees()"
+                                        style="width:4.5em;">
+							        <option value="east">E</option>
+    						        <option value="west">W</option>
+							    </select>
+                            </td>
+                        </tr>
+                    </table>                            
+			    </div>
+			</div>
         </td>
     </tr>
     <tr>
