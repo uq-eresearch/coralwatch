@@ -78,16 +78,26 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
         if (latitudeStr == null || latitudeStr.isEmpty()) {
             errors.add(new SubmissionError("No latitude value was provided. Latitude value must be supplied."));
         } else {
-            float latitude = parseLonLat(latitudeStr);
-            survey.setLatitude(latitude);
+            try {
+                float latitude = Float.parseFloat(latitudeStr);
+                survey.setLatitude(latitude);
+            } catch (NumberFormatException e) {
+                LOGGER.log(Level.INFO, "Faild to parse latitude. Value entered: " + latitudeStr, e);
+                errors.add(new SubmissionError("Latitude value supplied is invalid."));
+            }
         }
 
         String longitudeStr = form.getFirstValue("longitude");
         if (longitudeStr == null || longitudeStr.isEmpty()) {
             errors.add(new SubmissionError("No longitude value was provided. Longitude value must be supplied."));
         } else {
-            float longitude = parseLonLat(longitudeStr);
-            survey.setLongitude(longitude);
+            try {
+                float longitude = Float.parseFloat(longitudeStr);
+                survey.setLongitude(longitude);
+            } catch (NumberFormatException e) {
+                LOGGER.log(Level.INFO, "Faild to parse longitude. Value entered: " + longitudeStr, e);
+                errors.add(new SubmissionError("Longitude value supplied is invalid."));
+            }
         }
 
         String dateStr = form.getFirstValue("date").trim();
@@ -145,25 +155,6 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
 
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
-        }
-    }
-
-    private static float parseLonLat(String lonLatStr) {
-        if (lonLatStr.contains("d")) {
-            int sign = 1;
-            if (lonLatStr.endsWith("E") || lonLatStr.endsWith("N")) {
-                lonLatStr = lonLatStr.substring(0, lonLatStr.length() - 1);
-            } else if (lonLatStr.endsWith("W") || lonLatStr.endsWith("S")) {
-                lonLatStr = lonLatStr.substring(0, lonLatStr.length() - 1);
-                sign = -1;
-            }
-            String[] segments = lonLatStr.split("d|m|s");
-            assert segments.length == 3;
-            return sign
-                    * (Float.parseFloat(segments[0]) + Float.parseFloat(segments[1]) / 60 + Float
-                            .parseFloat(segments[2]) / 3600);
-        } else {
-            return Float.parseFloat(lonLatStr);
         }
     }
 
