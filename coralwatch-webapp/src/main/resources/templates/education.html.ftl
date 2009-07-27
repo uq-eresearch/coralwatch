@@ -69,7 +69,7 @@
 </ul>
 <br>
 <p>
-    To purchase either package please <a href="../documents/Education%20Package.pdf" target="_blank">download the order
+    To purchase either package please <a href="../files/Education%20Package.pdf" target="_blank">download the order
     form</a>. Prices are
     based on cost-recovery. Prices are subject to change. Items can be purchased separately.
     Please contact <a href="mailto:info@coralwatch.org">info@coralwatch.org</a> if you have any queries.

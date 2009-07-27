@@ -9,6 +9,7 @@ public class CoralwatchComponent extends Component {
     public CoralwatchComponent() {
         getServers().add(Protocol.HTTP, CoralwatchApplication.getConfiguration().getHttpPort());
         getClients().add(Protocol.CLAP);
+        getClients().add(Protocol.FILE);
         getDefaultHost().attach(new CoralwatchApplication());
     }
 }

@@ -82,8 +82,6 @@ public class CoralwatchApplication extends Application {
         router.attach("/style.css", StyleResource.class);
         router.attach("/icons", new CachingDirectory(getContext(),
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/icons")));
-        router.attach("/documents", new CachingDirectory(getContext(),
-                LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/documents")));
         router.attach("/javascript", new CachingDirectory(getContext(),
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/javascript")));
         router.attach("/images", new CachingDirectory(getContext(),
