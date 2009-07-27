@@ -25,6 +25,7 @@ import org.coralwatch.resources.UserListResource;
 import org.coralwatch.resources.UserResource;
 import org.restlet.Application;
 import org.restlet.Component;
+import org.restlet.Directory;
 import org.restlet.Restlet;
 import org.restlet.Router;
 import org.restlet.data.LocalReference;
@@ -86,6 +87,9 @@ public class CoralwatchApplication extends Application {
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/javascript")));
         router.attach("/images", new CachingDirectory(getContext(),
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/images")));
+
+        Directory downloadDirectory = new Directory(getContext(), "war:///files");
+        router.attach("/download", downloadDirectory);
 
         setConnectorService(getConfiguration().getConnectorService());
 
