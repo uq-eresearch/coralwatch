@@ -34,7 +34,7 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
      *
      * If the value is not provided (or invalid), the Gravatar icon will be rendered.
      */
-    private static final String GRAVATAR_FALLBACK = "monsterid";
+    private static final String GRAVATAR_FALLBACK = "identicon";
 
     private static final long serialVersionUID = 1L;
 
