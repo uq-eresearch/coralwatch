@@ -1,9 +1,4 @@
 <#assign newObject=!(survey??)/>
-<#-- TODO: only longitudes should have the E/W -->
-<#assign lonLatRegExpBase=r"(\d{1,3}(.\d{1,6})?|\d{1,3}d[0-5]?\dm[0-5]?\ds)"/>
-<#assign lonLatRegExpSigned="(\\+|-)?${lonLatRegExpBase}"/>
-<#assign lonRegExp="${lonLatRegExpSigned}|${lonLatRegExpBase}(E|W)"/>
-<#assign latRegExp="${lonLatRegExpSigned}|${lonLatRegExpBase}(N|S)"/>
 <#if newObject>
     <h3>Create New Survey</h3>
     <#else>
