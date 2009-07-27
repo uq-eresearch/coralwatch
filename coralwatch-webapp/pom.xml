@@ -11,12 +11,12 @@
         <repository>
             <id>maenad-releases</id>
             <name>maenad-releases</name>
-            <url>http://maenad.itee.uq.edu.au:9024/artifactory/libs-releases-local</url>
+            <url>http://g709-0157.itee.uq.edu.au:8081/artifactory/libs-releases-local</url>
         </repository>
         <snapshotRepository>
             <id>maenad-snapshots</id>
             <name>maenad-snapshots</name>
-            <url>http://maenad.itee.uq.edu.au:9024/artifactory/libs-snapshots-local</url>
+            <url>http://g709-0157.itee.uq.edu.au:8081/artifactory/libs-snapshots-local</url>
         </snapshotRepository>
     </distributionManagement>
     <inceptionYear>2009</inceptionYear>
@@ -122,12 +122,12 @@
         <repository>
             <id>eresearch_snapshots</id>
             <name>Internal eResearch repository for snapshots</name>
-            <url>http://maenad.itee.uq.edu.au:9024/artifactory/libs-snapshots-local</url>
+            <url>http://g709-0157.itee.uq.edu.au:8081/artifactory/libs-snapshots-local</url>
         </repository>
         <repository>
             <id>eresearch_releases</id>
             <name>Internal eResearch repository for releases</name>
-            <url>http://maenad.itee.uq.edu.au:9024/artifactory/libs-releases-local</url>
+            <url>http://g709-0157.itee.uq.edu.au:8081/artifactory/libs-releases-local</url>
         </repository>
     </repositories>
 </project>
