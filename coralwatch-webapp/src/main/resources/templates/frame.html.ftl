@@ -116,7 +116,7 @@
                     <img src="${baseUrl}/images/projectaware.jpg" alt="Project Aware">
                 </a></li>
             </ul>
-            <p class="small" style="text-align:center;"><br/>Coralwatch Supporters</p>
+            <p class="small" style="text-align:center;"><br/>CoralWatch Supporters</p>
         </div> <!-- end footer_banner -->
 
         <div style=" height: 61px;"></div>
