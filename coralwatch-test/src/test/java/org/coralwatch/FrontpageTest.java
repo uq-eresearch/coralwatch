@@ -5,7 +5,7 @@ import net.sourceforge.jwebunit.junit.WebTestCase;
 public class FrontpageTest extends WebTestCase {
     public void setUp() throws Exception {
         super.setUp();
-        setBaseUrl("http://localhost:8181");
+        setBaseUrl("http://localhost:9635");
     }
 
     public void testFrontPageShows() {
