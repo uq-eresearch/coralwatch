@@ -30,6 +30,46 @@ public class KitRequest implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date sentDate;
 
-    private boolean sent;
+    private String comments;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public UserImpl getRequester() {
+        return requester;
+    }
+
+    public void setRequester(UserImpl requester) {
+        this.requester = requester;
+    }
+
+    public Date getRequestDate() {
+        return requestDate;
+    }
+
+    public void setRequestDate(Date requestDate) {
+        this.requestDate = requestDate;
+    }
+
+    public Date getSentDate() {
+        return sentDate;
+    }
+
+    public void setSentDate(Date sentDate) {
+        this.sentDate = sentDate;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+    
 }
