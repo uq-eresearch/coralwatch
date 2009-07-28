@@ -24,6 +24,12 @@
         <param-value>org.coralwatch.app.CoralwatchApplication</param-value>
     </context-param>
 
+    <!-- as long as we support standalone operation the protocols need to be
+         added in the CoralwatchComponent class, too -->
+    <context-param>
+        <param-name>org.restlet.clients</param-name>
+        <param-value>CLAP FILE</param-value>
+    </context-param>
 
     <!-- Catch all requests -->
     <servlet-mapping>
