@@ -25,7 +25,10 @@ public class KitRequest implements Serializable {
 
     @NotNull
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private Date requestDate;
+
+    @Temporal(TemporalType.DATE)
+    private Date sentDate;
 
     private boolean sent;
 

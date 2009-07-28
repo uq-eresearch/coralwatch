@@ -12,6 +12,7 @@ import org.coralwatch.resources.EducationResource;
 import org.coralwatch.resources.FrontpageResource;
 import org.coralwatch.resources.GoingGreenResource;
 import org.coralwatch.resources.GraphsResource;
+import org.coralwatch.resources.KitRequestResource;
 import org.coralwatch.resources.LinksResource;
 import org.coralwatch.resources.LoginResource;
 import org.coralwatch.resources.LogoutResource;
@@ -78,6 +79,7 @@ public class CoralwatchApplication extends Application {
         router.attach("/login", LoginResource.class);
         router.attach("/postsignup", PostSignUpResource.class);
         router.attach("/logout", LogoutResource.class);
+        router.attach("/kit", KitRequestResource.class);
         router.attach("/submissionError", SubmissionErrorResource.class);
         router.attach("/accessDenied", AccessDeniedResource.class);
         router.attach("/style.css", StyleResource.class);
