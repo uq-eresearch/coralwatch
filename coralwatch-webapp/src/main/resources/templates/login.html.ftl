@@ -33,7 +33,7 @@
         </tr>
         <tr>
             <td class="headercell">
-                <button dojoType="dijit.form.Button" type="submit" name="login" value="Login">Login</button>
+                <button dojoType="dijit.form.Button" type="submit" name="login" value="Login" id="loginButton">Login</button>
             </td>
             <td>
                 <a href="${baseUrl}/users?new">or Sign Up Now</a>
