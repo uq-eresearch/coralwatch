@@ -5,12 +5,12 @@
         <td><h3>${userimpl.displayName!}</h3></td>
         <td>
             <#if canUpdate>
-                <button dojoType="dijit.form.Button"
+                <button dojoType="dijit.form.Button" id="editButton"
                         onClick="window.location='${baseUrl}/users/${userimpl.id}?edit'">Edit
                 </button>
             </#if>
             <#if canDelete>
-                <button dojoType="dijit.form.Button"
+                <button dojoType="dijit.form.Button" id="deleteButton"
                         onClick="window.location='${baseUrl}/users/${userimpl.id}?delete'">Delete
                 </button>
             </#if>
