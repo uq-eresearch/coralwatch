@@ -15,10 +15,20 @@
     </tr>
     <tr>
         <td class="headercell">Dispatched on:</td>
-        <td>${(kitrequest.dispatchdate)!?string}</td>
+        <#if kitrequest.dispatchdate??>
+        <td>${(kitrequest.dispatchdate)?string("dd/MM/yyyy")!}</td>
+        </#if>
     </tr>
     <tr>
         <td class="headercell">Comments:</td>
         <td>${(kitrequest.comments)!}</td>
     </tr>
 </table>
+<#if canUpdate>
+    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/kit/${kitrequest.id}?edit'">Edit</button>
+</#if>
+<#if canDelete>
+    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/kit/${kitrequest.id}?edit'">Delete
+    </button>
+</#if>
+<br/>

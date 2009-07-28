@@ -36,7 +36,7 @@
         <#else>
         <tr>
             <td class="headercell">
-                <label for="dispatchdate">Dispatched on:</label>
+                <label for="dispatchdate">Set Dispatch Date:</label>
             </td>
             <td>
                 <input type="text"
@@ -44,7 +44,9 @@
                        name="dispatchdate"
                        required="true"
                        isDate="true"
-                       value="${(kitrequest.dispatchdate)!?string("yyyy-MM-dd")!}"
+                       <#if kitrequest.dispatchdate??>
+                       value="${(kitrequest.dispatchdate)?string("yyyy-MM-dd")!}"
+                       </#if>
                        dojoType="dijit.form.DateTextBox"
                        constraints="{datePattern: 'dd/MM/yyyy', min:'2000-01-01'}"
                        lang="en-au"
