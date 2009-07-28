@@ -25,7 +25,6 @@ import org.coralwatch.resources.SurveyResource;
 import org.coralwatch.resources.UserListResource;
 import org.coralwatch.resources.UserResource;
 import org.restlet.Application;
-import org.restlet.Component;
 import org.restlet.Directory;
 import org.restlet.Restlet;
 import org.restlet.Router;
@@ -97,10 +96,4 @@ public class CoralwatchApplication extends Application {
 
         return router;
     }
-
-    public static void main(String[] args) throws Exception {
-        Component component = new CoralwatchComponent();
-        component.start();
-    }
-
 }
