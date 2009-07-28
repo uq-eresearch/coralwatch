@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.coralwatch.webapp</groupId>
+    <artifactId>coralwatch-test</artifactId>
+    <name>CoralWatch Test Suite</name>
+    <version>1.0.0-SNAPSHOT</version>
+    <description>A set of functional tests for the CoralWatch web application</description>
+    <dependencies>
+        <dependency>
+            <groupId>net.sourceforge.jwebunit</groupId>
+            <artifactId>jwebunit-htmlunit-plugin</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.coralwatch.webapp</groupId>
+            <artifactId>coralwatch-webapp</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>war</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
