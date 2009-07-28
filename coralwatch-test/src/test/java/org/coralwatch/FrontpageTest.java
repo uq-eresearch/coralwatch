@@ -1,11 +1,9 @@
 package org.coralwatch;
 
-import net.sourceforge.jwebunit.junit.WebTestCase;
 
-public class FrontpageTest extends WebTestCase {
+public class FrontpageTest extends CoralWatchTestCase {
     public void setUp() throws Exception {
         super.setUp();
-        setBaseUrl("http://localhost:9635");
     }
 
     public void testFrontPageShows() {
