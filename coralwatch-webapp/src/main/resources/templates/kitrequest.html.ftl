@@ -1,15 +1,24 @@
-<br/>
-
-<h3>Add Data</h3>
-
-<div dojoType="dijit.form.Form" method="post" action="${baseUrl}/record">
-    <textarea dojoType="dijit.form.Textarea" style="width:600px">
-        Agreement text here
-
-    </textarea>
-    <input id="agree" dojotype="dijit.form.CheckBox"
-           name="agree"
-           type="checkbox"/>
-    <label for="agree"> I agree to the terms and conditions.</label>
-    <button dojoType="dijit.form.Button" type="submit" name="submit">Submit Kit Request</button>
-</div>
+<#-- @ftlvariable name="kitrequest" type="org.coralwatch.model.KitRequest" -->
+<h3>Kit Request Details</h3>
+<table>
+    <tr>
+        <td class="headercell">Requester:</td>
+        <td>${(kitrequest.requester.displayName)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Request Date:</td>
+        <td>${(kitrequest.requestDate)!?datetime}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Address:</td>
+        <td>${(kitrequest.requester.address)!}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Dispatched on:</td>
+        <td>${(kitrequest.dispatchdate)!?string}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Comments:</td>
+        <td>${(kitrequest.comments)!}</td>
+    </tr>
+</table>

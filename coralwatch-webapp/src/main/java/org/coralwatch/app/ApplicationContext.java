@@ -2,10 +2,12 @@ package org.coralwatch.app;
 
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.util.BCrypt;
+import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.dataaccess.jpa.JpaConnectorService;
+import org.coralwatch.dataaccess.jpa.JpaKitRequestDao;
 import org.coralwatch.dataaccess.jpa.JpaSurveyDao;
 import org.coralwatch.dataaccess.jpa.JpaSurveyRecordDao;
 import org.coralwatch.dataaccess.jpa.JpaUserDao;
@@ -34,6 +36,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private final UserDao userDao;
     private final Logger logger = Logger.getLogger(ApplicationContext.class.getName());
     private final SurveyDao surveyDao;
+    private final KitRequestDao kitRequestDao;
     private final SurveyRecordDao surveyRecordDao;
 
     public ApplicationContext() throws InitializationException {
@@ -89,6 +92,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         }));
         this.connectorService = new JpaConnectorService(emf);
         this.surveyDao = new JpaSurveyDao(this.connectorService);
+        this.kitRequestDao = new JpaKitRequestDao(this.connectorService);
         this.surveyRecordDao = new JpaSurveyRecordDao(this.connectorService);
         this.userDao = new JpaUserDao(this.connectorService);
         if (userDao.getAll().isEmpty()) {
@@ -125,8 +129,14 @@ public class ApplicationContext implements Configuration, ServletContextListener
         return baseUrl;
     }
 
+    @Override
     public SurveyDao getSurveyDao() {
         return surveyDao;
+    }
+
+    @Override
+    public KitRequestDao getKitRequestDao() {
+        return kitRequestDao;
     }
 
     @Override

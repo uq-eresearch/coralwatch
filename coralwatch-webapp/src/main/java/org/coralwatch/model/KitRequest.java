@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
@@ -19,18 +19,22 @@ public class KitRequest implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne
+    @OneToOne
     @NotNull
     private UserImpl requester;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @NotNull
-    @Temporal(TemporalType.DATE)
     private Date requestDate;
 
     @Temporal(TemporalType.DATE)
-    private Date sentDate;
+    private Date dispatchdate;
 
     private String comments;
+
+    public KitRequest() {
+        this.requestDate = new Date();
+    }
 
     public long getId() {
         return id;
@@ -56,12 +60,12 @@ public class KitRequest implements Serializable {
         this.requestDate = requestDate;
     }
 
-    public Date getSentDate() {
-        return sentDate;
+    public Date getDispatchdate() {
+        return dispatchdate;
     }
 
-    public void setSentDate(Date sentDate) {
-        this.sentDate = sentDate;
+    public void setDispatchdate(Date dispatchdate) {
+        this.dispatchdate = dispatchdate;
     }
 
     public String getComments() {
@@ -71,5 +75,5 @@ public class KitRequest implements Serializable {
     public void setComments(String comments) {
         this.comments = comments;
     }
-    
+
 }

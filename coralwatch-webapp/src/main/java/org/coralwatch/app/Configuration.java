@@ -1,5 +1,6 @@
 package org.coralwatch.app;
 
+import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
@@ -15,6 +16,8 @@ public interface Configuration {
     UserDao getUserDao();
 
     SurveyDao getSurveyDao();
+
+    KitRequestDao getKitRequestDao();
 
     SurveyRecordDao getSurveyRecordDao();
 
