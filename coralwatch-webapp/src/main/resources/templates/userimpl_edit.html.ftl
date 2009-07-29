@@ -124,7 +124,8 @@
                required="true"
                validator="return this.getValue() == dijit.byId('email').getValue()"
                trim="true"
-               invalidMessage="Re-enter your email address."/>
+               invalidMessage="Re-enter your email address."
+               value="${(userimpl.email)!}"/>
     </td>
 </tr>
 
