@@ -4,6 +4,8 @@ import au.edu.uq.itee.maenad.restlet.AbstractFreemarkerResource;
 import au.edu.uq.itee.maenad.restlet.auth.User;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.NoDataFoundException;
+
+import org.coralwatch.app.CoralwatchApplication;
 import org.restlet.resource.Variant;
 
 import java.util.Map;
@@ -17,7 +19,8 @@ public class FrontpageResource extends AbstractFreemarkerResource<User> {
 
     @Override
     protected void fillDatamodel(Map<String, Object> datamodel) throws NoDataFoundException {
-        // nothing to add
+        // we add the test mode flag to make it obvious if an application runs in test mode
+        datamodel.put("testMode", CoralwatchApplication.getConfiguration().isTestSetup());
     }
 
     @Override
