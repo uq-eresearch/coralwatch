@@ -56,7 +56,7 @@ public abstract class CoralWatchTestCase extends WebTestCase {
      */
     protected void waitForDojo() {
         try {
-            Thread.sleep(200);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             // should not happen
         }
