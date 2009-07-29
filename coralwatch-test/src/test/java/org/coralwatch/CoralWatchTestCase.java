@@ -10,8 +10,8 @@ public abstract class CoralWatchTestCase extends WebTestCase {
         super.setUp();
         String baseUrl = System.getProperty("coralwatch.baseUrl", "http://localhost:9635");
         setBaseUrl(baseUrl);
-        beginAt("/");
-        // TODO set up test fixtures
+        beginAt("/reset");
+        gotoPage("/");
     }
 
     protected void login(String username, String password) {
