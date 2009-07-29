@@ -6,6 +6,8 @@ import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.restlet.service.ConnectorService;
 
+import java.util.Properties;
+
 
 public interface Configuration {
 
@@ -34,6 +36,9 @@ public interface Configuration {
      * @return The explicit base URL if configured, null otherwise.
      */
     String getBaseUrl();
+
+
+    Properties getSubmissionEmailConfig();
 
     /**
      * If true the system runs in test mode.

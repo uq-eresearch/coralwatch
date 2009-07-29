@@ -1,19 +1,8 @@
 package org.coralwatch.app;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
+import au.edu.uq.itee.maenad.dataaccess.Dao;
+import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
+import au.edu.uq.itee.maenad.util.BCrypt;
 import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
@@ -26,9 +15,18 @@ import org.coralwatch.dataaccess.jpa.JpaUserDao;
 import org.coralwatch.model.UserImpl;
 import org.restlet.service.ConnectorService;
 
-import au.edu.uq.itee.maenad.dataaccess.Dao;
-import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
-import au.edu.uq.itee.maenad.util.BCrypt;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class ApplicationContext implements Configuration, ServletContextListener {
@@ -42,6 +40,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private final KitRequestDao kitRequestDao;
     private final SurveyRecordDao surveyRecordDao;
     private final boolean isTestSetup;
+    private final Properties submissionEmailConfig;
 
     public ApplicationContext() throws InitializationException {
         Properties properties = new Properties();
@@ -103,6 +102,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
             // ensure that there's always one user to begin with
             createDefaultUsers();
         }
+
+        this.submissionEmailConfig = new Properties();
+        String submissionEmailServer = getProperty(properties, "emailServer");
+        this.submissionEmailConfig.setProperty("mail.smtp.host", submissionEmailServer);
+
         this.httpPort = Integer.valueOf(getProperty(properties, "httpPort", "8181"));
         this.baseUrl = getProperty(properties, "baseUrl", null);
         this.isTestSetup = Boolean.valueOf(getProperty(properties, "testMode", "false"));
@@ -131,7 +135,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         userDao.save(defaultAdmin);
         Logger.getLogger(getClass().getName()).log(Level.INFO,
                 "Created new default admin user with username and password 'admin'.");
-        UserImpl defaultUser = new UserImpl("user", "Dave Logan", "d.logan@uq.edu.au", BCrypt.hashpw("user", BCrypt
+        UserImpl defaultUser = new UserImpl("user", "Peter Becker", "pbecker@itee.uq.edu.au", BCrypt.hashpw("user", BCrypt
                 .gensalt()), false);
         userDao.save(defaultUser);
         Logger.getLogger(getClass().getName()).log(Level.INFO,
@@ -171,6 +175,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
     @Override
     public SurveyRecordDao getSurveyRecordDao() {
         return surveyRecordDao;
+    }
+
+    @Override
+    public Properties getSubmissionEmailConfig() {
+        return submissionEmailConfig;
     }
 
     @Override
