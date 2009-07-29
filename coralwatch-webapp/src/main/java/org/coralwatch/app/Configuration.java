@@ -34,4 +34,14 @@ public interface Configuration {
      * @return The explicit base URL if configured, null otherwise.
      */
     String getBaseUrl();
+
+    /**
+     * If true the system runs in test mode.
+     *
+     * Test mode might allow additional functionality to make testing more easy,
+     * e.g. resetting the database.
+     *
+     * @return If the test mode has been enabled.
+     */
+    boolean isTestSetup();
 }

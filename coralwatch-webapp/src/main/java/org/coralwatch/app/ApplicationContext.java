@@ -1,7 +1,19 @@
 package org.coralwatch.app;
 
-import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
-import au.edu.uq.itee.maenad.util.BCrypt;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
@@ -14,18 +26,9 @@ import org.coralwatch.dataaccess.jpa.JpaUserDao;
 import org.coralwatch.model.UserImpl;
 import org.restlet.service.ConnectorService;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import au.edu.uq.itee.maenad.dataaccess.Dao;
+import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
+import au.edu.uq.itee.maenad.util.BCrypt;
 
 
 public class ApplicationContext implements Configuration, ServletContextListener {
@@ -38,6 +41,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private final SurveyDao surveyDao;
     private final KitRequestDao kitRequestDao;
     private final SurveyRecordDao surveyRecordDao;
+    private final boolean isTestSetup;
 
     public ApplicationContext() throws InitializationException {
         Properties properties = new Properties();
@@ -97,17 +101,42 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.userDao = new JpaUserDao(this.connectorService);
         if (userDao.getAll().isEmpty()) {
             // ensure that there's always one user to begin with
-            UserImpl defaultAdmin = new UserImpl("admin", "Abdul Alabri", "alabri@itee.uq.edu.au", BCrypt.hashpw("admin", BCrypt.gensalt()), true);
-            userDao.save(defaultAdmin);
-            Logger.getLogger(getClass().getName()).log(Level.INFO, "Created new default admin user with username and password 'admin'.");
-            UserImpl defaultUser = new UserImpl("user", "Dave Logan", "d.logan@uq.edu.au", BCrypt.hashpw("user", BCrypt.gensalt()), false);
-            userDao.save(defaultUser);
-            Logger.getLogger(getClass().getName()).log(Level.INFO, "Created new default user with username and password 'user'.");
+            createDefaultUsers();
         }
         this.httpPort = Integer.valueOf(getProperty(properties, "httpPort", "8181"));
         this.baseUrl = getProperty(properties, "baseUrl", null);
+        this.isTestSetup = Boolean.valueOf(getProperty(properties, "testMode", "false"));
     }
 
+    public void resetDatabase() {
+        if (!isTestSetup) {
+            throw new IllegalStateException("Database reset is only allowed in test mode");
+        }
+        deleteAll(getSurveyRecordDao());
+        deleteAll(getSurveyDao());
+        deleteAll(getKitRequestDao());
+        deleteAll(getUserDao());
+        createDefaultUsers();
+    }
+
+    private static <T> void deleteAll(Dao<T> dao) {
+        for (T o : dao.getAll()) {
+            dao.delete(o);
+        }
+    }
+
+    private void createDefaultUsers() {
+        UserImpl defaultAdmin = new UserImpl("admin", "Abdul Alabri", "alabri@itee.uq.edu.au", BCrypt.hashpw("admin",
+                BCrypt.gensalt()), true);
+        userDao.save(defaultAdmin);
+        Logger.getLogger(getClass().getName()).log(Level.INFO,
+                "Created new default admin user with username and password 'admin'.");
+        UserImpl defaultUser = new UserImpl("user", "Dave Logan", "d.logan@uq.edu.au", BCrypt.hashpw("user", BCrypt
+                .gensalt()), false);
+        userDao.save(defaultUser);
+        Logger.getLogger(getClass().getName()).log(Level.INFO,
+                "Created new default user with username and password 'user'.");
+    }
 
     @Override
     public int getHttpPort() {
@@ -142,6 +171,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
     @Override
     public SurveyRecordDao getSurveyRecordDao() {
         return surveyRecordDao;
+    }
+
+    @Override
+    public boolean isTestSetup() {
+        return isTestSetup;
     }
 
     private static String getProperty(Properties properties, String propertyName) throws InitializationException {

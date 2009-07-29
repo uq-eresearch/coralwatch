@@ -25,6 +25,7 @@ import org.coralwatch.resources.SurveyRecordResource;
 import org.coralwatch.resources.SurveyResource;
 import org.coralwatch.resources.UserListResource;
 import org.coralwatch.resources.UserResource;
+import org.coralwatch.resources.testing.ResetResource;
 import org.restlet.Application;
 import org.restlet.Directory;
 import org.restlet.Restlet;
@@ -90,6 +91,10 @@ public class CoralwatchApplication extends Application {
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/javascript")));
         router.attach("/images", new CachingDirectory(getContext(),
                 LocalReference.createClapReference(LocalReference.CLAP_THREAD, "/images")));
+
+        if (getConfiguration().isTestSetup()) {
+            router.attach("/reset", ResetResource.class);
+        }
 
         Directory downloadDirectory = new Directory(getContext(), "war:///files");
         router.attach("/download", downloadDirectory);
