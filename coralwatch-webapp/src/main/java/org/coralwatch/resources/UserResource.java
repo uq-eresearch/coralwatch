@@ -69,6 +69,15 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
     }
 
     @Override
+    protected void postUpdateHook(UserImpl object) {
+        if (getCurrentUser() != null && getCurrentUser().getUsername().equals(object.getUsername())) {
+            // hack to replace potentially stale user object
+            login(object);
+        }
+        super.postUpdateHook(object);
+    }
+
+    @Override
     protected boolean getAllowed(UserImpl userImpl, Variant variant) {
         //Only logged in users and super users can edit profiles
         //Logged in users can only edit their own profile
