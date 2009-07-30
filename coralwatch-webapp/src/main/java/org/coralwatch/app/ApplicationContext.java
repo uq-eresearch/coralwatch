@@ -135,7 +135,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         userDao.save(defaultAdmin);
         Logger.getLogger(getClass().getName()).log(Level.INFO,
                 "Created new default admin user with username and password 'admin'.");
-        UserImpl defaultUser = new UserImpl("user", "Peter Becker", "pbecker@itee.uq.edu.au", BCrypt.hashpw("user", BCrypt
+        UserImpl defaultUser = new UserImpl("user", "Peter ", "alabri@itee.uq.edu.au", BCrypt.hashpw("user", BCrypt
                 .gensalt()), false);
         userDao.save(defaultUser);
         Logger.getLogger(getClass().getName()).log(Level.INFO,

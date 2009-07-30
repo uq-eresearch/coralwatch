@@ -4,10 +4,7 @@ import au.edu.uq.itee.maenad.restlet.ModifiableListResource;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
-import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-import freemarker.template.ObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.coralwatch.app.CoralwatchApplication;
@@ -49,12 +46,7 @@ public class KitRequestListResource extends ModifiableListResource<KitRequest, K
             KitRequest kitRequest = new KitRequest();
             kitRequest.setRequester(currentUser);
             try {
-                Configuration cfg = new Configuration();
-                cfg.setTemplateLoader(new ClassTemplateLoader(this.getClass(), "/templates/email"));
-                cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
-
-//                cfg.setDirectoryForTemplateLoading(new File(""));
-                cfg.setObjectWrapper(new DefaultObjectWrapper());
+                Configuration cfg = Emailer.getEmailTemplateConfiguration();
                 Map root = new HashMap();
                 root.put("currentUser", currentUser);
                 Template temp = cfg.getTemplate("kitRequestUserEmail.ftl");

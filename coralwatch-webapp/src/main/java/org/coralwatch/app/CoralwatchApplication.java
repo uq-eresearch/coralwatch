@@ -43,7 +43,7 @@ public class CoralwatchApplication extends Application {
             throw new RuntimeException("Failed to initialize application", ex);
         }
     }
-
+    
     public static Configuration getConfiguration() {
         return configuration;
     }

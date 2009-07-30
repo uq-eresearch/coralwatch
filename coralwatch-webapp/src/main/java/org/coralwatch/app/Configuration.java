@@ -36,8 +36,7 @@ public interface Configuration {
      * @return The explicit base URL if configured, null otherwise.
      */
     String getBaseUrl();
-
-
+    
     Properties getSubmissionEmailConfig();
 
     /**
