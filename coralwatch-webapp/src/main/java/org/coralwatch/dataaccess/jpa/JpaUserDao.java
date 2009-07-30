@@ -21,4 +21,10 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao {
         return entityManagerSource.getEntityManager().createNamedQuery("User.getConductedSurveys").setParameter("user",
                 userImpl).getResultList();
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<UserImpl> getAdministrators() {
+        return entityManagerSource.getEntityManager().createNamedQuery("User.getAdministrators").getResultList();
+    }
 }

@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface UserDao extends Dao<UserImpl> {
     List<Survey> getSurveyEntriesCreated(UserImpl user);
+
+    List<UserImpl> getAdministrators();
 }

@@ -1,8 +1,7 @@
 package org.coralwatch.model;
 
-import org.hibernate.validator.NotNull;
-
 import au.edu.uq.itee.maenad.util.HashGenerator;
+import org.hibernate.validator.NotNull;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,14 +13,15 @@ import javax.persistence.PostLoad;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity(name = "AppUser")
 @NamedQueries({
         @NamedQuery(name = "User.getConductedSurveys",
-                query = "SELECT o FROM Survey o WHERE o.creator = :user ORDER BY o.id")
+                query = "SELECT o FROM Survey o WHERE o.creator = :user ORDER BY o.id"),
+        @NamedQuery(name = "User.getAdministrators",
+                query = "SELECT v FROM AppUser v WHERE v.superUser = TRUE ORDER BY v.id")
 })
 public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serializable {
 
