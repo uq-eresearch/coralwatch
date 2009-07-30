@@ -63,6 +63,6 @@ public class KitRequestResource extends ModifiableEntityResource<KitRequest, Kit
 
     @Override
     protected boolean getAllowed(UserImpl user, Variant variant) throws ResourceException {
-        return true; //TODO fix this later
+        return true; //TODO fix access control
     }
 }

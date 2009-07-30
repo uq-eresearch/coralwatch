@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="userimpl" type="org.coralwatch.model.UserImpl" -->
 <#include "macros/basic.html.ftl"/>
 <table style="width:100%">
 
