@@ -4,11 +4,13 @@ import au.edu.uq.itee.maenad.dataaccess.Dao;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.util.BCrypt;
 import org.coralwatch.dataaccess.KitRequestDao;
+import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.dataaccess.jpa.JpaConnectorService;
 import org.coralwatch.dataaccess.jpa.JpaKitRequestDao;
+import org.coralwatch.dataaccess.jpa.JpaReefDao;
 import org.coralwatch.dataaccess.jpa.JpaSurveyDao;
 import org.coralwatch.dataaccess.jpa.JpaSurveyRecordDao;
 import org.coralwatch.dataaccess.jpa.JpaUserDao;
@@ -41,6 +43,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private final SurveyRecordDao surveyRecordDao;
     private final boolean isTestSetup;
     private final Properties submissionEmailConfig;
+    private final ReefDao reefDao;
 
     public ApplicationContext() throws InitializationException {
         Properties properties = new Properties();
@@ -96,6 +99,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.connectorService = new JpaConnectorService(emf);
         this.surveyDao = new JpaSurveyDao(this.connectorService);
         this.kitRequestDao = new JpaKitRequestDao(this.connectorService);
+        this.reefDao = new JpaReefDao(this.connectorService);
         this.surveyRecordDao = new JpaSurveyRecordDao(this.connectorService);
         this.userDao = new JpaUserDao(this.connectorService);
         if (userDao.getAll().isEmpty()) {
@@ -170,6 +174,10 @@ public class ApplicationContext implements Configuration, ServletContextListener
     @Override
     public SurveyRecordDao getSurveyRecordDao() {
         return surveyRecordDao;
+    }
+
+    public ReefDao getReefDao() {
+        return reefDao;
     }
 
     @Override

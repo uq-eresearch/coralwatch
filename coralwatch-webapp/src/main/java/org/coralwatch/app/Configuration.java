@@ -1,6 +1,7 @@
 package org.coralwatch.app;
 
 import org.coralwatch.dataaccess.KitRequestDao;
+import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
@@ -23,6 +24,8 @@ public interface Configuration {
 
     SurveyRecordDao getSurveyRecordDao();
 
+    ReefDao getReefDao();
+
     /**
      * An explicitly configured base URL.
      * <p/>
@@ -36,7 +39,7 @@ public interface Configuration {
      * @return The explicit base URL if configured, null otherwise.
      */
     String getBaseUrl();
-    
+
     Properties getSubmissionEmailConfig();
 
     /**

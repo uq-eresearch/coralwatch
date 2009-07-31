@@ -10,6 +10,8 @@ import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
 import org.restlet.resource.Variant;
 
+import java.util.Map;
+
 
 public class SurveyListResource extends ModifiableListResource<Survey, SurveyDao, UserImpl> {
     public SurveyListResource() throws InitializationException {
@@ -22,6 +24,12 @@ public class SurveyListResource extends ModifiableListResource<Survey, SurveyDao
         survey.setCreator(getCurrentUser());
         SurveyResource.updateSurvey(survey, form);
         return survey;
+    }
+
+    @Override
+    protected void fillDatamodel(Map<String, Object> datamodel) {
+        super.fillDatamodel(datamodel);
+        datamodel.put("reefRecs", CoralwatchApplication.getConfiguration().getReefDao().getAll());
     }
 
     @Override

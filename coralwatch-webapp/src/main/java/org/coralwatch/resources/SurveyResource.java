@@ -7,6 +7,7 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
@@ -36,6 +37,7 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
         super.fillDatamodel(datamodel);
         Survey survey = (Survey) datamodel.get(getTemplateObjectName());
         datamodel.put("surveyRecs", getDao().getSurveyRecords(survey));
+        datamodel.put("reefRecs", CoralwatchApplication.getConfiguration().getReefDao().getAll());
     }
 
     @Override
@@ -60,18 +62,16 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
             survey.setOrganisationType(organisationType);
         }
 
-        String country = form.getFirstValue("country");
-        if ((country == null) || country.isEmpty()) {
-            errors.add(new SubmissionError("No country name was provided. Country name must be supplied."));
-        } else {
-            survey.setCountry(country);
-        }
-
         String reefName = form.getFirstValue("reefName");
         if ((reefName == null) || reefName.isEmpty()) {
             errors.add(new SubmissionError("No reef name was provided. Reef name must be supplied."));
         } else {
-            survey.setReefName(reefName);
+            List<Reef> reefList = CoralwatchApplication.getConfiguration().getReefDao().getReef(reefName);
+            if(!reefList.isEmpty()) {
+                survey.setReef(reefList.get(0));
+            } else {
+                errors.add(new SubmissionError("The reef name you entered is not valid. Select a valid reef name."));
+            }
         }
 
         String latitudeStr = form.getFirstValue("latitude");

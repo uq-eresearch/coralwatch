@@ -19,6 +19,8 @@ import org.coralwatch.resources.LoginResource;
 import org.coralwatch.resources.LogoutResource;
 import org.coralwatch.resources.MapResource;
 import org.coralwatch.resources.PostSignUpResource;
+import org.coralwatch.resources.ReefListResource;
+import org.coralwatch.resources.ReefResource;
 import org.coralwatch.resources.StyleResource;
 import org.coralwatch.resources.SurveyListResource;
 import org.coralwatch.resources.SurveyRecordResource;
@@ -82,6 +84,8 @@ public class CoralwatchApplication extends Application {
         router.attach("/logout", LogoutResource.class);
         router.attach("/kit", KitRequestListResource.class);
         router.attach("/kit/{id}", KitRequestResource.class);
+        router.attach("/reef", ReefListResource.class);
+        router.attach("/reef/{id}", ReefResource.class);
         router.attach("/submissionError", SubmissionErrorResource.class);
         router.attach("/accessDenied", AccessDeniedResource.class);
         router.attach("/style.css", StyleResource.class);
