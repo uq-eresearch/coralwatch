@@ -130,16 +130,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
     }
 
     private void createDefaultUsers() {
-        UserImpl defaultAdmin = new UserImpl("admin", "Abdul Alabri", "alabri@itee.uq.edu.au", BCrypt.hashpw("admin",
+        UserImpl defaultAdmin = new UserImpl("admin", "CoralWatch Administrator", "email@example.org", BCrypt.hashpw("admin",
                 BCrypt.gensalt()), true);
         userDao.save(defaultAdmin);
         Logger.getLogger(getClass().getName()).log(Level.INFO,
                 "Created new default admin user with username and password 'admin'.");
-        UserImpl defaultUser = new UserImpl("user", "Peter ", "alabri@itee.uq.edu.au", BCrypt.hashpw("user", BCrypt
-                .gensalt()), false);
-        userDao.save(defaultUser);
-        Logger.getLogger(getClass().getName()).log(Level.INFO,
-                "Created new default user with username and password 'user'.");
     }
 
     @Override

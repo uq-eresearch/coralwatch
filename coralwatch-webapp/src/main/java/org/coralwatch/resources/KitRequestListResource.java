@@ -37,14 +37,18 @@ public class KitRequestListResource extends ModifiableListResource<KitRequest, K
     protected KitRequest createObject(Form form) throws SubmissionException {
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
         UserImpl currentUser = getCurrentUser();
+        KitRequest kitRequest = new KitRequest(currentUser);
         if (currentUser.getAddress() == null) {
-            errors.add(new SubmissionError("CoralWatch cannot process your kit request because you have not set your address in your profile. Set your address from <a href=\"users/" + currentUser.getId() + "\">your profile</a>."));
+            String address = form.getFirstValue("address");
+            if ((address == null) || address.isEmpty()) {
+                errors.add(new SubmissionError("No address was provided. Postal address must be suplied for kit request."));
+            } else {
+                kitRequest.setAddress(address);
+            }
         }
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         } else {
-            KitRequest kitRequest = new KitRequest();
-            kitRequest.setRequester(currentUser);
             try {
                 Configuration cfg = Emailer.getEmailTemplateConfiguration();
                 Map root = new HashMap();
@@ -88,9 +92,8 @@ public class KitRequestListResource extends ModifiableListResource<KitRequest, K
 
     @Override
     protected boolean getAllowed(UserImpl userImpl, Variant variant) {
-        //For access level on editing surveys see SurveyResource.getAllowed
-        //Only logged in users can create a new User
-//        return userImpl != null;
-        return true; //TODO Fix access control later
+        //For access level on editing kitrequests see KitRequestResource.getAllowed
+        //Only logged in users can request kits
+        return userImpl != null;
     }
 }

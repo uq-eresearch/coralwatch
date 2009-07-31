@@ -31,10 +31,14 @@ public class KitRequest implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dispatchdate;
 
+    private String address;
+
     private String comments;
 
-    public KitRequest() {
+    public KitRequest(UserImpl requester) {
+        this.requester = requester;
         this.requestDate = new Date();
+        this.address = requester.getAddress();
     }
 
     public long getId() {
@@ -67,6 +71,14 @@ public class KitRequest implements Serializable {
 
     public void setDispatchdate(Date dispatchdate) {
         this.dispatchdate = dispatchdate;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getComments() {

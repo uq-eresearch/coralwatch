@@ -7,25 +7,51 @@
 </#if>
 
 <div dojoType="dijit.form.Form" method="post">
-<script type="dojo/method" event="onSubmit">
-    if(!this.validate()){
-    alert('Form contains invalid data. Please correct first');
-    return false;
-    }
-    return true;
-</script>
+    <script type="dojo/method" event="onSubmit">
+        if(!this.validate()){
+        alert('Form contains invalid data. Please correct first');
+        return false;
+        }
+        return true;
+    </script>
     <table>
         <#if newObject>
         <tr>
+            <td class="headercell">
+                <label for="address">Address:</label>
+            </td>
             <td>
-                <textarea dojoType="dijit.form.Textarea" style="width:600px">
-                    Agreement text here
-
-                </textarea>
+                <input type="text"
+                       id="address"
+                       name="address"
+                       style="width:300px"
+                       dojoType="dijit.form.Textarea"
+                       required="true"
+                       value="${(frameData.currentUser.address)!}"
+                       trim="true"/>
             </td>
         </tr>
         <tr>
+            <td class="headercell">
+                <label for="comments">Comments:</label>
+            </td>
             <td>
+                <input type="text"
+                       id="comments"
+                       name="comments"
+                       style="width:300px"
+                       dojoType="dijit.form.Textarea"
+                       trim="true"
+                       value="${(kitrequest.comments)!}"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <textarea dojoType="dijit.form.Textarea" style="width:600px">Agreement text here</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
                 <input id="agree" dojotype="dijit.form.CheckBox"
                        name="agree"
                        required="true"
@@ -44,9 +70,9 @@
                        name="dispatchdate"
                        required="true"
                        isDate="true"
-                       <#if kitrequest.dispatchdate??>
+                        <#if kitrequest.dispatchdate??>
                        value="${(kitrequest.dispatchdate)?string("yyyy-MM-dd")!}"
-                       </#if>
+                        </#if>
                        dojoType="dijit.form.DateTextBox"
                        constraints="{datePattern: 'dd/MM/yyyy', min:'2000-01-01'}"
                        lang="en-au"
@@ -55,24 +81,11 @@
                        invalidMessage="Invalid date. Use dd/mm/yyyy format."/>
             </td>
         </tr>
-        <tr>
-            <td class="headercell">
-                <label for="comments">Comments:</label>
-            </td>
-            <td>
-                <input type="text"
-                       id="comments"
-                       name="comments"
-                       style="width:300px"
-                       dojoType="dijit.form.Textarea"
-                       trim="true"
-                       value="${(kitrequest.comments)!}"/>
-            </td>
-        </tr>
         </#if>
     </table>
 
-    <button dojoType="dijit.form.Button" type="submit" name="submit">${newObject?string("Submit Kit Request","Update")}</button>
-<#assign plainUrl=currentUrl?substring(0,currentUrl?last_index_of("?")) />
-<button dojoType="dijit.form.Button" onClick="window.location='${plainUrl}'">Cancel</button>
+    <button dojoType="dijit.form.Button" type="submit"
+            name="submit">${newObject?string("Submit Kit Request","Update")}</button>
+    <#assign plainUrl=currentUrl?substring(0,currentUrl?last_index_of("?")) />
+    <button dojoType="dijit.form.Button" onClick="window.location='${plainUrl}'">Cancel</button>
 </div>
