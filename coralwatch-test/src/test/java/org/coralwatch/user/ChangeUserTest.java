@@ -5,7 +5,7 @@ import org.coralwatch.CoralWatchTestCase;
 public class ChangeUserTest extends CoralWatchTestCase {
     public void testChangeAdminDetails() {
         loginAsAdmin();
-        clickLinkWithExactText("Abdul Alabri");
+        clickLinkWithExactText("CoralWatch Administrator");
         clickButton("editButton");
 
         setTextField("displayName", "John Doe");
