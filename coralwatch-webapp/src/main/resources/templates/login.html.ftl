@@ -32,8 +32,14 @@
             </td>
         </tr>
         <tr>
+            <td colspan="2">
+                <a href="${baseUrl}/forgotpassword">Forgot your password?</a>
+            </td>
+        </tr>
+        <tr>
             <td class="headercell">
-                <button dojoType="dijit.form.Button" type="submit" name="login" value="Login" id="loginButton">Login</button>
+                <button dojoType="dijit.form.Button" type="submit" name="login" value="Login" id="loginButton">Login
+                </button>
             </td>
             <td>
                 <a href="${baseUrl}/users?new">or Sign Up Now</a>
