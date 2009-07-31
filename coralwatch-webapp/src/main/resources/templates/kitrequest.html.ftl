@@ -11,7 +11,7 @@
     </tr>
     <tr>
         <td class="headercell">Address:</td>
-        <td>${(kitrequest.requester.address)!}</td>
+        <td>${(kitrequest.address)!}</td>
     </tr>
     <tr>
         <td class="headercell">Dispatched on:</td>
@@ -21,7 +21,7 @@
     </tr>
     <tr>
         <td class="headercell">Comments:</td>
-        <td>${(kitrequest.comments)!}</td>
+        <td>${(kitrequest.notes)!}</td>
     </tr>
 </table>
 <#if canUpdate>

@@ -33,8 +33,11 @@ public class KitRequest implements Serializable {
 
     private String address;
 
-    private String comments;
+    private String notes;
 
+    public KitRequest(){
+        
+    }
     public KitRequest(UserImpl requester) {
         this.requester = requester;
         this.requestDate = new Date();
@@ -81,12 +84,12 @@ public class KitRequest implements Serializable {
         this.address = address;
     }
 
-    public String getComments() {
-        return comments;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
 }

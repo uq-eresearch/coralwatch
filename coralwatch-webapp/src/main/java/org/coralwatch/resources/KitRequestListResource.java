@@ -38,14 +38,18 @@ public class KitRequestListResource extends ModifiableListResource<KitRequest, K
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
         UserImpl currentUser = getCurrentUser();
         KitRequest kitRequest = new KitRequest(currentUser);
-        if (currentUser.getAddress() == null) {
-            String address = form.getFirstValue("address");
-            if ((address == null) || address.isEmpty()) {
+        String address = form.getFirstValue("address");
+        if (address == null || address.isEmpty()) {
+            if (currentUser.getAddress() == null || currentUser.getAddress().isEmpty()) {
                 errors.add(new SubmissionError("No address was provided. Postal address must be suplied for kit request."));
-            } else {
-                kitRequest.setAddress(address);
             }
+        } else {
+            kitRequest.setAddress(address);
         }
+
+        String notes = form.getFirstValue("notes");
+        kitRequest.setNotes(notes);
+
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         } else {

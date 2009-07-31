@@ -53,8 +53,8 @@ public class KitRequestResource extends ModifiableEntityResource<KitRequest, Kit
             }
         }
 
-        String comments = form.getFirstValue("comments");
-        kitRequest.setComments(comments);
+        String notes = form.getFirstValue("notes");
+        kitRequest.setNotes(notes);
 
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);

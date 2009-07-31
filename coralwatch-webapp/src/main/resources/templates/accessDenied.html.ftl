@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="baseUrl" type="java.lang.String" -->
 <h3>Access Denied</h3>
 <#if currentUser??>
 <p>
@@ -9,6 +10,6 @@ tell us about it.
 <#else>
 <p>
 The page you requested is accessible only to registered users. Please 
-<a href="${baseUrl}/login">log in</a> if you have an account.
+<a href="${baseUrl}/login?redirectUrl=${baseUrl}/dashboard">log in</a> if you have an account.
 </p>
 </#if>

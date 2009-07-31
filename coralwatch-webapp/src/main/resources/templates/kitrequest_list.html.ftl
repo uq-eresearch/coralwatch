@@ -6,7 +6,7 @@
         <th height="25" nowrap="nowrap">#</th>
         <th nowrap="nowrap">Requester</th>
         <th nowrap="nowrap">Date</th>
-        <th nowrap="nowrap">Comments</th>
+        <th nowrap="nowrap">Dispatched</th>
     </tr>
 
     <#list kitrequestList as kitrequest>
@@ -14,7 +14,10 @@
             <td align="center"><a href="${baseUrl}/kit/${kitrequest.id}">${kitrequest.id}</a></td>
             <td><a href="${baseUrl}/users/${kitrequest.requester.id}">${(kitrequest.requester.displayName)}</a></td>
             <td>${(kitrequest.requestDate)!?datetime}</td>
-            <td>${(kitrequest.comments)!}</td>
+            <td><#if kitrequest.dispatchdate??>
+                ${(kitrequest.dispatchdate)?string("dd/MM/yyyy")!}
+                </#if>
+            </td>
         </tr>
     </#list>
 </table>

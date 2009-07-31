@@ -15,7 +15,6 @@
         return true;
     </script>
     <table>
-        <#if newObject>
         <tr>
             <td class="headercell">
                 <label for="address">Address:</label>
@@ -27,24 +26,29 @@
                        style="width:300px"
                        dojoType="dijit.form.Textarea"
                        required="true"
+                        <#if newObject>
                        value="${(frameData.currentUser.address)!}"
+                        <#else>
+                       value="${(kitrequest.address)!}"
+                        </#if>
                        trim="true"/>
             </td>
         </tr>
         <tr>
             <td class="headercell">
-                <label for="comments">Comments:</label>
+                <label for="notes">Notes:</label>
             </td>
             <td>
                 <input type="text"
-                       id="comments"
-                       name="comments"
+                       id="notes"
+                       name="notes"
                        style="width:300px"
                        dojoType="dijit.form.Textarea"
                        trim="true"
-                       value="${(kitrequest.comments)!}"/>
+                       value="${(kitrequest.notes)!}"/>
             </td>
         </tr>
+        <#if newObject>
         <tr>
             <td colspan="2">
                 <textarea dojoType="dijit.form.Textarea" style="width:600px">Agreement text here</textarea>
