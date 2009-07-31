@@ -51,7 +51,7 @@ public class KitRequestListResource extends ModifiableListResource<KitRequest, K
         } else {
             try {
                 Configuration cfg = Emailer.getEmailTemplateConfiguration();
-                Map root = new HashMap();
+                Map<String, Object> root = new HashMap<String, Object>();
                 root.put("currentUser", currentUser);
                 Template temp = cfg.getTemplate("kitRequestUserEmail.ftl");
                 StringWriter writer = new StringWriter();
@@ -65,7 +65,7 @@ public class KitRequestListResource extends ModifiableListResource<KitRequest, K
                 //Send email to administrators
                 List<UserImpl> administrators = CoralwatchApplication.getConfiguration().getUserDao().getAdministrators();
                 for (UserImpl admin : administrators) {
-                    root = new HashMap();
+                    root = new HashMap<String, Object>();
                     root.put("currentUser", currentUser);
                     root.put("admin", admin);
                     temp = cfg.getTemplate("kitRequestAdminEmail.ftl");
