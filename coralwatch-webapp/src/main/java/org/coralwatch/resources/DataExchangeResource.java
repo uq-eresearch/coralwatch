@@ -14,10 +14,12 @@ import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.KitRequest;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
+import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.restlet.data.MediaType;
 import org.restlet.resource.OutputRepresentation;
@@ -32,6 +34,7 @@ public class DataExchangeResource extends AccessControlledResource<UserImpl> {
     private final UserDao userDao;
     private final ReefDao reefDao;
     private final SurveyDao surveyDao;
+    private final SurveyRecordDao surveyRecordDao;
     private final KitRequestDao kitrequestDao;
 
     public DataExchangeResource() throws InitializationException {
@@ -40,6 +43,7 @@ public class DataExchangeResource extends AccessControlledResource<UserImpl> {
         this.userDao = CoralwatchApplication.getConfiguration().getUserDao();
         this.reefDao = CoralwatchApplication.getConfiguration().getReefDao();
         this.surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
+        this.surveyRecordDao = CoralwatchApplication.getConfiguration().getSurveyRecordDao();
         this.kitrequestDao = CoralwatchApplication.getConfiguration().getKitRequestDao();
     }
 
@@ -57,7 +61,7 @@ public class DataExchangeResource extends AccessControlledResource<UserImpl> {
                 writeUserSheet(workbook);
                 writeReefSheet(workbook);
                 writeSurveySheet(workbook);
-                // TODO survey records
+                writeSurveyRecordSheet(workbook);
                 writeKitRequestSheet(workbook);
                 workbook.write(stream);
             }
@@ -147,6 +151,29 @@ public class DataExchangeResource extends AccessControlledResource<UserImpl> {
             setCell(row.createCell(c++), survey.getActivity());
             setCell(row.createCell(c++), survey.getTemperature());
             setCell(row.createCell(c++), survey.getComments());
+        }
+    }
+
+    private void writeSurveyRecordSheet(HSSFWorkbook workbook) {
+        HSSFSheet sheet = workbook.createSheet("Survey Records");
+        HSSFRow row = sheet.createRow(0);
+        int c = 0;
+        setCell(row.createCell(c++), "Survey");
+        setCell(row.createCell(c++), "Coral Type");
+        setCell(row.createCell(c++), "Lightest Letter");
+        setCell(row.createCell(c++), "Lightest Number");
+        setCell(row.createCell(c++), "Darkest Letter");
+        setCell(row.createCell(c++), "Darkest Number");
+        int r = 1;
+        for (SurveyRecord record : surveyRecordDao.getAll()) {
+            row = sheet.createRow(r++);
+            c = 0;
+            setCell(row.createCell(c++), record.getSurvey().getId());
+            setCell(row.createCell(c++), record.getCoralType());
+            setCell(row.createCell(c++), record.getLightestLetter());
+            setCell(row.createCell(c++), record.getLightestNumber());
+            setCell(row.createCell(c++), record.getDarkestLetter());
+            setCell(row.createCell(c++), record.getDarkestNumber());
         }
     }
 
