@@ -116,6 +116,11 @@
             <artifactId>restlet-framework</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+        	<groupId>org.apache.poi</groupId>
+        	<artifactId>poi</artifactId>
+        	<version>3.2-FINAL</version>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>

@@ -8,6 +8,7 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.model.FrameDataProvider;
 import org.coralwatch.resources.AboutResource;
 import org.coralwatch.resources.DashboardResource;
+import org.coralwatch.resources.DataExchangeResource;
 import org.coralwatch.resources.EducationResource;
 import org.coralwatch.resources.FrontpageResource;
 import org.coralwatch.resources.GoingGreenResource;
@@ -45,7 +46,7 @@ public class CoralwatchApplication extends Application {
             throw new RuntimeException("Failed to initialize application", ex);
         }
     }
-    
+
     public static Configuration getConfiguration() {
         return configuration;
     }
@@ -86,6 +87,7 @@ public class CoralwatchApplication extends Application {
         router.attach("/kit/{id}", KitRequestResource.class);
         router.attach("/reef", ReefListResource.class);
         router.attach("/reef/{id}", ReefResource.class);
+        router.attach("/data", DataExchangeResource.class);
         router.attach("/submissionError", SubmissionErrorResource.class);
         router.attach("/accessDenied", AccessDeniedResource.class);
         router.attach("/style.css", StyleResource.class);
