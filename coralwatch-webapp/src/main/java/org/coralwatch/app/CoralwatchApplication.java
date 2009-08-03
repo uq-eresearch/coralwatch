@@ -8,7 +8,7 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.model.FrameDataProvider;
 import org.coralwatch.resources.AboutResource;
 import org.coralwatch.resources.DashboardResource;
-import org.coralwatch.resources.DataExchangeResource;
+import org.coralwatch.resources.DataDownloadResource;
 import org.coralwatch.resources.EducationResource;
 import org.coralwatch.resources.FrontpageResource;
 import org.coralwatch.resources.GoingGreenResource;
@@ -28,6 +28,7 @@ import org.coralwatch.resources.SurveyRecordResource;
 import org.coralwatch.resources.SurveyResource;
 import org.coralwatch.resources.UserListResource;
 import org.coralwatch.resources.UserResource;
+import org.coralwatch.resources.testing.DataExchangeResource;
 import org.coralwatch.resources.testing.ResetResource;
 import org.restlet.Application;
 import org.restlet.Directory;
@@ -87,7 +88,6 @@ public class CoralwatchApplication extends Application {
         router.attach("/kit/{id}", KitRequestResource.class);
         router.attach("/reef", ReefListResource.class);
         router.attach("/reef/{id}", ReefResource.class);
-        router.attach("/data", DataExchangeResource.class);
         router.attach("/submissionError", SubmissionErrorResource.class);
         router.attach("/accessDenied", AccessDeniedResource.class);
         router.attach("/style.css", StyleResource.class);
@@ -100,6 +100,9 @@ public class CoralwatchApplication extends Application {
 
         if (getConfiguration().isTestSetup()) {
             router.attach("/reset", ResetResource.class);
+            router.attach("/data", DataExchangeResource.class);
+        } else {
+            router.attach("/data", DataDownloadResource.class);
         }
 
         Directory downloadDirectory = new Directory(getContext(), "war:///files");

@@ -30,14 +30,15 @@ import org.restlet.resource.Variant;
 import au.edu.uq.itee.maenad.restlet.AccessControlledResource;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 
-public class DataExchangeResource extends AccessControlledResource<UserImpl> {
-    private final UserDao userDao;
-    private final ReefDao reefDao;
-    private final SurveyDao surveyDao;
-    private final SurveyRecordDao surveyRecordDao;
-    private final KitRequestDao kitrequestDao;
+public abstract class DataDownloadResource extends AccessControlledResource<UserImpl> {
 
-    public DataExchangeResource() throws InitializationException {
+    protected final UserDao userDao;
+    protected final ReefDao reefDao;
+    protected final SurveyDao surveyDao;
+    protected final SurveyRecordDao surveyRecordDao;
+    protected final KitRequestDao kitrequestDao;
+
+    public DataDownloadResource() throws InitializationException {
         super();
         getVariants().add(new Variant(MediaType.APPLICATION_EXCEL));
         this.userDao = CoralwatchApplication.getConfiguration().getUserDao();
@@ -219,4 +220,5 @@ public class DataExchangeResource extends AccessControlledResource<UserImpl> {
         cell.setCellValue(value);
         // TODO: add formatting
     }
+
 }
