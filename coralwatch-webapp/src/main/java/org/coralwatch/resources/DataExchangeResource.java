@@ -12,9 +12,11 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.KitRequestDao;
+import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.KitRequest;
+import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
 import org.restlet.data.MediaType;
@@ -28,6 +30,7 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 
 public class DataExchangeResource extends AccessControlledResource<UserImpl> {
     private final UserDao userDao;
+    private final ReefDao reefDao;
     private final SurveyDao surveyDao;
     private final KitRequestDao kitrequestDao;
 
@@ -35,6 +38,7 @@ public class DataExchangeResource extends AccessControlledResource<UserImpl> {
         super();
         getVariants().add(new Variant(MediaType.APPLICATION_EXCEL));
         this.userDao = CoralwatchApplication.getConfiguration().getUserDao();
+        this.reefDao = CoralwatchApplication.getConfiguration().getReefDao();
         this.surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
         this.kitrequestDao = CoralwatchApplication.getConfiguration().getKitRequestDao();
     }
@@ -51,7 +55,7 @@ public class DataExchangeResource extends AccessControlledResource<UserImpl> {
             public void write(OutputStream stream) throws IOException {
                 HSSFWorkbook workbook = new HSSFWorkbook();
                 writeUserSheet(workbook);
-                // TODO reefs
+                writeReefSheet(workbook);
                 writeSurveySheet(workbook);
                 // TODO survey records
                 writeKitRequestSheet(workbook);
@@ -65,20 +69,21 @@ public class DataExchangeResource extends AccessControlledResource<UserImpl> {
 
     private void writeUserSheet(HSSFWorkbook workbook) {
         HSSFSheet sheet = workbook.createSheet("Users");
+        int c = 0;
         HSSFRow row = sheet.createRow(0);
-        setCell(row.createCell(0), "Username");
-        setCell(row.createCell(1), "Display Name");
-        setCell(row.createCell(2), "Email Address");
-        setCell(row.createCell(3), "Address");
-        setCell(row.createCell(4), "Occupation");
-        setCell(row.createCell(5), "Country");
-        setCell(row.createCell(6), "Password Hash");
-        setCell(row.createCell(7), "Registration Date");
-        setCell(row.createCell(8), "Super User");
+        setCell(row.createCell(c++), "Username");
+        setCell(row.createCell(c++), "Display Name");
+        setCell(row.createCell(c++), "Email Address");
+        setCell(row.createCell(c++), "Address");
+        setCell(row.createCell(c++), "Occupation");
+        setCell(row.createCell(c++), "Country");
+        setCell(row.createCell(c++), "Password Hash");
+        setCell(row.createCell(c++), "Registration Date");
+        setCell(row.createCell(c++), "Super User");
         int r = 1;
         for (UserImpl user : userDao.getAll()) {
             row = sheet.createRow(r++);
-            int c = 0;
+            c = 0;
             setCell(row.createCell(c++), user.getUsername());
             setCell(row.createCell(c++), user.getDisplayName());
             setCell(row.createCell(c++), user.getEmail());
@@ -88,6 +93,23 @@ public class DataExchangeResource extends AccessControlledResource<UserImpl> {
             setCell(row.createCell(c++), user.getPasswordHash());
             setCell(row.createCell(c++), user.getRegistrationDate());
             setCell(row.createCell(c++), user.isSuperUser());
+        }
+    }
+
+    private void writeReefSheet(HSSFWorkbook workbook) {
+        HSSFSheet sheet = workbook.createSheet("Reefs");
+        HSSFRow row = sheet.createRow(0);
+        int c = 0;
+        setCell(row.createCell(c++), "ID");
+        setCell(row.createCell(c++), "Name");
+        setCell(row.createCell(c++), "Country");
+        int r = 1;
+        for (Reef reef : reefDao.getAll()) {
+            row = sheet.createRow(r++);
+            c = 0;
+            setCell(row.createCell(c++), reef.getId());
+            setCell(row.createCell(c++), reef.getName());
+            setCell(row.createCell(c++), reef.getCountry());
         }
     }
 
