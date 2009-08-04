@@ -181,31 +181,17 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserImpl user = (UserImpl) o;
-
-        if (id != user.id) return false;
-        if (superUser != user.superUser) return false;
-        if (!displayName.equals(user.displayName)) return false;
-        if (!email.equals(user.email)) return false;
-        if (!passwordHash.equals(user.passwordHash)) return false;
-        if (!registrationDate.equals(user.registrationDate)) return false;
-        if (!username.equals(user.username)) return false;
-
-        return true;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        return username.equals(((UserImpl) o).username);
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + username.hashCode();
-        result = 31 * result + displayName.hashCode();
-        result = 31 * result + email.hashCode();
-        result = 31 * result + passwordHash.hashCode();
-        result = 31 * result + registrationDate.hashCode();
-        result = 31 * result + (superUser ? 1 : 0);
-        return result;
+        return username.hashCode();
     }
 }
