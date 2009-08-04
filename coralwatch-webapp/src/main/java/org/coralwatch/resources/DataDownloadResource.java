@@ -200,23 +200,59 @@ public abstract class DataDownloadResource extends AccessControlledResource<User
     }
 
     private void setCell(HSSFCell cell, String value) {
+        if (value == null) {
+            return;
+        }
         cell.setCellValue(new HSSFRichTextString(value));
     }
 
-    private void setCell(HSSFCell cell, long value) {
+    private void setCell(HSSFCell cell, Character value) {
+        if (value == null) {
+            return;
+        }
         cell.setCellValue(value);
     }
 
-    private void setCell(HSSFCell cell, double value) {
+    private void setCell(HSSFCell cell, Integer value) {
+        if (value == null) {
+            return;
+        }
+        cell.setCellValue(value);
+    }
+
+    private void setCell(HSSFCell cell, Long value) {
+        if (value == null) {
+            return;
+        }
+        cell.setCellValue(value);
+    }
+
+    private void setCell(HSSFCell cell, Float value) {
+        if (value == null) {
+            return;
+        }
+        cell.setCellValue(value);
+    }
+
+    private void setCell(HSSFCell cell, Double value) {
+        if (value == null) {
+            return;
+        }
         cell.setCellValue(value);
     }
 
     private void setCell(HSSFCell cell, Date value) {
+        if (value == null) {
+            return;
+        }
         cell.setCellValue(value);
         // TODO: add formatting
     }
 
-    private void setCell(HSSFCell cell, boolean value) {
+    private void setCell(HSSFCell cell, Boolean value) {
+        if (value == null) {
+            return;
+        }
         cell.setCellValue(value);
         // TODO: add formatting
     }
