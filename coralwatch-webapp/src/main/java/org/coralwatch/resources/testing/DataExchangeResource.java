@@ -152,8 +152,8 @@ public class DataExchangeResource extends DataDownloadResource {
         UserImpl user = (username == null) ? anonymous : userDao.getByUsername(username);
         if (user == null) {
             user = new UserImpl(username, username, email, null, false);
-            // TODO do we want to assume "country" refers to the user?
             user.setCountry("unknown");
+            Logger.getLogger(DataExchangeResource.class.getName()).log(Level.INFO, "Creating user " + username);
             userDao.save(user);
         } else {
             // TODO add consistency checks
@@ -167,60 +167,72 @@ public class DataExchangeResource extends DataDownloadResource {
                 reef = new Reef();
                 reef.setName(location);
                 reef.setCountry(country);
+                Logger.getLogger(DataExchangeResource.class.getName()).log(Level.INFO, "Creating reef " + location);
                 reefDao.save(reef);
             } else {
                 // TODO add consistency checks
             }
         }
-
-        // TODO figure out how to group the rows into surveys
-        Survey survey = new Survey();
-        survey.setCreator(user);
-        survey.setDate(date);
-        survey.setReef(reef);
+        Date time = null;
         // TODO figure out how to deal with the time of day properly
         if ("early morning".equalsIgnoreCase(timeOfDay)) {
-            survey.setTime(new Date(0, 0, 0, 7, 0));
+            time = new Date(0, 0, 0, 7, 0);
         } else if ("late morning".equalsIgnoreCase(timeOfDay)) {
-            survey.setTime(new Date(0, 0, 0, 10, 0));
+            time = new Date(0, 0, 0, 10, 0);
         } else if ("midday".equalsIgnoreCase(timeOfDay)) {
-            survey.setTime(new Date(0, 0, 0, 12, 0));
+            time = new Date(0, 0, 0, 12, 0);
         } else if ("early afternoon".equalsIgnoreCase(timeOfDay)) {
-            survey.setTime(new Date(0, 0, 0, 15, 0));
+            time = new Date(0, 0, 0, 15, 0);
         } else if ("late afternoon".equalsIgnoreCase(timeOfDay)) {
-            survey.setTime(new Date(0, 0, 0, 17, 0));
+            time = new Date(0, 0, 0, 17, 0);
         } else if ("evening".equalsIgnoreCase(timeOfDay)) {
-            survey.setTime(new Date(0, 0, 0, 20, 0));
+            time = new Date(0, 0, 0, 20, 0);
         } else if ("null".equalsIgnoreCase(timeOfDay)) {
-            survey.setTime(null);
+            // nothing to do
         } else {
             errors.add(new SubmissionError("Unknown entry for time of day in row " + (row.getRowNum() + 1)));
         }
-        // TODO check if the next two are assigned correctly
-        survey.setOrganisation((groupname != null) ? groupname : "unknown");
-        survey.setOrganisationType((participation != null) ? participation : "unknown");
-        // TODO set the reef
-        survey.setWeather((weather!=null)?weather:"unknown");
-        survey.setActivity((activity!=null)?activity:"unknown");
-        if (temperature != null) {
-            survey.setTemperature(temperature);
+        float latitude = (float) convertDegreesToDecimal(latDeg, latMin, latSec);
+        float longitude = (float) convertDegreesToDecimal(longDeg, longMin, longSec);
+
+        Logger.getLogger(DataExchangeResource.class.getName()).log(
+                Level.FINER,
+                String.format("Trying to find survey having %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", user
+                        .getUsername(), groupname, participation, reef.getName(), weather, date, time, latitude,
+                        longitude, activity, comments));
+        Survey survey = surveyDao.getExactSurvey(user, groupname, participation, reef, weather, date, time, latitude,
+                longitude, activity, comments);
+        if (survey == null) {
+            survey = new Survey();
+            survey.setCreator(user);
+            survey.setDate(date);
+            survey.setTime(time);
+            survey.setReef(reef);
+            // TODO check if the next two are assigned correctly
+            survey.setOrganisation((groupname != null) ? groupname : "unknown");
+            survey.setOrganisationType((participation != null) ? participation : "unknown");
+            // TODO set the reef
+            survey.setWeather((weather != null) ? weather : "unknown");
+            survey.setActivity((activity != null) ? activity : "unknown");
+            if (temperature != null) {
+                survey.setTemperature(temperature);
+            }
+            survey.setLatitude(latitude);
+            survey.setLongitude(longitude);
+            survey.setComments(comments);
+            Logger.getLogger(getClass().getName()).log(Level.FINE, "Creating new survey: " + survey);
+            surveyDao.save(survey);
         }
-        if (latDeg != null) {
-            survey.setLatitude((float) convertDegreesToDecimal(latDeg, latMin, latSec));
-        }
-        if (longDeg != null) {
-            survey.setLongitude((float) convertDegreesToDecimal(longDeg, longMin, longSec));
-        }
-        survey.setComments(comments);
         SurveyRecord surveyRecord = new SurveyRecord(survey, coralType, lColor.charAt(0), lIntensity, dColor.charAt(0),
                 dIntensity);
-        Logger.getLogger(getClass().getName()).log(Level.FINE, "Creating new survey: " + survey);
-        surveyDao.save(survey);
         surveyRecordDao.save(surveyRecord);
         return errors;
     }
 
-    private double convertDegreesToDecimal(int deg, int min, double sec) {
+    private double convertDegreesToDecimal(Integer deg, Integer min, Double sec) {
+        if (deg == null || min == null || sec == null) {
+            return -9999; // TODO what to do with these?
+        }
         return deg + min / 60f + sec / 3600f;
     }
 

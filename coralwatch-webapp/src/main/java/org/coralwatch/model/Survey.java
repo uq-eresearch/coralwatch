@@ -22,8 +22,11 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Survey.getData",
-                query = "SELECT o FROM SurveyRecord o WHERE o.survey = :survey ORDER BY o.id")
+        @NamedQuery(name = "Survey.getData", query = "SELECT o FROM SurveyRecord o WHERE o.survey = :survey ORDER BY o.id"),
+        @NamedQuery(name = "Survey.getExactSurvey", query = "SELECT o FROM Survey o WHERE o.creator = :creator AND o.organisation = :organisation "
+                + "AND o.organisationType = :organisationType AND o.reef = :reef AND o.weather = :weather "
+                + "AND o.date = :date AND o.time = :time AND o.latitude = :latitude AND o.longitude = :longitude "
+                + "AND o.activity = :activity AND o.comments = :comments")
 })
 public class Survey implements Serializable {
 
@@ -75,7 +78,7 @@ public class Survey implements Serializable {
     private List<SurveyRecord> dataset = new ArrayList<SurveyRecord>();
 
     public Survey() {
-        
+
     }
 
     public long getId() {
