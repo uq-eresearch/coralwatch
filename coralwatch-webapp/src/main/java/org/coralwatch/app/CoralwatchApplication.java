@@ -2,6 +2,7 @@ package org.coralwatch.app;
 
 import au.edu.uq.itee.maenad.restlet.AccessDeniedResource;
 import au.edu.uq.itee.maenad.restlet.CachingDirectory;
+import au.edu.uq.itee.maenad.restlet.StyleResource;
 import au.edu.uq.itee.maenad.restlet.SubmissionErrorResource;
 import au.edu.uq.itee.maenad.restlet.auth.AccessPolicy;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
@@ -22,7 +23,6 @@ import org.coralwatch.resources.MapResource;
 import org.coralwatch.resources.PostSignUpResource;
 import org.coralwatch.resources.ReefListResource;
 import org.coralwatch.resources.ReefResource;
-import org.coralwatch.resources.StyleResource;
 import org.coralwatch.resources.SurveyListResource;
 import org.coralwatch.resources.SurveyRecordResource;
 import org.coralwatch.resources.SurveyResource;
