@@ -1,10 +1,10 @@
 <#-- @ftlvariable name="baseUrl" type="java.lang.String" -->
 <#-- @ftlvariable name="reefList" type="java.util.List<org.coralwatch.model.Reef>" -->
-<h3>List of All Surveys</h3>
+<h3>List of All Reefs</h3>
 <table width="100%" class="list_table" cellspacing="0" cellpadding="2">
     <tr>
         <th height="25" nowrap="nowrap">#</th>
-        <th nowrap="nowrap">Name</th>
+        <th nowrap="nowrap">Reef Name</th>
         <th nowrap="nowrap">Country</th>
     </tr>
 
