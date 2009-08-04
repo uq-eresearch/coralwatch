@@ -70,10 +70,10 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     </tr>
 </table>
 <#if canUpdate>
-    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id}?edit'">Edit</button>
+    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id?c}?edit'">Edit</button>
 </#if>
 <#if canDelete>
-    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id}?edit'">Delete
+    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id?c}?edit'">Delete
     </button>
 </#if>
 <br/>
@@ -104,7 +104,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     <h3>Add Data</h3>
 
     <div dojoType="dijit.form.Form" method="post" action="${baseUrl}/record">
-        <input type="hidden" name="surveyId" value="${survey.id}"/>
+        <input type="hidden" name="surveyId" value="${survey.id?c}"/>
         <table width="100%">
             <tr>
                 <th class="headercell" nowrap="nowrap">Coral Type</th>
