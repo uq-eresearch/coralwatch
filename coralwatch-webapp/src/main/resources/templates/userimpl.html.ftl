@@ -58,5 +58,5 @@
 </table>
 <br/>
 <br/>
-<@createList "Surveys" conductedSurveys; item><a href="${baseUrl}/surveys/${item.id}">${item.id}</a> Conducted on
+<@createList "Surveys" conductedSurveys; item><a href="${baseUrl}/surveys/${item.id?c}">${item.id}</a> Conducted on
 ${(item.date)!?date}</@createList>
