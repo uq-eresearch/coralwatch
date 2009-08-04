@@ -156,8 +156,10 @@ public class DataExchangeResource extends DataDownloadResource {
         if (user == null) {
             user = new UserImpl(username, username, email, null, false);
             // TODO do we want to assume "country" refers to the user?
-            user.setCountry(country);
+            user.setCountry("unknown");
             userDao.save(user);
+        } else {
+            // TODO add consistency checks
         }
         Reef reef;
         if (location == null) {
@@ -168,10 +170,11 @@ public class DataExchangeResource extends DataDownloadResource {
             if (reefs.isEmpty()) {
                 reef = new Reef();
                 reef.setName(location);
-                reef.setCountry("unknown");
+                reef.setCountry(country);
                 reefDao.save(reef);
             } else {
                 reef = reefs.get(0);
+                // TODO add consistency checks
             }
         }
 
