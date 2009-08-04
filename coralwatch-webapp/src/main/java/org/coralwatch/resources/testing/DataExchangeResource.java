@@ -103,7 +103,7 @@ public class DataExchangeResource extends DataDownloadResource {
         }
         UserImpl anonymous = userDao.getByUsername("anonymous");
         if (anonymous == null) {
-            anonymous = new UserImpl("anonymous", "Unknown", null, null, false);
+            anonymous = new UserImpl("anonymous", "unknown", null, null, false);
             userDao.save(anonymous);
         }
         Reef unknownReef = reefDao.getReefByName("unknown");
@@ -197,8 +197,8 @@ public class DataExchangeResource extends DataDownloadResource {
             errors.add(new SubmissionError("Unknown entry for time of day in row " + (row.getRowNum() + 1)));
         }
         // TODO check if the next two are assigned correctly
-        survey.setOrganisation((groupname != null) ? groupname : "UNKNOWN");
-        survey.setOrganisationType((participation != null) ? participation : "UNKNOWN");
+        survey.setOrganisation((groupname != null) ? groupname : "unknown");
+        survey.setOrganisationType((participation != null) ? participation : "unknown");
         // TODO set the reef
         survey.setWeather((weather!=null)?weather:"unknown");
         survey.setActivity((activity!=null)?activity:"unknown");
