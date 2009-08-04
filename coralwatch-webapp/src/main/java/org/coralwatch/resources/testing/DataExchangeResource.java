@@ -212,9 +212,11 @@ public class DataExchangeResource extends DataDownloadResource {
             survey.setLongitude((float) convertDegreesToDecimal(longDeg, longMin, longSec));
         }
         survey.setComments(comments);
-        new SurveyRecord(survey, coralType, lColor.charAt(0), lIntensity, dColor.charAt(0), dIntensity);
+        SurveyRecord surveyRecord = new SurveyRecord(survey, coralType, lColor.charAt(0), lIntensity, dColor.charAt(0),
+                dIntensity);
         Logger.getLogger(getClass().getName()).log(Level.FINE, "Creating new survey: " + survey);
         surveyDao.save(survey);
+        surveyRecordDao.save(surveyRecord);
         return errors;
     }
 
