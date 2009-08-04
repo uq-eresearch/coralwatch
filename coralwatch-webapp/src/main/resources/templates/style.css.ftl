@@ -185,7 +185,7 @@ li.link {
 
 #menu li {
     float: left;
-    width: 100px;
+    width: 113px;
     background: url(${baseUrl}/icons/menu_libg.gif) top right repeat-y;
     font-size: 12px;
     text-align: center;
@@ -333,12 +333,4 @@ div.main_content {
     width: 260px;
     font-size: 10px;
     text-align: justify;
-}
-
-#heron {
-    float: left;
-    margin-right: 15px;
-    margin-bottom: 20px;
-    width: 305px;
-    height: 800px;
 }

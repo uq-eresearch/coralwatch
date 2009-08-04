@@ -73,8 +73,8 @@
                                 <#list frameData.navigationItems as nav>
                                     <#if nav.url!?has_content>
                                         <#assign navUrlTemplate = nav.url?interpret/>
-                                        <li onclick="window.location='<@navUrlTemplate/>'" class="link" width="180"><a
-                                                href="<@navUrlTemplate/>">${nav.name}</a>
+                                        <li onclick="window.location='<@navUrlTemplate/>'" class="link${nav_has_next?string('',' last')}">
+                                            <a href="<@navUrlTemplate/>">${nav.name}</a>
                                         </li>
                                     </#if>
                                 </#list>
