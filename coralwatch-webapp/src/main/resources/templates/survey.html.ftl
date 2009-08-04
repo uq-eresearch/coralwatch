@@ -11,9 +11,11 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
 </#macro>
 <h3>Coral Bleaching Survey</h3>
 
+<#if survey.creator.gravatarUrl??>
 <div style="float:right;">
 <img src="${survey.creator.gravatarUrl}"/>
 </div>
+</#if>
 <table>
     <tr>
         <td class="headercell">Creator:</td>
