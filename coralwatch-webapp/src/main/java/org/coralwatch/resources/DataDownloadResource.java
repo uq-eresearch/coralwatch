@@ -30,6 +30,7 @@ import org.restlet.resource.Variant;
 import au.edu.uq.itee.maenad.restlet.AccessControlledResource;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 
+// TODO adjust column widths
 public abstract class DataDownloadResource extends AccessControlledResource<UserImpl> {
 
     protected final UserDao userDao;
@@ -210,7 +211,7 @@ public abstract class DataDownloadResource extends AccessControlledResource<User
         if (value == null) {
             return;
         }
-        cell.setCellValue(value);
+        cell.setCellValue(new HSSFRichTextString(value.toString()));
     }
 
     private void setCell(HSSFCell cell, Integer value) {
