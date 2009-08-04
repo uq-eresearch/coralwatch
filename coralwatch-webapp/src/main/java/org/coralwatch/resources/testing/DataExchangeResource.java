@@ -106,7 +106,7 @@ public class DataExchangeResource extends DataDownloadResource {
             anonymous = new UserImpl("anonymous", "Unknown", null, null, false);
             userDao.save(anonymous);
         }
-        Reef unknownReef = reefDao.getReef("unknown");
+        Reef unknownReef = reefDao.getReefByName("unknown");
         if (unknownReef == null) {
             unknownReef = new Reef();
             unknownReef.setName("unknown");
@@ -162,7 +162,7 @@ public class DataExchangeResource extends DataDownloadResource {
         if (location == null) {
             reef = unknownReef;
         } else {
-            reef = reefDao.getReef(location);
+            reef = reefDao.getReefByName(location);
             if (reef == null) {
                 reef = new Reef();
                 reef.setName(location);

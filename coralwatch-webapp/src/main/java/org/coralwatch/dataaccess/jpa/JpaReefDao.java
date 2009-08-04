@@ -13,7 +13,7 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao {
     }
 
     @Override
-    public Reef getReef(String name) {
+    public Reef getReefByName(String name) {
         List<?> resultList = entityManagerSource.getEntityManager().createNamedQuery("Reef.getReef").setParameter(
                 "name", name).getResultList();
         if (resultList.isEmpty()) {

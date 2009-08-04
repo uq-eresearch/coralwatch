@@ -66,7 +66,7 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
         if ((reefName == null) || reefName.isEmpty()) {
             errors.add(new SubmissionError("No reef name was provided. Reef name must be supplied."));
         } else {
-            Reef reef = CoralwatchApplication.getConfiguration().getReefDao().getReef(reefName);
+            Reef reef = CoralwatchApplication.getConfiguration().getReefDao().getReefByName(reefName);
             if (reef != null) {
                 survey.setReef(reef);
             } else {

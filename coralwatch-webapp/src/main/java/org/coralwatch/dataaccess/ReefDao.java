@@ -5,6 +5,6 @@ import org.coralwatch.model.Reef;
 import au.edu.uq.itee.maenad.dataaccess.Dao;
 
 public interface ReefDao extends Dao<Reef> {
-    Reef getReef(String name);
+    Reef getReefByName(String name);
 }
 
