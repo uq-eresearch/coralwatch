@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class LoginResource extends AbstractFreemarkerResource<UserImpl> {
 
-    private Dao<UserImpl> userDao;
+    private final Dao<UserImpl> userDao;
 
     public LoginResource() throws InitializationException {
         super();
@@ -68,7 +68,7 @@ public class LoginResource extends AbstractFreemarkerResource<UserImpl> {
         if (redirectUrl != null) {
             getResponse().redirectSeeOther(redirectUrl);
         } else {
-            getResponse().redirectSeeOther("/");
+            redirect("/");
         }
     }
 

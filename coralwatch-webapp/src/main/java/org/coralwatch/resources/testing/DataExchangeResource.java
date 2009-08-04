@@ -88,20 +88,10 @@ public class DataExchangeResource extends DataDownloadResource {
         } else {
             errors.add(new SubmissionError("No upload data found"));
         }
-        String baseUrl = CoralwatchApplication.getConfiguration().getBaseUrl();
         if (!errors.isEmpty()) {
-            getContext().getAttributes().put("errors", errors);
-            if (baseUrl != null) {
-                getResponse().redirectSeeOther(baseUrl + "/submissionError");
-            } else {
-                getResponse().redirectSeeOther(getRequest().getRootRef().addSegment("submissionError"));
-            }
+            redirectToSubmissionErrorPage(errors);
         } else {
-            if (baseUrl != null) {
-                getResponse().redirectSeeOther(baseUrl + "/dashboard");
-            } else {
-                getResponse().redirectSeeOther(getRequest().getRootRef().addSegment("dashboard"));
-            }
+            redirect("/dashboard");
         }
     }
 

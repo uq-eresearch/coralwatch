@@ -65,16 +65,10 @@ public class SurveyRecordResource extends AccessControlledResource<UserImpl> {
             Survey survey = this.surveyDao.load(surveyId);
             SurveyRecord surveyRecord = new SurveyRecord(survey, coralType, lightestLetter, lightestNumber, darkestLetter, darkestNumber);
             this.surveyRecordDao.save(surveyRecord);
-            String baseUrl = CoralwatchApplication.getConfiguration().getBaseUrl();
-            if(baseUrl!= null) {
-                getResponse().redirectSeeOther(baseUrl + "/surveys/" + survey.getId());
-            } else {
-                getResponse().redirectSeeOther(getRequest().getRootRef().addSegment("surveys").addSegment(survey.getId() + ""));
-            }
-        }else {
+            redirect("/surveys/" + survey.getId());
+        } else {
             throw new SubmissionException(errors);
         }
-
     }
 
     @Override
