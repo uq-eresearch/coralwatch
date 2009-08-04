@@ -1,5 +1,7 @@
 <#if testMode>
-<h1 style="color:red;"><blink>TEST MODE</blink></h1>
+<h1 style="color:red;">
+    <blink>TEST MODE</blink>
+</h1>
 </#if>
 <script>
     if (document.images) {
@@ -32,7 +34,8 @@
     }
 </script>
 
-<a href="http://www.iyor.org/" target="_blank"><img name="IYOR" src="${baseUrl}/images/iyor.bmp" align="right" alt="IYOR Logo" class="right"></a>
+<a href="http://www.iyor.org/" target="_blank"><img name="IYOR" src="${baseUrl}/images/iyor.bmp" align="right"
+                                                    alt="IYOR Logo" class="right"></a>
 
 <p>
     CoralWatch is an organisation built on a research project at the University of Queensland,
@@ -41,6 +44,38 @@
     Chart is basically a series of sample colours, with variation in brightness representing
     different stages of bleaching/recovery, based on controlled experiments.
 </p>
+<div style="margin-left: 10px; margin-bottom: 10px; float: right; width:30%;">
+    <div class="border">
+        <div class="btall">
+            <div class="ltall">
+
+                <div class="rtall">
+                    <div class="tleft">
+                        <div class="tright">
+                            <div class="bleft">
+                                <div class="bright">
+                                    <div class="ind">
+                                        <div class="h_text">
+                                            <h3>CoralWatch News</h3>
+                                        </div>
+
+                                        <div style="padding:5px;">
+                                            <strong>07/08/2009 CoralWatch Website Relaunched</strong><br/>
+
+                                            <p>The new CoralWatch website is now live and ready for users to sign
+                                                up.</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <p>
     In the field, users simply compare colours of corals with colours on the chart and
@@ -56,11 +91,13 @@
     CoralWatch have also joined forces with Project AWARE Foundation, a nonprofit environmental
     organisation working with divers to conserve underwater environments through education,
     advocacy and action. Project AWARE have registered over 500 CoralWatch monitoring
-    locations worldwide making it easy for <a href="http://www.projectaware.org/asiapac/english/activities/coral_monitoring.asp"
+    locations worldwide making it easy for <a
+        href="http://www.projectaware.org/asiapac/english/activities/coral_monitoring.asp"
         target="_blank">divers and snorkelers to get involved</a>. You
     can view a list of <a href="http://www.projectaware.org/americas/english/coral-watch/list.asp" target="_blank">
     participating dive centres</a> or find out more by visiting <a
-        href="http://www.projectaware.org/asiapac/english/activities/coral_monitoring.asp" target="_blank">Project AWARE</a>
+        href="http://www.projectaware.org/asiapac/english/activities/coral_monitoring.asp" target="_blank">Project
+    AWARE</a>
 </p>
 
 <p>
@@ -72,7 +109,8 @@
 <p>
     We now have a link to NOAAs' Tropical Ocean Coral Bleaching Indices Page! Here,
     you can immediately see which Coral Reefs are currently under Bleaching Alert, for
-    further details <a href="http://www.osdpd.noaa.gov/PSB/EPS/CB_indices/coral_bleaching_indices.html" target="_blank">click here</a>.
+    further details <a href="http://www.osdpd.noaa.gov/PSB/EPS/CB_indices/coral_bleaching_indices.html" target="_blank">click
+    here</a>.
     <br/>
     <br/>
     * First kit provided free of charge.
