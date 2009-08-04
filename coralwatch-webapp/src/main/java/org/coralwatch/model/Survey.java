@@ -57,7 +57,6 @@ public class Survey implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    @NotNull
     @Temporal(TemporalType.TIME)
     private Date time;
 

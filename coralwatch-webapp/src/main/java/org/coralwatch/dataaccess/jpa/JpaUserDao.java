@@ -27,4 +27,15 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao {
     public List<UserImpl> getAdministrators() {
         return entityManagerSource.getEntityManager().createNamedQuery("User.getAdministrators").getResultList();
     }
+
+    @Override
+    public UserImpl getByUsername(String username) {
+        List<?> resultList = entityManagerSource.getEntityManager().createNamedQuery("User.getUserByUsername")
+                .setParameter("username", username).getResultList();
+        if (resultList.isEmpty()) {
+            return null;
+        }
+        assert resultList.size() == 1 : "Usernames should be unique";
+        return (UserImpl) resultList.get(0);
+    }
 }

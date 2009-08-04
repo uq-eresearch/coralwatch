@@ -15,6 +15,7 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<Reef> getReef(String name) {
-        return entityManagerSource.getEntityManager().createNamedQuery("Reef.getReef").getResultList();
+        return entityManagerSource.getEntityManager().createNamedQuery("Reef.getReef").setParameter("name", name)
+                .getResultList();
     }
 }

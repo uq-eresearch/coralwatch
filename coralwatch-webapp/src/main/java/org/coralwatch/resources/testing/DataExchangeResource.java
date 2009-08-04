@@ -3,15 +3,23 @@ package org.coralwatch.resources.testing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.coralwatch.app.ApplicationContext;
 import org.coralwatch.app.CoralwatchApplication;
+import org.coralwatch.model.Reef;
+import org.coralwatch.model.Survey;
+import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.resources.DataDownloadResource;
 import org.restlet.data.MediaType;
@@ -80,22 +88,187 @@ public class DataExchangeResource extends DataDownloadResource {
         } else {
             errors.add(new SubmissionError("No upload data found"));
         }
+        String baseUrl = CoralwatchApplication.getConfiguration().getBaseUrl();
         if (!errors.isEmpty()) {
             getContext().getAttributes().put("errors", errors);
-            String baseUrl = CoralwatchApplication.getConfiguration().getBaseUrl();
             if (baseUrl != null) {
-                getResponse().redirectSeeOther(baseUrl + "/error");
+                getResponse().redirectSeeOther(baseUrl + "/submissionError");
             } else {
-                getResponse().redirectSeeOther(getRequest().getRootRef().addSegment("error"));
+                getResponse().redirectSeeOther(getRequest().getRootRef().addSegment("submissionError"));
+            }
+        } else {
+            if (baseUrl != null) {
+                getResponse().redirectSeeOther(baseUrl + "/dashboard");
+            } else {
+                getResponse().redirectSeeOther(getRequest().getRootRef().addSegment("dashboard"));
             }
         }
     }
 
-    private void readSurveys(HSSFWorkbook workbook) {
+    private List<SubmissionError> readSurveys(HSSFWorkbook workbook) {
+        HSSFSheet sheet = workbook.getSheet("Surveys");
+        if (sheet == null) {
+            return Collections.singletonList(new SubmissionError(
+                    "Workbook does not contain sheet with the name 'Surveys'"));
+        }
+        UserImpl anonymous = userDao.getByUsername("anonymous");
+        if (anonymous == null) {
+            anonymous = new UserImpl("anonymous", "Unknown", null, null, false);
+            userDao.save(anonymous);
+        }
+        List<Reef> unknownReefs = reefDao.getReef("unknown");
+        Reef unknownReef;
+        if (unknownReefs.isEmpty()) {
+            unknownReef = new Reef();
+            unknownReef.setName("unknown");
+            unknownReef.setCountry("unknown");
+        } else {
+            unknownReef = unknownReefs.get(0);
+        }
+        List<SubmissionError> errors = new ArrayList<SubmissionError>();
+        for (int r = 1; r <= sheet.getLastRowNum(); r++) { // we skip the header row
+            errors.addAll(readSurvey(sheet.getRow(r), anonymous, unknownReef));
+        }
+        return errors;
+    }
+
+    // TODO remove suppression of deprecation warnings once we have a proper solution for the time of day
+    @SuppressWarnings("deprecation")
+    private List<SubmissionError> readSurvey(HSSFRow row, UserImpl anonymous, Reef unknownReef) {
+        Logger.getLogger(getClass().getName()).log(Level.FINE, "Reading row: " + (row.getRowNum() + 1));
+        List<SubmissionError> errors = new ArrayList<SubmissionError>();
+        int c = 1; // we skip the ID
+        String username = getStringValue(row.getCell(c++));
+        String groupname = getStringValue(row.getCell(c++));
+        String email = getStringValue(row.getCell(c++));
+        String country = getStringValue(row.getCell(c++));
+        String participation = getStringValue(row.getCell(c++));
+        Date date = getDateValue(row.getCell(c++));
+        String location = getStringValue(row.getCell(c++));
+        String coralType = getStringValue(row.getCell(c++));
+        String lColor = getStringValue(row.getCell(c++));
+        Integer lIntensity = getIntegerValue(row.getCell(c++));
+        String dColor = getStringValue(row.getCell(c++));
+        Integer dIntensity = getIntegerValue(row.getCell(c++));
+        c++; // avIntensity
+        String comments = getStringValue(row.getCell(c++));
+        String timeOfDay = getStringValue(row.getCell(c++));
+        String weather = getStringValue(row.getCell(c++));
+        String activity = getStringValue(row.getCell(c++));
+        Double temperature = getDoubleValue(row.getCell(c++));
+        Integer latDeg = getIntegerValue(row.getCell(c++));
+        Integer latMin = getIntegerValue(row.getCell(c++));
+        Double latSec = getDoubleValue(row.getCell(c++));
+        Integer longDeg = getIntegerValue(row.getCell(c++));
+        Integer longMin = getIntegerValue(row.getCell(c++));
+        Double longSec = getDoubleValue(row.getCell(c++));
+        UserImpl user = (username == null) ? anonymous : userDao.getByUsername(username);
+        if (user == null) {
+            user = new UserImpl(username, username, email, null, false);
+            // TODO do we want to assume "country" refers to the user?
+            user.setCountry(country);
+            userDao.save(user);
+        }
+        Reef reef;
+        if (location == null) {
+            reef = unknownReef;
+        } else {
+            // TODO why is this a list, shouldn't a reef name be unique?
+            List<Reef> reefs = reefDao.getReef(location);
+            if (reefs.isEmpty()) {
+                reef = new Reef();
+                reef.setName(location);
+                reef.setCountry("unknown");
+                reefDao.save(reef);
+            } else {
+                reef = reefs.get(0);
+            }
+        }
+
+        // TODO figure out how to group the rows into surveys
+        Survey survey = new Survey();
+        survey.setCreator(user);
+        survey.setDate(date);
+        survey.setReef(reef);
+        // TODO figure out how to deal with the time of day properly
+        if ("early morning".equalsIgnoreCase(timeOfDay)) {
+            survey.setTime(new Date(0, 0, 0, 7, 0));
+        } else if ("late morning".equalsIgnoreCase(timeOfDay)) {
+            survey.setTime(new Date(0, 0, 0, 10, 0));
+        } else if ("midday".equalsIgnoreCase(timeOfDay)) {
+            survey.setTime(new Date(0, 0, 0, 12, 0));
+        } else if ("early afternoon".equalsIgnoreCase(timeOfDay)) {
+            survey.setTime(new Date(0, 0, 0, 15, 0));
+        } else if ("late afternoon".equalsIgnoreCase(timeOfDay)) {
+            survey.setTime(new Date(0, 0, 0, 17, 0));
+        } else if ("evening".equalsIgnoreCase(timeOfDay)) {
+            survey.setTime(new Date(0, 0, 0, 20, 0));
+        } else if ("null".equalsIgnoreCase(timeOfDay)) {
+            survey.setTime(null);
+        } else {
+            errors.add(new SubmissionError("Unknown entry for time of day in row " + (row.getRowNum() + 1)));
+        }
+        // TODO check if the next two are assigned correctly
+        survey.setOrganisation((groupname != null) ? groupname : "UNKNOWN");
+        survey.setOrganisationType((participation != null) ? participation : "UNKNOWN");
+        // TODO set the reef
+        survey.setWeather((weather!=null)?weather:"unknown");
+        survey.setActivity((activity!=null)?activity:"unknown");
+        if (temperature != null) {
+            survey.setTemperature(temperature);
+        }
+        if (latDeg != null) {
+            survey.setLatitude((float) convertDegreesToDecimal(latDeg, latMin, latSec));
+        }
+        if (longDeg != null) {
+            survey.setLongitude((float) convertDegreesToDecimal(longDeg, longMin, longSec));
+        }
+        survey.setComments(comments);
+        new SurveyRecord(survey, coralType, lColor.charAt(0), lIntensity, dColor.charAt(0), dIntensity);
+        Logger.getLogger(getClass().getName()).log(Level.FINE, "Creating new survey: " + survey);
+        surveyDao.save(survey);
+        return errors;
+    }
+
+    private double convertDegreesToDecimal(int deg, int min, double sec) {
+        return deg + min / 60f + sec / 3600f;
+    }
+
+    private String getStringValue(HSSFCell cell) {
+        switch (cell.getCellType()) {
+        case HSSFCell.CELL_TYPE_STRING:
+            String result = cell.getRichStringCellValue().getString();
+            if ("NULL".equals(result)) {
+                return null;
+            }
+            return result;
+        case HSSFCell.CELL_TYPE_NUMERIC:
+            return String.valueOf(cell.getNumericCellValue());
+        default:
+            return null;
+        }
+    }
+
+    private Integer getIntegerValue(HSSFCell cell) {
+        if (cell.getCellType() != HSSFCell.CELL_TYPE_NUMERIC) {
+            return null;
+        }
+        return (int) cell.getNumericCellValue();
+    }
+
+    private Date getDateValue(HSSFCell cell) {
+        return cell.getDateCellValue();
+    }
+
+    private Double getDoubleValue(HSSFCell cell) {
+        if (cell.getCellType() != HSSFCell.CELL_TYPE_NUMERIC) {
+            return null;
+        }
+        return cell.getNumericCellValue();
     }
 
     @Override
     protected boolean postAllowed(UserImpl user, Representation entity) {
-        return user.isSuperUser();
+        return user != null && user.isSuperUser();
     }
 }

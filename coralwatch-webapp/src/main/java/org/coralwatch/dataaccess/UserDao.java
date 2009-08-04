@@ -12,4 +12,6 @@ public interface UserDao extends Dao<UserImpl> {
     List<Survey> getSurveyEntriesCreated(UserImpl user);
 
     List<UserImpl> getAdministrators();
+
+    UserImpl getByUsername(String string);
 }

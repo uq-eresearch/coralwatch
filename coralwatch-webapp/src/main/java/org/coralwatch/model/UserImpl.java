@@ -1,8 +1,9 @@
 package org.coralwatch.model;
 
-import au.edu.uq.itee.maenad.util.HashGenerator;
-import org.hibernate.validator.NotNull;
+import java.io.Serializable;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,13 +14,16 @@ import javax.persistence.PostLoad;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import java.io.Serializable;
-import java.util.Date;
+
+import org.hibernate.validator.NotNull;
+
+import au.edu.uq.itee.maenad.util.HashGenerator;
 
 @Entity(name = "AppUser")
 @NamedQueries({
         @NamedQuery(name = "User.getConductedSurveys",
                 query = "SELECT o FROM Survey o WHERE o.creator = :user ORDER BY o.id"),
+        @NamedQuery(name = "User.getUserByUsername", query = "SELECT o FROM AppUser o WHERE o.username = :username"),
         @NamedQuery(name = "User.getAdministrators",
                 query = "SELECT v FROM AppUser v WHERE v.superUser = TRUE ORDER BY v.id")
 })
@@ -43,10 +47,10 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
     private long id;
 
     @NotNull
+    @Column(unique = true)
     private String username;
     private String displayName;
 
-    @NotNull
     private String email;
 
     private String address;
@@ -55,7 +59,6 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     private String country;
 
-    @NotNull
     private String passwordHash;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -83,8 +86,12 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     @PostLoad
     private void updateGravatarUrl() {
-        String emailHash = HashGenerator.createMD5Hash(getEmail());
-        gravatarUrl = "http://www.gravatar.com/avatar/" + emailHash + "?s=80&d=" + GRAVATAR_FALLBACK;
+        if (getEmail() == null) {
+            gravatarUrl = null;
+        } else {
+            String emailHash = HashGenerator.createMD5Hash(getEmail());
+            gravatarUrl = "http://www.gravatar.com/avatar/" + emailHash + "?s=80&d=" + GRAVATAR_FALLBACK;
+        }
     }
 
     public String getDisplayName() {
