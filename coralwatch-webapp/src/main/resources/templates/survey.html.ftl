@@ -31,12 +31,12 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     </tr>
     <tr>
         <td class="headercell">Country:</td>
-        <td>${(survey.country)!}</td>
+        <td>${(survey.reef.country)!}</td>
     </tr>
 
     <tr>
         <td class="headercell">Reef Name:</td>
-        <td>${(survey.reefName)!}</td>
+        <td>${(survey.reef.name)!}</td>
     </tr>
     <tr>
         <td class="headercell">Latitude:</td>
