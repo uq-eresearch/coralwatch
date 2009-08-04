@@ -35,6 +35,10 @@ public class Reef implements Serializable {
 
     public Reef() {
     }
+    public Reef(String reefName, String country) {
+        this.name = reefName;
+        this.country = country;
+    }
 
     public long getId() {
         return id;
