@@ -23,3 +23,6 @@ located in the "src/main/resources" directory. You can override any value in the
 creating a file "local/coralwatch.properties" and setting values in this file. Note
 that the application will be at the root level if started this way, e.g. if the server
 runs on port 8181 the URL will be http://localhost:8181/ (no "coralwatch" in the URL).
+
+The logging configuration is described in the file "logging.properties", which can also
+be used as a template.
