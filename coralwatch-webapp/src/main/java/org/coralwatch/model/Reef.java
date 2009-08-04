@@ -2,6 +2,7 @@ package org.coralwatch.model;
 
 import org.hibernate.validator.NotNull;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +27,7 @@ public class Reef implements Serializable {
     private long id;
 
     @NotNull
+    @Column(unique = true)
     private String name;
 
     @NotNull

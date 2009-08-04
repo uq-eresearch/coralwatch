@@ -13,9 +13,13 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<Reef> getReef(String name) {
-        return entityManagerSource.getEntityManager().createNamedQuery("Reef.getReef").setParameter("name", name)
-                .getResultList();
+    public Reef getReef(String name) {
+        List<?> resultList = entityManagerSource.getEntityManager().createNamedQuery("Reef.getReef").setParameter(
+                "name", name).getResultList();
+        if (resultList.isEmpty()) {
+            return null;
+        }
+        assert resultList.size() == 1 : "The name of a reef should be unique";
+        return (Reef) resultList.get(0);
     }
 }

@@ -106,14 +106,11 @@ public class DataExchangeResource extends DataDownloadResource {
             anonymous = new UserImpl("anonymous", "Unknown", null, null, false);
             userDao.save(anonymous);
         }
-        List<Reef> unknownReefs = reefDao.getReef("unknown");
-        Reef unknownReef;
-        if (unknownReefs.isEmpty()) {
+        Reef unknownReef = reefDao.getReef("unknown");
+        if (unknownReef == null) {
             unknownReef = new Reef();
             unknownReef.setName("unknown");
             unknownReef.setCountry("unknown");
-        } else {
-            unknownReef = unknownReefs.get(0);
         }
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
         for (int r = 1; r <= sheet.getLastRowNum(); r++) { // we skip the header row
@@ -165,15 +162,13 @@ public class DataExchangeResource extends DataDownloadResource {
         if (location == null) {
             reef = unknownReef;
         } else {
-            // TODO why is this a list, shouldn't a reef name be unique?
-            List<Reef> reefs = reefDao.getReef(location);
-            if (reefs.isEmpty()) {
+            reef = reefDao.getReef(location);
+            if (reef == null) {
                 reef = new Reef();
                 reef.setName(location);
                 reef.setCountry(country);
                 reefDao.save(reef);
             } else {
-                reef = reefs.get(0);
                 // TODO add consistency checks
             }
         }

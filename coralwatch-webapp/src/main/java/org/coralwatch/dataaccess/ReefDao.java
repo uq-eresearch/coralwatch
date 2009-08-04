@@ -1,11 +1,10 @@
 package org.coralwatch.dataaccess;
 
-import au.edu.uq.itee.maenad.dataaccess.Dao;
 import org.coralwatch.model.Reef;
 
-import java.util.List;
+import au.edu.uq.itee.maenad.dataaccess.Dao;
 
 public interface ReefDao extends Dao<Reef> {
-    List<Reef> getReef(String name);
+    Reef getReef(String name);
 }
 
