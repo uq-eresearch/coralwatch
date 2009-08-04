@@ -11,8 +11,8 @@
 
     <#list kitrequestList as kitrequest>
         <tr>
-            <td align="center"><a href="${baseUrl}/kit/${kitrequest.id}">${kitrequest.id}</a></td>
-            <td><a href="${baseUrl}/users/${kitrequest.requester.id}">${(kitrequest.requester.displayName)}</a></td>
+            <td align="center"><a href="${baseUrl}/kit/${kitrequest.id?c}">${kitrequest.id}</a></td>
+            <td><a href="${baseUrl}/users/${kitrequest.requester.id?c}">${(kitrequest.requester.displayName)}</a></td>
             <td>${(kitrequest.requestDate)!?datetime}</td>
             <td><#if kitrequest.dispatchdate??>
                 ${(kitrequest.dispatchdate)?string("dd/MM/yyyy")!}

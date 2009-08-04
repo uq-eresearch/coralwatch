@@ -7,12 +7,12 @@
         <td>
             <#if canUpdate>
                 <button dojoType="dijit.form.Button" id="editButton"
-                        onClick="window.location='${baseUrl}/users/${userimpl.id}?edit'">Edit
+                        onClick="window.location='${baseUrl}/users/${userimpl.id?c}?edit'">Edit
                 </button>
             </#if>
             <#if canDelete>
                 <button dojoType="dijit.form.Button" id="deleteButton"
-                        onClick="window.location='${baseUrl}/users/${userimpl.id}?delete'">Delete
+                        onClick="window.location='${baseUrl}/users/${userimpl.id?c}?delete'">Delete
                 </button>
             </#if>
         </td></tr>

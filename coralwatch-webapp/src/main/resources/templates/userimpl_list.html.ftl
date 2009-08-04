@@ -9,8 +9,8 @@
     </tr>
     <#list userimplList as userimpl>
         <tr>
-            <td align="center"><a href="${baseUrl}/users/${userimpl.id}">${userimpl.id}</a></td>
-            <td><a href="${baseUrl}/users/${userimpl.id}">${userimpl.username}</a></td>
+            <td align="center"><a href="${baseUrl}/users/${userimpl.id?c}">${userimpl.id}</a></td>
+            <td><a href="${baseUrl}/users/${userimpl.id?c}">${userimpl.username}</a></td>
             <td>${userimpl.displayName}</td>
             <td>${(userimpl.registrationDate)!?date}</td>
             <td>

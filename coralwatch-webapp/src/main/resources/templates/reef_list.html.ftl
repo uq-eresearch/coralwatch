@@ -10,7 +10,7 @@
 
     <#list reefList as reef>
         <tr>
-            <td align="center"><a href="${baseUrl}/reef/${reef.id}">${reef.id}</a></td>
+            <td align="center"><a href="${baseUrl}/reef/${reef.id?c}">${reef.id}</a></td>
             <td>${(reef.name)!}</td>
             <td>${(reef.country)!}</td>
         </tr>

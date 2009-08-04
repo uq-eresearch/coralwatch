@@ -25,10 +25,10 @@
     </tr>
 </table>
 <#if canUpdate>
-    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/kit/${kitrequest.id}?edit'">Edit</button>
+    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/kit/${kitrequest.id?c}?edit'">Edit</button>
 </#if>
 <#if canDelete>
-    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/kit/${kitrequest.id}?edit'">Delete
+    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/kit/${kitrequest.id?c}?edit'">Delete
     </button>
 </#if>
 <br/>
