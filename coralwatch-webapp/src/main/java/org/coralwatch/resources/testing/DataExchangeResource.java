@@ -224,7 +224,6 @@ public class DataExchangeResource extends DataDownloadResource {
             // TODO check if the next two are assigned correctly
             survey.setOrganisation((groupname != null) ? groupname : "unknown");
             survey.setOrganisationType((participation != null) ? participation : "unknown");
-            // TODO set the reef
             survey.setWeather((weather != null) ? weather : "unknown");
             survey.setActivity((activity != null) ? activity : "unknown");
             if (temperature != null) {
