@@ -32,6 +32,7 @@ import org.restlet.resource.ResourceException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
 import au.edu.uq.itee.maenad.restlet.errorhandling.TechnicalSubmissionError;
+import static au.edu.uq.itee.maenad.util.IdentityHelper.equalsOrBothNull;
 
 public class DataExchangeResource extends DataDownloadResource {
     /**
@@ -167,7 +168,16 @@ public class DataExchangeResource extends DataDownloadResource {
             Logger.getLogger(DataExchangeResource.class.getName()).log(Level.INFO, "Creating user " + username);
             userDao.save(user);
         } else {
-            // TODO add consistency checks
+            if (!equalsOrBothNull(user.getEmail(), email)) {
+                if ("unknown".equals(user.getEmail())) {
+                    user.setEmail(email);
+                } else {
+                    String message = String.format("Mismatch of email addresses during import: user has '%s', row %d says '%s'",
+                            user.getEmail(), row.getRowNum() + 1, email);
+                    Logger.getLogger(DataExchangeResource.class.getName()).log(Level.WARNING, message);
+                    errors.add(new SubmissionError(message));
+                }
+            }
         }
         Reef reef;
         if (location == null) {
@@ -181,7 +191,17 @@ public class DataExchangeResource extends DataDownloadResource {
                 Logger.getLogger(DataExchangeResource.class.getName()).log(Level.INFO, "Creating reef " + location);
                 reefDao.save(reef);
             } else {
-                // TODO add consistency checks
+                if (!equalsOrBothNull(reef.getCountry(), country)) {
+                    if ("unknown".equals(reef.getCountry())) {
+                        reef.setCountry(country);
+                    } else {
+                        String message = String.format(
+                                "Mismatch of countries during import: reef has '%s', row %d says '%s'", reef
+                                        .getCountry(), row.getRowNum() + 1, country);
+                        Logger.getLogger(DataExchangeResource.class.getName()).log(Level.WARNING, message);
+                        errors.add(new SubmissionError(message));
+                    }
+                }
             }
         }
         Date time = null;
@@ -229,8 +249,12 @@ public class DataExchangeResource extends DataDownloadResource {
             if (temperature != null) {
                 survey.setTemperature(temperature);
             }
-            survey.setLatitude(latitude);
-            survey.setLongitude(longitude);
+            if (latitude != -9999) {
+                survey.setLatitude(latitude);
+            }
+            if (longitude != -9999) {
+                survey.setLongitude(longitude);
+            }
             survey.setComments(comments);
             Logger.getLogger(getClass().getName()).log(Level.FINE, "Creating new survey: " + survey);
             surveyDao.save(survey);
