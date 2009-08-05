@@ -3,6 +3,7 @@ package org.coralwatch.model;
 import org.hibernate.validator.NotNull;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -68,6 +69,7 @@ public class Survey implements Serializable {
     @NotNull
     private double temperature;
 
+    @Column(length = 2000)
     private String comments;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey", fetch = FetchType.LAZY)
