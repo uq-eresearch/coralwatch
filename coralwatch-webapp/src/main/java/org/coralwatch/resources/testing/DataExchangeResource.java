@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,6 +34,15 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
 import au.edu.uq.itee.maenad.restlet.errorhandling.TechnicalSubmissionError;
 
 public class DataExchangeResource extends DataDownloadResource {
+    /**
+     * A lookup index for Surveys already imported.
+     *
+     * We could query the database, but this would require pushing our specific needs into the
+     * persistence layer and since we have to handle lots of NULLs querying is quite messy.
+     * Instead we just use a String-based lookup, with all relevant attributes concatenated.
+     */
+    private final Map<String, Survey> surveyIndex = new HashMap<String, Survey>();
+
     public DataExchangeResource() throws InitializationException {
         super();
         setModifiable(true);
@@ -200,8 +211,10 @@ public class DataExchangeResource extends DataDownloadResource {
                 String.format("Trying to find survey having %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", user
                         .getUsername(), groupname, participation, reef.getName(), weather, date, time, latitude,
                         longitude, activity, comments));
-        Survey survey = surveyDao.getExactSurvey(user, groupname, participation, reef, weather, date, time, latitude,
-                longitude, activity, comments);
+        String lookupString = user.getId() + "::" + groupname + "::" + participation + "::" + reef.getId() + "::"
+                + weather + "::" + date + "::" + time + "::" + latitude + "::" + longitude + "::" + activity + "::"
+                + comments;
+        Survey survey = surveyIndex.get(lookupString);
         if (survey == null) {
             survey = new Survey();
             survey.setCreator(user);
@@ -222,6 +235,7 @@ public class DataExchangeResource extends DataDownloadResource {
             survey.setComments(comments);
             Logger.getLogger(getClass().getName()).log(Level.FINE, "Creating new survey: " + survey);
             surveyDao.save(survey);
+            surveyIndex.put(lookupString, survey);
         }
         SurveyRecord surveyRecord = new SurveyRecord(survey, coralType, lColor.charAt(0), lIntensity, dColor.charAt(0),
                 dIntensity);
