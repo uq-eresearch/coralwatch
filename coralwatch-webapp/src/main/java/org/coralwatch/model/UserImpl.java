@@ -1,7 +1,7 @@
 package org.coralwatch.model;
 
-import java.io.Serializable;
-import java.util.Date;
+import au.edu.uq.itee.maenad.util.HashGenerator;
+import org.hibernate.validator.NotNull;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,16 +14,14 @@ import javax.persistence.PostLoad;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
-import org.hibernate.validator.NotNull;
-
-import au.edu.uq.itee.maenad.util.HashGenerator;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity(name = "AppUser")
 @NamedQueries({
         @NamedQuery(name = "User.getConductedSurveys",
                 query = "SELECT o FROM Survey o WHERE o.creator = :user ORDER BY o.id"),
-        @NamedQuery(name = "User.getUserByUsername", query = "SELECT o FROM AppUser o WHERE o.username = :username"),
+        @NamedQuery(name = "User.getUserByEmail", query = "SELECT o FROM AppUser o WHERE o.email = :email"),
         @NamedQuery(name = "User.getAdministrators",
                 query = "SELECT v FROM AppUser v WHERE v.superUser = TRUE ORDER BY v.id")
 })
@@ -46,13 +44,14 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotNull
     @Column(unique = true)
-    private String username;
-    private String displayName;
-
     private String email;
 
+    private String displayName;
+
+
+
+    @Column(length = 500)
     private String address;
 
     private String occupation;
@@ -74,8 +73,7 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
     public UserImpl() {
     }
 
-    public UserImpl(String username, String displayName, String email, String passwordHash, boolean superUser) {
-        this.username = username;
+    public UserImpl(String displayName, String email, String passwordHash, boolean superUser) {
         this.displayName = displayName;
         this.email = email;
         updateGravatarUrl();
@@ -142,14 +140,6 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
         this.passwordHash = passwordHash;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -187,11 +177,16 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        return username.equals(((UserImpl) o).username);
+        return email.equals(((UserImpl) o).email);
     }
 
     @Override
     public int hashCode() {
-        return username.hashCode();
+        return email.hashCode();
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
     }
 }

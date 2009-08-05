@@ -13,5 +13,5 @@ public interface UserDao extends Dao<UserImpl> {
 
     List<UserImpl> getAdministrators();
 
-    UserImpl getByUsername(String string);
+    UserImpl getByEmail(String email);
 }

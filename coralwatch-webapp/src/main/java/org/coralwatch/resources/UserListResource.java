@@ -59,7 +59,7 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
             throw new SubmissionException(errors);
         }
 
-        UserImpl userImpl = new UserImpl(username, displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
+        UserImpl userImpl = new UserImpl(displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
         userImpl.setOccupation(occupation == null? "" : occupation);
         userImpl.setAddress(address == null? "" : address);
         userImpl.setCountry(country == null? "" : country);

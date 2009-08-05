@@ -1,16 +1,10 @@
 package org.coralwatch.resources.testing;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
+import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
+import au.edu.uq.itee.maenad.restlet.errorhandling.TechnicalSubmissionError;
+import static au.edu.uq.itee.maenad.util.NullHelper.equalsOrBothNull;
+import static au.edu.uq.itee.maenad.util.NullHelper.fallback;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -29,11 +23,16 @@ import org.restlet.ext.fileupload.RestletFileUpload;
 import org.restlet.resource.Representation;
 import org.restlet.resource.ResourceException;
 
-import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
-import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
-import au.edu.uq.itee.maenad.restlet.errorhandling.TechnicalSubmissionError;
-import static au.edu.uq.itee.maenad.util.NullHelper.equalsOrBothNull;
-import static au.edu.uq.itee.maenad.util.NullHelper.fallback;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataExchangeResource extends DataDownloadResource {
     /**
@@ -201,28 +200,16 @@ public class DataExchangeResource extends DataDownloadResource {
         if (survey == null) {
             survey = new Survey();
             UserImpl user;
-            if (username == null) {
-                user = new UserImpl("anonymous" + anonymousUserId++, "unknown", "unknown", null, false);
+            if (email == null) {
+                user = new UserImpl("unknown","anonymous" + anonymousUserId++,null, false);
                 userDao.save(user);
             } else {
-                user = userDao.getByUsername(username);
+                user = userDao.getByEmail(email);
                 if (user == null) {
-                    user = new UserImpl(username, username, email, null, false);
+                    user = new UserImpl(fallback(username,"unknown"), email, null, false);
                     user.setCountry("unknown");
                     Logger.getLogger(DataExchangeResource.class.getName()).log(Level.INFO, "Creating user " + username);
                     userDao.save(user);
-                } else {
-                    if (!equalsOrBothNull(user.getEmail(), email)) {
-                        if ("unknown".equals(user.getEmail())) {
-                            user.setEmail(email);
-                        } else {
-                            String message = String.format(
-                                    "Mismatch of email addresses during import: user has '%s', row %d says '%s'", user
-                                            .getEmail(), row.getRowNum() + 1, email);
-                            Logger.getLogger(DataExchangeResource.class.getName()).log(Level.WARNING, message);
-                            errors.add(new SubmissionError(message));
-                        }
-                    }
                 }
             }
             assert user != null;

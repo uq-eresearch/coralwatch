@@ -41,9 +41,9 @@ public class LoginResource extends AbstractFreemarkerResource<UserImpl> {
     public void protectedAcceptRepresentation(Representation entity) throws ResourceException {
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
         Form form = new Form(entity);
-        String username = form.getFirstValue("username");
-        if (username == null || username.isEmpty()) {
-            errors.add(new SubmissionError("No username was provided"));
+        String email = form.getFirstValue("email");
+        if (email == null || email.isEmpty()) {
+            errors.add(new SubmissionError("No email address was provided"));
         }
         String password = form.getFirstValue("password");
         if (password == null || password.isEmpty()) {
@@ -51,7 +51,7 @@ public class LoginResource extends AbstractFreemarkerResource<UserImpl> {
         }
         List<UserImpl> userImpls = userDao.getAll();
         for (UserImpl userImpl : userImpls) {
-            if (userImpl.getUsername().equals(username)) {
+            if (userImpl.getEmail().equals(email)) {
                 if (BCrypt.checkpw(password, userImpl.getPasswordHash())) {
                     login(userImpl);
                 }

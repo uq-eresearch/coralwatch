@@ -2,6 +2,7 @@ package org.coralwatch.model;
 
 import org.hibernate.validator.NotNull;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,8 +32,10 @@ public class KitRequest implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dispatchdate;
 
+    @Column(length = 500)
     private String address;
 
+    @Column(length = 2000)
     private String notes;
 
     public KitRequest(){

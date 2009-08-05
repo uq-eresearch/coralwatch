@@ -29,13 +29,13 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao {
     }
 
     @Override
-    public UserImpl getByUsername(String username) {
-        List<?> resultList = entityManagerSource.getEntityManager().createNamedQuery("User.getUserByUsername")
-                .setParameter("username", username).getResultList();
+    public UserImpl getByEmail(String email) {
+        List<?> resultList = entityManagerSource.getEntityManager().createNamedQuery("User.getUserByEmail")
+                .setParameter("email", email).getResultList();
         if (resultList.isEmpty()) {
             return null;
         }
-        assert resultList.size() == 1 : "Usernames should be unique";
+        assert resultList.size() == 1 : "Email should be unique";
         return (UserImpl) resultList.get(0);
     }
 }
