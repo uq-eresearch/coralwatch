@@ -20,10 +20,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 
 public class KitRequestResource extends ModifiableEntityResource<KitRequest, KitRequestDao, UserImpl> {
 
+    private static final Logger LOGGER = Logger.getLogger(KitRequestResource.class.getName());
+    
     public KitRequestResource() throws InitializationException {
         super(CoralwatchApplication.getConfiguration().getKitRequestDao());
     }
@@ -59,6 +62,12 @@ public class KitRequestResource extends ModifiableEntityResource<KitRequest, Kit
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         }
+    }
+
+    @Override
+    protected void preDeleteHook(KitRequest kitRequest) {
+        super.preDeleteHook(kitRequest);
+        LOGGER.info("##### Deleted survey: " + kitRequest.getId() + " #####");
     }
 
     @Override

@@ -1,4 +1,22 @@
 <#-- @ftlvariable name="kitrequest" type="org.coralwatch.model.KitRequest" -->
+<script type="text/javascript">
+    function deleteKitRequest(id) {
+        if (confirm("Are you sure you want to delete this kit request?")) {
+            dojo.xhrDelete({
+                url:"${baseUrl}/kit/" + id,
+                timeout: 5000,
+                load: function(response, ioArgs) {
+                    window.location = '${baseUrl}/kit';
+                    return response;
+                },
+                error: function(response, ioArgs) {
+                    alert("Deletion failed: " + response);
+                    return response;
+                }
+            });
+        }
+    }
+</script>
 <h3>Kit Request Details</h3>
 <table>
     <tr>
@@ -28,7 +46,6 @@
     <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/kit/${kitrequest.id?c}?edit'">Edit</button>
 </#if>
 <#if canDelete>
-    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/kit/${kitrequest.id?c}?edit'">Delete
-    </button>
+    <button dojoType="dijit.form.Button" onClick="deleteKitRequest(${kitrequest.id})">Delete</button>
 </#if>
 <br/>

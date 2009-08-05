@@ -7,7 +7,7 @@
                 url:"${baseUrl}/users/" + id,
                 timeout: 5000,
                 load: function(response, ioArgs) {
-                    window.location = '${baseUrl}/userss';
+                    window.location = '${baseUrl}/users';
                     return response;
                 },
                 error: function(response, ioArgs) {
