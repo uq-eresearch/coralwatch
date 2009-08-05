@@ -116,6 +116,12 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.isTestSetup = Boolean.valueOf(getProperty(properties, "testMode", "false"));
     }
 
+    /**
+     * Deletes all entries in the database.
+     *
+     * Note that this is a pretty inefficient way of doing this. It is intended to be used
+     * only for small sets of data.
+     */
     public void resetDatabase() {
         if (!isTestSetup) {
             throw new IllegalStateException("Database reset is only allowed in test mode");
