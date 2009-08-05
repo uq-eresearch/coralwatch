@@ -231,9 +231,9 @@ public class DataExchangeResource extends DataDownloadResource {
                 String.format("Trying to find survey having %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", user
                         .getUsername(), groupname, participation, reef.getName(), weather, date, time, latitude,
                         longitude, activity, comments));
-        String lookupString = user.getId() + "::" + groupname + "::" + participation + "::" + reef.getId() + "::"
-                + weather + "::" + date + "::" + time + "::" + latitude + "::" + longitude + "::" + activity + "::"
-                + comments;
+        String lookupString = user.getUsername() + "::" + groupname + "::" + participation + "::" + reef.getName()
+                + "::" + weather + "::" + date + "::" + time + "::" + latitude + "::" + longitude + "::" + activity
+                + "::" + comments;
         Survey survey = surveyIndex.get(lookupString);
         if (survey == null) {
             survey = new Survey();
