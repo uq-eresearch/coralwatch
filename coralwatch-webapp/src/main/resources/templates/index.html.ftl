@@ -54,19 +54,17 @@
                         <div class="tright">
                             <div class="bleft">
                                 <div class="bright">
-                                    <div class="ind">
-                                        <div class="h_text">
-                                            <h3>CoralWatch News</h3>
-                                        </div>
-
-                                        <div style="padding:5px;">
-                                            <strong>07/08/2009 CoralWatch Website Relaunched</strong><br/>
-
-                                            <p>The new CoralWatch website is now live and ready for users to sign
-                                                up.</p>
-                                        </div>
-
+                                    <#--<div class="ind">-->
+                                    <div class="h_text">
+                                        <h3>CoralWatch News</h3>
                                     </div>
+                                    <div style="padding:5px; text-align:justify;">
+                                        <ul class="news-list">
+                                            <li><a>The new CoralWatch website is now live and ready for users to sign
+                                                up.</a></li>
+                                        </ul>
+                                    </div>
+                                    <#--</div>-->
                                 </div>
                             </div>
                         </div>

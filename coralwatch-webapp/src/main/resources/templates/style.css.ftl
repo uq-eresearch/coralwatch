@@ -44,6 +44,7 @@ list-style-type: square;
 
 ol {
 margin-left: 30px;
+margin-right: 5px;
 }
 
 li {
@@ -337,5 +338,23 @@ text-align: justify;
 
 .h_text {
 background:transparent url(${baseUrl}/icons/h_text_bg.gif) repeat-x scroll center bottom;
-padding:4px;
+padding:5px;
+}
+
+.news-list {
+  margin: 0 0 15px 15px;
+  padding: 0;
+  list-style-type: none;
+}
+
+.news-list li {
+  margin: 0 0 10px 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.news-list li a {
+  padding: 0 0 0 19px;
+  list-style-type: none;
+  background: url("${baseUrl}/icons/fam/newspaper.png") no-repeat 0 50%;                        
 }
