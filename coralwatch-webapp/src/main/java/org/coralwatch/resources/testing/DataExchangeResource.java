@@ -32,7 +32,7 @@ import org.restlet.resource.ResourceException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
 import au.edu.uq.itee.maenad.restlet.errorhandling.TechnicalSubmissionError;
-import static au.edu.uq.itee.maenad.util.IdentityHelper.equalsOrBothNull;
+import static au.edu.uq.itee.maenad.util.NullHelper.equalsOrBothNull;
 
 public class DataExchangeResource extends DataDownloadResource {
     /**
