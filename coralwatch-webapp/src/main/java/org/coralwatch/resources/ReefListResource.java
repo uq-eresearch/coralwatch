@@ -1,15 +1,14 @@
 package org.coralwatch.resources;
 
+import au.edu.uq.itee.maenad.restlet.ModifiableListResource;
+import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
+import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
 import org.restlet.resource.Variant;
-
-import au.edu.uq.itee.maenad.restlet.ModifiableListResource;
-import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
-import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
 
 public class ReefListResource extends ModifiableListResource<Reef, ReefDao, UserImpl> {
 
@@ -29,7 +28,7 @@ public class ReefListResource extends ModifiableListResource<Reef, ReefDao, User
         return null;
     }
 
-        @Override
+    @Override
     protected boolean getAllowed(UserImpl userImpl, Variant variant) {
         return userImpl.isSuperUser();
     }

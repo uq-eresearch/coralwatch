@@ -1,13 +1,13 @@
 package org.coralwatch.app;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.coralwatch.model.Survey;
-import org.coralwatch.model.UserImpl;
-
 import au.edu.uq.itee.maenad.restlet.auth.AccessLevel;
 import au.edu.uq.itee.maenad.restlet.auth.AccessPolicy;
+import org.coralwatch.model.Survey;
+import org.coralwatch.model.SurveyRecord;
+import org.coralwatch.model.UserImpl;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class CoralwatchAccessPolicy implements AccessPolicy<UserImpl> {
@@ -50,6 +50,12 @@ public class CoralwatchAccessPolicy implements AccessPolicy<UserImpl> {
             canRead = user !=null;
             canUpdate = (user != null) && user.equals(((Survey) instance).getCreator()); //Users can edit their own profiles
             canDelete = false; // only super users can delete profiles
+        }
+        if (instance instanceof SurveyRecord) {
+            canCreate = true;
+            canRead = user !=null;
+            canUpdate = (user != null) && user.equals(((SurveyRecord) instance).getSurvey().getCreator()); //Users can edit their own profiles
+            canDelete = true; // only super users can delete profiles
         }
 
         return new AccessLevel(canCreate, canRead, canUpdate, canDelete);

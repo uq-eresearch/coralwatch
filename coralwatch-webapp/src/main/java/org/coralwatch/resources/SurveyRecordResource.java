@@ -1,83 +1,81 @@
 package org.coralwatch.resources;
 
-import au.edu.uq.itee.maenad.restlet.AccessControlledResource;
+import au.edu.uq.itee.maenad.restlet.ModifiableEntityResource;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
 import org.coralwatch.app.CoralwatchApplication;
-import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
-import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
-import org.restlet.resource.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 
-public class SurveyRecordResource extends AccessControlledResource<UserImpl> {
-    private final SurveyDao surveyDao;
-    private final SurveyRecordDao surveyRecordDao;
+public class SurveyRecordResource extends ModifiableEntityResource<SurveyRecord, SurveyRecordDao, UserImpl> {
+
+    private static final Logger LOGGER = Logger.getLogger(SurveyRecordResource.class.getName());
 
     public SurveyRecordResource() throws InitializationException {
-        this.surveyRecordDao = CoralwatchApplication.getConfiguration().getSurveyRecordDao();
-        this.surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
-        setModifiable(true);
+        super(CoralwatchApplication.getConfiguration().getSurveyRecordDao());
     }
 
     @Override
-    protected Representation protectedRepresent(Variant variant) throws ResourceException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void updateObject(SurveyRecord surveyRecord, Form form) throws SubmissionException {
+        updateSurveyRecord(surveyRecord, form);
     }
 
-    @Override
-    public void protectedAcceptRepresentation(Representation entity) throws ResourceException {
+    public static void updateSurveyRecord(SurveyRecord surveyRecord, Form form) throws SubmissionException {
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
-        Form form = getRequest().getEntityAsForm();
-        long surveyId = -1;
-        try {
-            surveyId = Long.valueOf(form.getFirstValue("surveyId"));
-        } catch (NumberFormatException e) {
-            errors.add(new SubmissionError("Can not parse survey ID"));
-        }
+
         String coralType = form.getFirstValue("coralType");
         if ((coralType == null) || coralType.isEmpty()) {
             errors.add(new SubmissionError("No coral type was provided. Coral type must be supplied."));
+        } else {
+            surveyRecord.setCoralType(coralType);
         }
 
         char lightestLetter = form.getFirstValue("lightestLetter").trim().charAt(0);
         int lightestNumber = Integer.parseInt(form.getFirstValue("lightestNumber"));
         if (lightestLetter < 'B' || lightestLetter > 'E' || lightestNumber < 1 || lightestNumber > 6) {
             errors.add(new SubmissionError("Lightest colour code was not provided correctly. Colour code must be supplied."));
+        } else {
+            surveyRecord.setLightestLetter(lightestLetter);
+            surveyRecord.setLightestNumber(lightestNumber);
         }
 
         char darkestLetter = form.getFirstValue("darkestLetter").trim().charAt(0);
         int darkestNumber = Integer.parseInt(form.getFirstValue("darkestNumber"));
         if (darkestLetter < 'B' || darkestLetter > 'E' || darkestNumber < 1 || darkestNumber > 6) {
             errors.add(new SubmissionError("Darkest colour code was not provided correctly. Colour code must be supplied."));
+        } else {
+            surveyRecord.setDarkestLetter(darkestLetter);
+            surveyRecord.setDarkestNumber(darkestNumber);
         }
 
-        if (errors.isEmpty()) {
-            Survey survey = this.surveyDao.load(surveyId);
-            SurveyRecord surveyRecord = new SurveyRecord(survey, coralType, lightestLetter, lightestNumber, darkestLetter, darkestNumber);
-            this.surveyRecordDao.save(surveyRecord);
-            redirect("/surveys/" + survey.getId());
-        } else {
+        if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         }
     }
 
     @Override
-    protected boolean getAllowed(UserImpl user, Variant variant) {
-        return false;
+    protected void preDeleteHook(SurveyRecord surveyRecord) {
+        super.preDeleteHook(surveyRecord);
+        LOGGER.info("##### Deleted survey record: " + surveyRecord.getId() + " #####");
     }
 
     @Override
-    protected boolean postAllowed(UserImpl user, Representation entity) {
-        return true; //getAccessPolicy().getAccessLevelForClass(user, Ontology.class).canUpdate();
+    protected boolean getAllowed(UserImpl userImpl, Variant variant) throws ResourceException {
+        //Only logged in users and super users can edit profiles
+        //Logged in users can only edit their own survey
+        long id = Long.valueOf((String) getRequest().getAttributes().get("id"));
+        SurveyRecord surveyRecord = getDao().load(id);
+        return getAccessPolicy().getAccessLevelForInstance(userImpl, surveyRecord).canRead();
+
     }
 }
