@@ -3,7 +3,7 @@
 <#if newObject>
 <h3>Sign Up</h3>
 <#else>
-<h3>Editing User ${userimpl.username}</h3>
+<h3>Editing User ${userimpl.displayName}</h3>
 </#if>
 
 <div dojoType="dijit.form.Form" method="post">
@@ -16,11 +16,7 @@
 </script>
 <script type="text/javascript">
     dojo.addOnLoad(function() {
-    <#if newObject>
-        dijit.byId("username").focus();
-    <#else>
         dijit.byId("displayName").focus();
-    </#if>
     });
 </script>
 <table>
