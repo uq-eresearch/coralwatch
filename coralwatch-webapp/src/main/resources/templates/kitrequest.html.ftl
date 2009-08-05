@@ -46,6 +46,6 @@
     <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/kit/${kitrequest.id?c}?edit'">Edit</button>
 </#if>
 <#if canDelete>
-    <button dojoType="dijit.form.Button" onClick="deleteKitRequest(${kitrequest.id})">Delete</button>
+    <button dojoType="dijit.form.Button" onClick="deleteKitRequest(${kitrequest.id?c})">Delete</button>
 </#if>
 <br/>

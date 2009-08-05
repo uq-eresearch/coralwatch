@@ -32,7 +32,7 @@
                 </button>
             </#if>
             <#if canDelete>
-                <button dojoType="dijit.form.Button" onClick="deleteUser(${userImpl.id})">Delete</button>
+                <button dojoType="dijit.form.Button" onClick="deleteUser(${userimpl.id?c})">Delete</button>
             </#if>
         </td></tr>
     <tr>

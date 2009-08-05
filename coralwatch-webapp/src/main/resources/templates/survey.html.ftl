@@ -95,7 +95,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id?c}?edit'">Edit</button>
 </#if>
 <#if canDelete>
-    <button dojoType="dijit.form.Button" onClick="deleteSurvey(${survey.id})">Delete</button>
+    <button dojoType="dijit.form.Button" onClick="deleteSurvey(${survey.id?c})">Delete</button>
 </#if>
 <br/>
 

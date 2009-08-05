@@ -32,6 +32,6 @@
 <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/reef/${reef.id?c}?edit'">Edit</button>
 </#if>
 <#if canDelete>
-<button dojoType="dijit.form.Button" onClick="deleteReef(${reef.id})">Delete</button>
+<button dojoType="dijit.form.Button" onClick="deleteReef(${reef.id?c})">Delete</button>
 </#if>
 <br/>
