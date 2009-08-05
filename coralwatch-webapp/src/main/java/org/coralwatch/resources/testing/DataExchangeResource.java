@@ -33,6 +33,7 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
 import au.edu.uq.itee.maenad.restlet.errorhandling.TechnicalSubmissionError;
 import static au.edu.uq.itee.maenad.util.NullHelper.equalsOrBothNull;
+import static au.edu.uq.itee.maenad.util.NullHelper.fallback;
 
 public class DataExchangeResource extends DataDownloadResource {
     /**
@@ -230,14 +231,14 @@ public class DataExchangeResource extends DataDownloadResource {
             survey.setTime(time);
             Reef reef;
             if (location == null) {
-                reef = new Reef("Unknown Reef " + unknownReefId++, (country != null) ? country : "unknown");
+                reef = new Reef("Unknown Reef " + unknownReefId++, fallback(country, "unknown"));
                 reefDao.save(reef);
             } else {
                 reef = reefDao.getReefByName(location);
                 if (reef == null) {
                     reef = new Reef();
                     reef.setName(location);
-                    reef.setCountry((country != null) ? country : "unknown");
+                    reef.setCountry(fallback(country, "unknown"));
                     Logger.getLogger(DataExchangeResource.class.getName()).log(Level.INFO,
                             "Creating reef " + location + " (" + country + ")");
                     reefDao.save(reef);
@@ -256,10 +257,10 @@ public class DataExchangeResource extends DataDownloadResource {
                 }
             }
             survey.setReef(reef);
-            survey.setOrganisation((groupname != null) ? groupname : "unknown");
-            survey.setOrganisationType((participation != null) ? participation : "unknown");
-            survey.setWeather((weather != null) ? weather : "unknown");
-            survey.setActivity((activity != null) ? activity : "unknown");
+            survey.setOrganisation(fallback(groupname, "unknown"));
+            survey.setOrganisationType(fallback(participation, "unknown"));
+            survey.setWeather(fallback(weather, "unknown"));
+            survey.setActivity(fallback(activity, "unknown"));
             if (temperature != null) {
                 survey.setTemperature(temperature);
             }
@@ -287,7 +288,7 @@ public class DataExchangeResource extends DataDownloadResource {
         int sign = 1;
         Character lastChar = sec.charAt(sec.length() - 1);
         if (!Character.isDigit(lastChar)) {
-            sec = sec.substring(0, sec.length());
+            sec = sec.substring(0, sec.length() - 1);
             if ("wWsS".indexOf(lastChar) != -1) {
                 sign = -1;
             }
