@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -39,6 +41,9 @@ public abstract class DataDownloadResource extends AccessControlledResource<User
     protected final SurveyRecordDao surveyRecordDao;
     protected final KitRequestDao kitrequestDao;
 
+    private HSSFCellStyle dateStyle = null;
+    private HSSFCellStyle timeStyle = null;
+
     public DataDownloadResource() throws InitializationException {
         super();
         getVariants().add(new Variant(MediaType.APPLICATION_EXCEL));
@@ -60,6 +65,7 @@ public abstract class DataDownloadResource extends AccessControlledResource<User
             @Override
             public void write(OutputStream stream) throws IOException {
                 HSSFWorkbook workbook = new HSSFWorkbook();
+                createDateStyles(workbook);
                 writeUserSheet(workbook);
                 writeReefSheet(workbook);
                 writeSurveySheet(workbook);
@@ -71,6 +77,14 @@ public abstract class DataDownloadResource extends AccessControlledResource<User
         r.setDownloadable(true);
         r.setDownloadName("coralwatch-" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".xls");
         return r;
+    }
+
+    protected void createDateStyles(HSSFWorkbook workbook) {
+        HSSFDataFormat dataFormat = workbook.createDataFormat();
+        dateStyle = workbook.createCellStyle();
+        dateStyle.setDataFormat(dataFormat.getFormat("dd/MM/yyyy"));
+        timeStyle = workbook.createCellStyle();
+        timeStyle.setDataFormat(dataFormat.getFormat("HH:mm"));
     }
 
     private void writeUserSheet(HSSFWorkbook workbook) {
@@ -100,6 +114,9 @@ public abstract class DataDownloadResource extends AccessControlledResource<User
             setCell(row.createCell(c++), user.getRegistrationDate());
             setCell(row.createCell(c++), user.isSuperUser());
         }
+        for (; c >= 0; c--) {
+            sheet.autoSizeColumn((short) c);
+        }
     }
 
     private void writeReefSheet(HSSFWorkbook workbook) {
@@ -116,6 +133,9 @@ public abstract class DataDownloadResource extends AccessControlledResource<User
             setCell(row.createCell(c++), reef.getId());
             setCell(row.createCell(c++), reef.getName());
             setCell(row.createCell(c++), reef.getCountry());
+        }
+        for (; c >= 0; c--) {
+            sheet.autoSizeColumn((short) c);
         }
     }
 
@@ -148,11 +168,14 @@ public abstract class DataDownloadResource extends AccessControlledResource<User
             setCell(row.createCell(c++), survey.getLongitude());
             setCell(row.createCell(c++), survey.getLatitude());
             setCell(row.createCell(c++), survey.getDate());
-            setCell(row.createCell(c++), survey.getTime());
+            setTimeCell(row.createCell(c++), survey.getTime());
             setCell(row.createCell(c++), survey.getWeather());
             setCell(row.createCell(c++), survey.getActivity());
             setCell(row.createCell(c++), survey.getTemperature());
             setCell(row.createCell(c++), survey.getComments());
+        }
+        for (; c >= 0; c--) {
+            sheet.autoSizeColumn((short) c);
         }
     }
 
@@ -177,6 +200,9 @@ public abstract class DataDownloadResource extends AccessControlledResource<User
             setCell(row.createCell(c++), record.getDarkestLetter());
             setCell(row.createCell(c++), record.getDarkestNumber());
         }
+        for (; c >= 0; c--) {
+            sheet.autoSizeColumn((short) c);
+        }
     }
 
     private void writeKitRequestSheet(HSSFWorkbook workbook) {
@@ -197,6 +223,9 @@ public abstract class DataDownloadResource extends AccessControlledResource<User
             setCell(row.createCell(c++), request.getDispatchdate());
             setCell(row.createCell(c++), request.getAddress());
             setCell(row.createCell(c++), request.getNotes());
+        }
+        for (; c >= 0; c--) {
+            sheet.autoSizeColumn((short) c);
         }
     }
 
@@ -247,7 +276,15 @@ public abstract class DataDownloadResource extends AccessControlledResource<User
             return;
         }
         cell.setCellValue(value);
-        // TODO: add formatting
+        cell.setCellStyle(dateStyle);
+    }
+
+    private void setTimeCell(HSSFCell cell, Date value) {
+        if (value == null) {
+            return;
+        }
+        cell.setCellValue(value);
+        cell.setCellStyle(timeStyle);
     }
 
     private void setCell(HSSFCell cell, Boolean value) {
@@ -255,7 +292,6 @@ public abstract class DataDownloadResource extends AccessControlledResource<User
             return;
         }
         cell.setCellValue(value);
-        // TODO: add formatting
     }
 
 }
