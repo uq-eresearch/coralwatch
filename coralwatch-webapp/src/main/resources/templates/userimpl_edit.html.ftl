@@ -24,22 +24,6 @@
     });
 </script>
 <table>
-<#if newObject>
-<tr>
-    <td class="headercell">
-        <label for="username">Username:</label>
-    </td>
-    <td>
-        <input type="text"
-               id="username"
-               name="username"
-               required="true"
-               dojoType="dijit.form.ValidationTextBox"
-               regExp=".......*"
-               invalidMessage="Please enter a username with at least 6 characters"/>
-    </td>
-</tr>
-</#if>
 <tr>
     <td class="headercell">
         <label for="displayName">Display Name:</label>

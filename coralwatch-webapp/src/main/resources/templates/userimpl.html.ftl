@@ -36,8 +36,8 @@
             </#if>
         </td></tr>
     <tr>
-        <td class="headercell">Username:</td>
-        <td style="width:60%">${userimpl.username!}</td>
+        <td class="headercell"></td>
+        <td style="width:60%"></td>
         <td rowspan="4" style="text-align:right">
             <img src="${userimpl.gravatarUrl!}"/>
             <#if userimpl == currentUser><#-- only the user themselves can change, not admins -->
