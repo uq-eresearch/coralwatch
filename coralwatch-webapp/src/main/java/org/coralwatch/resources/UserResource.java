@@ -15,9 +15,13 @@ import org.restlet.resource.Variant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 
 public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, UserImpl> {
+
+    private static final Logger LOGGER = Logger.getLogger(UserResource.class.getName());
+
     public UserResource() throws InitializationException {
         super(CoralwatchApplication.getConfiguration().getUserDao());
     }
@@ -75,6 +79,12 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
             login(object);
         }
         super.postUpdateHook(object);
+    }
+
+    @Override
+    protected void preDeleteHook(UserImpl user) {
+        super.preDeleteHook(user);
+        LOGGER.info("##### Deleted user: " + user.getDisplayName() + " #####");
     }
 
     @Override

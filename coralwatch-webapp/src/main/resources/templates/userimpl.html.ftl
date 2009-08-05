@@ -1,4 +1,25 @@
 <#-- @ftlvariable name="userimpl" type="org.coralwatch.model.UserImpl" -->
+<script type="text/javascript">
+    function deleteUser(id) {
+        if (confirm("Are you sure you want to delete this user?")) {
+
+            dojo.xhrDelete({
+                url:"${baseUrl}/users/" + id,
+                timeout: 5000,
+                load: function(response, ioArgs) {
+                    window.location = '${baseUrl}/userss';
+                    return response;
+                },
+                error: function(response, ioArgs) {
+                    alert("Deletion failed: " + response);
+                    return response;
+                }
+            });
+        }
+    }
+</script>
+
+
 <#include "macros/basic.html.ftl"/>
 <table style="width:100%">
 
@@ -11,9 +32,7 @@
                 </button>
             </#if>
             <#if canDelete>
-                <button dojoType="dijit.form.Button" id="deleteButton"
-                        onClick="window.location='${baseUrl}/users/${userimpl.id?c}?delete'">Delete
-                </button>
+                <button dojoType="dijit.form.Button" onClick="deleteUser(${userImpl.id})">Delete</button>
             </#if>
         </td></tr>
     <tr>

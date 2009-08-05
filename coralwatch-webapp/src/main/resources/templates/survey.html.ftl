@@ -1,5 +1,25 @@
 <#-- @ftlvariable name="survey" type="org.coralwatch.model.Survey" -->
 <#-- @ftlvariable name="surveyRecs" type="java.util.List<org.coralwatch.model.SurveyRecord>" -->
+<script type="text/javascript">
+    function deleteSurvey(id) {
+        if (confirm("Are you sure you want to delete this survey?")) {
+
+            dojo.xhrDelete({
+                url:"${baseUrl}/surveys/" + id,
+                timeout: 5000,
+                load: function(response, ioArgs) {
+                    window.location = '${baseUrl}/surveys';
+                    return response;
+                },
+                error: function(response, ioArgs) {
+                    alert("Deletion failed: " + response);
+                    return response;
+                }
+            });
+        }
+    }
+</script>
+
 <#include "macros/basic.html.ftl"/>
 <#macro lonLat value posSym negSym>
 <#if (value < 0)>
@@ -75,8 +95,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id?c}?edit'">Edit</button>
 </#if>
 <#if canDelete>
-    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id?c}?edit'">Delete
-    </button>
+    <button dojoType="dijit.form.Button" onClick="deleteSurvey(${survey.id})">Delete</button>
 </#if>
 <br/>
 

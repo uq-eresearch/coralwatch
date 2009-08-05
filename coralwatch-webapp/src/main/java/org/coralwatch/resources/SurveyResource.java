@@ -159,6 +159,12 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
     }
 
     @Override
+    protected void preDeleteHook(Survey survey) {
+        super.preDeleteHook(survey);
+        LOGGER.info("##### Deleted survey: " + survey.getId() + " #####");
+    }
+
+    @Override
     protected boolean getAllowed(UserImpl userImpl, Variant variant) {
         //Only logged in users and super users can edit profiles
         //Logged in users can only edit their own survey

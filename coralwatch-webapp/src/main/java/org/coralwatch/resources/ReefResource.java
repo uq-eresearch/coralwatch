@@ -13,8 +13,11 @@ import org.restlet.resource.Variant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ReefResource extends ModifiableEntityResource<Reef, ReefDao, UserImpl> {
+
+    private static final Logger LOGGER = Logger.getLogger(ReefResource.class.getName());
 
     public ReefResource() throws InitializationException {
         super(CoralwatchApplication.getConfiguration().getReefDao());
@@ -47,6 +50,11 @@ public class ReefResource extends ModifiableEntityResource<Reef, ReefDao, UserIm
         }
     }
 
+    @Override
+    protected void preDeleteHook(Reef reef) {
+        super.preDeleteHook(reef);
+        LOGGER.info("##### Deleted reef: " + reef.getName() + " #####");
+    }
 
     @Override
     protected boolean getAllowed(UserImpl userImpl, Variant variant) {
