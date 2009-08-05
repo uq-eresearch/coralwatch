@@ -44,6 +44,16 @@ public class DataExchangeResource extends DataDownloadResource {
      */
     private final Map<String, Survey> surveyIndex = new HashMap<String, Survey>();
 
+    /**
+     * The number to use for the next anonymous user.
+     */
+    private int anonymousUserId;
+
+    /**
+     * The number to use for the next unnamed reef.
+     */
+    private int unknownReefId;
+
     public DataExchangeResource() throws InitializationException {
         super();
         setModifiable(true);
@@ -108,32 +118,28 @@ public class DataExchangeResource extends DataDownloadResource {
     }
 
     private List<SubmissionError> readSurveys(HSSFWorkbook workbook) {
+        // We start numbering the anonymous users with a number representing the number
+        // of users we have so far. This works nicely on an empty database (only the admin
+        // exists, so we start with "anonymous1"). It should also not clash if there are
+        // anonymous users in there already, but that is not guaranteed. Since the import
+        // is meant to be against an empty DB it shoudn't matter
+        anonymousUserId = userDao.getAll().size();
+
         HSSFSheet sheet = workbook.getSheet("Surveys");
         if (sheet == null) {
             return Collections.singletonList(new SubmissionError(
                     "Workbook does not contain sheet with the name 'Surveys'"));
         }
-        UserImpl anonymous = userDao.getByUsername("anonymous");
-        if (anonymous == null) {
-            anonymous = new UserImpl("anonymous", "unknown", null, null, false);
-            userDao.save(anonymous);
-        }
-        Reef unknownReef = reefDao.getReefByName("unknown");
-        if (unknownReef == null) {
-            unknownReef = new Reef();
-            unknownReef.setName("unknown");
-            unknownReef.setCountry("unknown");
-        }
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
         for (int r = 1; r <= sheet.getLastRowNum(); r++) { // we skip the header row
-            errors.addAll(readSurvey(sheet.getRow(r), anonymous, unknownReef));
+            errors.addAll(readSurvey(sheet.getRow(r)));
         }
         return errors;
     }
 
-    // TODO remove suppression of deprecation warnings once we have a proper solution for the time of day
+    // we don't want to bother with Calendar & Co just for setting the time of day
     @SuppressWarnings("deprecation")
-    private List<SubmissionError> readSurvey(HSSFRow row, UserImpl anonymous, Reef unknownReef) {
+    private List<SubmissionError> readSurvey(HSSFRow row) {
         Logger.getLogger(getClass().getName()).log(Level.FINE, "Reading row: " + (row.getRowNum() + 1));
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
         int c = 1; // we skip the ID
@@ -157,55 +163,11 @@ public class DataExchangeResource extends DataDownloadResource {
         Double temperature = getDoubleValue(row.getCell(c++));
         Integer latDeg = getIntegerValue(row.getCell(c++));
         Integer latMin = getIntegerValue(row.getCell(c++));
-        Double latSec = getDoubleValue(row.getCell(c++));
+        String latSec = getStringValue(row.getCell(c++));
         Integer longDeg = getIntegerValue(row.getCell(c++));
         Integer longMin = getIntegerValue(row.getCell(c++));
-        Double longSec = getDoubleValue(row.getCell(c++));
-        UserImpl user = (username == null) ? anonymous : userDao.getByUsername(username);
-        if (user == null) {
-            user = new UserImpl(username, username, email, null, false);
-            user.setCountry("unknown");
-            Logger.getLogger(DataExchangeResource.class.getName()).log(Level.INFO, "Creating user " + username);
-            userDao.save(user);
-        } else {
-            if (!equalsOrBothNull(user.getEmail(), email)) {
-                if ("unknown".equals(user.getEmail())) {
-                    user.setEmail(email);
-                } else {
-                    String message = String.format("Mismatch of email addresses during import: user has '%s', row %d says '%s'",
-                            user.getEmail(), row.getRowNum() + 1, email);
-                    Logger.getLogger(DataExchangeResource.class.getName()).log(Level.WARNING, message);
-                    errors.add(new SubmissionError(message));
-                }
-            }
-        }
-        Reef reef;
-        if (location == null) {
-            reef = unknownReef;
-        } else {
-            reef = reefDao.getReefByName(location);
-            if (reef == null) {
-                reef = new Reef();
-                reef.setName(location);
-                reef.setCountry(country);
-                Logger.getLogger(DataExchangeResource.class.getName()).log(Level.INFO, "Creating reef " + location);
-                reefDao.save(reef);
-            } else {
-                if (!equalsOrBothNull(reef.getCountry(), country)) {
-                    if ("unknown".equals(reef.getCountry())) {
-                        reef.setCountry(country);
-                    } else {
-                        String message = String.format(
-                                "Mismatch of countries during import: reef has '%s', row %d says '%s'", reef
-                                        .getCountry(), row.getRowNum() + 1, country);
-                        Logger.getLogger(DataExchangeResource.class.getName()).log(Level.WARNING, message);
-                        errors.add(new SubmissionError(message));
-                    }
-                }
-            }
-        }
+        String longSec = getStringValue(row.getCell(c++));
         Date time = null;
-        // TODO figure out how to deal with the time of day properly
         if ("early morning".equalsIgnoreCase(timeOfDay)) {
             time = new Date(0, 0, 0, 7, 0);
         } else if ("late morning".equalsIgnoreCase(timeOfDay)) {
@@ -228,20 +190,72 @@ public class DataExchangeResource extends DataDownloadResource {
 
         Logger.getLogger(DataExchangeResource.class.getName()).log(
                 Level.FINER,
-                String.format("Trying to find survey having %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", user
-                        .getUsername(), groupname, participation, reef.getName(), weather, date, time, latitude,
+                String.format("Trying to find survey having %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", username,
+                        groupname, participation, location, weather, date, time, latitude,
                         longitude, activity, comments));
-        String lookupString = user.getUsername() + "::" + groupname + "::" + participation + "::" + reef.getName()
+        String lookupString = username + "::" + groupname + "::" + participation + "::" + location
                 + "::" + weather + "::" + date + "::" + time + "::" + latitude + "::" + longitude + "::" + activity
                 + "::" + comments;
         Survey survey = surveyIndex.get(lookupString);
         if (survey == null) {
             survey = new Survey();
+            UserImpl user;
+            if (username == null) {
+                user = new UserImpl("anonymous" + anonymousUserId++, "unknown", "unknown", null, false);
+                userDao.save(user);
+            } else {
+                user = userDao.getByUsername(username);
+                if (user == null) {
+                    user = new UserImpl(username, username, email, null, false);
+                    user.setCountry("unknown");
+                    Logger.getLogger(DataExchangeResource.class.getName()).log(Level.INFO, "Creating user " + username);
+                    userDao.save(user);
+                } else {
+                    if (!equalsOrBothNull(user.getEmail(), email)) {
+                        if ("unknown".equals(user.getEmail())) {
+                            user.setEmail(email);
+                        } else {
+                            String message = String.format(
+                                    "Mismatch of email addresses during import: user has '%s', row %d says '%s'", user
+                                            .getEmail(), row.getRowNum() + 1, email);
+                            Logger.getLogger(DataExchangeResource.class.getName()).log(Level.WARNING, message);
+                            errors.add(new SubmissionError(message));
+                        }
+                    }
+                }
+            }
+            assert user != null;
             survey.setCreator(user);
             survey.setDate(date);
             survey.setTime(time);
+            Reef reef;
+            if (location == null) {
+                reef = new Reef("Unknown Reef " + unknownReefId++, (country != null) ? country : "unknown");
+                reefDao.save(reef);
+            } else {
+                reef = reefDao.getReefByName(location);
+                if (reef == null) {
+                    reef = new Reef();
+                    reef.setName(location);
+                    reef.setCountry((country != null) ? country : "unknown");
+                    Logger.getLogger(DataExchangeResource.class.getName()).log(Level.INFO,
+                            "Creating reef " + location + " (" + country + ")");
+                    reefDao.save(reef);
+                } else {
+                    if (!equalsOrBothNull(reef.getCountry(), country)) {
+                        if ("unknown".equals(reef.getCountry())) {
+                            reef.setCountry(country);
+                        } else {
+                            String message = String.format(
+                                    "Mismatch of countries during import: reef has '%s', row %d says '%s'", reef
+                                            .getCountry(), row.getRowNum() + 1, country);
+                            Logger.getLogger(DataExchangeResource.class.getName()).log(Level.WARNING, message);
+                            errors.add(new SubmissionError(message));
+                        }
+                    }
+                }
+            }
             survey.setReef(reef);
-            // TODO check if the next two are assigned correctly
             survey.setOrganisation((groupname != null) ? groupname : "unknown");
             survey.setOrganisationType((participation != null) ? participation : "unknown");
             survey.setWeather((weather != null) ? weather : "unknown");
@@ -266,11 +280,19 @@ public class DataExchangeResource extends DataDownloadResource {
         return errors;
     }
 
-    private double convertDegreesToDecimal(Integer deg, Integer min, Double sec) {
+    private double convertDegreesToDecimal(Integer deg, Integer min, String sec) {
         if (deg == null || min == null || sec == null) {
-            return -9999; // TODO what to do with these?
+            return -9999;
         }
-        return deg + min / 60f + sec / 3600f;
+        int sign = 1;
+        Character lastChar = sec.charAt(sec.length() - 1);
+        if (!Character.isDigit(lastChar)) {
+            sec = sec.substring(0, sec.length());
+            if ("wWsS".indexOf(lastChar) != -1) {
+                sign = -1;
+            }
+        }
+        return sign * (deg + min / 60f + Double.parseDouble(sec) / 3600f);
     }
 
     private String getStringValue(HSSFCell cell) {
