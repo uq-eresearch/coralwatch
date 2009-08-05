@@ -27,7 +27,7 @@
 	        <table>
 	            <tr>
 	                <th><label for="resetData">Reset Data:</label></th>
-	                <td><input type="checkbox" id="resetData" name="resetData" dojoType="dijit.form.CheckBox"/></td>
+	                <td><input type="checkbox" id="resetData" name="resetData" value="true" dojoType="dijit.form.CheckBox"/></td>
 	            </tr>
 	            <tr>
 	                <th><label for="upfile">File:</label></th>
