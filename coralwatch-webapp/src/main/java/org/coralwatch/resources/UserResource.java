@@ -42,6 +42,19 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         } else {
             userImpl.setDisplayName(newDisplayName);
         }
+
+        String role = form.getFirstValue("role");
+        if (role != null) {
+            if (role.equalsIgnoreCase("member")) {
+                userImpl.setSuperUser(false);
+            } else if (role.equalsIgnoreCase("administrator")) {
+                userImpl.setSuperUser(true);
+            } else {
+                errors.add(new SubmissionError("The role you entered is invalid. Role can be either User or Administrator."));
+            }
+        }
+
+
         String newPassword = form.getFirstValue("password");
         if ((newPassword != null) && (!newPassword.isEmpty())) {
             if (newPassword.length() < 6) {
@@ -61,11 +74,11 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         }
 
         String occupation = form.getFirstValue("occupation");
-        userImpl.setOccupation(occupation == null? "" : occupation);
+        userImpl.setOccupation(occupation == null ? "" : occupation);
         String address = form.getFirstValue("address");
-        userImpl.setAddress(address == null? "" : address);
+        userImpl.setAddress(address == null ? "" : address);
         String country = form.getFirstValue("country");
-        userImpl.setCountry(country == null? "" : country);
+        userImpl.setCountry(country == null ? "" : country);
 
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);

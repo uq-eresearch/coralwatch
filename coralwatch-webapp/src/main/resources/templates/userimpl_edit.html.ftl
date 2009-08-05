@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="userimpl" type="org.coralwatch.model.UserImpl" -->
 <#assign newObject=!(userimpl??)/>
 <#if newObject>
 <h3>Sign Up</h3>
@@ -54,6 +55,29 @@
                value="${(userimpl.displayName)!}"/> <em>e.g. John Smith</em>
     </td>
 </tr>
+<#if !newObject && currentUser.superUser>
+<tr>
+    <td class="headercell">
+        <label for="role">Role:</label>
+    </td>
+    <td>
+        <select name="role"
+                id="role"
+                required="true"
+                dojoType="dijit.form.ComboBox"
+                <#if userimpl.superUser>
+                value="Administrator"
+                <#else>
+                value="Member"
+                </#if>
+                hasDownArrow="true">
+            <option value="Member">Member</option>
+            <option value="Administrator">Administrator</option>
+        </select>
+    </td>
+</tr>
+</#if>
+
 <tr>
     <td class="headercell">
         <label for="password">New Password${newObject?string('',' (optional)')}:</label>
@@ -150,6 +174,7 @@
 <td>
 <select name="country"
         id="country"
+        required="true"
         dojoType="dijit.form.ComboBox"
         hasDownArrow="true"
         value="${(userimpl.country)!}">

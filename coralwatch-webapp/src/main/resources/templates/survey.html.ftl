@@ -107,12 +107,14 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
             <th class="headercell" nowrap="nowrap">Coral Type</th>
             <th class="headercell" nowrap="nowrap">Lightest</th>
             <th class="headercell" nowrap="nowrap">Darkest</th>
+            <th class="headercell" nowrap="nowrap">Delete</th>
         </tr>
         <#list surveyRecs as item>
             <tr>
                 <td>${item.coralType!}</td>
                 <td>${item.lightestLetter!}${item.lightestNumber!}</td>
             <td>${item.darkestLetter!}${item.darkestNumber!}</td>
+                <td></td>
             </tr>
         </#list>
     </table>
