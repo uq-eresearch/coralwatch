@@ -59,11 +59,6 @@ public class CoralwatchApplication extends Application {
                 new org.coralwatch.resources.FrameDataProvider());
         getContext().getAttributes().put(AccessPolicy.class.getName(),
                 new CoralwatchAccessPolicy());
-        // TODO the current solution is very fragile since every bit of code that
-        //      refers to a base URL has to know about the pattern. There should
-        //      (and might) be a way to solve this problem on the Restlet level.
-        //      A lot is solved by attaching it to the AbstractFreemarkerResource,
-        //      but there are many more spots where this pattern is used.
         String baseUrl = configuration.getBaseUrl();
         if (baseUrl != null) {
             getContext().getAttributes().put("baseUrl", baseUrl);
