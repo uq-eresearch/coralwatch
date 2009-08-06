@@ -32,7 +32,6 @@ import org.restlet.resource.Variant;
 import au.edu.uq.itee.maenad.restlet.AccessControlledResource;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 
-// TODO adjust column widths
 public abstract class DataDownloadResource extends AccessControlledResource<UserImpl> {
 
     protected final UserDao userDao;
