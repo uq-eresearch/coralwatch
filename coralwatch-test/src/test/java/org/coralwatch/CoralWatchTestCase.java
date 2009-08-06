@@ -22,11 +22,7 @@ public abstract class CoralWatchTestCase extends WebTestCase {
     }
 
     protected void loginAsAdmin() {
-        login("email@example.org", "admin");
-    }
-
-    protected void loginAsUser() {
-        login("user", "user");
+        login("admin@coralwatch.org", "admin");
     }
 
     protected void logout() {
