@@ -24,44 +24,36 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
     @Override
     protected UserImpl createObject(Form form) throws SubmissionException {
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
-        String username = form.getFirstValue("username");
-        if ((username == null) || username.isEmpty()) {
-            errors.add(new SubmissionError(("Username must not be empty")));
-        } else {
-            for (UserImpl userImpl : getDao().getAll()) {
-                if (username.equals(userImpl.getUsername())) {
-                    errors.add(new SubmissionError("Username already exists"));
-                }
-            }
-        }
-        String displayName = form.getFirstValue("displayName");
+
+        String displayName = form.getFirstValue("signupDisplayName");
         if ((displayName == null) || displayName.isEmpty()) {
             errors.add(new SubmissionError(("Display name must not be empty")));
         }
 
-        String email = form.getFirstValue("email");
+        String email = form.getFirstValue("signupEmail");
         if ((email == null) || email.isEmpty()) {
             errors.add(new SubmissionError(("Email must not be empty")));
+        }else {
+            for (UserImpl userImpl : getDao().getAll()) {
+                if (email.equals(userImpl.getEmail())) {
+                    errors.add(new SubmissionError("Email already exists"));
+                }
+            }
         }
 
-        String password = form.getFirstValue("password");
+        String password = form.getFirstValue("signupPassword");
         if ((password == null) || password.length() < 6) {
             errors.add(new SubmissionError("A password of at least 6 characters needs to be given"));
-        } else if (!password.equals(form.getFirstValue("password2"))) {
+        } else if (!password.equals(form.getFirstValue("signupPassword2"))) {
             errors.add(new SubmissionError("Passwords don't match"));
         }
 
-        String occupation = form.getFirstValue("occupation");
-        String address = form.getFirstValue("address");
-        String country = form.getFirstValue("country");
-
+        String country = form.getFirstValue("signupCountry");
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         }
 
         UserImpl userImpl = new UserImpl(displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
-        userImpl.setOccupation(occupation == null? "" : occupation);
-        userImpl.setAddress(address == null? "" : address);
         userImpl.setCountry(country == null? "" : country);
 
         return userImpl;
@@ -69,7 +61,7 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
 
     @Override
     protected String getRedirectLocation(UserImpl object) {
-        return String.valueOf("users/" + object.getId());
+        return String.valueOf("surveys?new");
     }
 
     @Override

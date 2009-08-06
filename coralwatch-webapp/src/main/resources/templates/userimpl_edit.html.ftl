@@ -22,12 +22,12 @@
 <table>
 <tr>
     <td class="headercell">
-        <label for="email">Email:</label>
+        <label for="signupEmail">Email:</label>
     </td>
     <td>
         <input type="text"
-               id="email"
-               name="email"
+               id="signupEmail"
+               name="signupEmail"
                dojoType="dijit.form.ValidationTextBox"
                required="true"
                regExp="[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]{2,6}"
@@ -39,15 +39,15 @@
 
 <tr>
     <td class="headercell">
-        <label for="email2">Confirm Email:</label>
+        <label for="signupEmail2">Confirm Email:</label>
     </td>
     <td>
         <input type="text"
-               id="email2"
-               name="email2"
+               id="signupEmail2"
+               name="signupEmail2"
                dojoType="dijit.form.ValidationTextBox"
                required="true"
-               validator="return this.getValue() == dijit.byId('email').getValue()"
+               validator="return this.getValue() == dijit.byId('signupEmail').getValue()"
                trim="true"
                invalidMessage="Re-enter your email address."
                value="${(userimpl.email)!}"/>
@@ -55,12 +55,12 @@
 </tr>
 <tr>
     <td class="headercell">
-        <label for="displayName">Display Name:</label>
+        <label for="signupDisplayName">Display Name:</label>
     </td>
     <td>
         <input type="text"
-               id="displayName"
-               name="displayName"
+               id="signupDisplayName"
+               name="signupDisplayName"
                required="true"
                dojoType="dijit.form.ValidationTextBox"
                regExp=".......*"
@@ -90,43 +90,14 @@
     </td>
 </tr>
 </#if>
-
 <tr>
     <td class="headercell">
-        <label for="password">New Password${newObject?string('',' (optional)')}:</label>
-    </td>
-    <td>
-        <input type="password"
-               id="password"
-               name="password"
-               required="true"
-               dojoType="dijit.form.ValidationTextBox"
-               validator="var pwLen = this.getValue().length; return ${newObject?string('','(pwLen == 0) || ')}(pwLen >= 6)"
-               invalidMessage="Please enter a password with at least 6 characters"/>
-    </td>
-</tr>
-<tr>
-    <td class="headercell">
-        <label for="password2">Confirm Password:</label>
-    </td>
-    <td>
-        <input type="password"
-               id="password2"
-               name="password2"
-               required="true"
-               dojoType="dijit.form.ValidationTextBox"
-               validator="return this.getValue() == dijit.byId('password').getValue()"
-               invalidMessage="Please enter the same password twice"/>
-    </td>
-</tr>
-<tr>
-    <td class="headercell">
-        <label for="occupation">Occupation:</label>
+        <label for="signupOccupation">Occupation:</label>
     </td>
     <td>
         <input type="text"
-               id="occupation"
-               name="occupation"
+               id="signupOccupation"
+               name="signupOccupation"
                dojoType="dijit.form.TextBox"
                trim="true"
                value="${(userimpl.occupation)!}"/>
@@ -135,12 +106,12 @@
 
 <tr>
     <td class="headercell">
-        <label for="address">Address:</label>
+        <label for="signupAddress">Address:</label>
     </td>
     <td>
         <input type="text"
-               id="address"
-               name="address"
+               id="signupAddress"
+               name="signupAddress"
                style="width:300px"
                dojoType="dijit.form.Textarea"
                trim="true"
@@ -150,10 +121,10 @@
 
 <tr>
 <td class="headercell">
-    <label for="country">Country:</label></td>
+    <label for="signupCountry">Country:</label></td>
 <td>
-<select name="country"
-        id="country"
+<select name="signupCountry"
+        id="signupCountry"
         required="true"
         dojoType="dijit.form.ComboBox"
         hasDownArrow="true"
@@ -377,6 +348,35 @@
 <option value="Zimbabwe">Zimbabwe</option>
 </select>
 </td>
+</tr>
+
+<tr>
+    <td class="headercell">
+        <label for="signupPassword">New Password${newObject?string('',' (optional)')}:</label>
+    </td>
+    <td>
+        <input type="password"
+               id="signupPassword"
+               name="signupPassword2"
+               required="true"
+               dojoType="dijit.form.ValidationTextBox"
+               validator="var pwLen = this.getValue().length; return ${newObject?string('','(pwLen == 0) || ')}(pwLen >= 6)"
+               invalidMessage="Please enter a password with at least 6 characters"/>
+    </td>
+</tr>
+<tr>
+    <td class="headercell">
+        <label for="signupPassword2">Confirm Password:</label>
+    </td>
+    <td>
+        <input type="password"
+               id="signupPassword2"
+               name="signupPassword2"
+               required="true"
+               dojoType="dijit.form.ValidationTextBox"
+               validator="return this.getValue() == dijit.byId('signupPassword').getValue()"
+               invalidMessage="Please enter the same password twice"/>
+    </td>
 </tr>
 </table>
 <button dojoType="dijit.form.Button" type="submit" name="submit"

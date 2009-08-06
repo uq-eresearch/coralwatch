@@ -36,7 +36,7 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
     @Override
     protected void updateObject(UserImpl userImpl, Form form) throws SubmissionException {
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
-        String newDisplayName = form.getFirstValue("displayName");
+        String newDisplayName = form.getFirstValue("signupDisplayName");
         if ((newDisplayName == null) || newDisplayName.length() < 6) {
             errors.add(new SubmissionError("No display name was provided. A display name of at least 6 characters must be supplied."));
         } else {
@@ -55,7 +55,7 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         }
 
 
-        String newPassword = form.getFirstValue("password");
+        String newPassword = form.getFirstValue("signupPassword");
         if ((newPassword != null) && (!newPassword.isEmpty())) {
             if (newPassword.length() < 6) {
                 errors.add(new SubmissionError("No password was provided. A password of at least 6 characters must be supplied."));
@@ -66,18 +66,18 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
             }
         }
 
-        String email = form.getFirstValue("email");
+        String email = form.getFirstValue("signupEmail");
         if ((email == null) || email.isEmpty()) {
             errors.add(new SubmissionError("No email was provided. An email address must be supplied."));
         } else {
             userImpl.setEmail(email);
         }
 
-        String occupation = form.getFirstValue("occupation");
+        String occupation = form.getFirstValue("signupOccupation");
         userImpl.setOccupation(occupation == null ? "" : occupation);
-        String address = form.getFirstValue("address");
+        String address = form.getFirstValue("signupAddress");
         userImpl.setAddress(address == null ? "" : address);
-        String country = form.getFirstValue("country");
+        String country = form.getFirstValue("signupCountry");
         userImpl.setCountry(country == null ? "" : country);
 
         if (!errors.isEmpty()) {
