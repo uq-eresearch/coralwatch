@@ -195,7 +195,7 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     @Override
     public String getUsername() {
-        return null;
+        return getEmail();
     }
 
 	public void setMigrated(boolean migrated) {
