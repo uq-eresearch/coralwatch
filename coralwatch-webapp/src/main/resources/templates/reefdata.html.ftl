@@ -5,7 +5,7 @@
 <#list surveys as survey>
 <h2><a href="${baseUrl}/surveys/${survey.id?c}">${survey.creator.displayName} - ${(survey.date?date)!} ${(survey.time?time)!}</a></h2>
 <ul>
-<p>Weather: ${survey.weather}; comments: ${survey.comments}</p>
+<p>Weather: ${(survey.weather)!}; comments: ${(survey.comments)!}</p>
 <#list survey.dataset as record>
 <li>${record.coralType}: ${record.darkestLetter}${record.darkestNumber} - ${record.lightestLetter}${record.lightestNumber}</li>
 </#list>
