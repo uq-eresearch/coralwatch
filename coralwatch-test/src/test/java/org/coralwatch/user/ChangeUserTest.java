@@ -8,8 +8,8 @@ public class ChangeUserTest extends CoralWatchTestCase {
         clickLinkWithExactText("CoralWatch Administrator");
         clickButton("editButton");
 
-        setTextField("email", "john.doe@example.org");
-        setTextField("email2", "john.doe@example.org");
+        setTextField("signupEmail", "john.doe@example.org");
+        setTextField("signupEmail2", "john.doe@example.org");
         setTextField("displayName", "John Doe");
 //        setTextField("role", "Member");
         setTextField("occupation", "Placeholder");
