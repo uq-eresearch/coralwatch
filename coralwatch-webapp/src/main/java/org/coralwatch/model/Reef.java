@@ -16,7 +16,8 @@ import java.io.Serializable;
         @NamedQuery(name = "Reef.getReef",
                 query = "SELECT o FROM Reef o WHERE o.name = :name"),
         @NamedQuery(name = "Reef.getCountry",
-                query = "SELECT o FROM Reef o WHERE o.country = :country ORDER BY o.id")
+                query = "SELECT o FROM Reef o WHERE o.country = :country ORDER BY o.id"),
+        @NamedQuery(name = "Reef.getSurveys", query = "SELECT o FROM Survey o WHERE o.reef.id = :reefId")
 })
 public class Reef implements Serializable {
 
