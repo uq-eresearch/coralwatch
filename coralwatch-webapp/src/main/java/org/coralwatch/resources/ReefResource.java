@@ -58,6 +58,6 @@ public class ReefResource extends ModifiableEntityResource<Reef, ReefDao, UserIm
 
     @Override
     protected boolean getAllowed(UserImpl userImpl, Variant variant) {
-        return userImpl.isSuperUser();
+        return true;
     }
 }
