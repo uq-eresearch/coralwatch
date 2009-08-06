@@ -30,16 +30,6 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
             errors.add(new SubmissionError(("Display name must not be empty")));
         }
 
-        String email = form.getFirstValue("signupEmail");
-        if ((email == null) || email.isEmpty()) {
-            errors.add(new SubmissionError(("Email must not be empty")));
-        }else {
-            for (UserImpl userImpl : getDao().getAll()) {
-                if (email.equals(userImpl.getEmail())) {
-                    errors.add(new SubmissionError("Email already exists"));
-                }
-            }
-        }
 
         String password = form.getFirstValue("signupPassword");
         if ((password == null) || password.length() < 6) {
@@ -49,6 +39,23 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
         }
 
         String country = form.getFirstValue("signupCountry");
+
+        String email = form.getFirstValue("signupEmail");
+        if ((email == null) || email.isEmpty()) {
+            errors.add(new SubmissionError(("Email must not be empty")));
+        }else {
+            for (UserImpl user : getDao().getAll()) {
+                if (email.equals(user.getEmail())) {
+                    if (user.getPasswordHash() != null) {
+                        errors.add(new SubmissionError("An account with the same email already exists. Use your credentials to login."));
+                    } else {
+                        UserResource.updateUser(user, form);
+                        return user;
+                    }
+                }
+            }
+        }
+
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         }
@@ -62,6 +69,11 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
     @Override
     protected String getRedirectLocation(UserImpl object) {
         return String.valueOf("surveys?new");
+    }
+
+    @Override
+    protected void postCreationHandle(UserImpl user) {
+        login(user);
     }
 
     @Override

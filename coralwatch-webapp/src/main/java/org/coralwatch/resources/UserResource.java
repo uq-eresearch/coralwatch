@@ -35,7 +35,19 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
 
     @Override
     protected void updateObject(UserImpl userImpl, Form form) throws SubmissionException {
+        updateUser(userImpl, form);
+    }
+
+    public static void updateUser(UserImpl userImpl, Form form) throws SubmissionException {
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
+
+        String email = form.getFirstValue("signupEmail");
+        if ((email == null) || email.isEmpty()) {
+            errors.add(new SubmissionError("No email was provided. An email address must be supplied."));
+        } else {
+            userImpl.setEmail(email);
+        }
+
         String newDisplayName = form.getFirstValue("signupDisplayName");
         if ((newDisplayName == null) || newDisplayName.length() < 6) {
             errors.add(new SubmissionError("No display name was provided. A display name of at least 6 characters must be supplied."));
@@ -59,18 +71,11 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         if ((newPassword != null) && (!newPassword.isEmpty())) {
             if (newPassword.length() < 6) {
                 errors.add(new SubmissionError("No password was provided. A password of at least 6 characters must be supplied."));
-            } else if (!newPassword.equals(form.getFirstValue("password2"))) {
+            } else if (!newPassword.equals(form.getFirstValue("signupPassword2"))) {
                 errors.add(new SubmissionError("Passwords don't match"));
             } else {
                 userImpl.setPasswordHash(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
             }
-        }
-
-        String email = form.getFirstValue("signupEmail");
-        if ((email == null) || email.isEmpty()) {
-            errors.add(new SubmissionError("No email was provided. An email address must be supplied."));
-        } else {
-            userImpl.setEmail(email);
         }
 
         String occupation = form.getFirstValue("signupOccupation");

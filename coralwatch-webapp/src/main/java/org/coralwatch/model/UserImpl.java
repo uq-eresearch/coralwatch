@@ -79,6 +79,7 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
     private String gravatarUrl;
 
     public UserImpl() {
+        this.registrationDate = new Date();
     }
 
     public UserImpl(String displayName, String email, String passwordHash, boolean superUser) {

@@ -384,7 +384,7 @@
 </div>
 </div>
 <div id="tabSubmitData" dojoType="dijit.layout.ContentPane" title="Submit Data">
-    <div dojoType="dijit.form.Form" method="post" action="" style="padding:5px;">
+    <div dojoType="dijit.form.Form" method="post" action="oneoff" style="padding:5px;">
         <script type="dojo/method" event="onSubmit">
             if(!this.validate()){
             alert('Form contains invalid data. Please correct first');
@@ -397,6 +397,7 @@
                 dijit.byId("email").focus();
             });
         </script>
+        <input type="hidden" name="surveyUrl" value="${baseUrl}/surveys?new"/>
         <table>
             <tr>
                 <td class="headercell">

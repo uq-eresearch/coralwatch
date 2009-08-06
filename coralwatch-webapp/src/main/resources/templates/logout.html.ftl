@@ -1,1 +1,1 @@
-<p>You successfully logged out.</p>
+<p>You successfully logged out. <a href="${baseUrl}/login?redirectUrl=${baseUrl}/dashboard">Login again.</a></p>
