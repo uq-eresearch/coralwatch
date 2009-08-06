@@ -98,6 +98,7 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
 	                    	sumDark += record.getDarkestNumber();
 	                    }
 	                    int numRecords = survey.getDataset().size();
+	                    // TODO we get an exception if multiple surveys happen on the same day (bug #130)
                     	lightValues.add(new Day(survey.getDate()), sumLight/numRecords);
                     	darkValues.add(new Day(survey.getDate()), sumDark/numRecords);
                     }
