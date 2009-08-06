@@ -49,8 +49,6 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     private String displayName;
 
-
-
     @Column(length = 500)
     private String address;
 
@@ -67,6 +65,15 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
     @NotNull
     private boolean superUser;
 
+    /**
+     * Flags an entry as migrated from the old website.
+     * 
+     * Some of these entries may be anonymous entries generated where fields where empty in the
+     * old database. The anonymous entries all have email addressed of the form "anonymousXXX"
+     * and the display name is "unknown" -- thus they are not distinguished any further.
+     */
+    private boolean migrated;
+    
     @Transient
     private String gravatarUrl;
 
@@ -189,4 +196,12 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
     public String getUsername() {
         return null;
     }
+
+	public void setMigrated(boolean migrated) {
+		this.migrated = migrated;
+	}
+
+	public boolean isMigrated() {
+		return migrated;
+	}
 }

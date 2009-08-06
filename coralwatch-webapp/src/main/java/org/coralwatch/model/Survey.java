@@ -75,6 +75,14 @@ public class Survey implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey", fetch = FetchType.LAZY)
     private List<SurveyRecord> dataset = new ArrayList<SurveyRecord>();
 
+    /**
+     * Stores information relating to quality assurance of the data.
+     * 
+     * Currently it is used only to store the word "migrated" for every survey migrated
+     * from the old version of the Coralwatch website, which had hardly any data validation.
+     */
+    private String qaState;
+    
     public Survey() {
 
     }
@@ -190,5 +198,13 @@ public class Survey implements Serializable {
     public void setDataset(List<SurveyRecord> dataset) {
         this.dataset = dataset;
     }
+
+	public void setQaState(String qaState) {
+		this.qaState = qaState;
+	}
+
+	public String getQaState() {
+		return qaState;
+	}
 
 }

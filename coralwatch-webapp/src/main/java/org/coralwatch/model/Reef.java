@@ -32,6 +32,15 @@ public class Reef implements Serializable {
 
     @NotNull
     private String country;
+    
+    /**
+     * Stores the quality assurance state of the entry.
+     * 
+     * This should be modelled in a base class, but we avoid that for now.
+     * 
+     * @see Survey#qaState
+     */
+    private String qaState;
 
     public Reef() {
     }
@@ -63,5 +72,11 @@ public class Reef implements Serializable {
     public void setCountry(String country) {
         this.country = country;
     }
+	public void setQaState(String qaState) {
+		this.qaState = qaState;
+	}
+	public String getQaState() {
+		return qaState;
+	}
 
 }
