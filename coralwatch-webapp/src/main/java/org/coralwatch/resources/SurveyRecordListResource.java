@@ -48,7 +48,7 @@ public class SurveyRecordListResource extends ModifiableListResource<SurveyRecor
 
     @Override
     protected String getRedirectLocation(SurveyRecord surveyRecord) {
-        return String.valueOf("survey/" + surveyRecord.getSurvey().getId());
+        return String.valueOf("surveys/" + surveyRecord.getSurvey().getId());
     }
 
     @Override
