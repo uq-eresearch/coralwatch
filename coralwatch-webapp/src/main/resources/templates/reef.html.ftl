@@ -35,3 +35,4 @@
 <button dojoType="dijit.form.Button" onClick="deleteReef(${reef.id?c})">Delete</button>
 </#if>
 <br/>
+<div><a href="${baseUrl}/reefdata/${reef.id?c}">Show data</a></div>
