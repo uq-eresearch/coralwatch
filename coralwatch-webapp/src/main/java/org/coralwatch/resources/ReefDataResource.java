@@ -1,5 +1,6 @@
 package org.coralwatch.resources;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -28,6 +29,8 @@ import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.DefaultXYItemRenderer;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -101,8 +104,18 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
                     dataset.addSeries(lightValues);
                     dataset.addSeries(darkValues);
                     final JFreeChart newChart = ChartFactory.createTimeSeriesChart(reef.getName() + "(" + reef.getCountry() + 
-                    		")", "Time", "Average Color", dataset, true, true, false);
-                    newChart.setBackgroundPaint(new Color(0, 0, 0, 0));
+                    		")", "Time", "Average Color", dataset, true, false, false);
+                    Color transparent = new Color(0, 0, 0, 0);
+					newChart.setBackgroundPaint(transparent);
+                    XYPlot plot = newChart.getXYPlot();
+					plot.setBackgroundPaint(transparent);
+					plot.setDomainGridlinePaint(Color.DARK_GRAY);
+					plot.setRangeGridlinePaint(Color.DARK_GRAY);
+					DefaultXYItemRenderer itemRenderer = new DefaultXYItemRenderer();
+					itemRenderer.setSeriesPaint(0,new Color(128,128,0));
+					itemRenderer.setSeriesPaint(1,new Color(80, 45, 20));
+					itemRenderer.setBaseStroke(new BasicStroke(3f));
+					plot.setRenderer(itemRenderer);
                     BufferedImage image = new BufferedImage(700, 400, BufferedImage.TYPE_INT_ARGB);
                     Graphics2D g2d = image.createGraphics();
 					newChart.draw(g2d,new Rectangle2D.Double(0,0,image.getWidth(), image.getHeight()));
