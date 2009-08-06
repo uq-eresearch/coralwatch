@@ -108,7 +108,7 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
                     TimeSeriesCollection dataset = new TimeSeriesCollection();
                     dataset.addSeries(lightValues);
                     dataset.addSeries(darkValues);
-                    final JFreeChart newChart = ChartFactory.createTimeSeriesChart(reef.getName() + "(" + reef.getCountry() + 
+                    final JFreeChart newChart = ChartFactory.createTimeSeriesChart(reef.getName() + " (" + reef.getCountry() + 
                     		")", "Time", "Average Color", dataset, true, false, false);
                     Color transparent = new Color(0, 0, 0, 0);
 					newChart.setBackgroundPaint(transparent);
