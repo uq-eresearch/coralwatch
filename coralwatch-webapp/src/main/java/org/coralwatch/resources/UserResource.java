@@ -87,7 +87,7 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
 
     @Override
     protected void postUpdateHook(UserImpl object) {
-        if (getCurrentUser() != null && getCurrentUser().getUsername().equals(object.getUsername())) {
+        if (getCurrentUser() != null && getCurrentUser().getId() == object.getId()) {
             // hack to replace potentially stale user object
             login(object);
         }
