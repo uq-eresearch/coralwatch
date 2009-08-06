@@ -5,16 +5,25 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.NoDataFoundException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.model.UserImpl;
+import org.coralwatch.util.Emailer;
 import org.restlet.data.Form;
 import org.restlet.resource.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -42,15 +51,13 @@ public class OneOffSubmissionResource extends AbstractFreemarkerResource<UserImp
         if (email == null || email.isEmpty()) {
             errors.add(new SubmissionError("No email address was provided"));
         } else {
-            for (UserImpl user : CoralwatchApplication.getConfiguration().getUserDao().getAll()) {
-                if (email.equals(user.getEmail())) {
-                    if (user.getPasswordHash() != null) {
-                        errors.add(new SubmissionError("An account with the same email already exists. Use your credentials to login."));
-                        break;
-                    } else {
-                        goToSurvey(user, redirectUrl);
-                        break;
-                    }
+            UserImpl user = CoralwatchApplication.getConfiguration().getUserDao().getByEmail(email);
+            if (user != null) {
+                if (user.getPasswordHash() != null || !user.getPasswordHash().isEmpty()) {
+                    errors.add(new SubmissionError("An account with the same email already exists. Use your credentials to login."));
+                } else {
+                    goToSurvey(user, redirectUrl);
+                    return;
                 }
             }
         }
@@ -72,7 +79,26 @@ public class OneOffSubmissionResource extends AbstractFreemarkerResource<UserImp
 
     private void goToSurvey(UserImpl newUser, String redirectUrl) {
         login(newUser);
-        LOGGER.info("##### Logged In #####");
+
+        try {
+            Configuration cfg = Emailer.getEmailTemplateConfiguration();
+            Map<String, Object> root = new HashMap<String, Object>();
+            Template temp = cfg.getTemplate("oneOffSubmissionUserEmail.ftl");
+            StringWriter writer = new StringWriter();
+            temp.process(root, writer);
+            writer.flush();
+
+            String subject = "Invitation to join CoralWatch";
+            Emailer.sendEmail(newUser.getEmail(), "no-reply@coralwatch.org", subject, writer.toString());
+
+        } catch (MessagingException ex) {
+            LOGGER.log(Level.WARNING, "Faild to send email for kit request made by " + newUser.getDisplayName(), ex);
+        } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "Faild to send email for kit request made by " + newUser.getDisplayName(), ex);
+        } catch (TemplateException ex) {
+            LOGGER.log(Level.WARNING, "Faild to send email for kit request made by " + newUser.getDisplayName(), ex);
+        }
+
         if (redirectUrl != null) {
             getResponse().redirectSeeOther(redirectUrl);
         } else {
