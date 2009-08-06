@@ -14,15 +14,15 @@ public abstract class CoralWatchTestCase extends WebTestCase {
         gotoPage("/");
     }
 
-    protected void login(String username, String password) {
+    protected void login(String email, String password) {
         clickLinkWithExactText("Login");
-        setTextField("username", username);
+        setTextField("email", email);
         setTextField("password", password);
         clickButton("loginButton");
     }
 
     protected void loginAsAdmin() {
-        login("admin", "admin");
+        login("email@example.org", "admin");
     }
 
     protected void loginAsUser() {
