@@ -1,11 +1,17 @@
 package org.coralwatch.resources;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -20,6 +26,11 @@ import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 import org.restlet.data.MediaType;
 import org.restlet.resource.OutputRepresentation;
 import org.restlet.resource.Representation;
@@ -62,6 +73,42 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
             };
             r.setDownloadable(true);
             r.setDownloadName(reef.getName() + "-" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".xls");
+            return r;
+    	}
+    	if(variant.getMediaType().equals(MediaType.IMAGE_PNG) || "png".equals(format)) {
+    		final Reef reef = getJpaEntity();
+    		final List<Survey> surveys = getDao().getSurveysByReef(reef);
+            OutputRepresentation r = new OutputRepresentation(MediaType.IMAGE_PNG) {
+                @Override
+                public void write(OutputStream stream) throws IOException {
+                	TimeSeries lightValues = new TimeSeries("Lightest");
+                	TimeSeries darkValues = new TimeSeries("Darkest");
+                    for (Survey survey : surveys) {
+                    	if(survey.getDate() == null) {
+                    		continue;
+                    	}
+                    	long sumLight = 0;
+                    	long sumDark = 0;
+	                    for (SurveyRecord record : survey.getDataset()) {
+	                    	sumLight += record.getLightestNumber();
+	                    	sumDark += record.getDarkestNumber();
+	                    }
+	                    int numRecords = survey.getDataset().size();
+                    	lightValues.add(new Day(survey.getDate()), sumLight/numRecords);
+                    	darkValues.add(new Day(survey.getDate()), sumDark/numRecords);
+                    }
+                    TimeSeriesCollection dataset = new TimeSeriesCollection();
+                    dataset.addSeries(lightValues);
+                    dataset.addSeries(darkValues);
+                    final JFreeChart newChart = ChartFactory.createTimeSeriesChart(reef.getName() + "(" + reef.getCountry() + 
+                    		")", "Time", "Average Color", dataset, true, true, false);
+                    newChart.setBackgroundPaint(new Color(0, 0, 0, 0));
+                    BufferedImage image = new BufferedImage(700, 400, BufferedImage.TYPE_INT_ARGB);
+                    Graphics2D g2d = image.createGraphics();
+					newChart.draw(g2d,new Rectangle2D.Double(0,0,image.getWidth(), image.getHeight()));
+					ImageIO.write(image, "PNG", stream);
+                }
+            };
             return r;
     	}
     	return super.protectedRepresent(variant);
