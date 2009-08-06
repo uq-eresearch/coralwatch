@@ -85,11 +85,11 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     </tr>
     <tr>
         <td class="headercell">Date:</td>
-        <td>${(survey.date)!?date}</td>
+        <td>${(survey.date?date)!}</td>
     </tr>
     <tr>
         <td class="headercell">Time:</td>
-        <td>${(survey.time)!?time}</td>
+        <td>${(survey.time?time)!}</td>
     </tr>
     <tr>
         <td class="headercell">Weather:</td>
