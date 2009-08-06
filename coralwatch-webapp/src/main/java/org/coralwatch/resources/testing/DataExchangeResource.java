@@ -161,11 +161,11 @@ public class DataExchangeResource extends DataDownloadResource {
         String weather = getStringValue(row.getCell(c++));
         String activity = getStringValue(row.getCell(c++));
         Double temperature = getDoubleValue(row.getCell(c++));
-        Integer latDeg = getIntegerValue(row.getCell(c++));
-        Integer latMin = getIntegerValue(row.getCell(c++));
+        String latDeg = getStringValue(row.getCell(c++));
+        String latMin = getStringValue(row.getCell(c++));
         String latSec = getStringValue(row.getCell(c++));
-        Integer longDeg = getIntegerValue(row.getCell(c++));
-        Integer longMin = getIntegerValue(row.getCell(c++));
+        String longDeg = getStringValue(row.getCell(c++));
+        String longMin = getStringValue(row.getCell(c++));
         String longSec = getStringValue(row.getCell(c++));
         Date time = null;
         if ("early morning".equalsIgnoreCase(timeOfDay)) {
@@ -202,12 +202,14 @@ public class DataExchangeResource extends DataDownloadResource {
             UserImpl user;
             if (email == null) {
                 user = new UserImpl("unknown","anonymous" + anonymousUserId++,null, false);
+                user.setMigrated(true);
                 userDao.save(user);
             } else {
                 user = userDao.getByEmail(email);
                 if (user == null) {
                     user = new UserImpl(fallback(username,"unknown"), email, null, false);
                     user.setCountry("unknown");
+                    user.setMigrated(true);
                     Logger.getLogger(DataExchangeResource.class.getName()).log(Level.INFO, "Creating user " + username);
                     userDao.save(user);
                 }
@@ -258,6 +260,7 @@ public class DataExchangeResource extends DataDownloadResource {
                 survey.setLongitude(longitude);
             }
             survey.setComments(comments);
+            survey.setQaState("migrated");
             Logger.getLogger(getClass().getName()).log(Level.FINE, "Creating new survey: " + survey);
             surveyDao.save(survey);
             surveyIndex.put(lookupString, survey);
@@ -268,22 +271,49 @@ public class DataExchangeResource extends DataDownloadResource {
         return errors;
     }
 
-    private double convertDegreesToDecimal(Integer deg, Integer min, String sec) {
-        if (deg == null || min == null || sec == null) {
+    private double convertDegreesToDecimal(String degStr, String minStr, String secStr) {
+        if (degStr == null || minStr == null || secStr == null || degStr.isEmpty()) {
             return -9999;
         }
         int sign = 1;
-        Character lastChar = sec.charAt(sec.length() - 1);
-        if (!Character.isDigit(lastChar)) {
-            sec = sec.substring(0, sec.length() - 1);
-            if ("wWsS".indexOf(lastChar) != -1) {
+        Character firstDegChar = degStr.charAt(0);
+        if (!Character.isDigit(firstDegChar)) {
+            degStr = degStr.substring(1);
+            if ("wWsS".indexOf(firstDegChar) != -1) {
                 sign = -1;
             }
         }
-        return sign * (deg + min / 60f + Double.parseDouble(sec) / 3600f);
+        Character lastDegChar = degStr.charAt(degStr.length() - 1);
+        if (!Character.isDigit(lastDegChar)) {
+            degStr = degStr.substring(0, degStr.length() - 1);
+            if ("wWsS".indexOf(lastDegChar) != -1) {
+                sign = -1;
+            }
+        }
+        double degComp = Double.parseDouble(degStr);
+        double minComp = Double.parseDouble(minStr);
+        Character lastSecChar = secStr.charAt(secStr.length() - 1);
+        double secComp;
+        if (!Character.isDigit(lastSecChar)) {
+            secStr = secStr.substring(0, secStr.length() - 1);
+            if ("wWsS".indexOf(lastSecChar) != -1) {
+                sign = -1;
+            }
+        }
+        if (secStr.isEmpty()) {
+            secComp = 0;
+        } else if (secStr.length() > 2) {
+            secComp = Double.parseDouble(secStr) / 60000;
+        } else {
+            secComp = Double.parseDouble(secStr) / 3600;
+        }
+        return sign * (degComp + minComp + secComp);
     }
 
     private String getStringValue(HSSFCell cell) {
+        if (cell == null) {
+            return null;
+        }
         switch (cell.getCellType()) {
         case HSSFCell.CELL_TYPE_STRING:
             String result = cell.getRichStringCellValue().getString();
@@ -299,6 +329,9 @@ public class DataExchangeResource extends DataDownloadResource {
     }
 
     private Integer getIntegerValue(HSSFCell cell) {
+        if (cell == null) {
+            return null;
+        }
         if (cell.getCellType() != HSSFCell.CELL_TYPE_NUMERIC) {
             return null;
         }
@@ -306,10 +339,16 @@ public class DataExchangeResource extends DataDownloadResource {
     }
 
     private Date getDateValue(HSSFCell cell) {
+        if (cell == null) {
+            return null;
+        }
         return cell.getDateCellValue();
     }
 
     private Double getDoubleValue(HSSFCell cell) {
+        if (cell == null) {
+            return null;
+        }
         if (cell.getCellType() != HSSFCell.CELL_TYPE_NUMERIC) {
             return null;
         }
