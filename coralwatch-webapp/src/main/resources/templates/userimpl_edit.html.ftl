@@ -16,7 +16,7 @@
 </script>
 <script type="text/javascript">
     dojo.addOnLoad(function() {
-        dijit.byId("email").focus();
+        dijit.byId("signupEmail").focus();
     });
 </script>
 <table>
