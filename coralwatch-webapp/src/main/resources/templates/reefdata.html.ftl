@@ -7,7 +7,7 @@
 <ul>
 <p>Weather: ${(survey.weather)!}; comments: ${(survey.comments)!}</p>
 <#list survey.dataset as record>
-<li>${record.coralType}: ${record.darkestLetter}${record.darkestNumber} - ${record.lightestLetter}${record.lightestNumber}</li>
+<li>${record.coralType}: ${record.lightestLetter}${record.lightestNumber} - ${record.darkestLetter}${record.darkestNumber}</li>
 </#list>
 </ul>
 </#list>
