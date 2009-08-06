@@ -72,7 +72,8 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
      * old database. The anonymous entries all have email addressed of the form "anonymousXXX"
      * and the display name is "unknown" -- thus they are not distinguished any further.
      */
-    private boolean migrated;
+    @NotNull
+    private boolean migrated = false;
     
     @Transient
     private String gravatarUrl;
