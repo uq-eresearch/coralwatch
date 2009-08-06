@@ -10,10 +10,10 @@ public class ChangeUserTest extends CoralWatchTestCase {
 
         setTextField("signupEmail", "john.doe@example.org");
         setTextField("signupEmail2", "john.doe@example.org");
-        setTextField("displayName", "John Doe");
+        setTextField("signupDisplayName", "John Doe");
 //        setTextField("role", "Member");
-        setTextField("occupation", "Placeholder");
-        setTextField("address", "13 Corner St, Nowhere land");
+        setTextField("signupOccupation", "Placeholder");
+        setTextField("signupAddress", "13 Corner St, Nowhere land");
         //notWorking setTextField("country", "Tuvalu");
         assertMatchInElement("submitButton", "Update");
         clickButton("submitButton");
