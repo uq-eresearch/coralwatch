@@ -15,7 +15,7 @@ public abstract class CoralWatchTestCase extends WebTestCase {
     }
 
     protected void login(String email, String password) {
-        clickLinkWithExactText("Login");
+        clickLinkWithExactText("Submit/Login");
         setTextField("email", email);
         setTextField("password", password);
         clickButton("loginButton");
