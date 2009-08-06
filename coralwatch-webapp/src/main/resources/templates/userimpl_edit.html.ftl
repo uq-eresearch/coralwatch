@@ -16,10 +16,43 @@
 </script>
 <script type="text/javascript">
     dojo.addOnLoad(function() {
-        dijit.byId("displayName").focus();
+        dijit.byId("email").focus();
     });
 </script>
 <table>
+<tr>
+    <td class="headercell">
+        <label for="email">Email:</label>
+    </td>
+    <td>
+        <input type="text"
+               id="email"
+               name="email"
+               dojoType="dijit.form.ValidationTextBox"
+               required="true"
+               regExp="[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]{2,6}"
+               trim="true"
+               invalidMessage="Enter a valid email address."
+               value="${(userimpl.email)!}"/> <em>e.g. address@organisation.com</em>
+    </td>
+</tr>
+
+<tr>
+    <td class="headercell">
+        <label for="email2">Confirm Email:</label>
+    </td>
+    <td>
+        <input type="text"
+               id="email2"
+               name="email2"
+               dojoType="dijit.form.ValidationTextBox"
+               required="true"
+               validator="return this.getValue() == dijit.byId('email').getValue()"
+               trim="true"
+               invalidMessage="Re-enter your email address."
+               value="${(userimpl.email)!}"/>
+    </td>
+</tr>
 <tr>
     <td class="headercell">
         <label for="displayName">Display Name:</label>
@@ -97,39 +130,6 @@
                dojoType="dijit.form.TextBox"
                trim="true"
                value="${(userimpl.occupation)!}"/>
-    </td>
-</tr>
-<tr>
-    <td class="headercell">
-        <label for="email">Email:</label>
-    </td>
-    <td>
-        <input type="text"
-               id="email"
-               name="email"
-               dojoType="dijit.form.ValidationTextBox"
-               required="true"
-               regExp="[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]{2,6}"
-               trim="true"
-               invalidMessage="Enter a valid email address."
-               value="${(userimpl.email)!}"/> <em>e.g. address@organisation.com</em>
-    </td>
-</tr>
-
-<tr>
-    <td class="headercell">
-        <label for="email2">Confirm Email:</label>
-    </td>
-    <td>
-        <input type="text"
-               id="email2"
-               name="email2"
-               dojoType="dijit.form.ValidationTextBox"
-               required="true"
-               validator="return this.getValue() == dijit.byId('email').getValue()"
-               trim="true"
-               invalidMessage="Re-enter your email address."
-               value="${(userimpl.email)!}"/>
     </td>
 </tr>
 
