@@ -48,6 +48,9 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
 
 	private HSSFCellStyle dateStyle;
 	private HSSFCellStyle timeStyle;
+	
+	private static final int IMAGE_WIDTH = 700;
+	private static final int IMAGE_HEIGHT = 400;
 
 	public ReefDataResource() throws InitializationException {
 		super(CoralwatchApplication.getConfiguration().getReefDao());
@@ -160,7 +163,7 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
 						itemRenderer.setSeriesPaint(i, colors[i]);
 					}
 					plot.setRenderer(itemRenderer);
-					BufferedImage image = new BufferedImage(700, 400,
+					BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT,
 							BufferedImage.TYPE_INT_ARGB);
 					Graphics2D g2d = image.createGraphics();
 					newChart.draw(g2d, new Rectangle2D.Double(0, 0, image
@@ -314,6 +317,8 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
 			throws NoDataFoundException {
 		super.fillDatamodel(datamodel);
 		datamodel.put("surveys", getDao().getSurveysByReef(getJpaEntity()));
+		datamodel.put("imageWidth", IMAGE_WIDTH);
+		datamodel.put("imageHeight", IMAGE_HEIGHT);
 	}
 
 	@Override
