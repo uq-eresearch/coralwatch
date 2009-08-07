@@ -92,11 +92,11 @@ public class OneOffSubmissionResource extends AbstractFreemarkerResource<UserImp
             Emailer.sendEmail(newUser.getEmail(), "no-reply@coralwatch.org", subject, writer.toString());
 
         } catch (MessagingException ex) {
-            LOGGER.log(Level.WARNING, "Faild to send email for kit request made by " + newUser.getDisplayName(), ex);
+            LOGGER.log(Level.WARNING, "Failed to send email for kit request made by " + newUser.getDisplayName(), ex);
         } catch (IOException ex) {
-            LOGGER.log(Level.WARNING, "Faild to send email for kit request made by " + newUser.getDisplayName(), ex);
+            LOGGER.log(Level.WARNING, "Failed to send email for kit request made by " + newUser.getDisplayName(), ex);
         } catch (TemplateException ex) {
-            LOGGER.log(Level.WARNING, "Faild to send email for kit request made by " + newUser.getDisplayName(), ex);
+            LOGGER.log(Level.WARNING, "Failed to send email for kit request made by " + newUser.getDisplayName(), ex);
         }
 
         if (redirectUrl != null) {
