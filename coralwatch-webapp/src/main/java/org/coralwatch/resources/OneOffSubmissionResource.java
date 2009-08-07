@@ -44,7 +44,7 @@ public class OneOffSubmissionResource extends AbstractFreemarkerResource<UserImp
         Form form = new Form(entity);
 
         String redirectUrl = form.getFirstValue("surveyUrl");
-        LOGGER.info("##### URL: " + redirectUrl + " #####");
+        LOGGER.info("##### Redirect URL: " + redirectUrl + " #####");
 
         String email = form.getFirstValue("emailDataOnly");
         LOGGER.info("##### Email: " + email + " #####");
@@ -53,8 +53,9 @@ public class OneOffSubmissionResource extends AbstractFreemarkerResource<UserImp
         } else {
             UserImpl user = CoralwatchApplication.getConfiguration().getUserDao().getByEmail(email);
             if (user != null) {
-                if (user.getPasswordHash() != null || !user.getPasswordHash().isEmpty()) {
+                if (user.getPasswordHash() != null) {
                     errors.add(new SubmissionError("An account with the same email already exists. Use your credentials to login."));
+                    throw new SubmissionException(errors);
                 } else {
                     goToSurvey(user, redirectUrl);
                     return;
@@ -71,8 +72,6 @@ public class OneOffSubmissionResource extends AbstractFreemarkerResource<UserImp
             newUser.setSuperUser(false);
 
             CoralwatchApplication.getConfiguration().getUserDao().save(newUser);
-
-            //Send email to the user
             goToSurvey(newUser, redirectUrl);
         }
     }
@@ -110,6 +109,12 @@ public class OneOffSubmissionResource extends AbstractFreemarkerResource<UserImp
     protected void fillDatamodel(Map<String, Object> stringObjectMap) throws NoDataFoundException, ResourceException {
 
     }
+
+    @Override
+    protected boolean postAllowed(UserImpl userImpl, Representation representation) {
+        return true;
+    }
+    
 
     @Override
     protected boolean getAllowed(UserImpl user, Variant variant) throws ResourceException {

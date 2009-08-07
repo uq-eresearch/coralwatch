@@ -43,16 +43,13 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
         String email = form.getFirstValue("signupEmail");
         if ((email == null) || email.isEmpty()) {
             errors.add(new SubmissionError(("Email must not be empty")));
-        }else {
-            for (UserImpl user : getDao().getAll()) {
-                if (email.equals(user.getEmail())) {
-                    if (user.getPasswordHash() != null) {
-                        errors.add(new SubmissionError("An account with the same email already exists. Use your credentials to login."));
-                    } else {
-                        UserResource.updateUser(user, form);
-                        return user;
-                    }
-                }
+        } else {
+            UserImpl user = CoralwatchApplication.getConfiguration().getUserDao().getByEmail(email);
+            if (user.getPasswordHash() != null) {
+                errors.add(new SubmissionError("An account with the same email already exists."));
+            } else {
+                UserResource.updateUser(user, form);
+                return user;
             }
         }
 
@@ -61,7 +58,7 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
         }
 
         UserImpl userImpl = new UserImpl(displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
-        userImpl.setCountry(country == null? "" : country);
+        userImpl.setCountry(country == null ? "" : country);
 
         return userImpl;
     }
