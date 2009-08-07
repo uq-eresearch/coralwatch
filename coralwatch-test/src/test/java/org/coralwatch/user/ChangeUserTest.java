@@ -11,16 +11,16 @@ public class ChangeUserTest extends CoralWatchTestCase {
         setTextField("signupEmail", "john.doe@example.org");
         setTextField("signupEmail2", "john.doe@example.org");
         setTextField("signupDisplayName", "John Doe");
-//        setTextField("role", "Member");
+        setTextField("role", "Member");
         setTextField("signupOccupation", "Placeholder");
         setTextField("signupAddress", "13 Corner St, Nowhere land");
-        //notWorking setTextField("country", "Tuvalu");
+        setTextField("signupCountry", "Tuvalu");
         assertMatchInElement("submitButton", "Update");
         clickButton("submitButton");
 
         assertTextPresent("Logged in as John Doe");
         assertTextPresent("john.doe@example.org");
         assertTextPresent("13 Corner St, Nowhere land");
-        //assertTextPresent("Tuvalu");
+        assertTextPresent("Tuvalu");
     }
 }
