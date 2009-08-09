@@ -5,6 +5,8 @@
 <div style="float:right; clear:both;"><a href="${baseUrl}/reefdata/${reef.id?c}?format=excel">Download Data</a></div>
 <#if (surveys?size > 1)>
 <div><img src="${baseUrl}/reefdata/${reef.id?c}?format=png" width="${imageWidth?c}" height="${imageHeight?c}"/></div>
+<div><img src="${baseUrl}/reefdata/${reef.id?c}?format=png&chart=coralCount" width="${imageWidth?c}" height="${imageHeight?c}"/></div>
+<div><img src="${baseUrl}/reefdata/${reef.id?c}?format=png&chart=shapePie" width="${imageWidth?c}" height="${imageHeight?c}"/></div>
 </#if>
 <p/> <#-- TODO just a hack to get around weird CSS for headings -->
 <#list surveys as survey>

@@ -1,6 +1,5 @@
 package org.coralwatch.resources;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -26,14 +25,8 @@ import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
-import org.jfree.chart.ChartFactory;
+import org.coralwatch.services.PlotService;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYShapeRenderer;
-import org.jfree.data.time.Day;
-import org.jfree.data.time.TimeSeries;
-import org.jfree.data.time.TimeSeriesCollection;
 import org.restlet.data.MediaType;
 import org.restlet.resource.OutputRepresentation;
 import org.restlet.resource.Representation;
@@ -48,7 +41,7 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
 
 	private HSSFCellStyle dateStyle;
 	private HSSFCellStyle timeStyle;
-	
+
 	private static final int IMAGE_WIDTH = 700;
 	private static final int IMAGE_HEIGHT = 400;
 
@@ -86,85 +79,24 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
 		}
 		if (variant.getMediaType().equals(MediaType.IMAGE_PNG)
 				|| "png".equals(format)) {
+			String chart = getQuery().getFirstValue("chart");
 			final Reef reef = getJpaEntity();
 			final List<Survey> surveys = getDao().getSurveysByReef(reef);
+			final JFreeChart newChart;
+			String chartTitle = reef.getName() + " (" + reef.getCountry() + ")";
+			if ("shapePie".equals(chart)) {
+				newChart = PlotService.createShapePiePlot(chartTitle, surveys);
+			} else if ("coralCount".equals(chart)) {
+				newChart = PlotService.createCoralCountPlot(chartTitle, surveys);
+			} else {
+				newChart = PlotService.createScatterPlot(chartTitle, surveys);
+			}
 			OutputRepresentation r = new OutputRepresentation(
 					MediaType.IMAGE_PNG) {
 				@Override
 				public void write(OutputStream stream) throws IOException {
-					TimeSeries[] series = new TimeSeries[] {
-							new TimeSeries("B-light"),
-							new TimeSeries("C-light"),
-							new TimeSeries("D-light"),
-							new TimeSeries("E-light"),
-							new TimeSeries("B-dark"),
-							new TimeSeries("C-dark"),
-							new TimeSeries("D-dark"),
-							new TimeSeries("E-dark") };
-					for (Survey survey : surveys) {
-						if (survey.getDate() == null) {
-							continue;
-						}
-						long[] sumLights = new long[] { 0, 0, 0, 0 };
-						long[] sumDarks = new long[] { 0, 0, 0, 0 };
-						long[] countLights = new long[] { 0, 0, 0, 0 };
-						long[] countDarks = new long[] { 0, 0, 0, 0 };
-						for (SurveyRecord record : survey.getDataset()) {
-							int posLight = record.getLightestLetter() - 'B';
-							int posDark = record.getDarkestLetter() - 'B';
-							sumLights[posLight] += record.getLightestNumber();
-							sumDarks[posDark] += record.getDarkestNumber();
-							countLights[posLight]++;
-							countDarks[posDark]++;
-						}
-						// TODO results override each other if they happen on
-						// the same day (in avoidance of bug #130)
-						for (int i = 0; i < sumLights.length; i++) {
-							if(countLights[i]!=0) {
-								series[i].addOrUpdate(new Day(survey.getDate()), sumLights[i]/(double)countLights[i]);
-							}
-						}
-						for (int i = 0; i < sumDarks.length; i++) {
-							if(countDarks[i]!=0) {
-								series[i+sumLights.length].addOrUpdate(new Day(survey.getDate()), sumDarks[i]/(double)countDarks[i]);
-							}
-						}
-					}
-					TimeSeriesCollection dataset = new TimeSeriesCollection();
-					for (int i = 0; i < series.length; i++) {
-						dataset.addSeries(series[i]);
-					}
-					final JFreeChart newChart = ChartFactory.createTimeSeriesChart(
-							reef.getName() + " (" + reef.getCountry() + ")",
-							"Time", "Average Color", dataset,
-							true, false, false);
-					Color transparent = new Color(0, 0, 0, 0);
-					newChart.setBackgroundPaint(transparent);
-					XYPlot plot = newChart.getXYPlot();
-					plot.setBackgroundPaint(transparent);
-					plot.setDomainGridlinePaint(Color.DARK_GRAY);
-					plot.setRangeGridlinePaint(Color.DARK_GRAY);
-					NumberAxis numberAxis = new NumberAxis();
-					numberAxis.setAutoRange(false);
-					numberAxis.setRange(1, 6);
-					plot.setRangeAxis(numberAxis);
-					XYShapeRenderer itemRenderer = new XYShapeRenderer();
-					Color[] colors = new Color[]{
-							new Color(244, 247, 193),
-							new Color(247, 203, 193),
-							new Color(247, 220, 193),
-							new Color(247, 233, 193),
-							new Color(100, 120, 0),
-							new Color(120, 23, 0),
-							new Color(120, 60, 0),
-							new Color(120, 89, 0)
-					};
-					for (int i = 0; i < colors.length; i++) {
-						itemRenderer.setSeriesPaint(i, colors[i]);
-					}
-					plot.setRenderer(itemRenderer);
-					BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT,
-							BufferedImage.TYPE_INT_ARGB);
+					BufferedImage image = new BufferedImage(IMAGE_WIDTH,
+							IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 					Graphics2D g2d = image.createGraphics();
 					newChart.draw(g2d, new Rectangle2D.Double(0, 0, image
 							.getWidth(), image.getHeight()));
