@@ -70,12 +70,8 @@
         <td class="headercell">Country:</td>
         <td>${userimpl.country!}</td>
     </tr>
-    <tr>
-        <td class="headercell">Surveys:</td>
-        <td>${conductedSurveys?size!}</td>
-    </tr>
 </table>
 <br/>
 <br/>
-<@createList "Surveys" conductedSurveys; item><a href="${baseUrl}/surveys/${item.id?c}">${item.id}</a> Conducted on
+<@createList "${conductedSurveys?size!} Surveys" conductedSurveys; item><a href="${baseUrl}/surveys/${item.id?c}">${item.id}</a> Conducted on
 ${(item.date)!?date}</@createList>
