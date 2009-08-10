@@ -12,6 +12,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.xy.XYShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -128,22 +129,28 @@ public class PlotService {
 	public static JFreeChart createCoralCountPlot(String chartTitle,
 			List<Survey> surveys) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		String rowKey = "Count";
-		for (int i = 1; i <= 6; i++) {
-			dataset.setValue(0, rowKey, String.valueOf(i));
+		for(char c ='B'; c<='E'; c++) {
+			for (int i = 1; i <= 6; i++) {
+				dataset.setValue(0, String.valueOf(c), String.valueOf(i));
+			}
 		}
 		for (Survey survey : surveys) {
 			for (SurveyRecord record : survey.getDataset()) {
 				int num = (int) (0.5 + (record.getDarkestNumber() + record
 						.getLightestNumber()) / 2d);
+				String rowKey = String.valueOf(record.getDarkestLetter());
 				String columnKey = String.valueOf(num);
 				dataset.setValue(
 						dataset.getValue(rowKey, columnKey).intValue() + 1,
 						rowKey, columnKey);
 			}
 		}
-		JFreeChart chart = ChartFactory.createBarChart(chartTitle, null, null,
+		JFreeChart chart = ChartFactory.createStackedBarChart(chartTitle, null, null,
 				dataset, PlotOrientation.HORIZONTAL, false, false, false);
+		BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
+		for(char c ='B'; c<='E'; c++) {
+			renderer.setSeriesPaint(c - 'B', COLORS.get(c).get(6));
+		}		
 		return chart;
 	}
 
