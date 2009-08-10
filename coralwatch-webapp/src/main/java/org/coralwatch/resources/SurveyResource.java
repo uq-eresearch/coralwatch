@@ -59,9 +59,9 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
 			final List<Survey> surveys = Collections.singletonList(survey);
 			final JFreeChart newChart;
 			if ("shapePie".equals(chart)) {
-				newChart = PlotService.createShapePiePlot("Coral Shapes", surveys);
+				newChart = PlotService.createShapePiePlot(surveys);
 			} else {
-				newChart = PlotService.createCoralCountPlot("Colour Distribution", surveys);
+				newChart = PlotService.createCoralCountPlot(surveys);
 			}
 			OutputRepresentation r = new OutputRepresentation(
 					MediaType.IMAGE_PNG) {

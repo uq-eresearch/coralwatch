@@ -83,13 +83,12 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
 			final Reef reef = getJpaEntity();
 			final List<Survey> surveys = getDao().getSurveysByReef(reef);
 			final JFreeChart newChart;
-			String chartTitle = reef.getName() + " (" + reef.getCountry() + ")";
 			if ("shapePie".equals(chart)) {
-				newChart = PlotService.createShapePiePlot(chartTitle, surveys);
+				newChart = PlotService.createShapePiePlot(surveys);
 			} else if ("coralCount".equals(chart)) {
-				newChart = PlotService.createCoralCountPlot(chartTitle, surveys);
+				newChart = PlotService.createCoralCountPlot(surveys);
 			} else {
-				newChart = PlotService.createScatterPlot(chartTitle, surveys);
+				newChart = PlotService.createTimelinePlot(surveys);
 			}
 			OutputRepresentation r = new OutputRepresentation(
 					MediaType.IMAGE_PNG) {

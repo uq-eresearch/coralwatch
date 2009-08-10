@@ -1,14 +1,11 @@
 package org.coralwatch.services;
 
 import java.awt.Color;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.text.DateFormatter;
 
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
@@ -28,7 +25,6 @@ import org.jfree.chart.renderer.xy.XYShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.time.Month;
-import org.jfree.data.time.Quarter;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
