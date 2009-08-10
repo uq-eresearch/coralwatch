@@ -23,6 +23,9 @@
 
     function updateLonFromDecimal() {
         var dec = dijit.byId("longitude").getValue();
+        if(dec > 180) {
+            dec = dec-360;
+        }
         var sign = (dec >= 0) ? 1 : -1;
         dec = dec * sign;
         var deg = Math.floor(dec);
@@ -388,7 +391,7 @@
                                    name="latitude"
                                    required="true"
                                    dojoType="dijit.form.NumberTextBox"
-                                   constraints="{places:6}"
+                                   constraints="{places:6,min:-90,max:90}"
                                    trim="true"
                                    onBlur="updateLatFromDecimal()"
                                    invalidMessage="Enter a valid latitude value."
@@ -405,7 +408,7 @@
                                    name="longitude"
                                    required="true"
                                    dojoType="dijit.form.NumberTextBox"
-                                   constraints="{places:6}"
+                                   constraints="{places:6,min:-180,max:360}"
                                    trim="true"
                                    onBlur="updateLonFromDecimal()"
                                    invalidMessage="Enter a valid longitude value."
@@ -426,7 +429,7 @@
                                    name="latitudeDeg"
                                    required="true"
                                    dojoType="dijit.form.NumberTextBox"
-                                   constraints="{places:0,min:0,max:180}"
+                                   constraints="{places:0,min:0,max:90}"
                                    trim="true"
                                    style="width:6em;"
                                    onBlur="updateLatFromDegrees()"
