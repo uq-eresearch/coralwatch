@@ -46,16 +46,16 @@ public class CoralwatchAccessPolicy implements AccessPolicy<UserImpl> {
             canDelete = false; // only super users can delete profiles
         }
         if (instance instanceof Survey) {
-            canCreate = true;
-            canRead = user !=null;
-            canUpdate = (user != null) && user.equals(((Survey) instance).getCreator()); //Users can edit their own profiles
-            canDelete = false; // only super users can delete profiles
+            canCreate = user !=null;
+            canRead = true;
+            canUpdate = (user != null) && user.equals(((Survey) instance).getCreator());
+            canDelete = (user != null) && user.equals(((Survey) instance).getCreator());;
         }
         if (instance instanceof SurveyRecord) {
-            canCreate = true;
-            canRead = user !=null;
-            canUpdate = (user != null) && user.equals(((SurveyRecord) instance).getSurvey().getCreator()); //Users can edit their own profiles
-            canDelete = true; // only super users can delete profiles
+            canCreate = user !=null;
+            canRead = true;
+            canUpdate = (user != null) && user.equals(((SurveyRecord) instance).getSurvey().getCreator());
+            canDelete = (user != null) && user.equals(((SurveyRecord) instance).getSurvey().getCreator());
         }
 
         return new AccessLevel(canCreate, canRead, canUpdate, canDelete);
