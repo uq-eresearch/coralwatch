@@ -10,6 +10,8 @@ import org.coralwatch.model.SurveyRecord;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.TickUnits;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
@@ -152,6 +154,12 @@ public class PlotService {
 		CategoryPlot plot = chart.getCategoryPlot();
 		plot.setBackgroundAlpha(0);
 		plot.setRangeGridlinePaint(Color.GRAY);
+		TickUnits tickUnits = new TickUnits();
+		double[] ticks = new double[]{1,5,10,50,100,500,1000,5000,10000,50000,1000000,500000};
+		for(double d: ticks){
+			tickUnits.add(new NumberTickUnit(d));
+		}
+		plot.getRangeAxis().setStandardTickUnits(tickUnits);
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		for(char c ='B'; c<='E'; c++) {
 			renderer.setSeriesPaint(c - 'B', COLORS.get(c).get(5));
