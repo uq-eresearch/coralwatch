@@ -55,7 +55,7 @@
         <td><a href="mailto:${userimpl.email!}">${userimpl.email!}</a></td>
     </tr>
     <tr>
-        <td class="headercell">Member since:</td>
+        <td class="headercell">Member since (d/m/y):</td>
         <td>${(userimpl.registrationDate)!?date}</td>
     </tr>
     <tr>

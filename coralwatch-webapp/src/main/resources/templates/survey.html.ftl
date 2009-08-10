@@ -84,7 +84,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
         <td><@lonLat (survey.longitude) 'E' 'W'/></td>
     </tr>
     <tr>
-        <td class="headercell">Date:</td>
+        <td class="headercell">Date (d/m/y):</td>
         <td>${(survey.date?date)!}</td>
     </tr>
     <tr>
