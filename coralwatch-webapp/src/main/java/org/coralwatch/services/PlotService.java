@@ -1,14 +1,21 @@
 package org.coralwatch.services;
 
 import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.text.DateFormatter;
 
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.DateTickUnit;
+import org.jfree.chart.axis.DateTickUnitType;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.axis.TickUnits;
@@ -20,7 +27,8 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.xy.XYShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.time.Day;
+import org.jfree.data.time.Month;
+import org.jfree.data.time.Quarter;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
@@ -61,50 +69,45 @@ public class PlotService {
 		COLORS.put('E', eValues);
 	}
 
-	public static JFreeChart createScatterPlot(String chartTitle,
-			final List<Survey> surveys) {
-		TimeSeries[] series = new TimeSeries[] { new TimeSeries("B-light"),
-				new TimeSeries("C-light"), new TimeSeries("D-light"),
-				new TimeSeries("E-light"), new TimeSeries("B-dark"),
-				new TimeSeries("C-dark"), new TimeSeries("D-dark"),
-				new TimeSeries("E-dark") };
+	@SuppressWarnings("deprecation") // we don't want to use Calendar
+	public static JFreeChart createTimelinePlot(final List<Survey> surveys) {
+		class DataPoint {
+			long numRecords = 0;
+			long sumLight = 0;
+			long sumDark = 0;
+		};
+		Map<Date,DataPoint> data = new HashMap<Date,DataPoint>();
 		for (Survey survey : surveys) {
 			if (survey.getDate() == null) {
 				continue;
 			}
-			long[] sumLights = new long[] { 0, 0, 0, 0 };
-			long[] sumDarks = new long[] { 0, 0, 0, 0 };
-			long[] countLights = new long[] { 0, 0, 0, 0 };
-			long[] countDarks = new long[] { 0, 0, 0, 0 };
+			int year = survey.getDate().getYear();
+			//int month = ((survey.getDate().getMonth()-1)/3)*3 +1;
+			int month = survey.getDate().getMonth();
+			Date datePoint = new Date(year,month,1);
+			DataPoint dataPoint = data.get(datePoint);
+			if(dataPoint == null) {
+				dataPoint = new DataPoint();
+				data.put(datePoint, dataPoint);
+			}
 			for (SurveyRecord record : survey.getDataset()) {
-				int posLight = record.getLightestLetter() - 'B';
-				int posDark = record.getDarkestLetter() - 'B';
-				sumLights[posLight] += record.getLightestNumber();
-				sumDarks[posDark] += record.getDarkestNumber();
-				countLights[posLight]++;
-				countDarks[posDark]++;
-			}
-			// TODO results override each other if they happen on
-			// the same day (in avoidance of bug #130)
-			for (int i = 0; i < sumLights.length; i++) {
-				if (countLights[i] != 0) {
-					series[i].addOrUpdate(new Day(survey.getDate()),
-							sumLights[i] / (double) countLights[i]);
-				}
-			}
-			for (int i = 0; i < sumDarks.length; i++) {
-				if (countDarks[i] != 0) {
-					series[i + sumLights.length].addOrUpdate(new Day(survey
-							.getDate()), sumDarks[i] / (double) countDarks[i]);
-				}
+				dataPoint.numRecords++;
+				dataPoint.sumLight += record.getLightestNumber();
+				dataPoint.sumDark += record.getDarkestNumber();
 			}
 		}
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
-		for (int i = 0; i < series.length; i++) {
-			dataset.addSeries(series[i]);
+		TimeSeries lightSeries = new TimeSeries("Lightest");
+		TimeSeries darkSeries = new TimeSeries("Darkest");
+		for (Date date : data.keySet()) {
+			DataPoint dataPoint = data.get(date);
+			lightSeries.add(new Month(date), dataPoint.sumLight/(double)dataPoint.numRecords);
+			darkSeries.add(new Month(date), dataPoint.sumDark/(double)dataPoint.numRecords);
 		}
+		dataset.addSeries(lightSeries);
+		dataset.addSeries(darkSeries);
 		final JFreeChart newChart = ChartFactory.createTimeSeriesChart(
-				chartTitle, "Time", "Average Color", dataset, true, false,
+				"Average Color Over Time", "Time", "Average Color", dataset, true, false,
 				false);
 		Color transparent = new Color(0, 0, 0, 0);
 		newChart.setBackgroundPaint(transparent);
@@ -112,26 +115,23 @@ public class PlotService {
 		plot.setBackgroundPaint(transparent);
 		plot.setDomainGridlinePaint(Color.DARK_GRAY);
 		plot.setRangeGridlinePaint(Color.DARK_GRAY);
+		TickUnits tickUnits = new TickUnits();
+		tickUnits.add(new DateTickUnit(DateTickUnitType.MONTH, 1, new SimpleDateFormat("MM/yyyy")));
+		tickUnits.add(new DateTickUnit(DateTickUnitType.MONTH, 3, new SimpleDateFormat("MM/yyyy")));
+		tickUnits.add(new DateTickUnit(DateTickUnitType.YEAR, 1, new SimpleDateFormat("MM/yyyy")));
+		plot.getDomainAxis().setStandardTickUnits(tickUnits);
 		NumberAxis numberAxis = new NumberAxis();
 		numberAxis.setAutoRange(false);
 		numberAxis.setRange(1, 6);
 		plot.setRangeAxis(numberAxis);
 		XYShapeRenderer itemRenderer = new XYShapeRenderer();
-		// TODO this duplicates the color values of the COLORS constant
-		Color[] colors = new Color[] { new Color(244, 247, 193),
-				new Color(247, 203, 193), new Color(247, 220, 193),
-				new Color(247, 233, 193), new Color(100, 120, 0),
-				new Color(120, 23, 0), new Color(120, 60, 0),
-				new Color(120, 89, 0) };
-		for (int i = 0; i < colors.length; i++) {
-			itemRenderer.setSeriesPaint(i, colors[i]);
-		}
+		itemRenderer.setSeriesPaint(0, COLORS.get('E').get(3));
+		itemRenderer.setSeriesPaint(1, COLORS.get('E').get(6));
 		plot.setRenderer(itemRenderer);
 		return newChart;
 	}
 
-	public static JFreeChart createCoralCountPlot(String chartTitle,
-			List<Survey> surveys) {
+	public static JFreeChart createCoralCountPlot(final List<Survey> surveys) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		for(char c ='B'; c<='E'; c++) {
 			for (int i = 1; i <= 6; i++) {
@@ -149,7 +149,7 @@ public class PlotService {
 						rowKey, columnKey);
 			}
 		}
-		JFreeChart chart = ChartFactory.createStackedBarChart(chartTitle, null, null,
+		JFreeChart chart = ChartFactory.createStackedBarChart("Color Distribution", null, null,
 				dataset, PlotOrientation.HORIZONTAL, false, false, false);
 		CategoryPlot plot = chart.getCategoryPlot();
 		plot.setBackgroundAlpha(0);
@@ -167,8 +167,7 @@ public class PlotService {
 		return chart;
 	}
 
-	public static JFreeChart createShapePiePlot(String chartTitle,
-			List<Survey> surveys) {
+	public static JFreeChart createShapePiePlot(final List<Survey> surveys) {
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		for (Survey survey : surveys) {
 			for (SurveyRecord record : survey.getDataset()) {
@@ -181,7 +180,7 @@ public class PlotService {
 				}
 			}
 		}
-		JFreeChart chart = ChartFactory.createPieChart(chartTitle, dataset,
+		JFreeChart chart = ChartFactory.createPieChart("Shape Distribution", dataset,
 				false, false, false);
 		PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setBackgroundAlpha(0);
