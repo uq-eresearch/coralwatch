@@ -22,21 +22,36 @@ import org.jfree.data.time.TimeSeriesCollection;
 public class PlotService {
 	public static final Map<Character, Map<Integer, Color>> COLORS = new HashMap<Character, Map<Integer, Color>>();
 	static {
-		// TODO currently we still miss the values for 2-5
 		HashMap<Integer, Color> bValues = new HashMap<Integer, Color>();
-		bValues.put(1, new Color(244, 247, 193));
+		bValues.put(1, new Color(247, 248, 232));
+		bValues.put(2, new Color(244, 247, 193));
+		bValues.put(3, new Color(236, 241, 139));
+		bValues.put(4, new Color(202, 208, 72));
+		bValues.put(5, new Color(153, 159, 41));
 		bValues.put(6, new Color(100, 120, 0));
 		COLORS.put('B', bValues);
 		HashMap<Integer, Color> cValues = new HashMap<Integer, Color>();
-		cValues.put(1, new Color(247, 203, 193));
+		cValues.put(1, new Color(247, 236, 233));
+		cValues.put(2, new Color(247, 203, 193));
+		cValues.put(3, new Color(240, 159, 140));
+		cValues.put(4, new Color(208, 98, 72));
+		cValues.put(5, new Color(159, 63, 41));
 		cValues.put(6, new Color(120, 23, 0));
 		COLORS.put('C', cValues);
 		HashMap<Integer, Color> dValues = new HashMap<Integer, Color>();
-		dValues.put(1, new Color(247, 220, 193));
+		dValues.put(1, new Color(247, 236, 225));
+		dValues.put(2, new Color(247, 220, 193));
+		dValues.put(3, new Color(240, 190, 140));
+		dValues.put(4, new Color(212, 150, 88));
+		dValues.put(5, new Color(155, 95, 35));
 		dValues.put(6, new Color(120, 60, 0));
 		COLORS.put('D', dValues);
 		HashMap<Integer, Color> eValues = new HashMap<Integer, Color>();
-		eValues.put(1, new Color(247, 233, 193));
+		eValues.put(1, new Color(247, 242, 227));
+		eValues.put(2, new Color(247, 233, 193));
+		eValues.put(3, new Color(240, 214, 140));
+		eValues.put(4, new Color(210, 176, 80));
+		eValues.put(5, new Color(159, 128, 41));
 		eValues.put(6, new Color(120, 89, 0));
 		COLORS.put('E', eValues);
 	}
