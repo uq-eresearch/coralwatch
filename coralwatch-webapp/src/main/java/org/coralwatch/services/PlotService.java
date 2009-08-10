@@ -10,6 +10,7 @@ import org.coralwatch.model.SurveyRecord;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
@@ -148,9 +149,12 @@ public class PlotService {
 		}
 		JFreeChart chart = ChartFactory.createStackedBarChart(chartTitle, null, null,
 				dataset, PlotOrientation.HORIZONTAL, false, false, false);
-		BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
+		CategoryPlot plot = chart.getCategoryPlot();
+		plot.setBackgroundAlpha(0);
+		plot.setRangeGridlinePaint(Color.GRAY);
+		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		for(char c ='B'; c<='E'; c++) {
-			renderer.setSeriesPaint(c - 'B', COLORS.get(c).get(6));
+			renderer.setSeriesPaint(c - 'B', COLORS.get(c).get(5));
 		}		
 		return chart;
 	}
