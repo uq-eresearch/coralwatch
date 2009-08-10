@@ -53,6 +53,10 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     <img src="${survey.creator.gravatarUrl}"/>
 </div>
 </#if>
+<div>
+    <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=coralCount" width="300" height="200"/>
+    <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=shapePie" width="300" height="200"/>
+</div>
 <table>
     <tr>
         <td class="headercell">Creator:</td>

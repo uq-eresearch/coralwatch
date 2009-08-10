@@ -143,7 +143,7 @@ public class PlotService {
 			}
 		}
 		JFreeChart chart = ChartFactory.createBarChart(chartTitle, null, null,
-				dataset, PlotOrientation.HORIZONTAL, true, false, false);
+				dataset, PlotOrientation.HORIZONTAL, false, false, false);
 		return chart;
 	}
 
@@ -162,7 +162,7 @@ public class PlotService {
 			}
 		}
 		JFreeChart chart = ChartFactory.createPieChart(chartTitle, dataset,
-				true, false, false);
+				false, false, false);
 		return chart;
 	}
 }
