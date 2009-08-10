@@ -561,7 +561,7 @@
 </tr>
 <tr>
     <td class="headercell">
-        <label for="weather">Weather:</label></td>
+        <label for="weather">Light Condition:</label></td>
     <td>
         <select name="weather"
                 id="weather"
