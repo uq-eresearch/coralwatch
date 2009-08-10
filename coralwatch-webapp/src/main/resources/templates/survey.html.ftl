@@ -96,7 +96,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
         <td>${(survey.weather)!}</td>
     </tr>
     <tr>
-        <td class="headercell">Temperature:</td>
+        <td class="headercell">Temperature (&deg;C):</td>
         <td>${(survey.temperature)!}</td>
     </tr>
     <tr>

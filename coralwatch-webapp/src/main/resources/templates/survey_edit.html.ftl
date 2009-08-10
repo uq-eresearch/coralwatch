@@ -577,7 +577,7 @@
 </tr>
 <tr>
     <td class="headercell">
-        <label for="temperature">Temperature:</label>
+        <label for="temperature">Temperature (&deg;C):</label>
     </td>
     <td>
         <input type="text"
