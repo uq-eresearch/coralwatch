@@ -65,7 +65,6 @@ public class SurveyListResource extends ModifiableListResource<Survey, SurveyDao
     @Override
     protected boolean getAllowed(UserImpl userImpl, Variant variant) {
         //For access level on editing surveys see SurveyResource.getAllowed
-        //Only logged in users can create a new User
         return userImpl != null;
     }
 }
