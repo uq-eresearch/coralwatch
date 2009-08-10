@@ -134,7 +134,7 @@ public class PlotService {
 		}
 		for (Survey survey : surveys) {
 			for (SurveyRecord record : survey.getDataset()) {
-				int num = (int) ((record.getDarkestNumber() + record
+				int num = (int) (0.5 + (record.getDarkestNumber() + record
 						.getLightestNumber()) / 2d);
 				String columnKey = String.valueOf(num);
 				dataset.setValue(
