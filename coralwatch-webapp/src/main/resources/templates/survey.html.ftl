@@ -59,11 +59,11 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
         <td>${(survey.creator.displayName)!}</td>
     </tr>
     <tr>
-        <td class="headercell">Organisation:</td>
+        <td class="headercell">Group Name:</td>
         <td>${(survey.organisation)!}</td>
     </tr>
     <tr>
-        <td class="headercell">Organisation Type:</td>
+        <td class="headercell">Participating As:</td>
         <td>${(survey.organisationType)!}</td>
     </tr>
     <tr>

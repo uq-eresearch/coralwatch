@@ -90,7 +90,7 @@
 </#if>
 <tr>
     <td class="headercell">
-        <label for="organisation">Organisation:</label>
+        <label for="organisation">Group Name:</label>
     </td>
     <td>
         <input type="text"
@@ -99,7 +99,7 @@
                required="true"
                dojoType="dijit.form.ValidationTextBox"
                regExp="...*"
-               invalidMessage="Enter your organisation name"
+               invalidMessage="Enter the name of the group you are participating with"
                value="${(survey.organisation)!}"/>
     </td>
 </tr>
