@@ -10,6 +10,7 @@ import org.coralwatch.model.SurveyRecord;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -170,6 +171,16 @@ public class PlotService {
 		}
 		JFreeChart chart = ChartFactory.createPieChart(chartTitle, dataset,
 				false, false, false);
+		PiePlot plot = (PiePlot) chart.getPlot();
+		plot.setBackgroundAlpha(0);
+		plot.setSimpleLabels(true);
+		plot.setLabelBackgroundPaint(COLORS.get('D').get(1));
+		plot.setLabelShadowPaint(null);
+		int i = 0;
+		for(Object key: plot.getDataset().getKeys()) {
+			plot.setSectionPaint((Comparable<?>) key, COLORS.get((char)('B' + i)).get(6-i));
+			i++;
+		}
 		return chart;
 	}
 }
