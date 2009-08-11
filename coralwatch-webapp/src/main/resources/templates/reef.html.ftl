@@ -1,4 +1,5 @@
 <#-- @ftlvariable name="reef" type="org.coralwatch.model.Reef" -->
+<#-- @ftlvariable name="surveys" type="java.util.List" -->
 <script type="text/javascript">
     function deleteReef(reefId) {
         if (confirm("Are you sure you want to delete this reef?")) {
@@ -18,6 +19,7 @@
         }
     }
 </script>
+<div style="float:right; clear:both;"><a href="${baseUrl}/reef/${reef.id?c}?format=excel">Download Data</a></div>
 <table>
     <tr>
         <td class="headercell">Reef Name:</td>
@@ -34,5 +36,15 @@
 <#if canDelete>
 <button dojoType="dijit.form.Button" onClick="deleteReef(${reef.id?c})">Delete</button>
 </#if>
-<br/>
-<div><a href="${baseUrl}/reefdata/${reef.id?c}">Show data</a></div>
+<#if (surveys?size > 1)>
+<div><img src="${baseUrl}/reef/${reef.id?c}?format=png" width="${imageWidth?c}" height="${imageHeight?c}"/></div>
+<div><img src="${baseUrl}/reef/${reef.id?c}?format=png&chart=coralCount" width="${imageWidth?c}" height="${imageHeight?c}"/></div>
+<div><img src="${baseUrl}/reef/${reef.id?c}?format=png&chart=shapePie" width="${imageWidth?c}" height="${imageHeight?c}"/></div>
+</#if>
+<p/> <#-- TODO just a hack to get around weird CSS for headings -->
+<h2>Surveys</h2>
+<p/> <#-- TODO just a hack to get around weird CSS for headings -->
+<#list surveys as survey>
+<h3><a href="${baseUrl}/surveys/${survey.id?c}">${survey.creator.displayName} - ${(survey.date?date)!} ${(survey.time?time)!}</a></h3>
+<p>Weather: ${(survey.weather)!}; comments: ${(survey.comments)!}</p>
+</#list>
