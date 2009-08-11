@@ -1,9 +1,8 @@
 package org.coralwatch.resources;
 
-import au.edu.uq.itee.maenad.restlet.ModifiableEntityResource;
-import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
-import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
-import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.model.Reef;
@@ -11,13 +10,12 @@ import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
 import org.restlet.resource.Variant;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+import au.edu.uq.itee.maenad.restlet.ModifiableEntityResource;
+import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
+import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
+import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
 
 public class ReefResource extends ModifiableEntityResource<Reef, ReefDao, UserImpl> {
-
-    private static final Logger LOGGER = Logger.getLogger(ReefResource.class.getName());
 
     public ReefResource() throws InitializationException {
         super(CoralwatchApplication.getConfiguration().getReefDao());
@@ -48,12 +46,6 @@ public class ReefResource extends ModifiableEntityResource<Reef, ReefDao, UserIm
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         }
-    }
-
-    @Override
-    protected void preDeleteHook(Reef reef) {
-        super.preDeleteHook(reef);
-        LOGGER.info("##### Deleted reef: " + reef.getName() + " #####");
     }
 
     @Override
