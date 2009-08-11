@@ -366,6 +366,7 @@
                 required="true"
                 hasDownArrow="true"
                 value="${(survey.reef.name)!}">
+            <option selected="selected" value=""></option>
             <#if (reefRecs?size > 0)>
             <#list reefRecs as item>
             <option country="${item.country!}" value="${item.name!}">${item.name!}</option>
