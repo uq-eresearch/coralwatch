@@ -10,49 +10,49 @@ import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
-import org.restlet.resource.Variant;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SurveyRecordListResource extends ModifiableListResource<SurveyRecord, SurveyRecordDao, UserImpl> {
+public class SurveyRecordListResource extends
+		ModifiableListResource<SurveyRecord, SurveyRecordDao, UserImpl> {
 
-    public SurveyRecordListResource() throws InitializationException {
-        super(CoralwatchApplication.getConfiguration().getSurveyRecordDao(), true);
-    }
+	public SurveyRecordListResource() throws InitializationException {
+		super(CoralwatchApplication.getConfiguration().getSurveyRecordDao(),
+				true);
+	}
 
-    @Override
-    protected SurveyRecord createObject(Form form) throws SubmissionException {
+	@Override
+	protected SurveyRecord createObject(Form form) throws SubmissionException {
 
-        List<SubmissionError> errors = new ArrayList<SubmissionError>();
-        SurveyRecord surveyRecord = new SurveyRecord();
+		List<SubmissionError> errors = new ArrayList<SubmissionError>();
+		SurveyRecord surveyRecord = new SurveyRecord();
 
-        long surveyId = -1;
-        try {
-            surveyId = Long.valueOf(form.getFirstValue("surveyId"));
-        } catch (NumberFormatException e) {
-            errors.add(new SubmissionError("Can not parse survey ID"));
-        }
+		long surveyId = -1;
+		try {
+			surveyId = Long.valueOf(form.getFirstValue("surveyId"));
+		} catch (NumberFormatException e) {
+			errors.add(new SubmissionError("Can not parse survey ID"));
+		}
+		Survey survey = CoralwatchApplication.getConfiguration().getSurveyDao()
+				.load(surveyId);
+		UserImpl user = getCurrentUser();
+		if(user == null || !(survey.getCreator().equals(user) || user.isSuperUser())) {
+			errors.add(new SubmissionError("Illegal Access: you do not own this survey"));
+		}
 
-        if (!errors.isEmpty()) {
-            throw new SubmissionException(errors);
-        } else {
-            Survey survey = CoralwatchApplication.getConfiguration().getSurveyDao().load(surveyId);
-            surveyRecord.setSurvey(survey);
-        }
+		if (!errors.isEmpty()) {
+			throw new SubmissionException(errors);
+		}
 
-        SurveyRecordResource.updateSurveyRecord(surveyRecord, form);
+		surveyRecord.setSurvey(survey);
+		SurveyRecordResource.updateSurveyRecord(surveyRecord, form);
+		
+		return surveyRecord;
+	}
 
-        return surveyRecord;
-    }
-
-    @Override
-    protected String getRedirectLocation(SurveyRecord surveyRecord) {
-        return String.valueOf("surveys/" + surveyRecord.getSurvey().getId());
-    }
-
-    @Override
-    protected boolean getAllowed(UserImpl user, Variant variant) {
-        return user !=null;
-    }
+	@Override
+	protected String getRedirectLocation(SurveyRecord surveyRecord) {
+		return String.valueOf("surveys/" + surveyRecord.getSurvey().getId());
+	}
 }

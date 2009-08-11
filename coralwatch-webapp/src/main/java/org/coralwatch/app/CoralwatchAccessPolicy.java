@@ -2,6 +2,8 @@ package org.coralwatch.app;
 
 import au.edu.uq.itee.maenad.restlet.auth.AccessLevel;
 import au.edu.uq.itee.maenad.restlet.auth.AccessPolicy;
+
+import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
@@ -14,9 +16,10 @@ public class CoralwatchAccessPolicy implements AccessPolicy<UserImpl> {
     private static final AccessLevel CREATE_ONLY = new AccessLevel(true, false, false, false);
     private static final AccessLevel EVERYTHING_ALLOWED = new AccessLevel(true, true, true, true);
     private static final Set<Class<?>> NORMAL_USERS_CAN_CREATE_INSTANCES = new HashSet<Class<?>>();
-
     static {
+    	NORMAL_USERS_CAN_CREATE_INSTANCES.add(Reef.class);
         NORMAL_USERS_CAN_CREATE_INSTANCES.add(Survey.class);
+        NORMAL_USERS_CAN_CREATE_INSTANCES.add(SurveyRecord.class);
         NORMAL_USERS_CAN_CREATE_INSTANCES.add(UserImpl.class);
     }
 
