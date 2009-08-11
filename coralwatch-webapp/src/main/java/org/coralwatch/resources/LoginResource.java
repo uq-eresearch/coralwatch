@@ -66,7 +66,7 @@ public class LoginResource extends AbstractFreemarkerResource<UserImpl> {
         }
         String redirectUrl = form.getFirstValue("redirectUrl");
         if (redirectUrl != null) {
-            getResponse().redirectSeeOther(redirectUrl);
+            redirect(redirectUrl);
         } else {
             redirect("/");
         }

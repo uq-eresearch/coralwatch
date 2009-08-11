@@ -99,7 +99,7 @@ public class OneOffSubmissionResource extends AbstractFreemarkerResource<UserImp
         }
 
         if (redirectUrl != null) {
-            getResponse().redirectSeeOther(redirectUrl);
+            redirect(redirectUrl);
         } else {
             redirect("/");
         }
