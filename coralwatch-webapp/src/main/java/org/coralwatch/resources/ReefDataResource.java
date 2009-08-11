@@ -141,7 +141,7 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
 			setCell(row.createCell(c++), survey.getCreator().getUsername());
 			setCell(row.createCell(c++), survey.getOrganisation());
 			setCell(row.createCell(c++), survey.getOrganisationType());
-			setCell(row.createCell(c++), survey.getReef().getId());
+			setCell(row.createCell(c++), survey.getReef().getName());
 			setCell(row.createCell(c++), survey.getLongitude());
 			setCell(row.createCell(c++), survey.getLatitude());
 			setCell(row.createCell(c++), survey.getDate());
