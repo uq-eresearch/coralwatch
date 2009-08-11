@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="reefRecs" type="java.util.List<org.coralwatch.model.Reef>" -->
 <#assign newObject=!(survey??)/>
 <#if newObject>
 <h3>Create New Survey</h3>
@@ -80,6 +81,7 @@
         }
         dijit.byId("latitude").setValue(dec);
     }
+    
 </script>
 <table>
 <#if !newObject>
@@ -133,6 +135,7 @@
         required="true"
         hasDownArrow="true"
         value="${(survey.reef.country)!}">
+<option selected="selected" value=""></option>
 <option value="Afghanistan">Afghanistan</option>
 <option value="Albania">Albania</option>
 <option value="Algeria">Algeria</option>
@@ -144,7 +147,7 @@
 <option value="Argentina">Argentina</option>
 <option value="Armenia">Armenia</option>
 <option value="Aruba">Aruba</option>
-<option selected="selected" value="Australia">Australia</option>
+<option value="Australia">Australia</option>
 <option value="Austria">Austria</option>
 <option value="Azerbaijan">Azerbaijan</option>
 <option value="Bahamas">Bahamas</option>
@@ -365,7 +368,7 @@
                 value="${(survey.reef.name)!}">
             <#if (reefRecs?size > 0)>
             <#list reefRecs as item>
-            <option value="${item.name!}">${item.name!}</option>
+            <option country="${item.country!}" value="${item.name!}">${item.name!}</option>
             </#list>
             <#else>
             <option value=""></option>
@@ -378,7 +381,7 @@
         <label>Position:</label>
     </td>
     <td>
-        <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:33em;height:12ex">
+        <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:20ex">
             <div id="tabDecimal" dojoType="dijit.layout.ContentPane" title="Decimal">
                 <table>
                     <tr>

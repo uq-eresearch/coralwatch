@@ -137,7 +137,8 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
         <td>${item.darkestLetter!}${item.darkestNumber!}</td>
         <td>
             <#if canDelete>
-            <button dojoType="dijit.form.Button" onClick="deleteSurveyRecord(${item.id?c}, ${survey.id?c})">Delete</button>
+            <button dojoType="dijit.form.Button" onClick="deleteSurveyRecord(${item.id?c}, ${survey.id?c})">Delete
+            </button>
             </#if>
         </td>
     </tr>
@@ -162,7 +163,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
         <tr>
             <td nowrap="nowrap">
                 <input dojoType="dijit.form.RadioButton" id="coralType_0" name="coralType" value="Branching"
-                       checked="checked" type="radio">
+                       type="radio">
                 <label for="coralType_0"> Branching </label>
                 <input dojoType="dijit.form.RadioButton" id="coralType_1" name="coralType" value="Boulder"
                        type="radio">
