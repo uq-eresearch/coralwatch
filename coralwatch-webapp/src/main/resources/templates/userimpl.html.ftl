@@ -56,7 +56,7 @@
     </tr>
     <tr>
         <td class="headercell">Member since (d/m/y):</td>
-        <td>${(userimpl.registrationDate)!?date}</td>
+        <td>${(userimpl.registrationDate)!?string("dd/MM/yyyy")}</td>
     </tr>
     <tr>
         <td class="headercell">Occupation:</td>
