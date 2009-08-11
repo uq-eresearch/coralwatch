@@ -73,5 +73,5 @@
 </table>
 <br/>
 <br/>
-<@createList "${conductedSurveys?size!} Surveys" conductedSurveys; item><a href="${baseUrl}/surveys/${item.id?c}">${item.id}</a> Conducted on
+<@createList "${conductedSurveys?size!} Surveys" conductedSurveys; item><a href="${baseUrl}/surveys/${item.id?c}"><img src="${baseUrl}/icons/fam/application_view_detail.png"/></a> Conducted on
 ${(item.date)!?date}</@createList>

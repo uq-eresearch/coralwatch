@@ -380,8 +380,7 @@
     </td>
 </tr>
 </table>
-<button dojoType="dijit.form.Button" type="submit" name="submit"
-        id="submitButton">${newObject?string("Create","Update")}</button>
+<button dojoType="dijit.form.Button" type="submit" name="submit" id="submitButton">${newObject?string("Create","Update")}</button>
 <#assign plainUrl=currentUrl?substring(0,currentUrl?last_index_of("?")) />
 <button dojoType="dijit.form.Button" onClick="window.location='${plainUrl}'" id="cancelButton">Cancel</button>
 </div>
