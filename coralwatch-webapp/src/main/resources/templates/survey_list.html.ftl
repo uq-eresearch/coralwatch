@@ -9,7 +9,7 @@
 
     <#list surveyList as survey>
         <tr>
-            <td align="center"><a href="${baseUrl}/surveys/${survey.id?c}">${survey.id}</a></td>
+            <td align="center"><a href="${baseUrl}/surveys/${survey.id?c}"><img class="icon" src="${baseUrl}/icons/fam/application_view_detail.png"/></a></td>
             <td><a href="${baseUrl}/users/${survey.creator.id?c}">${(survey.creator.displayName)}</a></td>
             <td>${(survey.date)!?date}</td>
             <td>${(survey.country)!}</td>

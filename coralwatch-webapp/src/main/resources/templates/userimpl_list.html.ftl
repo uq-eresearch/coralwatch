@@ -10,7 +10,7 @@
     </tr>
     <#list userimplList as userimpl>
         <tr>
-            <td align="center"><a href="${baseUrl}/users/${userimpl.id?c}">${userimpl.id}</a></td>
+            <td align="center"><a href="${baseUrl}/users/${userimpl.id?c}"><img class="icon" src="${baseUrl}/icons/fam/application_view_detail.png"/></a></td>
             <td>${userimpl.displayName}</td>
             <td>${userimpl.email}</td>
             <td>${(userimpl.registrationDate)!?date}</td>

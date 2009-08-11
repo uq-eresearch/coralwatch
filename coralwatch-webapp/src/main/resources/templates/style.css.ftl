@@ -269,8 +269,8 @@ width: 100%;
 padding: 4px 4px 15px 2px;
 }
 
-.border a img {
-float: right;
+.icon {
+float: center;
 }
 
 #footer_banner {
