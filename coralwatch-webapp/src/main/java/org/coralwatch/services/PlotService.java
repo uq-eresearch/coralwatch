@@ -1,6 +1,7 @@
 package org.coralwatch.services;
 
 import java.awt.Color;
+import java.awt.Paint;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,9 +29,9 @@ import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
+@SuppressWarnings("serial")
 public class PlotService {
-	public static final Map<Character, Map<Integer, Color>> COLORS = new HashMap<Character, Map<Integer, Color>>();
-	static {
+	public static final Map<Character, Map<Integer, Color>> CORAL_COLORS = new HashMap<Character, Map<Integer, Color>>(){{
 		HashMap<Integer, Color> bValues = new HashMap<Integer, Color>();
 		bValues.put(1, new Color(247, 248, 232));
 		bValues.put(2, new Color(244, 247, 193));
@@ -38,7 +39,7 @@ public class PlotService {
 		bValues.put(4, new Color(202, 208, 72));
 		bValues.put(5, new Color(153, 159, 41));
 		bValues.put(6, new Color(100, 120, 0));
-		COLORS.put('B', bValues);
+		put('B', bValues);
 		HashMap<Integer, Color> cValues = new HashMap<Integer, Color>();
 		cValues.put(1, new Color(247, 236, 233));
 		cValues.put(2, new Color(247, 203, 193));
@@ -46,7 +47,7 @@ public class PlotService {
 		cValues.put(4, new Color(208, 98, 72));
 		cValues.put(5, new Color(159, 63, 41));
 		cValues.put(6, new Color(120, 23, 0));
-		COLORS.put('C', cValues);
+		put('C', cValues);
 		HashMap<Integer, Color> dValues = new HashMap<Integer, Color>();
 		dValues.put(1, new Color(247, 236, 225));
 		dValues.put(2, new Color(247, 220, 193));
@@ -54,7 +55,7 @@ public class PlotService {
 		dValues.put(4, new Color(212, 150, 88));
 		dValues.put(5, new Color(155, 95, 35));
 		dValues.put(6, new Color(120, 60, 0));
-		COLORS.put('D', dValues);
+		put('D', dValues);
 		HashMap<Integer, Color> eValues = new HashMap<Integer, Color>();
 		eValues.put(1, new Color(247, 242, 227));
 		eValues.put(2, new Color(247, 233, 193));
@@ -62,8 +63,16 @@ public class PlotService {
 		eValues.put(4, new Color(210, 176, 80));
 		eValues.put(5, new Color(159, 128, 41));
 		eValues.put(6, new Color(120, 89, 0));
-		COLORS.put('E', eValues);
-	}
+		put('E', eValues);
+	}};
+
+	// TODO shape names should really be an enum, maybe with the color attached to them
+	public static final Map<String, Color> SHAPE_COLORS = new HashMap<String, Color>(){{
+		put("Branching", new Color(51, 242, 229));
+		put("Boulder", new Color(38, 127, 255));
+		put("Plate", new Color(194, 0, 22));
+		put("Soft", new Color(64, 0, 255));
+	}};
 
 	@SuppressWarnings("deprecation") // we don't want to use Calendar
 	public static JFreeChart createTimelinePlot(final List<Survey> surveys) {
@@ -93,17 +102,14 @@ public class PlotService {
 			}
 		}
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
-		TimeSeries lightSeries = new TimeSeries("Lightest");
-		TimeSeries darkSeries = new TimeSeries("Darkest");
+		TimeSeries series = new TimeSeries("Darkest");
 		for (Date date : data.keySet()) {
 			DataPoint dataPoint = data.get(date);
-			lightSeries.add(new Month(date), dataPoint.sumLight/(double)dataPoint.numRecords);
-			darkSeries.add(new Month(date), dataPoint.sumDark/(double)dataPoint.numRecords);
+			series.add(new Month(date), (dataPoint.sumDark+dataPoint.sumLight)/(2d*dataPoint.numRecords));
 		}
-		dataset.addSeries(lightSeries);
-		dataset.addSeries(darkSeries);
+		dataset.addSeries(series);
 		final JFreeChart newChart = ChartFactory.createTimeSeriesChart(
-				"Average Color Over Time", "Time", "Average Color", dataset, true, false,
+				"Average Color Over Time", "Time", "Average Color", dataset, false, false,
 				false);
 		Color transparent = new Color(0, 0, 0, 0);
 		newChart.setBackgroundPaint(transparent);
@@ -121,31 +127,28 @@ public class PlotService {
 		numberAxis.setRange(1, 6);
 		plot.setRangeAxis(numberAxis);
 		XYShapeRenderer itemRenderer = new XYShapeRenderer();
-		itemRenderer.setSeriesPaint(0, COLORS.get('E').get(3));
-		itemRenderer.setSeriesPaint(1, COLORS.get('E').get(6));
+		itemRenderer.setSeriesPaint(0, CORAL_COLORS.get('D').get(6));
 		plot.setRenderer(itemRenderer);
 		return newChart;
 	}
 
 	public static JFreeChart createCoralCountPlot(final List<Survey> surveys) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		for(char c ='B'; c<='E'; c++) {
-			for (int i = 1; i <= 6; i++) {
-				dataset.setValue(0, String.valueOf(c), String.valueOf(i));
-			}
+		String rowKey = "All";
+		for (int i = 1; i <= 6; i++) {
+			dataset.setValue(0, rowKey, String.valueOf(i));
 		}
 		for (Survey survey : surveys) {
 			for (SurveyRecord record : survey.getDataset()) {
 				int num = (int) (0.5 + (record.getDarkestNumber() + record
 						.getLightestNumber()) / 2d);
-				String rowKey = String.valueOf(record.getDarkestLetter());
 				String columnKey = String.valueOf(num);
 				dataset.setValue(
 						dataset.getValue(rowKey, columnKey).intValue() + 1,
 						rowKey, columnKey);
 			}
 		}
-		JFreeChart chart = ChartFactory.createStackedBarChart("Color Distribution", null, null,
+		JFreeChart chart = ChartFactory.createBarChart("Color Distribution", null, null,
 				dataset, PlotOrientation.HORIZONTAL, false, false, false);
 		CategoryPlot plot = chart.getCategoryPlot();
 		plot.setBackgroundAlpha(0);
@@ -156,10 +159,13 @@ public class PlotService {
 			tickUnits.add(new NumberTickUnit(d));
 		}
 		plot.getRangeAxis().setStandardTickUnits(tickUnits);
-		BarRenderer renderer = (BarRenderer) plot.getRenderer();
-		for(char c ='B'; c<='E'; c++) {
-			renderer.setSeriesPaint(c - 'B', COLORS.get(c).get(5));
-		}		
+		BarRenderer renderer = new BarRenderer(){
+			@Override
+			public Paint getItemPaint(int row, int column) {
+				return CORAL_COLORS.get('D').get(column+1);
+			}
+		};
+		plot.setRenderer(renderer);
 		return chart;
 	}
 
@@ -181,11 +187,11 @@ public class PlotService {
 		PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setBackgroundAlpha(0);
 		plot.setSimpleLabels(true);
-		plot.setLabelBackgroundPaint(COLORS.get('D').get(1));
+		plot.setLabelBackgroundPaint(Color.WHITE);
 		plot.setLabelShadowPaint(null);
 		int i = 0;
 		for(Object key: plot.getDataset().getKeys()) {
-			plot.setSectionPaint((Comparable<?>) key, COLORS.get((char)('B' + i)).get(6-i));
+			plot.setSectionPaint((Comparable<?>) key, SHAPE_COLORS.get(key));
 			i++;
 		}
 		return chart;
