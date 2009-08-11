@@ -44,10 +44,10 @@ public class OneOffSubmissionResource extends AbstractFreemarkerResource<UserImp
         Form form = new Form(entity);
 
         String redirectUrl = form.getFirstValue("surveyUrl");
-        LOGGER.info("##### Redirect URL: " + redirectUrl + " #####");
+        LOGGER.fine("Redirect URL: " + redirectUrl);
 
         String email = form.getFirstValue("emailDataOnly");
-        LOGGER.info("##### Email: " + email + " #####");
+        LOGGER.fine("Email: " + email);
         if (email == null || email.isEmpty()) {
             errors.add(new SubmissionError("No email address was provided"));
         } else {
