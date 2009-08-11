@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -133,8 +134,29 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
 		setCell(row.createCell(c++), "Activity");
 		setCell(row.createCell(c++), "Temperature");
 		setCell(row.createCell(c++), "Comments");
+		setCell(row.createCell(c++), "Number of records");
+		setCell(row.createCell(c++), "Branching");
+		setCell(row.createCell(c++), "Boulder");
+		setCell(row.createCell(c++), "Plate");
+		setCell(row.createCell(c++), "Soft");
+		setCell(row.createCell(c++), "Average lightest");
+		setCell(row.createCell(c++), "Average darkest");
+		setCell(row.createCell(c++), "Average overall");
 		int r = 1;
 		for (Survey survey : surveys) {
+			Map<String, Long> shapeCounts = new HashMap<String, Long>();
+			shapeCounts.put("Branching", 0l);
+			shapeCounts.put("Boulder", 0l);
+			shapeCounts.put("Plate", 0l);
+			shapeCounts.put("Soft", 0l);
+			long sumLight = 0;
+			long sumDark = 0;
+			for(SurveyRecord record: survey.getDataset()) {
+				shapeCounts.put(record.getCoralType(), shapeCounts.get(record.getCoralType()) + 1);
+				sumLight += record.getLightestNumber();
+				sumDark += record.getDarkestNumber();
+			}
+			int numRecords = survey.getDataset().size();
 			row = sheet.createRow(r++);
 			c = 0;
 			setCell(row.createCell(c++), survey.getId());
@@ -150,6 +172,14 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
 			setCell(row.createCell(c++), survey.getActivity());
 			setCell(row.createCell(c++), survey.getTemperature());
 			setCell(row.createCell(c++), survey.getComments());
+			setCell(row.createCell(c++), numRecords);
+			setCell(row.createCell(c++), shapeCounts.get("Branching"));
+			setCell(row.createCell(c++), shapeCounts.get("Boulder"));
+			setCell(row.createCell(c++), shapeCounts.get("Plate"));
+			setCell(row.createCell(c++), shapeCounts.get("Soft"));
+			setCell(row.createCell(c++), sumLight / (double) numRecords);
+			setCell(row.createCell(c++), sumDark / (double) numRecords);
+			setCell(row.createCell(c++), (sumLight + sumDark) / (2d * numRecords));
 		}
 		for (; c >= 0; c--) {
 			sheet.autoSizeColumn((short) c);
