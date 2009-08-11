@@ -102,7 +102,7 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
     @Override
     protected void preDeleteHook(UserImpl user) {
         super.preDeleteHook(user);
-        LOGGER.info("##### Deleted user: " + user.getDisplayName() + " #####");
+        LOGGER.info("Deleting user: " + user.getDisplayName());
     }
 
     @Override
