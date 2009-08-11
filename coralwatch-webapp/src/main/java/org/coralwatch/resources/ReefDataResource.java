@@ -162,6 +162,10 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
 		HSSFRow row = sheet.createRow(0);
 		int c = 0;
 		setCell(row.createCell(c++), "Survey");
+		setCell(row.createCell(c++), "Creator");
+		setCell(row.createCell(c++), "Reef");
+		setCell(row.createCell(c++), "Date");
+		setCell(row.createCell(c++), "Time");
 		setCell(row.createCell(c++), "Coral Type");
 		setCell(row.createCell(c++), "Lightest Letter");
 		setCell(row.createCell(c++), "Lightest Number");
@@ -173,6 +177,10 @@ public class ReefDataResource extends EntityResource<Reef, ReefDao, UserImpl> {
 				row = sheet.createRow(r++);
 				c = 0;
 				setCell(row.createCell(c++), record.getSurvey().getId());
+				setCell(row.createCell(c++), record.getSurvey().getCreator().getDisplayName());
+				setCell(row.createCell(c++), record.getSurvey().getReef().getName());
+				setCell(row.createCell(c++), record.getSurvey().getDate());
+				setTimeCell(row.createCell(c++), record.getSurvey().getTime());
 				setCell(row.createCell(c++), record.getCoralType());
 				setCell(row.createCell(c++), record.getLightestLetter());
 				setCell(row.createCell(c++), record.getLightestNumber());
