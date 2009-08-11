@@ -382,7 +382,7 @@
         <label>Position:</label>
     </td>
     <td>
-        <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:20ex">
+        <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:15ex">
             <div id="tabDecimal" dojoType="dijit.layout.ContentPane" title="Decimal">
                 <table>
                     <tr>
