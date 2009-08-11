@@ -215,6 +215,9 @@ public class DataExchangeResource extends DataDownloadResource {
                 }
             }
             assert user != null;
+            if(user.getRegistrationDate().after(date)) {
+            	user.setRegistrationDate(date);
+            }
             survey.setCreator(user);
             survey.setDate(date);
             survey.setTime(time);
