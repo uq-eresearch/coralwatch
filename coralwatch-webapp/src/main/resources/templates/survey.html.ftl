@@ -182,7 +182,8 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                         required="true"
                         dojoType="dijit.form.ComboBox"
                         hasDownArrow="true">
-                    <option selected="selected" value="B">B</option>
+                    <option selected="selected" value=""></option>
+                    <option value="B">B</option>
                     <option value="C">C</option>
                     <option value="D">D</option>
                     <option value="E">E</option>
@@ -193,12 +194,13 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                         required="true"
                         dojoType="dijit.form.ComboBox"
                         hasDownArrow="true">
+                    <option selected="selected" value=""></option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
-                    <option selected="selected" value="6">6</option>
+                    <option value="6">6</option>
                 </select>
             </td>
             <td nowrap="nowrap">
@@ -208,7 +210,8 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                         required="true"
                         dojoType="dijit.form.ComboBox"
                         hasDownArrow="true">
-                    <option selected="selected" value="B">B</option>
+                    <option selected="selected" value=""></option>
+                    <option value="B">B</option>
                     <option value="C">C</option>
                     <option value="D">D</option>
                     <option value="E">E</option>
@@ -219,12 +222,13 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                         required="true"
                         dojoType="dijit.form.ComboBox"
                         hasDownArrow="true">
+                    <option selected="selected" value=""></option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
-                    <option selected="selected" value="6">6</option>
+                    <option value="6">6</option>
                 </select>
             </td>
         </tr>
