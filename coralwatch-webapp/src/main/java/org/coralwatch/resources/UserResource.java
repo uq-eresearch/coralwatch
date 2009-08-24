@@ -39,6 +39,7 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
     }
 
     public static void updateUser(UserImpl userImpl, Form form) throws SubmissionException {
+    	assert userImpl != null: "Can not update null user";
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
 
         String email = form.getFirstValue("signupEmail");
