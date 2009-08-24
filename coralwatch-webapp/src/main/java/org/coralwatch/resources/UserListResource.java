@@ -45,7 +45,7 @@ public class UserListResource extends ModifiableListResource<UserImpl, UserDao, 
             errors.add(new SubmissionError(("Email must not be empty")));
         } else {
             UserImpl user = CoralwatchApplication.getConfiguration().getUserDao().getByEmail(email);
-            if (user.getPasswordHash() != null) {
+            if (user!=null && user.getPasswordHash() != null) {
                 errors.add(new SubmissionError("An account with the same email already exists."));
             } else {
                 UserResource.updateUser(user, form);
