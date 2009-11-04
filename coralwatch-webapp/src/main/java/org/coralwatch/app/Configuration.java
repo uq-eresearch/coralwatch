@@ -4,6 +4,7 @@ import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
+import org.coralwatch.dataaccess.TrustDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.restlet.service.ConnectorService;
 
@@ -23,6 +24,8 @@ public interface Configuration {
     KitRequestDao getKitRequestDao();
 
     SurveyRecordDao getSurveyRecordDao();
+
+    TrustDao getTrustDao();
 
     ReefDao getReefDao();
 
