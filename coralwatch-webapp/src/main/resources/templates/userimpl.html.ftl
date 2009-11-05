@@ -73,10 +73,15 @@
     </tr>
     <tr>
         <td class="headercell">Community Trust:</td>
+        <#if (communityTrust == -1)>
+        <td>Not Recorded</td>
+        <#else>
         <td>${communityTrust?c}</td>
+        </#if>
     </tr>
     <tr>
         <td class="headercell">Your Trust</td>
+        <#if (userTrust == -1)>
         <td>
             <div dojoType="dijit.form.Form" method="post" action="${baseUrl}/trust">
                 <input type="hidden" name="trusteeId" value="${userimpl.id?c}"/>
@@ -95,6 +100,10 @@
                 <button dojoType="dijit.form.Button" type="submit" name="submit">Submit</button>
             </div>
         </td>
+        <#else>
+        <td>${userTrust?c}</td>
+        </#if>
+
     </tr>
 </table>
 <br/>

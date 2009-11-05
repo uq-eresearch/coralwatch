@@ -8,6 +8,7 @@ import org.coralwatch.dataaccess.TrustDao;
 import org.coralwatch.model.Trust;
 import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
+import org.restlet.resource.Variant;
 
 import java.util.logging.Logger;
 
@@ -22,5 +23,10 @@ public class TrustResource extends ModifiableEntityResource<Trust, TrustDao, Use
     @Override
     protected void updateObject(Trust trust, Form form) throws SubmissionException {
 //        updateSurveyRecord(surveyRecord, form);
+    }
+
+    @Override
+    protected boolean getAllowed(UserImpl user, Variant variant) {
+        return true;
     }
 }

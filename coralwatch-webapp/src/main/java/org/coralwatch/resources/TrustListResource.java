@@ -9,6 +9,8 @@ import org.coralwatch.dataaccess.TrustDao;
 import org.coralwatch.model.Trust;
 import org.coralwatch.model.UserImpl;
 import org.restlet.data.Form;
+import org.restlet.resource.Representation;
+import org.restlet.resource.Variant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +43,21 @@ public class TrustListResource extends ModifiableListResource<Trust, TrustDao, U
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         }
-        return new Trust(trustor, trustee,trustValue);
+        return new Trust(trustor, trustee, trustValue);
     }
 
     @Override
     protected String getRedirectLocation(Trust trust) {
         return String.valueOf("users/" + trust.getTrustee().getId());
+    }
+
+    @Override
+    protected boolean postAllowed(UserImpl user, Representation representation) {
+        return true;
+    }
+
+    @Override
+    protected boolean getAllowed(UserImpl userImpl, Variant variant) {
+        return true;
     }
 }

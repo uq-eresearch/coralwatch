@@ -6,5 +6,7 @@ import org.coralwatch.model.UserImpl;
 
 public interface TrustDao extends Dao<Trust> {
     double getCommunityTrust(UserImpl trustee);
+
+    double getTrustByUser(UserImpl trustor, UserImpl trustee);
 }
 
