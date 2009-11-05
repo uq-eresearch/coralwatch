@@ -14,12 +14,10 @@ import org.restlet.data.Form;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SurveyRecordListResource extends
-		ModifiableListResource<SurveyRecord, SurveyRecordDao, UserImpl> {
+public class SurveyRecordListResource extends ModifiableListResource<SurveyRecord, SurveyRecordDao, UserImpl> {
 
 	public SurveyRecordListResource() throws InitializationException {
-		super(CoralwatchApplication.getConfiguration().getSurveyRecordDao(),
-				true);
+		super(CoralwatchApplication.getConfiguration().getSurveyRecordDao(), true);
 	}
 
 	@Override

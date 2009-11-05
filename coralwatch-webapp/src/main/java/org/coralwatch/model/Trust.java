@@ -40,7 +40,7 @@ public class Trust implements Serializable {
         trustDate = new Date();
     }
 
-    public Trust(UserImpl trustor, UserImpl trustee, Date trustDate, int trustValue) {
+    public Trust(UserImpl trustor, UserImpl trustee, int trustValue) {
         this.trustor = trustor;
         this.trustee = trustee;
         this.trustDate = new Date();
