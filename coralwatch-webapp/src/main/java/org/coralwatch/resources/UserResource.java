@@ -31,6 +31,7 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         super.fillDatamodel(datamodel);
         UserImpl userImpl = (UserImpl) datamodel.get(getTemplateObjectName());
         datamodel.put("conductedSurveys", getDao().getSurveyEntriesCreated(userImpl));
+        datamodel.put("communityTrust", CoralwatchApplication.getConfiguration().getTrustDao().getCommunityTrust(userImpl));
     }
 
     @Override
@@ -39,7 +40,7 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
     }
 
     public static void updateUser(UserImpl userImpl, Form form) throws SubmissionException {
-    	assert userImpl != null: "Can not update null user";
+        assert userImpl != null : "Can not update null user";
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
 
         String email = form.getFirstValue("signupEmail");
@@ -99,7 +100,7 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         }
         super.postUpdateHook(userImpl);
     }
-   
+
     @Override
     protected void preDeleteHook(UserImpl user) {
         super.preDeleteHook(user);

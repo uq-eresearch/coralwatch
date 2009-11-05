@@ -72,7 +72,11 @@
         <td>${userimpl.country!}</td>
     </tr>
     <tr>
-        <td class="headercell">How much do you trust ${userimpl.displayName!}?</td>
+        <td class="headercell">Community Trust:</td>
+        <td>${communityTrust?c}</td>
+    </tr>
+    <tr>
+        <td class="headercell">Your Trust</td>
         <td>
             <div dojoType="dijit.form.Form" method="post" action="${baseUrl}/trust">
                 <input type="hidden" name="trusteeId" value="${userimpl.id?c}"/>

@@ -27,6 +27,7 @@ import org.coralwatch.resources.SurveyListResource;
 import org.coralwatch.resources.SurveyRecordListResource;
 import org.coralwatch.resources.SurveyRecordResource;
 import org.coralwatch.resources.SurveyResource;
+import org.coralwatch.resources.TrustListResource;
 import org.coralwatch.resources.TrustResource;
 import org.coralwatch.resources.UserListResource;
 import org.coralwatch.resources.UserResource;
@@ -79,6 +80,7 @@ public class CoralwatchApplication extends Application {
         router.attach("/surveyrecord/{id}", SurveyRecordResource.class);
         router.attach("/surveyrecord", SurveyRecordListResource.class);
         router.attach("/trust/{id}", TrustResource.class);
+        router.attach("/trust", TrustListResource.class);
         router.attach("/login", LoginResource.class);
         router.attach("/oneoff", OneOffSubmissionResource.class);
         router.attach("/postsignup", PostSignUpResource.class);

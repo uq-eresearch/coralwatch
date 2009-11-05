@@ -38,4 +38,5 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao {
         assert resultList.size() == 1 : "Email should be unique";
         return (UserImpl) resultList.get(0);
     }
+
 }

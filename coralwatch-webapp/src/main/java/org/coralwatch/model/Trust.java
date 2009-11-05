@@ -34,7 +34,7 @@ public class Trust implements Serializable {
     private Date trustDate;
 
     @NotNull
-    private int trustValue;
+    private double trustValue;
 
     public Trust() {
         trustDate = new Date();
@@ -79,11 +79,11 @@ public class Trust implements Serializable {
         this.trustDate = trustDate;
     }
 
-    public int getTrustValue() {
+    public double getTrustValue() {
         return trustValue;
     }
 
-    public void setTrustValue(int trustValue) {
+    public void setTrustValue(double trustValue) {
         this.trustValue = trustValue;
     }
 }
