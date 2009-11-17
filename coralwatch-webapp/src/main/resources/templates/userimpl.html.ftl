@@ -21,11 +21,12 @@
     $(function() {
         $("#ratings").children().not(":radio").hide();
         $("#ratings").stars({
+            cancelShow: false,
             callback: function(ui, type, value)
             {
                 $.post("${baseUrl}/trust", {trust: value, trusteeId: ${userimpl.id?c}}, function(data)
                 {
-                    $("#ajax_response").html(data);
+                    window.location = '${baseUrl}/users/${userimpl.id?c}';
                 });
             }
         });
@@ -33,11 +34,12 @@
         $("#ratings2").children().not(":radio").hide();
 
         $("#ratings2").stars({
+            cancelShow: false,
             callback: function(ui, type, value)
             {
                 $.post("${baseUrl}/trust", {trust: value, trusteeId: ${userimpl.id?c}}, function(data)
                 {
-                    $("#ajax_response").html(data);
+                    window.location = '${baseUrl}/users/${userimpl.id?c}';
                 });
             }
         });
@@ -120,23 +122,23 @@
                 <input type="radio" name="trust" value="4" type="radio">
                 <input type="radio" name="trust" value="5" type="radio">
             </div>
-            <span> (Not Recorded)</span>
+            <span>&ensp;(Not Recorded)</span>
         </td>
         <#else>
         <td>
             <div class="multiField" id="starify">
                 <input type="radio" name="trust" value="1" type="radio"
-                       <#if (communityTrust > 0) && (communityTrust < 1.5)>checked="checked"</#if>>
+                       <#if (communityTrust >= 0) && (communityTrust < 1.5)>checked="checked"</#if>>
                 <input type="radio" name="trust" value="2" type="radio"
                        <#if (communityTrust >= 1.5) && (communityTrust < 2.5)>checked="checked"</#if>>
                 <input type="radio" name="trust" value="3" type="radio"
-                       <#if (communityTrust >= 2.5) || (communityTrust < 3.5)>checked="checked"</#if>>
+                       <#if (communityTrust >= 2.5) && (communityTrust < 3.5)>checked="checked"</#if>>
                 <input type="radio" name="trust" value="4" type="radio"
                        <#if (communityTrust >= 3.5) && (communityTrust < 4.5)>checked="checked"</#if>>
                 <input type="radio" name="trust" value="5" type="radio"
                        <#if (communityTrust >= 4.5) && (communityTrust <= 5)>checked="checked"</#if>>
             </div>
-            <span> (${communityTrust?c})</span>
+            <span>&ensp;(${communityTrust?c})</span>
         </td>
         </#if>
     </tr>
@@ -147,7 +149,7 @@
             <form id="ratings" method="post" action="${baseUrl}/trust">
                 <input type="hidden" name="trusteeId" value="${userimpl.id?c}"/>
                 <input type="radio" id="trust_1" name="trust" value="1" type="radio"
-                       <#if (userTrust > 0) && (userTrust < 1.5)>checked="checked"</#if>>
+                       <#if (userTrust >= 0) && (userTrust < 1.5)>checked="checked"</#if>>
                 <input type="radio" id="trust_2" name="trust" value="2" type="radio"
                        <#if (userTrust >= 1.5) && (userTrust < 2.5)>checked="checked"</#if>>
                 <input type="radio" id="trust_3" name="trust" value="3" type="radio"
@@ -158,7 +160,7 @@
                        <#if (userTrust >= 4.5) && (userTrust <= 5)>checked="checked"</#if>>
                 <input type="submit" value="Rate" name="submit"/>
             </form>
-            <span> (${userTrust?c})</span>
+            <span>&ensp;(${userTrust?c})</span>
         </td>
         <#else>
         <td>
@@ -171,6 +173,7 @@
                 <input type="radio" name="trust" value="5" type="radio">
                 <input type="submit" value="Rate" name="submit"/>
             </form>
+            <span>&ensp;(Not Recorded)</span>
         </td>
         </#if>
 

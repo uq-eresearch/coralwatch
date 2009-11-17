@@ -155,7 +155,7 @@
         <div style=" height: 61px;"></div>
         <div id="footer">
             <div class="indent">
-                <div align="center">&copy;2009 CoralWatch</div>
+                <div align="center">&copy; 2009 CoralWatch</div>
             </div>
         </div>
     </div>
