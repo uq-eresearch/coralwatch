@@ -11,8 +11,8 @@ color: #2F4F4F;
 }
 .breadcrumbs {
 font-size:0.95em;
-margin:0 1em 1em;
-padding:0 0.6em 0.3em;
+margin: 0 0 1em;
+padding: 0 0 0.3em;
 border-bottom:1px solid #bbb;
 }
 p {
