@@ -33,9 +33,9 @@ public class TrustListResource extends ModifiableListResource<Trust, TrustDao, U
         }
         UserImpl trustee = CoralwatchApplication.getConfiguration().getUserDao().load(trusteeId);
 
-        int trustValue = 0;
+        double trustValue = 0;
         try {
-            trustValue = Integer.valueOf(form.getFirstValue("trust"));
+            trustValue = Double.valueOf(form.getFirstValue("trust"));
         } catch (NumberFormatException ex) {
             errors.add(new SubmissionError("Can not parse trust value"));
         }
@@ -43,7 +43,14 @@ public class TrustListResource extends ModifiableListResource<Trust, TrustDao, U
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         }
-        return new Trust(trustor, trustee, trustValue);
+
+        Trust trust = CoralwatchApplication.getConfiguration().getTrustDao().getTrust(trustor, trustee);
+        if (trust == null) {
+            return new Trust(trustor, trustee, trustValue);
+        } else {
+            trust.setTrustValue(trustValue);
+            return trust;
+        }
     }
 
     @Override

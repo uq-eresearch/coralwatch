@@ -15,7 +15,24 @@ public class JpaTrustDao extends JpaDao<Trust> implements TrustDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public double getTrustByUser(UserImpl trustor, UserImpl trustee) {
+    public Trust getTrust(UserImpl trustor, UserImpl trustee) {
+        try {
+            Trust trust = (Trust) entityManagerSource.getEntityManager().createQuery(
+                    "SELECT o FROM Trust o " +
+                            "WHERE o.trustor = :trustor " +
+                            "AND o.trustee = :trustee")
+                    .setParameter("trustor", trustor)
+                    .setParameter("trustee", trustee)
+                    .getSingleResult();
+            return trust;
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public double getTrustValueByUser(UserImpl trustor, UserImpl trustee) {
         try {
             Double trustValue = (Double) entityManagerSource.getEntityManager().createQuery(
                     "SELECT o.trustValue FROM Trust o " +
@@ -32,7 +49,7 @@ public class JpaTrustDao extends JpaDao<Trust> implements TrustDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public double getCommunityTrust(UserImpl trustee) {
+    public double getCommunityTrustValue(UserImpl trustee) {
         try {
             Double trustValue = (Double) entityManagerSource.getEntityManager().createQuery(
                     "SELECT avg(o.trustValue) FROM Trust o WHERE o.trustee = :trustee").setParameter("trustee", trustee).getSingleResult();

@@ -21,9 +21,6 @@
     $(function() {
         $("#ratings").children().not(":radio").hide();
         $("#ratings").stars({
-            cancelShow: false
-        });
-        $("#ratings").stars({
             callback: function(ui, type, value)
             {
                 $.post("${baseUrl}/trust", {trust: value, trusteeId: ${userimpl.id?c}}, function(data)
@@ -32,10 +29,9 @@
                 });
             }
         });
+
         $("#ratings2").children().not(":radio").hide();
-        $("#ratings2").stars({
-            cancelShow: false
-        });
+
         $("#ratings2").stars({
             callback: function(ui, type, value)
             {
@@ -159,8 +155,8 @@
                 <input type="radio" id="trust_4" name="trust" value="4" type="radio"
                        <#if (userTrust >= 3.5) && (userTrust < 4.5)>checked="checked"</#if>>
                 <input type="radio" id="trust_5" name="trust" value="5" type="radio"
-                       <#if (userTrust >= 4.5) && (userTrust < 5)>checked="checked"</#if>>
-                <#--<input type="submit" value="Rate" name="submit"/>-->
+                       <#if (userTrust >= 4.5) && (userTrust <= 5)>checked="checked"</#if>>
+                <input type="submit" value="Rate" name="submit"/>
             </form>
             <span> (${userTrust?c})</span>
         </td>
@@ -173,6 +169,7 @@
                 <input type="radio" name="trust" value="3" type="radio">
                 <input type="radio" name="trust" value="4" type="radio">
                 <input type="radio" name="trust" value="5" type="radio">
+                <input type="submit" value="Rate" name="submit"/>
             </form>
         </td>
         </#if>
