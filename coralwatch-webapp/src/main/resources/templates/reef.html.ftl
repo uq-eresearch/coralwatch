@@ -1,3 +1,8 @@
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/kit">All Requests</a>&ensp;&raquo;&ensp;Kit
+    Request
+</div>
+
 <#-- @ftlvariable name="reef" type="org.coralwatch.model.Reef" -->
 <#-- @ftlvariable name="surveys" type="java.util.List" -->
 <script type="text/javascript">
@@ -38,13 +43,16 @@
 </#if>
 <#if (surveys?size > 1)>
 <div><img src="${baseUrl}/reef/${reef.id?c}?format=png" width="${imageWidth?c}" height="${imageHeight?c}"/></div>
-<div><img src="${baseUrl}/reef/${reef.id?c}?format=png&chart=coralCount" width="${imageWidth?c}" height="${imageHeight?c}"/></div>
-<div><img src="${baseUrl}/reef/${reef.id?c}?format=png&chart=shapePie" width="${imageWidth?c}" height="${imageHeight?c}"/></div>
+<div><img src="${baseUrl}/reef/${reef.id?c}?format=png&chart=coralCount" width="${imageWidth?c}"
+          height="${imageHeight?c}"/></div>
+<div><img src="${baseUrl}/reef/${reef.id?c}?format=png&chart=shapePie" width="${imageWidth?c}"
+          height="${imageHeight?c}"/></div>
 </#if>
 <p/> <#-- TODO just a hack to get around weird CSS for headings -->
 <h2>Surveys</h2>
 <p/> <#-- TODO just a hack to get around weird CSS for headings -->
 <#list surveys as survey>
-<h3><a href="${baseUrl}/surveys/${survey.id?c}">${survey.creator.displayName} - ${(survey.date?date)!} ${(survey.time?time)!}</a></h3>
+<h3><a href="${baseUrl}/surveys/${survey.id?c}">${survey.creator.displayName}
+    - ${(survey.date?date)!} ${(survey.time?time)!}</a></h3>
 <p>Weather: ${(survey.weather)!}; comments: ${(survey.comments)!}</p>
 </#list>

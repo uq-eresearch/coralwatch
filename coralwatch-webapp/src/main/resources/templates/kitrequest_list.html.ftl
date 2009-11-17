@@ -1,3 +1,7 @@
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;Kit
+    Requests
+</div>
 <#-- @ftlvariable name="baseUrl" type="java.lang.String" -->
 <#-- @ftlvariable name="kitrequestList" type="java.util.List<org.coralwatch.model.KitRequest>" -->
 <h3>All Kit Requests</h3>
@@ -10,14 +14,16 @@
     </tr>
 
     <#list kitrequestList as kitrequest>
-        <tr>
-            <td align="center"><a href="${baseUrl}/kit/${kitrequest.id?c}"><img class="icon" src="${baseUrl}/icons/fam/application_view_detail.png"/></a></td>
-            <td><a href="${baseUrl}/users/${kitrequest.requester.id?c}">${(kitrequest.requester.displayName)}</a></td>
-            <td>${(kitrequest.requestDate)!?datetime}</td>
-            <td><#if kitrequest.dispatchdate??>
-                ${(kitrequest.dispatchdate)?string("dd/MM/yyyy")!}
-                </#if>
-            </td>
-        </tr>
+    <tr>
+        <td align="center"><a href="${baseUrl}/kit/${kitrequest.id?c}"><img class="icon"
+                                                                            src="${baseUrl}/icons/fam/application_view_detail.png"/></a>
+        </td>
+        <td><a href="${baseUrl}/users/${kitrequest.requester.id?c}">${(kitrequest.requester.displayName)}</a></td>
+        <td>${(kitrequest.requestDate)!?datetime}</td>
+        <td><#if kitrequest.dispatchdate??>
+            ${(kitrequest.dispatchdate)?string("dd/MM/yyyy")!}
+            </#if>
+        </td>
+    </tr>
     </#list>
 </table>

@@ -9,7 +9,12 @@ background: #FFFFFF url(${baseUrl}/icons/footer_bg.gif) bottom repeat-x;
 text-align: justfy;
 color: #2F4F4F;
 }
-
+.breadcrumbs {
+font-size:0.95em;
+margin:0 1em 1em;
+padding:0 0.6em 0.3em;
+border-bottom:1px solid #bbb;
+}
 p {
 text-align: justify;
 margin-bottom: 15px;
@@ -281,7 +286,7 @@ clear: both;
 
 div.main_content {
 margin: 0 20 0 20px;
-padding: 4ex 2em 4ex 2em;
+padding: 3ex 2em 4ex 2em;
 }
 
 .footer_banner_list li {
@@ -342,19 +347,19 @@ padding:5px;
 }
 
 .news-list {
-  margin: 0 0 15px 15px;
-  padding: 0;
-  list-style-type: none;
+margin: 0 0 15px 15px;
+padding: 0;
+list-style-type: none;
 }
 
 .news-list li {
-  margin: 0 0 10px 0;
-  padding: 0;
-  list-style-type: none;
+margin: 0 0 10px 0;
+padding: 0;
+list-style-type: none;
 }
 
 .news-list li a {
-  padding: 0 0 0 19px;
-  list-style-type: none;
-  background: url("${baseUrl}/icons/fam/newspaper.png") no-repeat 0 50%;                        
+padding: 0 0 0 19px;
+list-style-type: none;
+background: url("${baseUrl}/icons/fam/newspaper.png") no-repeat 0 50%;
 }

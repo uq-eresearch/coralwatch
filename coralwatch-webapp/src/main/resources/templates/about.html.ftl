@@ -1,3 +1,6 @@
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;About
+</div>
 <ul>
     <li><a class="links" href="#why">Why do corals change colour?</a></li>
     <li><a class="links" href="#aims">Our aims</a></li>

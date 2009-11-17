@@ -1,3 +1,7 @@
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/users">Users</a>&ensp;&raquo;&ensp;${userimpl.displayName!}
+</div>
+
 <#-- @ftlvariable name="userimpl" type="org.coralwatch.model.UserImpl" -->
 <script type="text/javascript">
     function deleteUser(id) {

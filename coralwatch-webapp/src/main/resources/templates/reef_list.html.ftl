@@ -1,3 +1,6 @@
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;Kit Requests
+</div>
 <#-- @ftlvariable name="baseUrl" type="java.lang.String" -->
 <#-- @ftlvariable name="reefList" type="java.util.List<org.coralwatch.model.Reef>" -->
 <h3>List of All Reefs</h3>
@@ -9,10 +12,12 @@
     </tr>
 
     <#list reefList as reef>
-        <tr>
-            <td align="center"><a href="${baseUrl}/reef/${reef.id?c}"><img class="icon" src="${baseUrl}/icons/fam/application_view_detail.png"/></a></td>
-            <td>${(reef.name)!}</td>
-            <td>${(reef.country)!}</td>
-        </tr>
+    <tr>
+        <td align="center"><a href="${baseUrl}/reef/${reef.id?c}"><img class="icon"
+                                                                       src="${baseUrl}/icons/fam/application_view_detail.png"/></a>
+        </td>
+        <td>${(reef.name)!}</td>
+        <td>${(reef.country)!}</td>
+    </tr>
     </#list>
 </table>

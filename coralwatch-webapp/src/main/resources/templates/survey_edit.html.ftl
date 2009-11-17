@@ -1,8 +1,15 @@
 <#-- @ftlvariable name="reefRecs" type="java.util.List<org.coralwatch.model.Reef>" -->
 <#assign newObject=!(survey??)/>
 <#if newObject>
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/surveys">Surveys</a>&ensp;&raquo;&ensp;New
+    Survey
+</div>
 <h3>Create New Survey</h3>
 <#else>
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/surveys">Surveys</a>&ensp;&raquo;&ensp;${(survey.id)!}
+</div>
 <h3>Editing Survey</h3>
 </#if>
 <p>Thanks for participating in this survey, please complete the following information before you enter your data for
@@ -24,8 +31,8 @@
 
     function updateLonFromDecimal() {
         var dec = dijit.byId("longitude").getValue();
-        if(dec > 180) {
-            dec = dec-360;
+        if (dec > 180) {
+            dec = dec - 360;
         }
         var sign = (dec >= 0) ? 1 : -1;
         dec = dec * sign;
@@ -81,7 +88,7 @@
         }
         dijit.byId("latitude").setValue(dec);
     }
-    
+
 </script>
 <table>
 <#if !newObject>

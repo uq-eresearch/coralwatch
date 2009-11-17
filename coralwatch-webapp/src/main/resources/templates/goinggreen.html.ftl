@@ -1,3 +1,6 @@
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;Going Green
+</div>
 <h3>
     So what can I do to help?
 </h3>
@@ -80,14 +83,14 @@
     <li>Turn it off!</li>
 </ul>
 <p>If an appliance has a standby mode, switch it off at the power point when not in
-use or when you are going away for a few days or more. Energy used by standby power
-can contribute 10% of a household’s energy bill. Turn off lights when you are out
-of the room. Don’t leave the computer running when you don’t need it.
-<a href="http://www.sustainable.energy.sa.gov.au/pages/advisory/residential/energy_use/standby/standby.htm:sectID=14&amp;tempID=53%20"
-   target="_blank">
-    http://www.sustainable.energy.sa.gov.au/pages/advisory/residential/energy_use/standby/standby.htm:sectID=14&amp;tempID=53
-    <br>
-</a>
+    use or when you are going away for a few days or more. Energy used by standby power
+    can contribute 10% of a household’s energy bill. Turn off lights when you are out
+    of the room. Don’t leave the computer running when you don’t need it.
+    <a href="http://www.sustainable.energy.sa.gov.au/pages/advisory/residential/energy_use/standby/standby.htm:sectID=14&amp;tempID=53%20"
+       target="_blank">
+        http://www.sustainable.energy.sa.gov.au/pages/advisory/residential/energy_use/standby/standby.htm:sectID=14&amp;tempID=53
+        <br>
+    </a>
 </p>
 <ul>
     <li>Insulate: Keep heat in during winter and out during summer by installing insulation
@@ -103,11 +106,11 @@ of the room. Don’t leave the computer running when you don’t need it.
 <h3>
     Top Tips for Saving Water!
 </h3>
-        <p>
-Some of the simplest ways to reduce our water consumption around the home is by
-changing our behaviour (or habits). Whilst efficient appliances can help, water
-conservation doesn't have to cost the earth. Consider the following;
-        </p>
+<p>
+    Some of the simplest ways to reduce our water consumption around the home is by
+    changing our behaviour (or habits). Whilst efficient appliances can help, water
+    conservation doesn't have to cost the earth. Consider the following;
+</p>
 <ul>
     <li>Avoid water use in the garden (e.g. sweep paths instead of hosing)</li>
 
@@ -140,9 +143,9 @@ conservation doesn't have to cost the earth. Consider the following;
     <li>Install dual-flushing toilets</li>
 </ul>
 <p>
-Assuming replacement of an older style (11 litre) full flush toilet, a three person
-household would save more than 42,000 litres per annum (based upon one full flush
-and four half flushes per person each day using a AAAA-rated toilet)
+    Assuming replacement of an older style (11 litre) full flush toilet, a three person
+    household would save more than 42,000 litres per annum (based upon one full flush
+    and four half flushes per person each day using a AAAA-rated toilet)
 </p>
 <ul>
     <li>Or even a composting toilet that doesn’t need flushing at all</li>
@@ -177,12 +180,12 @@ and four half flushes per person each day using a AAAA-rated toilet)
     Transport
 </h3>
 <p>The flexibility and convenience of road transport comes at an environmental cost.
-For example, motor vehicles create air pollution and, in particular, greenhouse
-gas emissions. In the inventory of Australia's greenhouse gas emissions for 2002
-(AGO 2004) road transport accounted for 69.9 mega tonnes (Mt) of carbon dioxide
-equivalent emissions or 13% of total greenhouse gas emissions, of which 43.5 Mt
-(62%) came from passenger cars.
-<a href="http://www.abs.gov.au/ausstats/abs@.nsf/0/90a31e6bf324b980ca256f7200832fbd?OpenDocument" target="_blank">http://www.abs.gov.au/ausstats/abs@.nsf/0/90a31e6bf324b980ca256f7200832fbd?OpenDocument</a>
+    For example, motor vehicles create air pollution and, in particular, greenhouse
+    gas emissions. In the inventory of Australia's greenhouse gas emissions for 2002
+    (AGO 2004) road transport accounted for 69.9 mega tonnes (Mt) of carbon dioxide
+    equivalent emissions or 13% of total greenhouse gas emissions, of which 43.5 Mt
+    (62%) came from passenger cars.
+    <a href="http://www.abs.gov.au/ausstats/abs@.nsf/0/90a31e6bf324b980ca256f7200832fbd?OpenDocument" target="_blank">http://www.abs.gov.au/ausstats/abs@.nsf/0/90a31e6bf324b980ca256f7200832fbd?OpenDocument</a>
 </p>
 <ul>
     <li>Hybrid cars - a vehicle designed to run on a combination of both fuel and an electric
@@ -195,23 +198,23 @@ equivalent emissions or 13% of total greenhouse gas emissions, of which 43.5 Mt
     Carbon Neutral
 </h3>
 <p>Going carbon neutral is an easy way to take responsibility for the greenhouse gas
-emissions we create every time we drive our cars, take a plane, or turn on our computers.
-It's based on the principle that, since climate change is a global problem, an emission
-reduction made elsewhere has the same positive effect as one made locally.
+    emissions we create every time we drive our cars, take a plane, or turn on our computers.
+    It's based on the principle that, since climate change is a global problem, an emission
+    reduction made elsewhere has the same positive effect as one made locally.
 </p>
 <p>
-Here's how it works: if you add polluting emissions to the atmosphere, you can effectively
-subtract them by purchasing 'carbon offsets'. Carbon offsets are simply credits
-for emission reductions achieved by projects elsewhere, such as wind farms, solar
-installations, or energy efficiency projects. By purchasing these credits, you can
-apply them to your own emissions and reduce your net climate impact.
+    Here's how it works: if you add polluting emissions to the atmosphere, you can effectively
+    subtract them by purchasing 'carbon offsets'. Carbon offsets are simply credits
+    for emission reductions achieved by projects elsewhere, such as wind farms, solar
+    installations, or energy efficiency projects. By purchasing these credits, you can
+    apply them to your own emissions and reduce your net climate impact.
 </p>
 <p>
-Vegetation plays an important role in reducing the level of greenhouse gases in
-the atmosphere, as trees and other plants absorb carbon dioxide from the air and
-store it as carbon. Under ideal conditions, one million hectares of new forest could
-absorb about 25 Mt of carbon dioxide a year, which would lower Australia's present
-carbon dioxide production by about 9% (CSIRO 2004c).
+    Vegetation plays an important role in reducing the level of greenhouse gases in
+    the atmosphere, as trees and other plants absorb carbon dioxide from the air and
+    store it as carbon. Under ideal conditions, one million hectares of new forest could
+    absorb about 25 Mt of carbon dioxide a year, which would lower Australia's present
+    carbon dioxide production by about 9% (CSIRO 2004c).
 </p>
 <ul>
     <li>General Information. (<a href="http://www.treehugger.com/files/2007/02/falwell_to_arms.php" target="_blank">http://www.treehugger.com/files/2007/02/falwell_to_arms.php</a>)
@@ -226,12 +229,12 @@ carbon dioxide production by about 9% (CSIRO 2004c).
     <li>Plant trees</li>
 </ul>
 <p>
-Greenfleet is a non-profit organisation. Our program provides a simple way to reduce
-your car's impact on the environment. For $40 (tax deductible), Greenfleet will
-plant 17 native trees on your behalf. These trees will help to create a forest,
-and as they grow will absorb the greenhouse gases that your car produces in one
-year ((based on 4.3 tonnes of CO2 for the average car*).
-<a href="http://www.greenfleet.com.au/greenfleet/objectives.asp" target="_blank">http://www.greenfleet.com.au/greenfleet/objectives.asp</a>
+    Greenfleet is a non-profit organisation. Our program provides a simple way to reduce
+    your car's impact on the environment. For $40 (tax deductible), Greenfleet will
+    plant 17 native trees on your behalf. These trees will help to create a forest,
+    and as they grow will absorb the greenhouse gases that your car produces in one
+    year ((based on 4.3 tonnes of CO2 for the average car*).
+    <a href="http://www.greenfleet.com.au/greenfleet/objectives.asp" target="_blank">http://www.greenfleet.com.au/greenfleet/objectives.asp</a>
 </p>
 <ul>
     <li>The use of ecologically sustainable products and services (<a
@@ -249,10 +252,10 @@ year ((based on 4.3 tonnes of CO2 for the average car*).
 </h3>
 <ul>
     <li>Berkelmans, R &amp; B.L. Willis 1999: Seasonal and local spatial patterns in the upper
-thermal limits of corals on the inshore central Great Barrier Reef. Coral Reefs,
-18, 55-60.
-</li>
-<li>Hoegh-Guldberg, O. 1999: Climate change, coral bleaching and the future of the world’s
-coral reefs. Journal of Marine and Freshwater Research, 50, 839-866.
-</li>
-    </ul>
+        thermal limits of corals on the inshore central Great Barrier Reef. Coral Reefs,
+        18, 55-60.
+    </li>
+    <li>Hoegh-Guldberg, O. 1999: Climate change, coral bleaching and the future of the world’s
+        coral reefs. Journal of Marine and Freshwater Research, 50, 839-866.
+    </li>
+</ul>

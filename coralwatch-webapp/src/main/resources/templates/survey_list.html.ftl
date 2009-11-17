@@ -1,3 +1,6 @@
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;Surveys
+</div>
 <h3>List of All Surveys</h3>
 <table width="100%" class="list_table" cellspacing="0" cellpadding="2">
     <tr>
@@ -8,11 +11,13 @@
     </tr>
 
     <#list surveyList as survey>
-        <tr>
-            <td align="center"><a href="${baseUrl}/surveys/${survey.id?c}"><img class="icon" src="${baseUrl}/icons/fam/application_view_detail.png"/></a></td>
-            <td><a href="${baseUrl}/users/${survey.creator.id?c}">${(survey.creator.displayName)}</a></td>
-            <td>${(survey.date)!?date}</td>
-            <td>${(survey.country)!}</td>
-        </tr>
+    <tr>
+        <td align="center"><a href="${baseUrl}/surveys/${survey.id?c}"><img class="icon"
+                                                                            src="${baseUrl}/icons/fam/application_view_detail.png"/></a>
+        </td>
+        <td><a href="${baseUrl}/users/${survey.creator.id?c}">${(survey.creator.displayName)}</a></td>
+        <td>${(survey.date)!?date}</td>
+        <td>${(survey.country)!}</td>
+    </tr>
     </#list>
 </table>

@@ -1,7 +1,15 @@
 <#assign newObject=!(reef??)/>
 <#if newObject>
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/kit">All Requests</a>&ensp;&raquo;&ensp;New Kit
+    Request
+</div>
 <h3>Add New Reef</h3>
 <#else>
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/kit">All Requests</a>&ensp;&raquo;&ensp;Kit
+    Request
+</div>
 <h3>Editing Reef</h3>
 </#if>
 

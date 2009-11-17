@@ -1,4 +1,11 @@
 <#-- @ftlvariable name="kitrequest" type="org.coralwatch.model.KitRequest" -->
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;<a
+        href="${baseUrl}/kit">All Requests</a>&ensp;&raquo;&ensp;Kit Request
+</div>
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;About
+</div>
 <script type="text/javascript">
     function deleteKitRequest(id) {
         if (confirm("Are you sure you want to delete this kit request?")) {
@@ -43,9 +50,9 @@
     </tr>
 </table>
 <#if canUpdate>
-    <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/kit/${kitrequest.id?c}?edit'">Edit</button>
+<button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/kit/${kitrequest.id?c}?edit'">Edit</button>
 </#if>
 <#if canDelete>
-    <button dojoType="dijit.form.Button" onClick="deleteKitRequest(${kitrequest.id?c})">Delete</button>
+<button dojoType="dijit.form.Button" onClick="deleteKitRequest(${kitrequest.id?c})">Delete</button>
 </#if>
 <br/>

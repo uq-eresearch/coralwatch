@@ -1,3 +1,7 @@
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;Kit
+    Request
+</div>
 <#-- @ftlvariable name="kitrequest" type="org.coralwatch.model.KitRequest" -->
 <#assign newObject=!(kitrequest??)/>
 <#if newObject>

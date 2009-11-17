@@ -1,3 +1,6 @@
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;Graphs
+</div>
 <h3>Coral Bleaching Graphs Explained</h3>
 <p>
     CoralWatch uses data entered into the website to generate bar graphs showing colour

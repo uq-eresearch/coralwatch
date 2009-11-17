@@ -1,3 +1,6 @@
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;Login
+</div>
 <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:100%;height:35ex">
 <div id="tabLogin" dojoType="dijit.layout.ContentPane" title="Login">
     <div dojoType="dijit.form.Form" method="post" action="login" style="padding:5px;">
