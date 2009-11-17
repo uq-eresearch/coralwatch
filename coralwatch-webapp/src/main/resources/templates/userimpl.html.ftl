@@ -17,6 +17,48 @@
             });
         }
     }
+
+    $(function() {
+        $("#ratings").children().not(":radio").hide();
+        $("#ratings").stars({
+            cancelShow: false
+        });
+        $("#ratings").stars({
+            callback: function(ui, type, value)
+            {
+                $.post("${baseUrl}/trust", {trust: value, trusteeId: ${userimpl.id?c}}, function(data)
+                {
+                    $("#ajax_response").html(data);
+                });
+            }
+        });
+        $("#ratings2").children().not(":radio").hide();
+        $("#ratings2").stars({
+            cancelShow: false
+        });
+        $("#ratings2").stars({
+            callback: function(ui, type, value)
+            {
+                $.post("${baseUrl}/trust", {trust: value, trusteeId: ${userimpl.id?c}}, function(data)
+                {
+                    $("#ajax_response").html(data);
+                });
+            }
+        });
+    });
+    $(function() {
+        $("#starify").children().not(":input").hide();
+        // Create stars from :radio boxes
+        $("#starify").stars({
+            cancelShow: false,
+            disabled: true
+        });
+        $("#starify2").stars({
+            cancelShow: false,
+            disabled: true
+        });
+    });
+
 </script>
 
 
@@ -74,40 +116,72 @@
     <tr>
         <td class="headercell">Community Trust:</td>
         <#if (communityTrust == -1)>
-        <td>Not Recorded</td>
+        <td>
+            <div class="multiField" id="starify2">
+                <input type="radio" name="trust" value="1" type="radio">
+                <input type="radio" name="trust" value="2" type="radio">
+                <input type="radio" name="trust" value="3" type="radio">
+                <input type="radio" name="trust" value="4" type="radio">
+                <input type="radio" name="trust" value="5" type="radio">
+            </div>
+            <span> (Not Recorded)</span>
+        </td>
         <#else>
-        <td>${communityTrust?c}</td>
+        <td>
+            <div class="multiField" id="starify">
+                <input type="radio" name="trust" value="1" type="radio"
+                       <#if (communityTrust > 0) && (communityTrust < 1.5)>checked="checked"</#if>>
+                <input type="radio" name="trust" value="2" type="radio"
+                       <#if (communityTrust >= 1.5) && (communityTrust < 2.5)>checked="checked"</#if>>
+                <input type="radio" name="trust" value="3" type="radio"
+                       <#if (communityTrust >= 2.5) || (communityTrust < 3.5)>checked="checked"</#if>>
+                <input type="radio" name="trust" value="4" type="radio"
+                       <#if (communityTrust >= 3.5) && (communityTrust < 4.5)>checked="checked"</#if>>
+                <input type="radio" name="trust" value="5" type="radio"
+                       <#if (communityTrust >= 4.5) && (communityTrust <= 5)>checked="checked"</#if>>
+            </div>
+            <span> (${communityTrust?c})</span>
+        </td>
         </#if>
     </tr>
     <tr>
         <td class="headercell">Your Trust</td>
-        <#if (userTrust == -1)>
+        <#if (userTrust >= 0)>
         <td>
-            <div dojoType="dijit.form.Form" method="post" action="${baseUrl}/trust">
+            <form id="ratings" method="post" action="${baseUrl}/trust">
                 <input type="hidden" name="trusteeId" value="${userimpl.id?c}"/>
-                <input dojoType="dijit.form.RadioButton" id="trust_0" name="trust" value="0" type="radio">
-                <label for="trust_0"> 0 </label>
-                <input dojoType="dijit.form.RadioButton" id="trust_1" name="trust" value="1" type="radio">
-                <label for="trust_1"> 1 </label>
-                <input dojoType="dijit.form.RadioButton" id="trust_2" name="trust" value="2" type="radio">
-                <label for="trust_2"> 2 </label>
-                <input dojoType="dijit.form.RadioButton" id="trust_3" name="trust" value="3" type="radio">
-                <label for="trust_3"> 3 </label>
-                <input dojoType="dijit.form.RadioButton" id="trust_4" name="trust" value="4" type="radio">
-                <label for="trust_4"> 4 </label>
-                <input dojoType="dijit.form.RadioButton" id="trust_5" name="trust" value="5" type="radio">
-                <label for="trust_5"> 5 </label>
-                <button dojoType="dijit.form.Button" type="submit" name="submit">Submit</button>
-            </div>
+                <input type="radio" id="trust_1" name="trust" value="1" type="radio"
+                       <#if (userTrust > 0) && (userTrust < 1.5)>checked="checked"</#if>>
+                <input type="radio" id="trust_2" name="trust" value="2" type="radio"
+                       <#if (userTrust >= 1.5) && (userTrust < 2.5)>checked="checked"</#if>>
+                <input type="radio" id="trust_3" name="trust" value="3" type="radio"
+                       <#if (userTrust >= 2.5) && (userTrust < 3.5)>checked="checked"</#if>>
+                <input type="radio" id="trust_4" name="trust" value="4" type="radio"
+                       <#if (userTrust >= 3.5) && (userTrust < 4.5)>checked="checked"</#if>>
+                <input type="radio" id="trust_5" name="trust" value="5" type="radio"
+                       <#if (userTrust >= 4.5) && (userTrust < 5)>checked="checked"</#if>>
+                <#--<input type="submit" value="Rate" name="submit"/>-->
+            </form>
+            <span> (${userTrust?c})</span>
         </td>
         <#else>
-        <td>${userTrust?c}</td>
+        <td>
+            <form id="ratings2" method="post" action="${baseUrl}/trust">
+                <input type="hidden" name="trusteeId" value="${userimpl.id?c}"/>
+                <input type="radio" name="trust" value="1" type="radio">
+                <input type="radio" name="trust" value="2" type="radio">
+                <input type="radio" name="trust" value="3" type="radio">
+                <input type="radio" name="trust" value="4" type="radio">
+                <input type="radio" name="trust" value="5" type="radio">
+            </form>
+        </td>
         </#if>
 
     </tr>
 </table>
 <br/>
 <br/>
-<@createList "${conductedSurveys?size!} Surveys" conductedSurveys; item><a href="${baseUrl}/surveys/${item.id?c}"><img
+<@createList "${conductedSurveys?size!} Surveys" conductedSurveys; item><a href="
+            ${baseUrl}/surveys/${item.id?c}"><img
         src="${baseUrl}/icons/fam/application_view_detail.png"/></a> Conducted on
         ${(item.date)!?date}</@createList>

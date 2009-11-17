@@ -32,6 +32,30 @@
         // leave separate begin+end tag, otherwise the browser will ignore
         // the next /script/ section
     </script>
+
+    <#--<script type="text/javascript"-->
+    <#--src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery<#if !testMode??>.min</#if>.js"></script>-->
+    <#--<script type="text/javascript"-->
+    <#--src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui<#if !testMode??>.min</#if>.js"></script>-->
+    <#--<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css"-->
+    <#--type="text/css" rel="Stylesheet">-->
+    <script type="text/javascript" src="${baseUrl}/javascript/jquery/star-rating/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${baseUrl}/javascript/jquery/star-rating/js/ui.core.min.js"></script>
+    <script type="text/javascript" src="${baseUrl}/javascript/jquery/star-rating/js/jquery.uni-form.js"></script>
+    <script type="text/javascript" src="${baseUrl}/javascript/jquery/star-rating/js/ui.stars.js"></script>
+    <link rel="stylesheet" type="text/css" href="${baseUrl}/javascript/jquery/star-rating/css/uni-form.css"/>
+    <link rel="stylesheet" type="text/css" href="${baseUrl}/javascript/jquery/star-rating/css/crystal-stars.css"/>
+    <link rel="stylesheet" type="text/css" href="${baseUrl}/javascript/jquery/star-rating/css/ui.stars.css"/>
+    <link rel="stylesheet" type="text/css" href="${baseUrl}/javascript/jquery/star-rating/css/uni-form-generic.css"/>
+    <!--[if lte ie 7]>
+	<style type="text/css" media="screen">
+		.uniForm, .uniForm fieldset, .uniForm .ctrlHolder, .uniForm .formHint, .uniForm .buttonHolder, .uniForm .ctrlHolder .multiField, .uniForm .inlineLabel{ zoom:1; }
+		.uniForm .inlineLabels label, .uniForm .inlineLabels .label, .uniForm .blockLabels label, .uniForm .blockLabels .label, .uniForm .inlineLabel span{ padding-bottom: .2em; }
+		.uniForm .inlineLabel input, .uniForm .inlineLabels .inlineLabel input, .uniForm .blockLabels .inlineLabel input{ margin-top: -.3em; }
+	</style>
+	<![endif]-->
+
+
     <script type="text/javascript">
         dojo.locale = "en";
         dojo.require("dojo.fx");
@@ -56,7 +80,11 @@
 <body class="${dijitTheme}" id="index" onload="new ElementMaxHeight()">
 <div id="header_tall">
     <#if frameData.currentUser??>
-        <p style="font-size: 10px; text-align:left; margin: 1px;">Logged in as <a href="${baseUrl}/users/${frameData.currentUser.id?c}" style="font-size: 10px;">${frameData.currentUser.displayName}</a>, <a href="${baseUrl}/logout" style="font-size: 10px;">Logout</a></p>
+    <p style="font-size: 10px; text-align:left; margin: 1px;">Logged in as <a
+            href="${baseUrl}/users/${frameData.currentUser.id?c}"
+            style="font-size: 10px;">${frameData.currentUser.displayName}</a>, <a href="${baseUrl}/logout"
+                                                                                  style="font-size: 10px;">Logout</a>
+    </p>
     </#if>
     <div id="main">
         <div id="header">
@@ -71,19 +99,22 @@
                         <div class="padding">
                             <ul class="menu_items">
                                 <#list frameData.navigationItems as nav>
-                                    <#if nav.url!?has_content>
-                                        <#assign navUrlTemplate = nav.url?interpret/>
-                                        <li onclick="window.location='<@navUrlTemplate/>'" class="link${nav_has_next?string('',' last')}">
-                                            <a href="<@navUrlTemplate/>">${nav.name}</a>
-                                        </li>
-                                    </#if>
+                                <#if nav.url!?has_content>
+                                <#assign navUrlTemplate = nav.url?interpret/>
+                                <li onclick="window.location='<@navUrlTemplate/>'"
+                                    class="link${nav_has_next?string('',' last')}">
+                                    <a href="<@navUrlTemplate/>">${nav.name}</a>
+                                </li>
+                                </#if>
                                 </#list>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div> <!-- end menu -->
-        </div> <!-- end header -->
+            </div>
+            <!-- end menu -->
+        </div>
+        <!-- end header -->
 
         <div class="border">
             <div class="btall">
@@ -103,7 +134,8 @@
                     </div>
                 </div>
             </div>
-        </div> <!-- end border -->
+        </div>
+        <!-- end border -->
 
         <div id="footer_banner">
             <ul class="footer_banner_list">
@@ -117,7 +149,8 @@
                 </a></li>
             </ul>
             <p class="small" style="text-align:center;"><br/>CoralWatch Supporters</p>
-        </div> <!-- end footer_banner -->
+        </div>
+        <!-- end footer_banner -->
 
         <div style=" height: 61px;"></div>
         <div id="footer">
@@ -125,7 +158,9 @@
                 <div align="center">&copy;2009 CoralWatch</div>
             </div>
         </div>
-    </div> <!-- end main -->
-</div><!-- end header_tall -->
+    </div>
+    <!-- end main -->
+</div>
+<!-- end header_tall -->
 </body>
 </html>
