@@ -1,5 +1,6 @@
 <div class="breadcrumbs">
-    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/users">Users</a>&ensp;&raquo;&ensp;${userimpl.displayName!}
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;<a
+        href="${baseUrl}/users">Users</a>&ensp;&raquo;&ensp;${userimpl.displayName!}
 </div>
 
 <#-- @ftlvariable name="userimpl" type="org.coralwatch.model.UserImpl" -->
@@ -187,5 +188,5 @@
 <br/>
 <@createList "${conductedSurveys?size!} Surveys" conductedSurveys; item><a href="
             ${baseUrl}/surveys/${item.id?c}"><img
-        src="${baseUrl}/icons/fam/application_view_detail.png"/></a> Conducted on
+        src="${baseUrl}/icons/fam/survey.png"/></a> Conducted on
         ${(item.date)!?date}</@createList>

@@ -121,11 +121,12 @@ font-weight: bold;
 }
 
 .list_table {
-
 border: solid 1px #ededed;
+border-collapse: collapse;
 }
 .list_table td {
 border: solid 1px #ededed;
+padding: 0.2em;
 }
 .list_table th {
 border: solid 1px #ededed;

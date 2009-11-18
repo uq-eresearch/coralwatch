@@ -1,6 +1,6 @@
 <div class="breadcrumbs">
-    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/kit">All Requests</a>&ensp;&raquo;&ensp;Kit
-    Request
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;<a
+        href="${baseUrl}/reef">Reefs</a>&ensp;&raquo;&ensp;${reef.id}
 </div>
 
 <#-- @ftlvariable name="reef" type="org.coralwatch.model.Reef" -->

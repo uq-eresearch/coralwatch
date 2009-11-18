@@ -1,5 +1,5 @@
 <div class="breadcrumbs">
-    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;Kit Requests
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;Reefs
 </div>
 <#-- @ftlvariable name="baseUrl" type="java.lang.String" -->
 <#-- @ftlvariable name="reefList" type="java.util.List<org.coralwatch.model.Reef>" -->

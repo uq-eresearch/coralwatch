@@ -1,5 +1,5 @@
 <div class="breadcrumbs">
-    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;Surveys
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;Surveys
 </div>
 <h3>List of All Surveys</h3>
 <table width="100%" class="list_table" cellspacing="0" cellpadding="2">
@@ -13,11 +13,11 @@
     <#list surveyList as survey>
     <tr>
         <td align="center"><a href="${baseUrl}/surveys/${survey.id?c}"><img class="icon"
-                                                                            src="${baseUrl}/icons/fam/application_view_detail.png"/></a>
+                                                                            src="${baseUrl}/icons/fam/survey.png"/></a>
         </td>
         <td><a href="${baseUrl}/users/${survey.creator.id?c}">${(survey.creator.displayName)}</a></td>
         <td>${(survey.date)!?date}</td>
-        <td>${(survey.country)!}</td>
+        <td>${(survey.reef.country)!}</td>
     </tr>
     </#list>
 </table>

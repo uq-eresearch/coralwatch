@@ -1,11 +1,16 @@
-<div class="breadcrumbs">
-    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/users">Users</a>&ensp;&raquo;&ensp;${userimpl.displayName!}
-</div>
 <#-- @ftlvariable name="userimpl" type="org.coralwatch.model.UserImpl" -->
 <#assign newObject=!(userimpl??)/>
 <#if newObject>
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;Sign Up
+</div>
 <h3>Sign Up</h3>
 <#else>
+<div class="breadcrumbs">
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;<a
+        href="${baseUrl}/users">Users</a>&ensp;&raquo;&ensp;<a
+        href="${baseUrl}/users/${userimpl.id!}">${userimpl.displayName!}</a>&ensp;&raquo;&ensp;Edit User
+</div>
 <h3>Editing User ${userimpl.displayName}</h3>
 </#if>
 

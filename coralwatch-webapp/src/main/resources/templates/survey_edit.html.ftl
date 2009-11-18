@@ -2,13 +2,16 @@
 <#assign newObject=!(survey??)/>
 <#if newObject>
 <div class="breadcrumbs">
-    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/surveys">Surveys</a>&ensp;&raquo;&ensp;New
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;<a
+        href="${baseUrl}/surveys">Surveys</a>&ensp;&raquo;&ensp;New
     Survey
 </div>
 <h3>Create New Survey</h3>
 <#else>
 <div class="breadcrumbs">
-    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/surveys">Surveys</a>&ensp;&raquo;&ensp;${(survey.id)!}
+    <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;<a
+        href="${baseUrl}/surveys">Surveys</a>&ensp;&raquo;&ensp;<a
+        href="${baseUrl}/surveys/${(survey.id)!}">${(survey.id)!}</a>&ensp;&raquo;&ensp;Edit Survey
 </div>
 <h3>Editing Survey</h3>
 </#if>
