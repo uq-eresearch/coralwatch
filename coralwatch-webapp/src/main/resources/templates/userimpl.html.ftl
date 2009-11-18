@@ -147,6 +147,7 @@
         </td>
         </#if>
     </tr>
+    <#if userimpl != currentUser>
     <tr>
         <td class="headercell">Your Trust</td>
         <#if (userTrust >= 0)>
@@ -181,8 +182,8 @@
             <span>&ensp;(Not Recorded)</span>
         </td>
         </#if>
-
     </tr>
+    </#if>
 </table>
 <br/>
 <br/>
