@@ -1,7 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function() {
         jQuery("#cloudPopup").dialog({ autoOpen: false, position: 'center', modal: true, width: 660, height:420 });
-        $('#xpower').tagcloud({type:'sphere',sizemin:8,sizemax:26,power:.3});
     });
 
     function deleteUser(id) {

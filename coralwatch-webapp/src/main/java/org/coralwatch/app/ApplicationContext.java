@@ -146,13 +146,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private void createDefaultUsers() {
         UserImpl defaultAdmin = new UserImpl("CoralWatch Administrator", "admin@coralwatch.org", BCrypt.hashpw("admin",
                 BCrypt.gensalt()), true);
-        UserImpl user1 = new UserImpl("User1", "user1@coralwatch.org", BCrypt.hashpw("user1", BCrypt.gensalt()), false);
-        UserImpl user2 = new UserImpl("User2", "user2@coralwatch.org", BCrypt.hashpw("user2", BCrypt.gensalt()), false);
-        UserImpl user3 = new UserImpl("User3", "user3@coralwatch.org", BCrypt.hashpw("user3", BCrypt.gensalt()), false);
         userDao.save(defaultAdmin);
-        userDao.save(user1);
-        userDao.save(user2);
-        userDao.save(user3);
+        for (int i = 0; i < 100; i++) {
+            userDao.save(new UserImpl("User" + i, "user" + i + "@coralwatch.org", BCrypt.hashpw("user" + i, BCrypt.gensalt()), false));
+        }
+
         Logger.getLogger(getClass().getName()).log(Level.INFO,
                 "Created new default admin user with email address 'admin@coralwatch.org' and password 'admin'.");
     }
