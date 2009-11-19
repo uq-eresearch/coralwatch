@@ -47,6 +47,9 @@
     <script type="text/javascript" src="${baseUrl}/javascript/jquery/jquery.dimensions.min.js"></script>
     <script type="text/javascript" src="${baseUrl}/javascript/jquery/jquery.tooltip.min.js"></script>
 
+    <script type="text/javascript" src="${baseUrl}/javascript/jquery/cloud/jquery.tagcloud.min.js"></script>
+    <script type="text/javascript" src="${baseUrl}/javascript/jquery/cloud/jquery.tinysort.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="${baseUrl}/javascript/jquery/star-rating/css/uni-form.css"/>
     <link rel="stylesheet" type="text/css" href="${baseUrl}/javascript/jquery/star-rating/css/crystal-stars.css"/>
     <link rel="stylesheet" type="text/css" href="${baseUrl}/javascript/jquery/star-rating/css/ui.stars.css"/>

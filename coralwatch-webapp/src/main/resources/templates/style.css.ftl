@@ -4,17 +4,23 @@ margin: 0;
 padding: 0;
 }
 
+html {
+overflow-y: scroll;
+}
+
 body {
 background: #FFFFFF url(${baseUrl}/icons/footer_bg.gif) bottom repeat-x;
 text-align: justfy;
 color: #2F4F4F;
 }
+
 .breadcrumbs {
 font-size:0.95em;
 margin: 0 0 1em;
 padding: 0 0 0.3em;
 border-bottom:1px solid #bbb;
 }
+
 p {
 text-align: justify;
 margin-bottom: 15px;
@@ -364,3 +370,48 @@ padding: 0 0 0 19px;
 list-style-type: none;
 background: url("${baseUrl}/icons/fam/newspaper.png") no-repeat 0 50%;
 }
+
+/*************************************Cloud css***********************/
+span.striked {
+text-decoration: line-through;
+}
+
+.xmpl {
+padding: 10px 15px 10px 15px !important;
+background-color: #FFFFEE !important;
+border: 1px solid #F8E78C !important;
+}
+table.xmpl {
+padding: 0px !important;
+}
+ul.xmpl {
+padding: 5px 15px 5px 30px !important;
+}
+.xmpl th {
+background-color: #F8E78C !important;
+border: 0px !important;
+}
+
+
+#delicious {
+display: none;
+}
+
+.xmpl li a {
+text-decoration: none !important;
+}
+.xmpl li a:hover {
+text-decoration: underline !important;
+}
+.xmpl li {
+z-index: 0 !important;
+}
+.xmpl li:hover {
+z-index: 100 !important;
+}
+
+ul.xmpl, ol.xmpl {
+height: 100px;
+overflow: hidden;
+padding: 0px !important;
+}                        
