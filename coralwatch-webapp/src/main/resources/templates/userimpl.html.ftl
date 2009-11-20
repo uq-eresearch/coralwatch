@@ -84,7 +84,7 @@
                        <#if (communityTrust >= 4.5) && (communityTrust <= 5)>checked="checked"</#if>>
             </div>
             <span>&ensp;(${communityTrust?c})</span>
-            <a onClick="jQuery('#cloudPopup').dialog('open');$('#xpower').tagcloud({type:'sphere',sizemin:8,sizemax:26,power:.2});return false;"
+            <a onClick="jQuery('#cloudPopup').dialog('open');$('#xpower').tagcloud({type:'sphere',sizemin:8,sizemax:26,power:.2, height: 360});return false;"
                href=".">
                 Trust Cloud
             </a>
@@ -92,16 +92,14 @@
             <div id="cloudPopup" title="Trust Cloud" style="display:none;">
                 <pre class="example" style="display:none">$("#xpower");</pre>
                 <ul id="delicious" class="xmpl">
-                    <#list userTrustCloud as item>
-                    <#if item == currentUser>
-                    <li><a href="${baseUrl}/users/${item.id?c}" style="color:#00ff00;">${item.displayName}</a></li>
-                    <#elseif item == userimpl>
-                    <li><a href="${baseUrl}/users/${item.id?c}" style="color:#ff0000;">${item.displayName}</a></li>
-                    <#else>
-                    <li><a href="${baseUrl}/users/${item.id?c}">${item.displayName}</a></li>
-                    </#if>
+                    <#list allUsers as user>
+                    <#--<#assign trustValue = userTrustCloud[user.id]?c>-->
+                    <li><a href="${baseUrl}/users/${user.id?c}">${user.displayName}</a></li>
                     </#list>
 
+                    <#--<#list userTrustCloud as item>-->
+                    <#--<li><a href="${baseUrl}/users/${item.id?c}">${item.displayName}</a></li>-->
+                    <#--</#list>-->
                 </ul>
             </div>
         </td>

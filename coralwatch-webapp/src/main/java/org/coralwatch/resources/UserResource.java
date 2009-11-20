@@ -34,7 +34,8 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         datamodel.put("communityTrust", CoralwatchApplication.getConfiguration().getTrustDao().getCommunityTrustValue(userImpl));
         datamodel.put("userTrust", CoralwatchApplication.getConfiguration().getTrustDao().getTrustValueByUser(getCurrentUser(), userImpl));
         datamodel.put("currentUser", getCurrentUser());
-        datamodel.put("userTrustCloud", getDao().getAll());
+        datamodel.put("allUsers", getDao().getAll());
+        datamodel.put("userTrustCloud", CoralwatchApplication.getConfiguration().getTrustDao().getCommunityTrustForAll());
     }
 
     @Override

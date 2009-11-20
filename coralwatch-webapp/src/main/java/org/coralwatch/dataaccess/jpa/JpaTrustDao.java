@@ -2,11 +2,15 @@ package org.coralwatch.dataaccess.jpa;
 
 import au.edu.uq.itee.maenad.dataaccess.jpa.EntityManagerSource;
 import au.edu.uq.itee.maenad.dataaccess.jpa.JpaDao;
+import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.TrustDao;
 import org.coralwatch.model.Trust;
 import org.coralwatch.model.UserImpl;
 
 import javax.persistence.NoResultException;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class JpaTrustDao extends JpaDao<Trust> implements TrustDao {
     public JpaTrustDao(EntityManagerSource entityManagerSource) {
@@ -57,5 +61,15 @@ public class JpaTrustDao extends JpaDao<Trust> implements TrustDao {
         } catch (NoResultException ex) {
             return -1;
         }
+    }
+
+    @Override
+    public Map<Long, Double> getCommunityTrustForAll() {
+        Map<Long, Double> map = new TreeMap<Long, Double>();
+        List<UserImpl> users = CoralwatchApplication.getConfiguration().getUserDao().getAll();
+        for (UserImpl user : users) {
+            map.put(user.getId(), getCommunityTrustValue(user));
+        }
+        return map;
     }
 }
