@@ -23,7 +23,7 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
- @NamedQuery(name = "Survey.getData", query = "SELECT o FROM SurveyRecord o WHERE o.survey = :survey ORDER BY o.id")
+        @NamedQuery(name = "Survey.getData", query = "SELECT o FROM SurveyRecord o WHERE o.survey = :survey ORDER BY o.id")
 })
 public class Survey implements Serializable {
 
@@ -77,12 +77,12 @@ public class Survey implements Serializable {
 
     /**
      * Stores information relating to quality assurance of the data.
-     * 
+     * <p/>
      * Currently it is used only to store the word "migrated" for every survey migrated
      * from the old version of the Coralwatch website, which had hardly any data validation.
      */
     private String qaState;
-    
+
     public Survey() {
 
     }
@@ -199,12 +199,23 @@ public class Survey implements Serializable {
         this.dataset = dataset;
     }
 
-	public void setQaState(String qaState) {
-		this.qaState = qaState;
-	}
+    public void setQaState(String qaState) {
+        this.qaState = qaState;
+    }
 
-	public String getQaState() {
-		return qaState;
-	}
+    public String getQaState() {
+        return qaState;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Survey survey = (Survey) o;
+
+        if (id != survey.id) return false;
+
+        return true;
+    }
 }

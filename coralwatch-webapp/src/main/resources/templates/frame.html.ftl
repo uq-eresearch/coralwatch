@@ -37,8 +37,10 @@
             src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery<#if !testMode??>.min</#if>.js"></script>
     <script type="text/javascript"
             src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui<#if !testMode??>.min</#if>.js"></script>
-    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css" type="text/css"
-          rel="Stylesheet">
+    <#--<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css" type="text/css"-->
+    <#--rel="Stylesheet">-->
+    <script type="text/javascript" src="http://jqueryui.com/latest/ui/ui.tabs.js"></script>
+    <link type="text/css" href="http://jqueryui.com/latest/themes/base/ui.all.css" rel="stylesheet"/>
     <#--<script type="text/javascript" src="${baseUrl}/javascript/jquery/star-rating/js/jquery.min.js"></script>-->
     <#--<script type="text/javascript" src="${baseUrl}/javascript/jquery/star-rating/js/ui.core.min.js"></script>-->
     <script type="text/javascript" src="${baseUrl}/javascript/jquery/star-rating/js/jquery.uni-form.js"></script>
