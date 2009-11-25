@@ -3,32 +3,32 @@ package org.coralwatch.dataaccess.jpa;
 import au.edu.uq.itee.maenad.dataaccess.jpa.EntityManagerSource;
 import au.edu.uq.itee.maenad.dataaccess.jpa.JpaDao;
 import org.coralwatch.app.CoralwatchApplication;
-import org.coralwatch.dataaccess.TrustDao;
-import org.coralwatch.model.Trust;
+import org.coralwatch.dataaccess.UserTrustDao;
 import org.coralwatch.model.UserImpl;
+import org.coralwatch.model.UserTrust;
 
 import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class JpaTrustDao extends JpaDao<Trust> implements TrustDao {
-    public JpaTrustDao(EntityManagerSource entityManagerSource) {
+public class JpaUserTrustDao extends JpaDao<UserTrust> implements UserTrustDao {
+    public JpaUserTrustDao(EntityManagerSource entityManagerSource) {
         super(entityManagerSource);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Trust getTrust(UserImpl trustor, UserImpl trustee) {
+    public UserTrust getTrust(UserImpl trustor, UserImpl trustee) {
         try {
-            Trust trust = (Trust) entityManagerSource.getEntityManager().createQuery(
-                    "SELECT o FROM Trust o " +
+            UserTrust userTrust = (UserTrust) entityManagerSource.getEntityManager().createQuery(
+                    "SELECT o FROM UserTrust o " +
                             "WHERE o.trustor = :trustor " +
                             "AND o.trustee = :trustee")
                     .setParameter("trustor", trustor)
                     .setParameter("trustee", trustee)
                     .getSingleResult();
-            return trust;
+            return userTrust;
         } catch (NoResultException ex) {
             return null;
         }
@@ -39,7 +39,7 @@ public class JpaTrustDao extends JpaDao<Trust> implements TrustDao {
     public double getTrustValueByUser(UserImpl trustor, UserImpl trustee) {
         try {
             Double trustValue = (Double) entityManagerSource.getEntityManager().createQuery(
-                    "SELECT o.trustValue FROM Trust o " +
+                    "SELECT o.trustValue FROM UserTrust o " +
                             "WHERE o.trustor = :trustor " +
                             "AND o.trustee = :trustee")
                     .setParameter("trustor", trustor)
@@ -56,7 +56,7 @@ public class JpaTrustDao extends JpaDao<Trust> implements TrustDao {
     public double getCommunityTrustValue(UserImpl trustee) {
         try {
             Double trustValue = (Double) entityManagerSource.getEntityManager().createQuery(
-                    "SELECT avg(o.trustValue) FROM Trust o WHERE o.trustee = :trustee").setParameter("trustee", trustee).getSingleResult();
+                    "SELECT avg(o.trustValue) FROM UserTrust o WHERE o.trustee = :trustee").setParameter("trustee", trustee).getSingleResult();
             return trustValue == null ? -1 : trustValue.doubleValue();
         } catch (NoResultException ex) {
             return -1;

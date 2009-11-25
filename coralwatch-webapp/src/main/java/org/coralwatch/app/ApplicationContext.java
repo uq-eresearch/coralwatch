@@ -7,15 +7,15 @@ import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
-import org.coralwatch.dataaccess.TrustDao;
 import org.coralwatch.dataaccess.UserDao;
+import org.coralwatch.dataaccess.UserTrustDao;
 import org.coralwatch.dataaccess.jpa.JpaConnectorService;
 import org.coralwatch.dataaccess.jpa.JpaKitRequestDao;
 import org.coralwatch.dataaccess.jpa.JpaReefDao;
 import org.coralwatch.dataaccess.jpa.JpaSurveyDao;
 import org.coralwatch.dataaccess.jpa.JpaSurveyRecordDao;
-import org.coralwatch.dataaccess.jpa.JpaTrustDao;
 import org.coralwatch.dataaccess.jpa.JpaUserDao;
+import org.coralwatch.dataaccess.jpa.JpaUserTrustDao;
 import org.coralwatch.model.UserImpl;
 import org.restlet.service.ConnectorService;
 
@@ -43,7 +43,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private final SurveyDao surveyDao;
     private final KitRequestDao kitRequestDao;
     private final SurveyRecordDao surveyRecordDao;
-    private final TrustDao trustDao;
+    private final UserTrustDao userTrustDao;
     private final boolean isTestSetup;
     private final Properties submissionEmailConfig;
     private final ReefDao reefDao;
@@ -104,7 +104,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.kitRequestDao = new JpaKitRequestDao(this.connectorService);
         this.reefDao = new JpaReefDao(this.connectorService);
         this.surveyRecordDao = new JpaSurveyRecordDao(this.connectorService);
-        this.trustDao = new JpaTrustDao(this.connectorService);
+        this.userTrustDao = new JpaUserTrustDao(this.connectorService);
         this.userDao = new JpaUserDao(this.connectorService);
         if (userDao.getAll().isEmpty()) {
             // ensure that there's always one user to begin with
@@ -191,8 +191,8 @@ public class ApplicationContext implements Configuration, ServletContextListener
     }
 
     @Override
-    public TrustDao getTrustDao() {
-        return trustDao;
+    public UserTrustDao getTrustDao() {
+        return userTrustDao;
     }
 
     public ReefDao getReefDao() {

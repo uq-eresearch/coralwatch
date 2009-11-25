@@ -27,7 +27,7 @@
             cancelShow: false,
             callback: function(ui, type, value)
             {
-                $.post("${baseUrl}/trust", {trust: value, trusteeId: ${userimpl.id?c}}, function(data)
+                $.post("${baseUrl}/usertrust", {trustValue: value, trusteeId: ${userimpl.id?c}}, function(data)
                 {
                     window.location = '${baseUrl}/users/${userimpl.id?c}';
                 });
@@ -40,7 +40,7 @@
             cancelShow: false,
             callback: function(ui, type, value)
             {
-                $.post("${baseUrl}/trust", {trust: value, trusteeId: ${userimpl.id?c}}, function(data)
+                $.post("${baseUrl}/usertrust", {trustValue: value, trusteeId: ${userimpl.id?c}}, function(data)
                 {
                     window.location = '${baseUrl}/users/${userimpl.id?c}';
                 });

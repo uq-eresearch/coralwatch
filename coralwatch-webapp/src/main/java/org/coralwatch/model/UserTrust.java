@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Trust implements Serializable {
+public class UserTrust implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,11 +36,11 @@ public class Trust implements Serializable {
     @NotNull
     private double trustValue;
 
-    public Trust() {
+    public UserTrust() {
         trustDate = new Date();
     }
 
-    public Trust(UserImpl trustor, UserImpl trustee, double trustValue) {
+    public UserTrust(UserImpl trustor, UserImpl trustee, double trustValue) {
         this.trustor = trustor;
         this.trustee = trustee;
         this.trustDate = new Date();

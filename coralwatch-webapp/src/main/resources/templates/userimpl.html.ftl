@@ -61,26 +61,26 @@
         <#if (communityTrust == -1)>
         <td>
             <div class="multiField" id="starify2">
-                <input type="radio" name="trust" value="1" type="radio">
-                <input type="radio" name="trust" value="2" type="radio">
-                <input type="radio" name="trust" value="3" type="radio">
-                <input type="radio" name="trust" value="4" type="radio">
-                <input type="radio" name="trust" value="5" type="radio">
+                <input type="radio" name="trustValue" value="1" type="radio">
+                <input type="radio" name="trustValue" value="2" type="radio">
+                <input type="radio" name="trustValue" value="3" type="radio">
+                <input type="radio" name="trustValue" value="4" type="radio">
+                <input type="radio" name="trustValue" value="5" type="radio">
             </div>
             <span>&ensp;(Not Recorded)</span>
         </td>
         <#else>
         <td>
             <div class="multiField" id="starify">
-                <input type="radio" name="trust" value="1" type="radio"
+                <input type="radio" name="trustValue" value="1" type="radio"
                        <#if (communityTrust >= 0) && (communityTrust < 1.5)>checked="checked"</#if>>
-                <input type="radio" name="trust" value="2" type="radio"
+                <input type="radio" name="trustValue" value="2" type="radio"
                        <#if (communityTrust >= 1.5) && (communityTrust < 2.5)>checked="checked"</#if>>
-                <input type="radio" name="trust" value="3" type="radio"
+                <input type="radio" name="trustValue" value="3" type="radio"
                        <#if (communityTrust >= 2.5) && (communityTrust < 3.5)>checked="checked"</#if>>
-                <input type="radio" name="trust" value="4" type="radio"
+                <input type="radio" name="trustValue" value="4" type="radio"
                        <#if (communityTrust >= 3.5) && (communityTrust < 4.5)>checked="checked"</#if>>
-                <input type="radio" name="trust" value="5" type="radio"
+                <input type="radio" name="trustValue" value="5" type="radio"
                        <#if (communityTrust >= 4.5) && (communityTrust <= 5)>checked="checked"</#if>>
             </div>
             <span>&ensp;(${communityTrust?c})</span>
@@ -110,17 +110,17 @@
         <td class="headercell">Your Trust</td>
         <#if (userTrust >= 0)>
         <td>
-            <form id="ratings" method="post" action="${baseUrl}/trust">
+            <form id="ratings" method="post" action="${baseUrl}/usertrust">
                 <input type="hidden" name="trusteeId" value="${userimpl.id?c}"/>
-                <input type="radio" id="trust_1" name="trust" value="1" type="radio"
+                <input type="radio" id="trust_1" name="trustValue" value="1" type="radio"
                        <#if (userTrust >= 0) && (userTrust < 1.5)>checked="checked"</#if>>
-                <input type="radio" id="trust_2" name="trust" value="2" type="radio"
+                <input type="radio" id="trust_2" name="trustValue" value="2" type="radio"
                        <#if (userTrust >= 1.5) && (userTrust < 2.5)>checked="checked"</#if>>
-                <input type="radio" id="trust_3" name="trust" value="3" type="radio"
+                <input type="radio" id="trust_3" name="trustValue" value="3" type="radio"
                        <#if (userTrust >= 2.5) && (userTrust < 3.5)>checked="checked"</#if>>
-                <input type="radio" id="trust_4" name="trust" value="4" type="radio"
+                <input type="radio" id="trust_4" name="trustValue" value="4" type="radio"
                        <#if (userTrust >= 3.5) && (userTrust < 4.5)>checked="checked"</#if>>
-                <input type="radio" id="trust_5" name="trust" value="5" type="radio"
+                <input type="radio" id="trust_5" name="trustValue" value="5" type="radio"
                        <#if (userTrust >= 4.5) && (userTrust <= 5)>checked="checked"</#if>>
                 <input type="submit" value="Rate" name="submit"/>
             </form>
@@ -128,13 +128,13 @@
         </td>
         <#else>
         <td>
-            <form id="ratings2" method="post" action="${baseUrl}/trust">
+            <form id="ratings2" method="post" action="${baseUrl}/usertrust">
                 <input type="hidden" name="trusteeId" value="${userimpl.id?c}"/>
-                <input type="radio" name="trust" value="1" type="radio">
-                <input type="radio" name="trust" value="2" type="radio">
-                <input type="radio" name="trust" value="3" type="radio">
-                <input type="radio" name="trust" value="4" type="radio">
-                <input type="radio" name="trust" value="5" type="radio">
+                <input type="radio" name="trustValue" value="1" type="radio">
+                <input type="radio" name="trustValue" value="2" type="radio">
+                <input type="radio" name="trustValue" value="3" type="radio">
+                <input type="radio" name="trustValue" value="4" type="radio">
+                <input type="radio" name="trustValue" value="5" type="radio">
                 <input type="submit" value="Rate" name="submit"/>
             </form>
             <span>&ensp;(Not Recorded)</span>

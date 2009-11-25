@@ -4,8 +4,8 @@ import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
-import org.coralwatch.dataaccess.TrustDao;
 import org.coralwatch.dataaccess.UserDao;
+import org.coralwatch.dataaccess.UserTrustDao;
 import org.restlet.service.ConnectorService;
 
 import java.util.Properties;
@@ -25,7 +25,7 @@ public interface Configuration {
 
     SurveyRecordDao getSurveyRecordDao();
 
-    TrustDao getTrustDao();
+    UserTrustDao getTrustDao();
 
     ReefDao getReefDao();
 
@@ -47,7 +47,7 @@ public interface Configuration {
 
     /**
      * If true the system runs in test mode.
-     *
+     * <p/>
      * Test mode might allow additional functionality to make testing more easy,
      * e.g. resetting the database.
      *

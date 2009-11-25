@@ -5,9 +5,9 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionError;
 import au.edu.uq.itee.maenad.restlet.errorhandling.SubmissionException;
 import org.coralwatch.app.CoralwatchApplication;
-import org.coralwatch.dataaccess.TrustDao;
-import org.coralwatch.model.Trust;
+import org.coralwatch.dataaccess.UserTrustDao;
 import org.coralwatch.model.UserImpl;
+import org.coralwatch.model.UserTrust;
 import org.restlet.data.Form;
 import org.restlet.resource.Representation;
 import org.restlet.resource.Variant;
@@ -15,14 +15,14 @@ import org.restlet.resource.Variant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrustListResource extends ModifiableListResource<Trust, TrustDao, UserImpl> {
+public class UserTrustListResource extends ModifiableListResource<UserTrust, UserTrustDao, UserImpl> {
 
-    public TrustListResource() throws InitializationException {
+    public UserTrustListResource() throws InitializationException {
         super(CoralwatchApplication.getConfiguration().getTrustDao(), true);
     }
 
     @Override
-    protected Trust createObject(Form form) throws SubmissionException {
+    protected UserTrust createObject(Form form) throws SubmissionException {
         List<SubmissionError> errors = new ArrayList<SubmissionError>();
         UserImpl trustor = getCurrentUser();
         long trusteeId = -1;
@@ -35,27 +35,27 @@ public class TrustListResource extends ModifiableListResource<Trust, TrustDao, U
 
         double trustValue = 0;
         try {
-            trustValue = Double.valueOf(form.getFirstValue("trust"));
+            trustValue = Double.valueOf(form.getFirstValue("trustValue"));
         } catch (NumberFormatException ex) {
-            errors.add(new SubmissionError("Can not parse trust value"));
+            errors.add(new SubmissionError("Can not parse userTrust value"));
         }
 
         if (!errors.isEmpty()) {
             throw new SubmissionException(errors);
         }
 
-        Trust trust = CoralwatchApplication.getConfiguration().getTrustDao().getTrust(trustor, trustee);
-        if (trust == null) {
-            return new Trust(trustor, trustee, trustValue);
+        UserTrust userTrust = CoralwatchApplication.getConfiguration().getTrustDao().getTrust(trustor, trustee);
+        if (userTrust == null) {
+            return new UserTrust(trustor, trustee, trustValue);
         } else {
-            trust.setTrustValue(trustValue);
-            return trust;
+            userTrust.setTrustValue(trustValue);
+            return userTrust;
         }
     }
 
     @Override
-    protected String getRedirectLocation(Trust trust) {
-        return String.valueOf("users/" + trust.getTrustee().getId());
+    protected String getRedirectLocation(UserTrust userTrust) {
+        return String.valueOf("users/" + userTrust.getTrustee().getId());
     }
 
     @Override
