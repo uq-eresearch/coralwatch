@@ -1,5 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function() {
+        $("#tabs").tabs();
         jQuery("#cloudPopup").dialog({ autoOpen: false, position: 'center', modal: true, width: 660, height:420 });
     });
 
