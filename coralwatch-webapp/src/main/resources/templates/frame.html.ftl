@@ -63,8 +63,10 @@
      </style>
      <![endif]-->
     <script type="text/javascript">
-        $('.main_content').corner();
+        $('.main_content').corner("5px");
+        $('.rounded').corner("5px");
         $(document).ready(function() {
+            $('.main_content').show();
             $("#tabs").tabs();
         });
     </script>
@@ -128,7 +130,7 @@
             <!-- end menu -->
         </div>
         <!-- end header -->
-        <div class="main_content">
+        <div class="main_content" style="display:none;">
             <#include "${contentTemplate}"/>
         </div>
         <#include "include/footer.html.ftl"/>

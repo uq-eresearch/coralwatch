@@ -151,11 +151,6 @@ height: 180px;
 height: 61px;
 }
 
-#index .ver_line {
-background: url(${baseUrl}/icons/ver_line.gif) repeat-y 493px 0;
-width: 100%;
-}
-
 .h_logo {
 height: 110px;
 width: 100%;
@@ -244,43 +239,6 @@ color: #444444;
 font-weight: bold;
 }
 
-.border {
-background: url(${baseUrl}/icons/border_tall.gif) top repeat-x;
-}
-
-.border .btall {
-background: url(${baseUrl}/icons/border_tall.gif) bottom repeat-x;
-}
-
-.border .ltall {
-background: url(${baseUrl}/icons/border_tall.gif) left repeat-y;
-}
-
-.border .rtall {
-background: url(${baseUrl}/icons/border_tall.gif) right repeat-y;
-}
-
-.border .tleft {
-background: url(${baseUrl}/icons/border_tl.gif) top left no-repeat;
-}
-
-.border .tright {
-background: url(${baseUrl}/icons/border_tr.gif) top right no-repeat;
-}
-
-.border .bleft {
-background: url(${baseUrl}/icons/border_bl.gif) bottom left no-repeat;
-}
-
-.border .bright {
-background: url(${baseUrl}/icons/border_br.gif) bottom right no-repeat;
-width: 100%;
-}
-
-.border .ind {
-padding: 4px 4px 15px 2px;
-}
-
 .icon {
 float: center;
 }
@@ -294,7 +252,7 @@ clear: both;
 div.main_content {
 border: solid 1px #AAAAAA;
 margin: 0 20 0 20px;
-padding: 3ex 2em 4ex 2em;
+padding: 1ex 2em 3ex;
 }
 
 .footer_banner_list li {

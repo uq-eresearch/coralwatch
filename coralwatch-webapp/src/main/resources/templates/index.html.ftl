@@ -44,35 +44,15 @@
     Chart is basically a series of sample colours, with variation in brightness representing
     different stages of bleaching/recovery, based on controlled experiments.
 </p>
-<div style="margin-left: 10px; margin-bottom: 10px; float: right; width:30%;">
-    <div class="border">
-        <div class="btall">
-            <div class="ltall">
 
-                <div class="rtall">
-                    <div class="tleft">
-                        <div class="tright">
-                            <div class="bleft">
-                                <div class="bright">
-                                    <#--<div class="ind">-->
-                                    <div class="h_text">
-                                        <h3>CoralWatch News</h3>
-                                    </div>
-                                    <div style="padding:5px; text-align:justify;">
-                                        <ul class="news-list">
-                                            <li><a>The new CoralWatch website is now live and ready for users to sign
-                                                up.</a></li>
-                                        </ul>
-                                    </div>
-                                    <#--</div>-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="rounded"
+     style="border: solid 1px #AAAAAA;  padding:5px; text-align:justify;margin-left: 10px; margin-bottom: 10px; float: right; width:30%;">
+    <h3>CoralWatch News</h3>
+    <hr/>
+    <ul class="news-list">
+        <li><a>The new CoralWatch website is now live and ready for users to sign
+            up.</a></li>
+    </ul>
 </div>
 
 <p>
