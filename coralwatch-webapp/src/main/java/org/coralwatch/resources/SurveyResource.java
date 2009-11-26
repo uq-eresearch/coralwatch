@@ -19,6 +19,7 @@ import org.restlet.resource.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
+import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -35,12 +36,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
-
 public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, UserImpl> {
     private static final Logger LOGGER = Logger.getLogger(SurveyResource.class.getName());
-	private static final int IMAGE_WIDTH = 300;
-	private static final int IMAGE_HEIGHT = 200;
+    private static final int IMAGE_WIDTH = 300;
+    private static final int IMAGE_HEIGHT = 200;
 
     public SurveyResource() throws InitializationException {
         super(CoralwatchApplication.getConfiguration().getSurveyDao());
@@ -49,35 +48,35 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
 
     @Override
     protected Representation protectedRepresent(Variant variant)
-    		throws ResourceException {
-		String format = getQuery().getFirstValue("format");
-		if (variant.getMediaType().equals(MediaType.IMAGE_PNG)
-				|| "png".equals(format)) {
-			String chart = getQuery().getFirstValue("chart");
-			loadJpaEntity();
-			final Survey survey = getJpaEntity();
-			final List<Survey> surveys = Collections.singletonList(survey);
-			final JFreeChart newChart;
-			if ("shapePie".equals(chart)) {
-				newChart = PlotService.createShapePiePlot(surveys);
-			} else {
-				newChart = PlotService.createCoralCountPlot(surveys);
-			}
-			OutputRepresentation r = new OutputRepresentation(
-					MediaType.IMAGE_PNG) {
-				@Override
-				public void write(OutputStream stream) throws IOException {
-					BufferedImage image = new BufferedImage(IMAGE_WIDTH,
-							IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-					Graphics2D g2d = image.createGraphics();
-					newChart.draw(g2d, new Rectangle2D.Double(0, 0, image
-							.getWidth(), image.getHeight()));
-					ImageIO.write(image, "PNG", stream);
-				}
-			};
-			return r;
-		}
-    	return super.protectedRepresent(variant);
+            throws ResourceException {
+        String format = getQuery().getFirstValue("format");
+        if (variant.getMediaType().equals(MediaType.IMAGE_PNG)
+                || "png".equals(format)) {
+            String chart = getQuery().getFirstValue("chart");
+            loadJpaEntity();
+            final Survey survey = getJpaEntity();
+            final List<Survey> surveys = Collections.singletonList(survey);
+            final JFreeChart newChart;
+            if ("shapePie".equals(chart)) {
+                newChart = PlotService.createShapePiePlot(surveys);
+            } else {
+                newChart = PlotService.createCoralCountPlot(surveys);
+            }
+            OutputRepresentation r = new OutputRepresentation(
+                    MediaType.IMAGE_PNG) {
+                @Override
+                public void write(OutputStream stream) throws IOException {
+                    BufferedImage image = new BufferedImage(IMAGE_WIDTH,
+                            IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                    Graphics2D g2d = image.createGraphics();
+                    newChart.draw(g2d, new Rectangle2D.Double(0, 0, image
+                            .getWidth(), image.getHeight()));
+                    ImageIO.write(image, "PNG", stream);
+                }
+            };
+            return r;
+        }
+        return super.protectedRepresent(variant);
     }
 
     @Override
@@ -86,6 +85,7 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
         Survey survey = (Survey) datamodel.get(getTemplateObjectName());
         datamodel.put("surveyRecs", getDao().getSurveyRecords(survey));
         datamodel.put("reefRecs", CoralwatchApplication.getConfiguration().getReefDao().getAll());
+        datamodel.put("communityTrust", CoralwatchApplication.getConfiguration().getTrustDao().getCommunityTrustValue(survey.getCreator()));
     }
 
     @Override

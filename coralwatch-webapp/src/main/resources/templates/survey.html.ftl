@@ -35,6 +35,15 @@
             });
         }
     }
+
+    $(function() {
+        $("#starify").children().not(":input").hide();
+        // Create stars from :radio boxes
+        $("#starify").stars({
+            cancelShow: false,
+            disabled: true
+        });
+    });
 </script>
 
 <#include "macros/basic.html.ftl"/>
@@ -62,7 +71,20 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
 <div id="fragment-1">
     <#if survey.creator.gravatarUrl??>
     <div style="float:right;">
-        <img src="${survey.creator.gravatarUrl}"/>
+        <a href="${baseUrl}/users/${survey.creator.id?c}"><img src="${survey.creator.gravatarUrl}"/></a><br/>
+
+        <div class="multiField" id="starify">
+            <input type="radio" name="trustValue" value="1" type="radio"
+                   <#if (communityTrust >= 0) && (communityTrust < 1.5)>checked="checked"</#if>>
+            <input type="radio" name="trustValue" value="2" type="radio"
+                   <#if (communityTrust >= 1.5) && (communityTrust < 2.5)>checked="checked"</#if>>
+            <input type="radio" name="trustValue" value="3" type="radio"
+                   <#if (communityTrust >= 2.5) && (communityTrust < 3.5)>checked="checked"</#if>>
+            <input type="radio" name="trustValue" value="4" type="radio"
+                   <#if (communityTrust >= 3.5) && (communityTrust < 4.5)>checked="checked"</#if>>
+            <input type="radio" name="trustValue" value="5" type="radio"
+                   <#if (communityTrust >= 4.5) && (communityTrust <= 5)>checked="checked"</#if>>
+        </div>
     </div>
     </#if>
     <table>
@@ -131,7 +153,6 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
 
 
 <div id="fragment-2">
-    <h3>Survey Data</h3>
     <#if (surveyRecs?size > 0)>
     <table width="100%">
         <tr>

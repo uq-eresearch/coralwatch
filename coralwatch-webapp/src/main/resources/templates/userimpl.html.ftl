@@ -93,6 +93,7 @@
                                <#if (communityTrust >= 4.5) && (communityTrust <= 5)>checked="checked"</#if>>
                     </div>
                     <span>&ensp;(${communityTrust?c})</span>
+
                     <a onClick="jQuery('#cloudPopup').dialog('open');$('#xpower').tagcloud({type:'sphere',sizemin:8,sizemax:26,power:.2, height: 360});return false;"
                        href=".">
                         Trust Cloud
