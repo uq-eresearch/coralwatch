@@ -35,10 +35,6 @@
             });
         }
     }
-
-    $(document).ready(function() {
-        $("#tabs").tabs();
-    });
 </script>
 
 <#include "macros/basic.html.ftl"/>

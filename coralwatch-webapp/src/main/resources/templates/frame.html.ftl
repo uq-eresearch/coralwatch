@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <#-- @ftlvariable name="baseUrl" type="java.lang.String" -->
 <#-- @ftlvariable name="contentTemplate" type="java.lang.String" -->
 <#-- @ftlvariable name="frameData" type="au.edu.uq.itee.maenad.restlet.model.FrameData" -->
 <#assign dijitTheme = "tundra" />
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
 <head>
     <title>${frameData.title}</title>
 
@@ -37,17 +38,14 @@
             src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery<#if !testMode??>.min</#if>.js"></script>
     <script type="text/javascript"
             src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui<#if !testMode??>.min</#if>.js"></script>
-    <#--<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css" type="text/css"-->
-    <#--rel="Stylesheet">-->
     <script type="text/javascript" src="http://jqueryui.com/latest/ui/ui.tabs.js"></script>
     <link type="text/css" href="http://jqueryui.com/latest/themes/base/ui.all.css" rel="stylesheet"/>
-    <#--<script type="text/javascript" src="${baseUrl}/javascript/jquery/star-rating/js/jquery.min.js"></script>-->
-    <#--<script type="text/javascript" src="${baseUrl}/javascript/jquery/star-rating/js/ui.core.min.js"></script>-->
     <script type="text/javascript" src="${baseUrl}/javascript/jquery/star-rating/js/jquery.uni-form.js"></script>
     <script type="text/javascript" src="${baseUrl}/javascript/jquery/star-rating/js/ui.stars.js"></script>
+    <script type="text/javascript" src="${baseUrl}/javascript/jquery/corners/jquery.corner.js"></script>
 
     <script type="text/javascript" src="${baseUrl}/javascript/jquery/jquery.dimensions.min.js"></script>
-    <script type="text/javascript" src="${baseUrl}/javascript/jquery/jquery.tooltip.min.js"></script>
+    <#--<script type="text/javascript" src="${baseUrl}/javascript/jquery/jquery.tooltip.min.js"></script>-->
 
     <script type="text/javascript" src="${baseUrl}/javascript/jquery/cloud/jquery.tagcloud.min.js"></script>
     <script type="text/javascript" src="${baseUrl}/javascript/jquery/cloud/jquery.tinysort.min.js"></script>
@@ -56,14 +54,20 @@
     <link rel="stylesheet" type="text/css" href="${baseUrl}/javascript/jquery/star-rating/css/crystal-stars.css"/>
     <link rel="stylesheet" type="text/css" href="${baseUrl}/javascript/jquery/star-rating/css/ui.stars.css"/>
     <link rel="stylesheet" type="text/css" href="${baseUrl}/javascript/jquery/star-rating/css/uni-form-generic.css"/>
-    <!--[if lte ie 7]>
-	<style type="text/css" media="screen">
-		.uniForm, .uniForm fieldset, .uniForm .ctrlHolder, .uniForm .formHint, .uniForm .buttonHolder, .uniForm .ctrlHolder .multiField, .uniForm .inlineLabel{ zoom:1; }
-		.uniForm .inlineLabels label, .uniForm .inlineLabels .label, .uniForm .blockLabels label, .uniForm .blockLabels .label, .uniForm .inlineLabel span{ padding-bottom: .2em; }
-		.uniForm .inlineLabel input, .uniForm .inlineLabels .inlineLabel input, .uniForm .blockLabels .inlineLabel input{ margin-top: -.3em; }
-	</style>
-	<![endif]-->
 
+    <!--[if lte ie 7]>
+     <style type="text/css" media="screen">
+         .uniForm, .uniForm fieldset, .uniForm .ctrlHolder, .uniForm .formHint, .uniForm .buttonHolder, .uniForm .ctrlHolder .multiField, .uniForm .inlineLabel{ zoom:1; }
+         .uniForm .inlineLabels label, .uniForm .inlineLabels .label, .uniForm .blockLabels label, .uniForm .blockLabels .label, .uniForm .inlineLabel span{ padding-bottom: .2em; }
+         .uniForm .inlineLabel input, .uniForm .inlineLabels .inlineLabel input, .uniForm .blockLabels .inlineLabel input{ margin-top: -.3em; }
+     </style>
+     <![endif]-->
+    <script type="text/javascript">
+        $('.main_content').corner();
+        $(document).ready(function() {
+            $("#tabs").tabs();
+        });
+    </script>
 
     <script type="text/javascript">
         dojo.locale = "en";
@@ -124,51 +128,11 @@
             <!-- end menu -->
         </div>
         <!-- end header -->
-
-        <div class="border">
-            <div class="btall">
-                <div class="ltall">
-                    <div class="rtall">
-                        <div class="tleft">
-                            <div class="tright">
-                                <div class="bleft">
-                                    <div class="bright">
-                                        <div class="main_content">
-                                            <#include "${contentTemplate}"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="main_content">
+            <#include "${contentTemplate}"/>
         </div>
-        <!-- end border -->
-
-        <div id="footer_banner">
-            <ul class="footer_banner_list">
-                <li><a href="http://www.crctourism.com.au" target="_blank">
-                    <img src="${baseUrl}/images/crclogo_trans.gif" alt="Sustainable Tourism"></a></li>
-                <li><a href="http://www.uq.edu.au" target="_blank">
-                    <img src="${baseUrl}/images/uq_med.png" alt="The University of Queensland">
-                </a></li>
-                <li><a href="http://www.projectaware.org" target="_blank">
-                    <img src="${baseUrl}/images/projectaware.jpg" alt="Project Aware">
-                </a></li>
-            </ul>
-            <p class="small" style="text-align:center;"><br/>CoralWatch Supporters</p>
-        </div>
-        <!-- end footer_banner -->
-
-        <div style=" height: 61px;"></div>
-        <div id="footer">
-            <div class="indent">
-                <div align="center">&copy; 2009 CoralWatch</div>
-            </div>
-        </div>
+        <#include "include/footer.html.ftl"/>
     </div>
-    <!-- end main -->
 </div>
 <!-- end header_tall -->
 </body>

@@ -18,7 +18,7 @@
         <table style="width:100%">
 
             <tr>
-                <td><h3>${userimpl.displayName!}</h3></td>
+                <td></td>
                 <td>
                     <#if canUpdate>
                     <button dojoType="dijit.form.Button" id="editButton"

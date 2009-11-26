@@ -292,6 +292,7 @@ clear: both;
 }
 
 div.main_content {
+border: solid 1px #AAAAAA;
 margin: 0 20 0 20px;
 padding: 3ex 2em 4ex 2em;
 }
