@@ -35,11 +35,23 @@
             });
         }
     }
-
     $(function() {
-        $("#starify").children().not(":input").hide();
+        $("#ratings").children().not(":radio").hide();
+        $("#ratings").stars({
+            cancelShow: false,
+            callback: function(ui, type, value)
+            {
+                $.post("${baseUrl}/surveyrating", {ratingValue: value, surveyId: ${survey.id?c}}, function(data)
+                {
+                    window.location = '${baseUrl}/surveys/${survey.id?c}';
+                });
+            }
+        });
+    });
+    $(function() {
+        $(".multiField").children().not(":input").hide();
         // Create stars from :radio boxes
-        $("#starify").stars({
+        $(".multiField").stars({
             cancelShow: false,
             disabled: true
         });
@@ -141,8 +153,49 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
             <td class="headercell">Comments:</td>
             <td>${(survey.comments)!}</td>
         </tr>
-
-
+        <tr>
+            <td class="headercell">Community Rating:</td>
+            <td>
+                <div class="multiField" id="communityRating">
+                    <input type="radio" name="ratingValue" value="1" type="radio"
+                           <#if (communityRating >= 0) && (communityRating < 1.5)>checked="checked"</#if>>
+                    <input type="radio" name="ratingValue" value="2" type="radio"
+                           <#if (communityRating >= 1.5) && (communityRating < 2.5)>checked="checked"</#if>>
+                    <input type="radio" name="ratingValue" value="3" type="radio"
+                           <#if (communityRating >= 2.5) && (communityRating < 3.5)>checked="checked"</#if>>
+                    <input type="radio" name="ratingValue" value="4" type="radio"
+                           <#if (communityRating >= 3.5) && (communityRating < 4.5)>checked="checked"</#if>>
+                    <input type="radio" name="ratingValue" value="5" type="radio"
+                           <#if (communityRating >= 4.5) && (communityRating <= 5)>checked="checked"</#if>>
+                </div>
+                <#if (communityRating >= 0)><span>&ensp;(${communityRating?c})</span><#else><span>&ensp;(Not Recorded)</span>
+            </td>
+            </#if>
+        </tr>
+        <#if survey.creator != currentUser>
+        <tr>
+            <td class="headercell">Your Rating</td>
+            <td>
+                <form id="ratings" method="post">
+                    <input type="hidden" name="surveyId" value="${survey.id?c}"/>
+                    <input type="radio" id="rating_1" name="ratingValue" value="1" type="radio"
+                           <#if (userRating >= 0) && (userRating < 1.5)>checked="checked"</#if>>
+                    <input type="radio" id="rating_2" name="ratingValue" value="2" type="radio"
+                           <#if (userRating >= 1.5) && (userRating < 2.5)>checked="checked"</#if>>
+                    <input type="radio" id="rating_3" name="ratingValue" value="3" type="radio"
+                           <#if (userRating >= 2.5) && (userRating < 3.5)>checked="checked"</#if>>
+                    <input type="radio" id="rating_4" name="ratingValue" value="4" type="radio"
+                           <#if (userRating >= 3.5) && (userRating < 4.5)>checked="checked"</#if>>
+                    <input type="radio" id="rating_5" name="ratingValue" value="5" type="radio"
+                           <#if (userRating >= 4.5) && (userRating <= 5)>checked="checked"</#if>>
+                    <input type="submit" value="Rate" name="submit"/>
+                </form>
+                <#if (userRating >= 0)><span>&ensp;(${userRating?c})</span>
+                <#else><span>&ensp;(Not Recorded)</span>
+                </#if>
+            </td>
+        </tr>
+        </#if>
     </table>
     <#if canUpdate>
     <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id?c}?edit'">Edit

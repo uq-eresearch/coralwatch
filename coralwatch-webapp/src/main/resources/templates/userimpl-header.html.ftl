@@ -33,28 +33,11 @@
                 });
             }
         });
-
-        $("#ratings2").children().not(":radio").hide();
-
-        $("#ratings2").stars({
-            cancelShow: false,
-            callback: function(ui, type, value)
-            {
-                $.post("${baseUrl}/usertrust", {trustValue: value, trusteeId: ${userimpl.id?c}}, function(data)
-                {
-                    window.location = '${baseUrl}/users/${userimpl.id?c}';
-                });
-            }
-        });
     });
     $(function() {
-        $("#starify").children().not(":input").hide();
+        $(".multiField").children().not(":input").hide();
         // Create stars from :radio boxes
-        $("#starify").stars({
-            cancelShow: false,
-            disabled: true
-        });
-        $("#starify2").stars({
+        $(".multiField").stars({
             cancelShow: false,
             disabled: true
         });

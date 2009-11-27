@@ -102,7 +102,7 @@
             <tr>
                 <td class="headercell">Your Trust</td>
                 <td>
-                    <form id="ratings" method="post" action="${baseUrl}/usertrust">
+                    <form id="ratings" method="post">
                         <input type="hidden" name="trusteeId" value="${userimpl.id?c}"/>
                         <input type="radio" id="trust_1" name="trustValue" value="1" type="radio"
                                <#if (userTrust >= 0) && (userTrust < 1.5)>checked="checked"</#if>>

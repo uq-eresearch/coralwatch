@@ -86,6 +86,8 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
         datamodel.put("surveyRecs", getDao().getSurveyRecords(survey));
         datamodel.put("reefRecs", CoralwatchApplication.getConfiguration().getReefDao().getAll());
         datamodel.put("communityTrust", CoralwatchApplication.getConfiguration().getTrustDao().getCommunityTrustValue(survey.getCreator()));
+        datamodel.put("communityRating", CoralwatchApplication.getConfiguration().getTrustDao().getCommunityTrustValue(survey.getCreator()));
+        datamodel.put("userRating", CoralwatchApplication.getConfiguration().getTrustDao().getTrustValueByUser(getCurrentUser(), survey.getCreator()));
     }
 
     @Override
