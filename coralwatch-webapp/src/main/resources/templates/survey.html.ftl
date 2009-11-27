@@ -141,6 +141,8 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
             <td class="headercell">Comments:</td>
             <td>${(survey.comments)!}</td>
         </tr>
+
+
     </table>
     <#if canUpdate>
     <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id?c}?edit'">Edit

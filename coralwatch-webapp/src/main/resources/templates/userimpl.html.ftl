@@ -67,18 +67,6 @@
             </tr>
             <tr>
                 <td class="headercell">Community Trust:</td>
-                <#if (communityTrust == -1)>
-                <td>
-                    <div class="multiField" id="starify2">
-                        <input type="radio" name="trustValue" value="1" type="radio">
-                        <input type="radio" name="trustValue" value="2" type="radio">
-                        <input type="radio" name="trustValue" value="3" type="radio">
-                        <input type="radio" name="trustValue" value="4" type="radio">
-                        <input type="radio" name="trustValue" value="5" type="radio">
-                    </div>
-                    <span>&ensp;(Not Recorded)</span>
-                </td>
-                <#else>
                 <td>
                     <div class="multiField" id="starify">
                         <input type="radio" name="trustValue" value="1" type="radio"
@@ -92,7 +80,7 @@
                         <input type="radio" name="trustValue" value="5" type="radio"
                                <#if (communityTrust >= 4.5) && (communityTrust <= 5)>checked="checked"</#if>>
                     </div>
-                    <span>&ensp;(${communityTrust?c})</span>
+                    <#if (communityTrust >= 0)><span>&ensp;(${communityTrust?c})</span><#else><span>&ensp;(Not Recorded)</span>
 
                     <a onClick="jQuery('#cloudPopup').dialog('open');$('#xpower').tagcloud({type:'sphere',sizemin:8,sizemax:26,power:.2, height: 360});return false;"
                        href=".">
@@ -103,13 +91,8 @@
                         <pre class="example" style="display:none">$("#xpower");</pre>
                         <ul id="delicious" class="xmpl">
                             <#list allUsers as user>
-                            <#--<#assign trustValue = userTrustCloud[user.id]?c>-->
                             <li><a href="${baseUrl}/users/${user.id?c}">${user.displayName}</a></li>
                             </#list>
-
-                            <#--<#list userTrustCloud as item>-->
-                            <#--<li><a href="${baseUrl}/users/${item.id?c}">${item.displayName}</a></li>-->
-                            <#--</#list>-->
                         </ul>
                     </div>
                 </td>
@@ -118,7 +101,6 @@
             <#if userimpl != currentUser>
             <tr>
                 <td class="headercell">Your Trust</td>
-                <#if (userTrust >= 0)>
                 <td>
                     <form id="ratings" method="post" action="${baseUrl}/usertrust">
                         <input type="hidden" name="trusteeId" value="${userimpl.id?c}"/>
@@ -134,22 +116,10 @@
                                <#if (userTrust >= 4.5) && (userTrust <= 5)>checked="checked"</#if>>
                         <input type="submit" value="Rate" name="submit"/>
                     </form>
-                    <span>&ensp;(${userTrust?c})</span>
+                    <#if (userTrust >= 0)><span>&ensp;(${userTrust?c})</span>
+                    <#else><span>&ensp;(Not Recorded)</span>
+                    </#if>
                 </td>
-                <#else>
-                <td>
-                    <form id="ratings2" method="post" action="${baseUrl}/usertrust">
-                        <input type="hidden" name="trusteeId" value="${userimpl.id?c}"/>
-                        <input type="radio" name="trustValue" value="1" type="radio">
-                        <input type="radio" name="trustValue" value="2" type="radio">
-                        <input type="radio" name="trustValue" value="3" type="radio">
-                        <input type="radio" name="trustValue" value="4" type="radio">
-                        <input type="radio" name="trustValue" value="5" type="radio">
-                        <input type="submit" value="Rate" name="submit"/>
-                    </form>
-                    <span>&ensp;(Not Recorded)</span>
-                </td>
-                </#if>
             </tr>
             </#if>
         </table>
