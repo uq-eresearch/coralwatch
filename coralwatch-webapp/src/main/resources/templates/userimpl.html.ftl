@@ -1,6 +1,7 @@
 <#-- @ftlvariable name="userimpl" type="org.coralwatch.model.UserImpl" -->
 <#include "userimpl-header.html.ftl"/>
 <#include "macros/basic.html.ftl"/>
+<#include "macros/rating.html.ftl"/>
 
 <div class="breadcrumbs">
     <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;<a
@@ -68,20 +69,7 @@
             <tr>
                 <td class="headercell">Community Trust:</td>
                 <td>
-                    <div class="multiField" id="starify">
-                        <input type="radio" name="trustValue" value="1" type="radio"
-                               <#if (communityTrust >= 0) && (communityTrust < 1.5)>checked="checked"</#if>>
-                        <input type="radio" name="trustValue" value="2" type="radio"
-                               <#if (communityTrust >= 1.5) && (communityTrust < 2.5)>checked="checked"</#if>>
-                        <input type="radio" name="trustValue" value="3" type="radio"
-                               <#if (communityTrust >= 2.5) && (communityTrust < 3.5)>checked="checked"</#if>>
-                        <input type="radio" name="trustValue" value="4" type="radio"
-                               <#if (communityTrust >= 3.5) && (communityTrust < 4.5)>checked="checked"</#if>>
-                        <input type="radio" name="trustValue" value="5" type="radio"
-                               <#if (communityTrust >= 4.5) && (communityTrust <= 5)>checked="checked"</#if>>
-                    </div>
-                    <#if (communityTrust >= 0)><span>&ensp;(${communityTrust?c})</span><#else><span>&ensp;(Not Recorded)</span>
-
+                    <@createReadOnlyRator communityTrust "communityTrust" true/>
                     <a onClick="jQuery('#cloudPopup').dialog('open');$('#xpower').tagcloud({type:'sphere',sizemin:8,sizemax:26,power:.2, height: 360});return false;"
                        href=".">
                         Trust Cloud
@@ -96,29 +84,13 @@
                         </ul>
                     </div>
                 </td>
-                </#if>
+                <#--</#if>-->
             </tr>
             <#if userimpl != currentUser>
             <tr>
-                <td class="headercell">Your Trust</td>
+                <td class="headercell">Your Trust:</td>
                 <td>
-                    <form id="ratings" method="post">
-                        <input type="hidden" name="trusteeId" value="${userimpl.id?c}"/>
-                        <input type="radio" id="trust_1" name="trustValue" value="1" type="radio"
-                               <#if (userTrust >= 0) && (userTrust < 1.5)>checked="checked"</#if>>
-                        <input type="radio" id="trust_2" name="trustValue" value="2" type="radio"
-                               <#if (userTrust >= 1.5) && (userTrust < 2.5)>checked="checked"</#if>>
-                        <input type="radio" id="trust_3" name="trustValue" value="3" type="radio"
-                               <#if (userTrust >= 2.5) && (userTrust < 3.5)>checked="checked"</#if>>
-                        <input type="radio" id="trust_4" name="trustValue" value="4" type="radio"
-                               <#if (userTrust >= 3.5) && (userTrust < 4.5)>checked="checked"</#if>>
-                        <input type="radio" id="trust_5" name="trustValue" value="5" type="radio"
-                               <#if (userTrust >= 4.5) && (userTrust <= 5)>checked="checked"</#if>>
-                        <input type="submit" value="Rate" name="submit"/>
-                    </form>
-                    <#if (userTrust >= 0)><span>&ensp;(${userTrust?c})</span>
-                    <#else><span>&ensp;(Not Recorded)</span>
-                    </#if>
+                    <@createRator userTrust "ratings" userimpl.id "${baseUrl}/usertrust" "${baseUrl}/users/${userimpl.id?c}"/>
                 </td>
             </tr>
             </#if>
@@ -126,8 +98,8 @@
     </div>
     <div id="fragment-2">
         <@createList "${conductedSurveys?size!} Surveys" conductedSurveys; item><a href="
-            ${baseUrl}/surveys/${item.id?c}"><img
-            src="${baseUrl}/icons/fam/survey.png"/></a> Conducted on
-        ${(item.date)!?date}</@createList>
+            ${baseUrl}/surveys/${item.id?c}"><img src="${baseUrl}/icons/fam/survey.png"/></a> Conducted
+        on ${(item.date)!?date}
+        </@createList>
     </div>
 </div>

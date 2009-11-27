@@ -22,28 +22,6 @@
     }
 
     $(function() {
-        $("#ratings").children().not(":radio").hide();
-        $("#ratings").stars({
-            cancelShow: false,
-            callback: function(ui, type, value)
-            {
-                $.post("${baseUrl}/usertrust", {trustValue: value, trusteeId: ${userimpl.id?c}}, function(data)
-                {
-                    window.location = '${baseUrl}/users/${userimpl.id?c}';
-                });
-            }
-        });
-    });
-    $(function() {
-        $(".multiField").children().not(":input").hide();
-        // Create stars from :radio boxes
-        $(".multiField").stars({
-            cancelShow: false,
-            disabled: true
-        });
-    });
-
-    $(function() {
         var aLi = $("#delicious>li");
         var iLi = aLi.length;
         $.each(aLi, function(i, o) {

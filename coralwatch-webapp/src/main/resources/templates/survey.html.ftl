@@ -35,30 +35,10 @@
             });
         }
     }
-    $(function() {
-        $("#ratings").children().not(":radio").hide();
-        $("#ratings").stars({
-            cancelShow: false,
-            callback: function(ui, type, value)
-            {
-                $.post("${baseUrl}/surveyrating", {ratingValue: value, surveyId: ${survey.id?c}}, function(data)
-                {
-                    window.location = '${baseUrl}/surveys/${survey.id?c}';
-                });
-            }
-        });
-    });
-    $(function() {
-        $(".multiField").children().not(":input").hide();
-        // Create stars from :radio boxes
-        $(".multiField").stars({
-            cancelShow: false,
-            disabled: true
-        });
-    });
 </script>
 
 <#include "macros/basic.html.ftl"/>
+<#include "macros/rating.html.ftl"/>
 <#macro lonLat value posSym negSym>
 <#if (value < 0)>
 <#assign absValue = -value/>
@@ -73,7 +53,6 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
 </div>
 <h3>Coral Bleaching Survey</h3>
 
-
 <div id="tabs">
 <ul>
     <li><a href="#fragment-1"><span>Details</span></a></li>
@@ -84,19 +63,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     <#if survey.creator.gravatarUrl??>
     <div style="float:right;">
         <a href="${baseUrl}/users/${survey.creator.id?c}"><img src="${survey.creator.gravatarUrl}"/></a><br/>
-
-        <div class="multiField" id="starify">
-            <input type="radio" name="trustValue" value="1" type="radio"
-                   <#if (communityTrust >= 0) && (communityTrust < 1.5)>checked="checked"</#if>>
-            <input type="radio" name="trustValue" value="2" type="radio"
-                   <#if (communityTrust >= 1.5) && (communityTrust < 2.5)>checked="checked"</#if>>
-            <input type="radio" name="trustValue" value="3" type="radio"
-                   <#if (communityTrust >= 2.5) && (communityTrust < 3.5)>checked="checked"</#if>>
-            <input type="radio" name="trustValue" value="4" type="radio"
-                   <#if (communityTrust >= 3.5) && (communityTrust < 4.5)>checked="checked"</#if>>
-            <input type="radio" name="trustValue" value="5" type="radio"
-                   <#if (communityTrust >= 4.5) && (communityTrust <= 5)>checked="checked"</#if>>
-        </div>
+        <@createReadOnlyRator communityTrust "communityTrust" false/>
     </div>
     </#if>
     <table>
@@ -156,43 +123,15 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
         <tr>
             <td class="headercell">Community Rating:</td>
             <td>
-                <div class="multiField" id="communityRating">
-                    <input type="radio" name="ratingValue" value="1" type="radio"
-                           <#if (communityRating >= 0) && (communityRating < 1.5)>checked="checked"</#if>>
-                    <input type="radio" name="ratingValue" value="2" type="radio"
-                           <#if (communityRating >= 1.5) && (communityRating < 2.5)>checked="checked"</#if>>
-                    <input type="radio" name="ratingValue" value="3" type="radio"
-                           <#if (communityRating >= 2.5) && (communityRating < 3.5)>checked="checked"</#if>>
-                    <input type="radio" name="ratingValue" value="4" type="radio"
-                           <#if (communityRating >= 3.5) && (communityRating < 4.5)>checked="checked"</#if>>
-                    <input type="radio" name="ratingValue" value="5" type="radio"
-                           <#if (communityRating >= 4.5) && (communityRating <= 5)>checked="checked"</#if>>
-                </div>
-                <#if (communityRating >= 0)><span>&ensp;(${communityRating?c})</span><#else><span>&ensp;(Not Recorded)</span>
+                <@createReadOnlyRator communityRating  "communityRating" true/>
             </td>
-            </#if>
         </tr>
         <#if survey.creator != currentUser>
         <tr>
-            <td class="headercell">Your Rating</td>
+            <td class="headercell">Your Rating:</td>
+
             <td>
-                <form id="ratings" method="post">
-                    <input type="hidden" name="surveyId" value="${survey.id?c}"/>
-                    <input type="radio" id="rating_1" name="ratingValue" value="1" type="radio"
-                           <#if (userRating >= 0) && (userRating < 1.5)>checked="checked"</#if>>
-                    <input type="radio" id="rating_2" name="ratingValue" value="2" type="radio"
-                           <#if (userRating >= 1.5) && (userRating < 2.5)>checked="checked"</#if>>
-                    <input type="radio" id="rating_3" name="ratingValue" value="3" type="radio"
-                           <#if (userRating >= 2.5) && (userRating < 3.5)>checked="checked"</#if>>
-                    <input type="radio" id="rating_4" name="ratingValue" value="4" type="radio"
-                           <#if (userRating >= 3.5) && (userRating < 4.5)>checked="checked"</#if>>
-                    <input type="radio" id="rating_5" name="ratingValue" value="5" type="radio"
-                           <#if (userRating >= 4.5) && (userRating <= 5)>checked="checked"</#if>>
-                    <input type="submit" value="Rate" name="submit"/>
-                </form>
-                <#if (userRating >= 0)><span>&ensp;(${userRating?c})</span>
-                <#else><span>&ensp;(Not Recorded)</span>
-                </#if>
+                <@createRator userRating "ratings" survey.id "${baseUrl}/surveyrating" "${baseUrl}/surveys/${survey.id?c}"/>
             </td>
         </tr>
         </#if>
