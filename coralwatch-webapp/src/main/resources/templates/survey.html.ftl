@@ -136,6 +136,11 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
         </tr>
         </#if>
     </table>
+
+    <br/>
+    <#include "include/slate.html.ftl"/>
+    <br/>
+
     <#if canUpdate>
     <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id?c}?edit'">Edit
     </button>
@@ -263,8 +268,6 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     </div>
     </#if>
 </div>
-
-
 <div id="fragment-3">
     <div>
         <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=coralCount" width="300" height="200"/>

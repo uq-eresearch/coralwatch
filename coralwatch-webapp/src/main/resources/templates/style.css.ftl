@@ -373,4 +373,9 @@ ul.xmpl, ol.xmpl {
 height: 100px;
 overflow: hidden;
 padding: 0px !important;
-}                        
+}
+.slate td {
+height:30px;
+width:30px;
+text-align:center;
+}
