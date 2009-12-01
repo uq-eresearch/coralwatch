@@ -23,6 +23,7 @@ import org.coralwatch.resources.OneOffSubmissionResource;
 import org.coralwatch.resources.PostSignUpResource;
 import org.coralwatch.resources.ReefListResource;
 import org.coralwatch.resources.ReefResource;
+import org.coralwatch.resources.SlateResource;
 import org.coralwatch.resources.SurveyListResource;
 import org.coralwatch.resources.SurveyRecordListResource;
 import org.coralwatch.resources.SurveyRecordResource;
@@ -68,6 +69,7 @@ public class CoralwatchApplication extends Application {
         }
         router.attachDefault(FrontpageResource.class);
         router.attach("/about", AboutResource.class);
+        router.attach("/slate", SlateResource.class);
         router.attach("/graphs", GraphsResource.class);
         router.attach("/education", EducationResource.class);
         router.attach("/goinggreen", GoingGreenResource.class);

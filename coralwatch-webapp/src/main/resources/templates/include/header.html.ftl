@@ -22,6 +22,7 @@
 <link type="text/css" href="http://jqueryui.com/latest/themes/base/ui.all.css" rel="stylesheet"/>
 <script type="text/javascript" src="${baseUrl}/javascript/jquery/corners/jquery.corner.js"></script>
 <script type="text/javascript" src="${baseUrl}/javascript/jquery/cloud/jquery.tagcloud.min.js"></script>
+<script type="text/javascript" src="${baseUrl}/javascript/jquery/qtip/jquery.qtip-1.0.0-rc3.min.js"></script>
 <script type="text/javascript" src="${baseUrl}/javascript/jquery/star-rating/js/ui.stars.js"></script>
 <link rel="stylesheet" type="text/css" href="${baseUrl}/javascript/jquery/star-rating/css/ui.stars.css"/>
 

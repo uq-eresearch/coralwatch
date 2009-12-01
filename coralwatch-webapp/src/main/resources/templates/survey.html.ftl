@@ -35,8 +35,10 @@
             });
         }
     }
+
 </script>
 
+<#include "macros/jquery.html.ftl"/>
 <#include "macros/basic.html.ftl"/>
 <#include "macros/rating.html.ftl"/>
 <#macro lonLat value posSym negSym>
@@ -136,11 +138,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
         </tr>
         </#if>
     </table>
-
     <br/>
-    <#include "include/slate.html.ftl"/>
-    <br/>
-
     <#if canUpdate>
     <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id?c}?edit'">Edit
     </button>
@@ -189,6 +187,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                 <th class="headercell" nowrap="nowrap">Coral Type</th>
                 <th class="headercell" nowrap="nowrap">Lightest</th>
                 <th class="headercell" nowrap="nowrap">Darkest</th>
+                <th class="headercell" nowrap="nowrap"></th>
             </tr>
             <tr>
                 <td nowrap="nowrap">
@@ -206,65 +205,68 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                     <label for="coralType_3"> Soft </label>
                 </td>
                 <td nowrap="nowrap">
-                    <select name="lightestLetter"
-                            id="lightestLetter"
-                            style="width:60px;"
-                            required="true"
-                            dojoType="dijit.form.ComboBox"
-                            hasDownArrow="true">
-                        <option selected="selected" value=""></option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="E">E</option>
-                    </select>
-                    <select name="lightestNumber"
-                            id="lightestNumber"
-                            style="width:60px;"
-                            required="true"
-                            dojoType="dijit.form.ComboBox"
-                            hasDownArrow="true">
-                        <option selected="selected" value=""></option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                    </select>
+                    <@createColorField "lightColor"/>
+                    <#--<select name="lightestLetter"-->
+                    <#--id="lightestLetter"-->
+                    <#--style="width:60px;"-->
+                    <#--required="true"-->
+                    <#--dojoType="dijit.form.ComboBox"-->
+                    <#--hasDownArrow="true">-->
+                    <#--<option selected="selected" value=""></option>-->
+                    <#--<option value="B">B</option>-->
+                    <#--<option value="C">C</option>-->
+                    <#--<option value="D">D</option>-->
+                    <#--<option value="E">E</option>-->
+                    <#--</select>-->
+                    <#--<select name="lightestNumber"-->
+                    <#--id="lightestNumber"-->
+                    <#--style="width:60px;"-->
+                    <#--required="true"-->
+                    <#--dojoType="dijit.form.ComboBox"-->
+                    <#--hasDownArrow="true">-->
+                    <#--<option selected="selected" value=""></option>-->
+                    <#--<option value="1">1</option>-->
+                    <#--<option value="2">2</option>-->
+                    <#--<option value="3">3</option>-->
+                    <#--<option value="4">4</option>-->
+                    <#--<option value="5">5</option>-->
+                    <#--<option value="6">6</option>-->
+                    <#--</select>-->
                 </td>
                 <td nowrap="nowrap">
-                    <select name="darkestLetter"
-                            id="darkestLetter"
-                            style="width:60px;"
-                            required="true"
-                            dojoType="dijit.form.ComboBox"
-                            hasDownArrow="true">
-                        <option selected="selected" value=""></option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="E">E</option>
-                    </select>
-                    <select name="darkestNumber"
-                            id="darkestNumber"
-                            style="width:60px;"
-                            required="true"
-                            dojoType="dijit.form.ComboBox"
-                            hasDownArrow="true">
-                        <option selected="selected" value=""></option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                    </select>
+                    <@createColorField "darkColor"/>
+                    <#--<select name="darkestLetter"-->
+                    <#--id="darkestLetter"-->
+                    <#--style="width:60px;"-->
+                    <#--required="true"-->
+                    <#--dojoType="dijit.form.ComboBox"-->
+                    <#--hasDownArrow="true">-->
+                    <#--<option selected="selected" value=""></option>-->
+                    <#--<option value="B">B</option>-->
+                    <#--<option value="C">C</option>-->
+                    <#--<option value="D">D</option>-->
+                    <#--<option value="E">E</option>-->
+                    <#--</select>-->
+                    <#--<select name="darkestNumber"-->
+                    <#--id="darkestNumber"-->
+                    <#--style="width:60px;"-->
+                    <#--required="true"-->
+                    <#--dojoType="dijit.form.ComboBox"-->
+                    <#--hasDownArrow="true">-->
+                    <#--<option selected="selected" value=""></option>-->
+                    <#--<option value="1">1</option>-->
+                    <#--<option value="2">2</option>-->
+                    <#--<option value="3">3</option>-->
+                    <#--<option value="4">4</option>-->
+                    <#--<option value="5">5</option>-->
+                    <#--<option value="6">6</option>-->
+                    <#--</select>-->
+                </td>
+                <td>
+                    <button dojoType="dijit.form.Button" type="submit" name="submit">Add</button>
                 </td>
             </tr>
         </table>
-
-        <button dojoType="dijit.form.Button" type="submit" name="submit">Add</button>
     </div>
     </#if>
 </div>
@@ -276,3 +278,5 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
 </div>
 
 </div>
+
+

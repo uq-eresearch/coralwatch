@@ -379,3 +379,8 @@ height:30px;
 width:30px;
 text-align:center;
 }
+
+.slate td.colored:hover {
+cursor: pointer;
+color: #00ff00;
+}
