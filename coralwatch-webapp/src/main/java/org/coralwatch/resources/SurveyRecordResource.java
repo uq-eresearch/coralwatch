@@ -40,8 +40,8 @@ public class SurveyRecordResource extends ModifiableEntityResource<SurveyRecord,
             surveyRecord.setCoralType(coralType);
         }
 
-        char lightestLetter = form.getFirstValue("lightestLetter").trim().charAt(0);
-        int lightestNumber = Integer.parseInt(form.getFirstValue("lightestNumber"));
+        char lightestLetter = form.getFirstValue("lightColor").trim().charAt(0);
+        int lightestNumber = Integer.parseInt(form.getFirstValue("lightColor").trim().charAt(1) + "");
         if (lightestLetter < 'B' || lightestLetter > 'E' || lightestNumber < 1 || lightestNumber > 6) {
             errors.add(new SubmissionError("Lightest colour code was not provided correctly. Colour code must be supplied."));
         } else {
@@ -49,8 +49,8 @@ public class SurveyRecordResource extends ModifiableEntityResource<SurveyRecord,
             surveyRecord.setLightestNumber(lightestNumber);
         }
 
-        char darkestLetter = form.getFirstValue("darkestLetter").trim().charAt(0);
-        int darkestNumber = Integer.parseInt(form.getFirstValue("darkestNumber"));
+        char darkestLetter = form.getFirstValue("darkColor").trim().charAt(0);
+        int darkestNumber = Integer.parseInt(form.getFirstValue("darkColor").trim().charAt(1) + "");
         if (darkestLetter < 'B' || darkestLetter > 'E' || darkestNumber < 1 || darkestNumber > 6) {
             errors.add(new SubmissionError("Darkest colour code was not provided correctly. Colour code must be supplied."));
         } else {
