@@ -380,7 +380,11 @@ width:30px;
 text-align:center;
 }
 
-.slate td.colored:hover {
+.slate td.colored-lightColor:hover {
+cursor: pointer;
+color: #00ff00;
+}
+.slate td.colored-darkColor:hover {
 cursor: pointer;
 color: #00ff00;
 }

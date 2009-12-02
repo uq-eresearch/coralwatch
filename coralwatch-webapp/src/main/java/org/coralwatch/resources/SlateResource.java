@@ -5,6 +5,7 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import org.coralwatch.model.UserImpl;
+import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.ext.freemarker.TemplateRepresentation;
 import org.restlet.resource.Representation;
@@ -35,6 +36,10 @@ public class SlateResource extends AccessControlledResource<UserImpl> {
             } else {
                 datamodel.put("baseUrl", getRequest().getRootRef().toString());
             }
+
+            Form form = getRequest().getResourceRef().getQueryAsForm();
+            datamodel.put("colorFieldId", form.getFirstValue("colorFieldId"));
+
             configuration.setTemplateLoader(
                     new ClassTemplateLoader(this.getClass(), templatePath));
             return new TemplateRepresentation(templateName,

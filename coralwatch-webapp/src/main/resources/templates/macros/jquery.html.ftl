@@ -1,7 +1,7 @@
 <#macro createColorField fieldId>
 <script type="text/javascript">
     // Create the tooltips only on document load
-    var colorFieldId = '';
+
     $(document).ready(function()
     {
         // Use the each() method to gain access to each elements attributes
@@ -12,7 +12,7 @@
                 content: {
                     // Set the text to an image HTML string with the correct src URL to the loading image you want to use
                     text: 'Loading...',
-                    url: '${baseUrl}/slate', // Use the rel attribute of each element for the url to load
+                    url: '${baseUrl}/slate?colorFieldId=${fieldId}', // Use the rel attribute of each element for the url to load
                     title:false
                 },
                 position: {
@@ -38,15 +38,10 @@
                     name: 'light', // Use the default light style
                     width: 230, // Set the tooltip width
                     height: 230
-                },
-                api: {
-                    onContentLoad: function() {
-                        colorFieldId = '${fieldId}';
-                    }
                 }
             })
         });
     });
 </script>
-<input id="${fieldId}" name="${fieldId}" type="text" style="width:30px;"/>
+<input class="colorField" id="${fieldId}" name="${fieldId}" type="text" style="width:30px;"/>
         </#macro>

@@ -79,7 +79,8 @@
                         <pre class="example" style="display:none">$("#xpower");</pre>
                         <ul id="delicious" class="xmpl">
                             <#list allUsers as user>
-                            <li><a href="${baseUrl}/users/${user.id?c}">${user.displayName}</a></li>
+                            <li><a class="tagLink" href="${baseUrl}/users/${user.id?c}"
+                                   rel="${userimpl.gravatarUrl!}">${user.displayName}</a></li>
                             </#list>
                         </ul>
                     </div>
