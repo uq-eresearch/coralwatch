@@ -374,6 +374,8 @@ height: 100px;
 overflow: hidden;
 padding: 0px !important;
 }
+
+/**********************************Slate CSS****************************************/
 .slate td {
 height:30px;
 width:30px;
@@ -388,3 +390,18 @@ color: #00ff00;
 cursor: pointer;
 color: #00ff00;
 }
+/**********************************Slate CSS****************************************/
+/**********************************Map CSS****************************************/
+#mapMain {
+float: left;
+width: 65%;
+margin-top: 12px;
+}
+#openlayersmap {
+margin-top:10px;
+width: 100%;
+height: 550px;
+border: 1px solid black;
+clear:both;
+}
+/**********************************Map CSS****************************************/

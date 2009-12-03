@@ -8,8 +8,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
 <head>
     <#include "include/header.html.ftl"/>
+    <#if extraHeadContent??><#include "${extraHeadContent}"></#if>
 </head>
 <body class="${dijitTheme}" id="index" onload="new ElementMaxHeight()">
+<#if initJSOnLoad??>
+<script type="text/javascript">jQuery(document).ready(init);</script>
+</#if>
 <div id="header_tall">
     <#if frameData.currentUser??>
     <p style="font-size: 10px; text-align:left; margin: 1px;">Logged in as <a

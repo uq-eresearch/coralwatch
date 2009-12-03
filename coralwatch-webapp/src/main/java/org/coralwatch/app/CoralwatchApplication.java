@@ -11,7 +11,6 @@ import org.coralwatch.resources.AboutResource;
 import org.coralwatch.resources.DashboardResource;
 import org.coralwatch.resources.DataDownloadResource;
 import org.coralwatch.resources.EducationResource;
-import org.coralwatch.resources.FrontpageResource;
 import org.coralwatch.resources.GoingGreenResource;
 import org.coralwatch.resources.GraphsResource;
 import org.coralwatch.resources.KitRequestListResource;
@@ -19,6 +18,7 @@ import org.coralwatch.resources.KitRequestResource;
 import org.coralwatch.resources.LinksResource;
 import org.coralwatch.resources.LoginResource;
 import org.coralwatch.resources.LogoutResource;
+import org.coralwatch.resources.MapResource;
 import org.coralwatch.resources.OneOffSubmissionResource;
 import org.coralwatch.resources.PostSignUpResource;
 import org.coralwatch.resources.ReefListResource;
@@ -67,7 +67,8 @@ public class CoralwatchApplication extends Application {
         if (baseUrl != null) {
             getContext().getAttributes().put("baseUrl", baseUrl);
         }
-        router.attachDefault(FrontpageResource.class);
+//        router.attachDefault(FrontpageResource.class);
+        router.attachDefault(MapResource.class);
         router.attach("/about", AboutResource.class);
         router.attach("/slate", SlateResource.class);
         router.attach("/graphs", GraphsResource.class);
