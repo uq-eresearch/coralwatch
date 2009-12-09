@@ -13,7 +13,7 @@ public class BaselineTest extends CoralWatchTestCase {
 
     public void testLoginLogout() {
         loginAsAdmin();
-        assertTextPresent("CoralWatch Administrator");
+        assertTextPresent("Administrator");
         assertLinkPresentWithExactText("New Survey");
         logout();
         assertTextPresent("You successfully logged out.");
