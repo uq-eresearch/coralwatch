@@ -15,7 +15,7 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao {
 
     @Override
     public Reef getReefByName(String name) {
-        List<?> resultList = entityManagerSource.getEntityManager().createNamedQuery("Reef.getReef").setParameter(
+        List<?> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM Reef o WHERE o.name = :name").setParameter(
                 "name", name).getResultList();
         if (resultList.isEmpty()) {
             return null;
@@ -23,11 +23,11 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao {
         assert resultList.size() == 1 : "The name of a reef should be unique";
         return (Reef) resultList.get(0);
     }
-    
-	@Override
+
+    @Override
     @SuppressWarnings("unchecked")
-	public List<Survey> getSurveysByReef(Reef reef) {
-        return entityManagerSource.getEntityManager().createNamedQuery("Reef.getSurveys").setParameter("reefId",
+    public List<Survey> getSurveysByReef(Reef reef) {
+        return entityManagerSource.getEntityManager().createQuery("SELECT o FROM Survey o WHERE o.reef.id = :reefId").setParameter("reefId",
                 reef.getId()).getResultList();
-	}
+    }
 }

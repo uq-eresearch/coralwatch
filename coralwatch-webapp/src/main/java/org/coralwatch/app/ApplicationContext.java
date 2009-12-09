@@ -144,9 +144,10 @@ public class ApplicationContext implements Configuration, ServletContextListener
     }
 
     private void createDefaultUsers() {
-        UserImpl defaultAdmin = new UserImpl("CoralWatch Administrator", "admin@coralwatch.org", BCrypt.hashpw("admin",
-                BCrypt.gensalt()), true);
-        userDao.save(defaultAdmin);
+        userDao.save(new UserImpl("Administrator", "admin@coralwatch.org", BCrypt.hashpw("admin", BCrypt.gensalt()), true));
+        userDao.save(new UserImpl("Charlie", "brooking@itee.uq.edu.au", BCrypt.hashpw("Charlie", BCrypt.gensalt()), false));
+        userDao.save(new UserImpl("Peter", "pbecker@itee.uq.edu.au", BCrypt.hashpw("Peter", BCrypt.gensalt()), false));
+        userDao.save(new UserImpl("Abdul", "alabri@itee.uq.edu.au", BCrypt.hashpw("Abdul", BCrypt.gensalt()), false));
         for (int i = 0; i < 100; i++) {
             userDao.save(new UserImpl("User" + i, "user" + i + "@coralwatch.org", BCrypt.hashpw("user" + i, BCrypt.gensalt()), false));
         }

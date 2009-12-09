@@ -8,7 +8,6 @@ import org.coralwatch.model.UserImpl;
 
 import java.util.List;
 
-
 public class JpaUserDao extends JpaDao<UserImpl> implements UserDao {
 
     public JpaUserDao(EntityManagerSource entityManagerSource) {
@@ -18,19 +17,21 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<Survey> getSurveyEntriesCreated(UserImpl userImpl) {
-        return entityManagerSource.getEntityManager().createNamedQuery("User.getConductedSurveys").setParameter("user",
-                userImpl).getResultList();
+
+        return entityManagerSource.getEntityManager().createQuery("SELECT o FROM Survey o " +
+                "WHERE o.creator = :user " +
+                "ORDER BY o.id").setParameter("user", userImpl).getResultList();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<UserImpl> getAdministrators() {
-        return entityManagerSource.getEntityManager().createNamedQuery("User.getAdministrators").getResultList();
+        return entityManagerSource.getEntityManager().createQuery("SELECT v FROM AppUser v WHERE v.superUser = TRUE ORDER BY v.id").getResultList();
     }
 
     @Override
     public UserImpl getByEmail(String email) {
-        List<?> resultList = entityManagerSource.getEntityManager().createNamedQuery("User.getUserByEmail")
+        List<?> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM AppUser o WHERE o.email = :email")
                 .setParameter("email", email).getResultList();
         if (resultList.isEmpty()) {
             return null;

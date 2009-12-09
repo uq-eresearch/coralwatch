@@ -7,18 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import java.io.Serializable;
 
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Reef.getReef",
-                query = "SELECT o FROM Reef o WHERE o.name = :name"),
-        @NamedQuery(name = "Reef.getCountry",
-                query = "SELECT o FROM Reef o WHERE o.country = :country ORDER BY o.id"),
-        @NamedQuery(name = "Reef.getSurveys", query = "SELECT o FROM Survey o WHERE o.reef.id = :reefId")
-})
 public class Reef implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,18 +24,19 @@ public class Reef implements Serializable {
 
     @NotNull
     private String country;
-    
+
     /**
      * Stores the quality assurance state of the entry.
-     * 
+     * <p/>
      * This should be modelled in a base class, but we avoid that for now.
-     * 
+     *
      * @see Survey#qaState
      */
     private String qaState;
 
     public Reef() {
     }
+
     public Reef(String reefName, String country) {
         this.name = reefName;
         this.country = country;
@@ -73,11 +65,13 @@ public class Reef implements Serializable {
     public void setCountry(String country) {
         this.country = country;
     }
-	public void setQaState(String qaState) {
-		this.qaState = qaState;
-	}
-	public String getQaState() {
-		return qaState;
-	}
+
+    public void setQaState(String qaState) {
+        this.qaState = qaState;
+    }
+
+    public String getQaState() {
+        return qaState;
+    }
 
 }

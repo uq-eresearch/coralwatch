@@ -1,13 +1,12 @@
 package org.coralwatch.dataaccess.jpa;
 
-import java.util.List;
-
+import au.edu.uq.itee.maenad.dataaccess.jpa.EntityManagerSource;
+import au.edu.uq.itee.maenad.dataaccess.jpa.JpaDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 
-import au.edu.uq.itee.maenad.dataaccess.jpa.EntityManagerSource;
-import au.edu.uq.itee.maenad.dataaccess.jpa.JpaDao;
+import java.util.List;
 
 
 public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao {
@@ -18,7 +17,7 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<SurveyRecord> getSurveyRecords(Survey survey) {
-        return entityManagerSource.getEntityManager().createNamedQuery("Survey.getData").setParameter("survey",
+        return entityManagerSource.getEntityManager().createQuery("SELECT o FROM SurveyRecord o WHERE o.survey = :survey ORDER BY o.id").setParameter("survey",
                 survey).getResultList();
     }
 }

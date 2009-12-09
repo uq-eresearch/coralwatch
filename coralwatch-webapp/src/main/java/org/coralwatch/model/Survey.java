@@ -10,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,9 +20,6 @@ import java.util.List;
 
 
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Survey.getData", query = "SELECT o FROM SurveyRecord o WHERE o.survey = :survey ORDER BY o.id")
-})
 public class Survey implements Serializable {
 
     private static final long serialVersionUID = 1;

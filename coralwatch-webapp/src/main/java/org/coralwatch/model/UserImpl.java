@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.PostLoad;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,22 +16,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity(name = "AppUser")
-@NamedQueries({
-        @NamedQuery(name = "User.getConductedSurveys",
-                query = "SELECT o FROM Survey o WHERE o.creator = :user ORDER BY o.id"),
-        @NamedQuery(name = "User.getUserByEmail", query = "SELECT o FROM AppUser o WHERE o.email = :email"),
-        @NamedQuery(name = "User.getAdministrators",
-                query = "SELECT v FROM AppUser v WHERE v.superUser = TRUE ORDER BY v.id")
-})
 public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serializable {
 
     /**
      * The type of image Gravatar generates if no image is attached to an email address.
-     *
+     * <p/>
      * At the time of writing Gravatar offers three generation schemes: "identicon"
      * (geometric patterns), "monsterid" (monsters) and "wavatar" (cartoony characters).
      * Alternatively a URL for a fallback image can be provided.
-     *
+     * <p/>
      * If the value is not provided (or invalid), the Gravatar icon will be rendered.
      */
     private static final String GRAVATAR_FALLBACK = "identicon";
@@ -67,14 +58,14 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     /**
      * Flags an entry as migrated from the old website.
-     * 
+     * <p/>
      * Some of these entries may be anonymous entries generated where fields where empty in the
      * old database. The anonymous entries all have email addressed of the form "anonymousXXX"
      * and the display name is "unknown" -- thus they are not distinguished any further.
      */
     @NotNull
     private boolean migrated = false;
-    
+
     @Transient
     private String gravatarUrl;
 
@@ -199,11 +190,11 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
         return getEmail();
     }
 
-	public void setMigrated(boolean migrated) {
-		this.migrated = migrated;
-	}
+    public void setMigrated(boolean migrated) {
+        this.migrated = migrated;
+    }
 
-	public boolean isMigrated() {
-		return migrated;
-	}
+    public boolean isMigrated() {
+        return migrated;
+    }
 }
