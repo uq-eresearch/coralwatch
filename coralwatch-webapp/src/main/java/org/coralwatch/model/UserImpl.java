@@ -56,6 +56,7 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
     @NotNull
     private boolean superUser;
 
+
     /**
      * Flags an entry as migrated from the old website.
      * <p/>

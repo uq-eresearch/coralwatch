@@ -75,21 +75,24 @@
                         Trust Cloud
                     </a>
 
-                    <div id="cloudPopup" title="Trust Cloud" style="display:none;">
+                    <div id="cloudPopup" title="CoralWatch Trust Cloud" style="display:none;">
                         <pre class="example" style="display:none">$("#xpower");</pre>
                         <ul id="delicious" class="xmpl">
                             <#list allUsers as user>
                             <#if user = currentUser>
-                            <li rating="26" rel="${user.gravatarUrl!}"><a class="tagLink" style="color:#00ff00;"
-                                                                          href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
+                            <li rating="${communityTrustForAll[user.id?string]}" rel="${user.gravatarUrl!}"><a
+                                    class="tagLink" style="color:#00ff00;"
+                                    href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
                             </li>
                             <#elseif user = userimpl>
-                            <li rating="20" rel="${user.gravatarUrl!}"><a class="tagLink" style="color:#ff0000;"
-                                                                          href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
+                            <li rating="${communityTrustForAll[user.id?string]}" rel="${user.gravatarUrl!}"><a
+                                    class="tagLink" style="color:#ff0000;"
+                                    href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
                             </li>
                             <#else>
-                            <li rating="12" rel="${user.gravatarUrl!}"><a class="tagLink"
-                                                                          href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
+                            <li rating="${communityTrustForAll[user.id?string]}" rel="${user.gravatarUrl!}"><a
+                                    class="tagLink"
+                                    href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
                             </li>
                             </#if>
                             </#list>

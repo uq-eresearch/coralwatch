@@ -9,6 +9,7 @@ import au.edu.uq.itee.maenad.util.BCrypt;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.UserImpl;
+import org.coralwatch.util.FreeMarkerUtils;
 import org.restlet.data.Form;
 import org.restlet.resource.Variant;
 
@@ -35,7 +36,8 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         datamodel.put("userTrust", CoralwatchApplication.getConfiguration().getTrustDao().getTrustValueByUser(getCurrentUser(), userImpl));
         datamodel.put("currentUser", getCurrentUser());
         datamodel.put("allUsers", getDao().getAll());
-        datamodel.put("userTrustCloud", CoralwatchApplication.getConfiguration().getTrustDao().getCommunityTrustForAll());
+        Map<Long, Double> longDoubleMap = CoralwatchApplication.getConfiguration().getTrustDao().getCommunityTrustForAll();
+        datamodel.put("communityTrustForAll", FreeMarkerUtils.toSortedFreemarkerHash(longDoubleMap));
     }
 
     @Override
