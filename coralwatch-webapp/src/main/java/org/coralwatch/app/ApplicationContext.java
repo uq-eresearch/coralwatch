@@ -17,6 +17,7 @@ import org.coralwatch.dataaccess.jpa.JpaSurveyRecordDao;
 import org.coralwatch.dataaccess.jpa.JpaUserDao;
 import org.coralwatch.dataaccess.jpa.JpaUserTrustDao;
 import org.coralwatch.model.UserImpl;
+import org.coralwatch.model.UserTrust;
 import org.restlet.service.ConnectorService;
 
 import javax.persistence.EntityManagerFactory;
@@ -29,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -144,12 +146,17 @@ public class ApplicationContext implements Configuration, ServletContextListener
     }
 
     private void createDefaultUsers() {
-        userDao.save(new UserImpl("Administrator", "admin@coralwatch.org", BCrypt.hashpw("admin", BCrypt.gensalt()), true));
+        UserImpl admin = new UserImpl("Administrator", "admin@coralwatch.org", BCrypt.hashpw("admin", BCrypt.gensalt()), true);
+        userDao.save(admin);
         userDao.save(new UserImpl("Charlie", "brooking@itee.uq.edu.au", BCrypt.hashpw("Charlie", BCrypt.gensalt()), false));
         userDao.save(new UserImpl("Peter", "pbecker@itee.uq.edu.au", BCrypt.hashpw("Peter", BCrypt.gensalt()), false));
         userDao.save(new UserImpl("Abdul", "alabri@itee.uq.edu.au", BCrypt.hashpw("Abdul", BCrypt.gensalt()), false));
         for (int i = 0; i < 100; i++) {
-            userDao.save(new UserImpl("User" + i, "user" + i + "@coralwatch.org", BCrypt.hashpw("user" + i, BCrypt.gensalt()), false));
+            UserImpl newUser = new UserImpl("User" + i, "user" + i + "@coralwatch.org", BCrypt.hashpw("user" + i, BCrypt.gensalt()), false);
+            userDao.save(newUser);
+            Random rand = new Random();
+            double randomNumber = rand.nextDouble() * 5;
+            userTrustDao.save(new UserTrust(admin, newUser, randomNumber));
         }
 
         Logger.getLogger(getClass().getName()).log(Level.INFO,
