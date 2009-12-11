@@ -67,6 +67,18 @@
                 <td>${userimpl.country!}</td>
             </tr>
             <tr>
+                <td class="headercell">Surveys:</td>
+                <td>No surveys yet</td>
+            </tr>
+            <tr>
+                <td class="headercell">Photos:</td>
+                <td>No photos yet</td>
+            </tr>
+            <tr>
+                <td class="headercell">Videos:</td>
+                <td>No videos yet</td>
+            </tr>
+            <tr>
                 <td class="headercell">Community Trust:</td>
                 <td>
                     <@createReadOnlyRator communityTrust "communityTrust" true/>
@@ -91,7 +103,7 @@
                             </li>
                             <#else>
                             <li rating="${communityTrustForAll[user.id?string]}" rel="${user.gravatarUrl!}"><a
-                                    class="tagLink"
+                                    class="tagLink" style="color:#0066cc"
                                     href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
                             </li>
                             </#if>

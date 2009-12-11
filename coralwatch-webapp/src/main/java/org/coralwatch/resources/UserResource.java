@@ -14,6 +14,10 @@ import org.restlet.data.Form;
 import org.restlet.resource.Variant;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -35,10 +39,43 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
         datamodel.put("communityTrust", CoralwatchApplication.getConfiguration().getTrustDao().getCommunityTrustValue(userImpl));
         datamodel.put("userTrust", CoralwatchApplication.getConfiguration().getTrustDao().getTrustValueByUser(getCurrentUser(), userImpl));
         datamodel.put("currentUser", getCurrentUser());
-        datamodel.put("allUsers", getDao().getAll());
         Map<Long, Double> longDoubleMap = CoralwatchApplication.getConfiguration().getTrustDao().getCommunityTrustForAll();
-        datamodel.put("communityTrustForAll", FreeMarkerUtils.toSortedFreemarkerHash(longDoubleMap));
+        Map<Long, Double> finalMap = new LinkedHashMap<Long, Double>();
+        List list = sortByValue(longDoubleMap);
+        Collections.reverse(list);
+        for (Iterator i = list.iterator(); i.hasNext();) {
+            Long key = (Long) i.next();
+            finalMap.put(key, longDoubleMap.get(key));
+        }
+        Map<String, Double> map = FreeMarkerUtils.toFreemarkerHash(finalMap);
+        datamodel.put("communityTrustForAll", map);
+        List<UserImpl> users = new ArrayList<UserImpl>();
+        for (Iterator i = finalMap.keySet().iterator(); i.hasNext();) {
+            Long id = (Long) i.next();
+            users.add(getDao().getById(id));
+        }
+        datamodel.put("allUsers", users);
     }
+
+    private List sortByValue(final Map m) {
+        List keys = new ArrayList();
+        keys.addAll(m.keySet());
+        Collections.sort(keys, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                Object v1 = m.get(o1);
+                Object v2 = m.get(o2);
+                if (v1 == null) {
+                    return (v2 == null) ? 0 : 1;
+                } else if (v1 instanceof Comparable) {
+                    return ((Comparable) v1).compareTo(v2);
+                } else {
+                    return 0;
+                }
+            }
+        });
+        return keys;
+    }
+
 
     @Override
     protected void updateObject(UserImpl userImpl, Form form) throws SubmissionException {

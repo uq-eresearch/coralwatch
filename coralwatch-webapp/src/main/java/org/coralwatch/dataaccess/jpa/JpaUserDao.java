@@ -40,4 +40,15 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao {
         return (UserImpl) resultList.get(0);
     }
 
+    @Override
+    public UserImpl getById(Long id) {
+        List<?> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM AppUser o WHERE o.id = :id")
+                .setParameter("id", id).getResultList();
+        if (resultList.isEmpty()) {
+            return null;
+        }
+        assert resultList.size() == 1 : "Email should be unique";
+        return (UserImpl) resultList.get(0);
+    }
+
 }

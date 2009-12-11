@@ -8,9 +8,9 @@ import org.coralwatch.model.UserImpl;
 import org.coralwatch.model.UserTrust;
 
 import javax.persistence.NoResultException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class JpaUserTrustDao extends JpaDao<UserTrust> implements UserTrustDao {
     public JpaUserTrustDao(EntityManagerSource entityManagerSource) {
@@ -56,7 +56,8 @@ public class JpaUserTrustDao extends JpaDao<UserTrust> implements UserTrustDao {
     public double getCommunityTrustValue(UserImpl trustee) {
         try {
             Double trustValue = (Double) entityManagerSource.getEntityManager().createQuery(
-                    "SELECT avg(o.trustValue) FROM UserTrust o WHERE o.trustee = :trustee").setParameter("trustee", trustee).getSingleResult();
+                    "SELECT avg(o.trustValue) FROM UserTrust o WHERE o.trustee = :trustee")
+                    .setParameter("trustee", trustee).getSingleResult();
             return trustValue == null ? -1 : trustValue.doubleValue();
         } catch (NoResultException ex) {
             return -1;
@@ -65,11 +66,18 @@ public class JpaUserTrustDao extends JpaDao<UserTrust> implements UserTrustDao {
 
     @Override
     public Map<Long, Double> getCommunityTrustForAll() {
-        Map<Long, Double> map = new TreeMap<Long, Double>();
+
+
+//        return entityManagerSource.getEntityManager().createQuery("SELECT o FROM UserTrust o ORDER BY o.trustValue").getResultList();
+
+        Map<Long, Double> map = new HashMap<Long, Double>();
         List<UserImpl> users = CoralwatchApplication.getConfiguration().getUserDao().getAll();
         for (UserImpl user : users) {
-            map.put(user.getId(), getCommunityTrustValue(user));
+            double trustValue = getCommunityTrustValue(user);
+            map.put(user.getId(), trustValue);
         }
+
+
         return map;
     }
 }
