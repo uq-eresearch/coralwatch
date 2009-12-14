@@ -1,6 +1,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         jQuery("#cloudPopup").dialog({ autoOpen: false, position: 'center', modal: true, width: 660, height:420 });
+        getTree();
         // Notice the use of the each method to gain access to each element individually
     });
     function deleteUser(id) {

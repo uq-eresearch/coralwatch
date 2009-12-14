@@ -154,9 +154,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
         for (int i = 0; i < 100; i++) {
             UserImpl newUser = new UserImpl("User" + i, "user" + i + "@coralwatch.org", BCrypt.hashpw("user" + i, BCrypt.gensalt()), false);
             userDao.save(newUser);
-            Random rand = new Random();
-            double randomNumber = rand.nextDouble() * 5;
-            userTrustDao.save(new UserTrust(admin, newUser, randomNumber));
+            if (i % 4 == 0) {
+                Random rand = new Random();
+                double randomNumber = rand.nextDouble() * 5;
+                userTrustDao.save(new UserTrust(admin, newUser, randomNumber));
+            }
         }
 
         Logger.getLogger(getClass().getName()).log(Level.INFO,

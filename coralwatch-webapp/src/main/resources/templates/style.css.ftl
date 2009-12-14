@@ -405,3 +405,26 @@ border: 1px solid black;
 clear:both;
 }
 /**********************************Map CSS****************************************/
+
+/************************************Jit Css**************************************/
+#container {
+height: 700px;
+margin:0 auto;
+}
+
+#center-container {
+height:550px;
+width:700px;
+margin:0 auto;
+top:0;
+background-color:#1a1a1a;
+color:#ccc;
+}
+
+#infovis {
+position:relative;
+width:700px;
+height:550px;
+margin:auto;
+overflow:hidden;
+}

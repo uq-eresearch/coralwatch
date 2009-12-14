@@ -1,5 +1,125 @@
 <#-- @ftlvariable name="userimpl" type="org.coralwatch.model.UserImpl" -->
 <#include "userimpl-header.html.ftl"/>
+<script type="text/javascript">
+
+    function addEvent(obj, type, fn) {
+        if (obj.addEventListener) obj.addEventListener(type, fn, false);
+        else obj.attachEvent('on' + type, fn);
+    }
+    ;
+
+    function getTree() {
+        //init data
+        var json = {
+            "id": "${userimpl.id?c}",
+            "name": "${userimpl.displayName!}",
+            "children": [
+                <#list trustTable as trust>
+                <#if trust.trustee.id = userimpl.id>
+                {
+                    "id": "${trust.trustor.id}",
+                    "name": "${trust.trustor.displayName!}",
+                    "data": {
+                        "trustValue": "${trust.trustValue?c}"
+                    },
+                    "children": []
+                },
+                </#if>
+                </#list>
+            ],
+            "data": []
+        };
+
+        var infovis = document.getElementById('infovis');
+        var w = infovis.offsetWidth, h = infovis.offsetHeight;
+
+        //init canvas
+        //Create a new canvas instance.
+        var canvas = new Canvas('mycanvas', {
+            //Where to append the canvas widget
+            'injectInto': 'infovis',
+            'width': w,
+            'height': h,
+
+            //Optional: create a background canvas and plot
+            //concentric circles in it.
+            'backgroundCanvas': {
+                'styles': {
+                    'strokeStyle': '#555'
+                },
+
+                'impl': {
+                    'init': function() {
+                    },
+                    'plot': function(canvas, ctx) {
+                        var times = 6, d = 100;
+                        var pi2 = Math.PI * 2;
+                        for (var i = 1; i <= times; i++) {
+                            ctx.beginPath();
+                            ctx.arc(0, 0, i * d, 0, pi2, true);
+                            ctx.stroke();
+                            ctx.closePath();
+                        }
+                    }
+                }
+            }
+        });
+        //end
+        //init RGraph
+        var rgraph = new RGraph(canvas, {
+            //Set Node and Edge colors.
+            Node: {
+                color: '#ccddee'
+            },
+
+            Edge: {
+                color: '#772277'
+            },
+
+            //Add the name of the node in the correponding label
+            //and a click handler to move the graph.
+            //This method is called once, on label creation.
+            onCreateLabel: function(domElement, node) {
+                domElement.innerHTML = node.name;
+                domElement.onclick = function() {
+                    rgraph.onClick(node.id);
+                };
+            },
+            //Change some label dom properties.
+            //This method is called each time a label is plotted.
+            onPlaceLabel: function(domElement, node) {
+                var style = domElement.style;
+                style.display = '';
+                style.cursor = 'pointer';
+
+                if (node._depth <= 1) {
+                    style.fontSize = "0.8em";
+                    style.color = "#ccc";
+
+                } else if (node._depth == 2) {
+                    style.fontSize = "0.7em";
+                    style.color = "#494949";
+
+                } else {
+                    style.display = 'none';
+                }
+
+                var left = parseInt(style.left);
+                var w = domElement.offsetWidth;
+                style.left = (left - w / 2) + 'px';
+            }
+        });
+
+        //load JSON data
+        rgraph.loadJSON(json);
+
+    <#list trustTable as trust>
+        rgraph.graph.addAdjacence({'id': '${trust.trustor.id!}', 'name' : '${trust.trustor.displayName!}'}, {'id': '${trust.trustee.id!}', 'name' : '${trust.trustee.displayName!}'}, null);
+    </#list>
+        rgraph.refresh();
+    }
+
+</script>
 <#include "macros/basic.html.ftl"/>
 <#include "macros/rating.html.ftl"/>
 
@@ -20,7 +140,7 @@
 
             <tr>
                 <td></td>
-                <td>
+                <td colspan="2">
                     <#if canUpdate>
                     <button dojoType="dijit.form.Button" id="editButton"
                             onClick="window.location='${baseUrl}/users/${userimpl.id?c}?edit'">Edit
@@ -44,43 +164,43 @@
             </tr>
             <tr>
                 <td class="headercell">Display Name:</td>
-                <td>${userimpl.displayName!}</td>
+                <td colspan="2">${userimpl.displayName!}</td>
             </tr>
             <tr>
                 <td class="headercell">Email:</td>
-                <td><a href="mailto:${userimpl.email!}">${userimpl.email!}</a></td>
+                <td colspan="2"><a href="mailto:${userimpl.email!}">${userimpl.email!}</a></td>
             </tr>
             <tr>
                 <td class="headercell">Member since (d/m/y):</td>
-                <td>${(userimpl.registrationDate)!?string("dd/MM/yyyy")}</td>
+                <td colspan="2">${(userimpl.registrationDate)!?string("dd/MM/yyyy")}</td>
             </tr>
             <tr>
                 <td class="headercell">Occupation:</td>
-                <td>${userimpl.occupation!}</td>
+                <td colspan="2">${userimpl.occupation!}</td>
             </tr>
             <tr>
                 <td class="headercell">Address:</td>
-                <td>${userimpl.address!}</td>
+                <td colspan="2">${userimpl.address!}</td>
             </tr>
             <tr>
                 <td class="headercell">Country:</td>
-                <td>${userimpl.country!}</td>
+                <td colspan="2">${userimpl.country!}</td>
             </tr>
             <tr>
                 <td class="headercell">Surveys:</td>
-                <td>No surveys yet</td>
+                <td colspan="2">No surveys yet</td>
             </tr>
             <tr>
                 <td class="headercell">Photos:</td>
-                <td>No photos yet</td>
+                <td colspan="2">No photos yet</td>
             </tr>
             <tr>
                 <td class="headercell">Videos:</td>
-                <td>No videos yet</td>
+                <td colspan="2">No videos yet</td>
             </tr>
             <tr>
                 <td class="headercell">Community Trust:</td>
-                <td>
+                <td colspan="2">
                     <@createReadOnlyRator communityTrust "communityTrust" true/>
                     <a onClick="jQuery('#cloudPopup').dialog('open');$('#xpower').tagcloud({type:'sphere',sizemin:8,sizemax:26,power:.2, height: 360});return false;"
                        href=".">
@@ -116,11 +236,21 @@
             <#if userimpl != currentUser>
             <tr>
                 <td class="headercell">Your Trust:</td>
-                <td>
+                <td colspan="2">
                     <@createRator userTrust "ratings" userimpl.id "${baseUrl}/usertrust" "${baseUrl}/users/${userimpl.id?c}"/>
                 </td>
             </tr>
             </#if>
+            <tr>
+                <td colspan="3">
+                    <div id="container">
+                        <div id="center-container">
+                            <div id="infovis"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
         </table>
     </div>
     <div id="fragment-2">

@@ -67,4 +67,10 @@
     dojo.require("dijit.Menu");
     dojo.require("dijit.Tooltip");
 </script>
-        <#--Dojo stuff above here-->
+<#--Dojo stuff above here-->
+
+<!-- JIT Library Files -->
+<link type="text/css" href="../css/base.css" rel="stylesheet"/>
+<link type="text/css" href="../css/Hypertree.css" rel="stylesheet"/>
+<!--[if IE]><script language="javascript" type="text/javascript" src="${baseUrl}/javascript/jit/Extras/excanvas.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="${baseUrl}/javascript/jit/jit.js"></script>

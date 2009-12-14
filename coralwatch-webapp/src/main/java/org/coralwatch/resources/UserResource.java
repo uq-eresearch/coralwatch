@@ -55,6 +55,7 @@ public class UserResource extends ModifiableEntityResource<UserImpl, UserDao, Us
             users.add(getDao().getById(id));
         }
         datamodel.put("allUsers", users);
+        datamodel.put("trustTable", CoralwatchApplication.getConfiguration().getTrustDao().getAll());
     }
 
     private List sortByValue(final Map m) {
