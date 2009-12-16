@@ -195,7 +195,8 @@
             </tr>
             <tr>
                 <td class="headercell">Surveys:</td>
-                <td colspan="2">No surveys yet</td>
+                <td colspan="2"><#if (conductedSurveys?size < 1)>No surveys yet<#elseif (conductedSurveys?size = 1)>1
+                    Survey<#else>${conductedSurveys?size!} surveys</#if></td>
             </tr>
             <tr>
                 <td class="headercell">Photos:</td>
