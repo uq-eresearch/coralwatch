@@ -14,20 +14,22 @@
             "id": "${userimpl.id?c}",
             "name": "${userimpl.displayName!}",
             "children": [
-                <#list trustTable as trust>
-                <#if trust.trustee.id = userimpl.id>
-                {
-                    "id": "${trust.trustor.id}",
-                    "name": "${trust.trustor.displayName!}",
-                    "data": {
-                        "trustValue": "${trust.trustValue?c}"
-                    },
-                    "children": []
-                },
-                </#if>
-                </#list>
+                <#--<#list trustTable as trust>-->
+                <#--<#if trust.trustee.id = userimpl.id>-->
+                <#--{-->
+                <#--"id": "${trust.trustor.id}",-->
+                <#--"name": "${trust.trustor.displayName!}",-->
+                <#--"data": {-->
+                <#--"trustValue": "${trust.trustValue?c}"-->
+                <#--},-->
+                <#--"children": []-->
+                <#--},-->
+                <#--</#if>-->
+                <#--</#list>-->
             ],
-            "data": []
+            "data": {
+                "avatar":"${userimpl.gravatarUrl!}"
+            }
         };
 
         var infovis = document.getElementById('infovis');
@@ -81,6 +83,22 @@
             //This method is called once, on label creation.
             onCreateLabel: function(domElement, node) {
                 domElement.innerHTML = node.name;
+                $(domElement).qtip(
+                {
+                    content: '<img src="' + node.data.avatar + '" />',
+                    //                        content: node.data,
+                    position: {
+                        corner: {
+                            tooltip: 'bottomMiddle',
+                            target: 'topMiddle'
+                        }
+                    },
+                    style: {
+                        tip: true, // Give it a speech bubble tip with automatic corner detection
+                        name: 'cream'
+                    }
+
+                });
                 domElement.onclick = function() {
                     rgraph.onClick(node.id);
                 };
@@ -114,7 +132,7 @@
         rgraph.loadJSON(json);
 
     <#list trustTable as trust>
-        rgraph.graph.addAdjacence({'id': '${trust.trustor.id!}', 'name' : '${trust.trustor.displayName!}'}, {'id': '${trust.trustee.id!}', 'name' : '${trust.trustee.displayName!}'}, null);
+        rgraph.graph.addAdjacence({'id': '${trust.trustor.id!}', 'name' : '${trust.trustor.displayName!}',"data": {"avatar":"${trust.trustor.gravatarUrl!}"}}, {'id': '${trust.trustee.id!}', 'name' : '${trust.trustee.displayName!}', "data": {"avatar":"${trust.trustee.gravatarUrl!}"}}, null);
     </#list>
         rgraph.refresh();
     }
