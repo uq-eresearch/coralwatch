@@ -6,6 +6,7 @@ import au.edu.uq.itee.maenad.util.BCrypt;
 import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.dataaccess.SurveyRatingDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.dataaccess.UserTrustDao;
@@ -13,6 +14,7 @@ import org.coralwatch.dataaccess.jpa.JpaConnectorService;
 import org.coralwatch.dataaccess.jpa.JpaKitRequestDao;
 import org.coralwatch.dataaccess.jpa.JpaReefDao;
 import org.coralwatch.dataaccess.jpa.JpaSurveyDao;
+import org.coralwatch.dataaccess.jpa.JpaSurveyRatingDao;
 import org.coralwatch.dataaccess.jpa.JpaSurveyRecordDao;
 import org.coralwatch.dataaccess.jpa.JpaUserDao;
 import org.coralwatch.dataaccess.jpa.JpaUserTrustDao;
@@ -46,6 +48,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private final KitRequestDao kitRequestDao;
     private final SurveyRecordDao surveyRecordDao;
     private final UserTrustDao userTrustDao;
+    private final SurveyRatingDao surveyRatingDao;
     private final boolean isTestSetup;
     private final Properties submissionEmailConfig;
     private final ReefDao reefDao;
@@ -107,6 +110,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.reefDao = new JpaReefDao(this.connectorService);
         this.surveyRecordDao = new JpaSurveyRecordDao(this.connectorService);
         this.userTrustDao = new JpaUserTrustDao(this.connectorService);
+        this.surveyRatingDao = new JpaSurveyRatingDao(this.connectorService);
         this.userDao = new JpaUserDao(this.connectorService);
         if (userDao.getAll().isEmpty()) {
             // ensure that there's always one user to begin with
@@ -133,6 +137,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
             throw new IllegalStateException("Database reset is only allowed in test mode");
         }
         deleteAll(getTrustDao());
+        deleteAll(getSurveyRatingDao());
         deleteAll(getKitRequestDao());
         deleteAll(getSurveyRecordDao());
         deleteAll(getReefDao());
@@ -205,6 +210,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
     @Override
     public UserTrustDao getTrustDao() {
         return userTrustDao;
+    }
+
+    @Override
+    public SurveyRatingDao getSurveyRatingDao() {
+        return surveyRatingDao;
     }
 
     public ReefDao getReefDao() {

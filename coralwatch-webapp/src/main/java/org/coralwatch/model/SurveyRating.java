@@ -41,7 +41,7 @@ public class SurveyRating implements Serializable {
         ratingDate = new Date();
     }
 
-    public SurveyRating(UserImpl rator, Survey survey, Date ratingDate, double ratingValue) {
+    public SurveyRating(UserImpl rator, Survey survey, double ratingValue) {
         this.rator = rator;
         this.survey = survey;
         this.ratingDate = new Date();

@@ -3,6 +3,7 @@ package org.coralwatch.app;
 import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.dataaccess.SurveyRatingDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.dataaccess.UserTrustDao;
@@ -26,6 +27,8 @@ public interface Configuration {
     SurveyRecordDao getSurveyRecordDao();
 
     UserTrustDao getTrustDao();
+
+    SurveyRatingDao getSurveyRatingDao();
 
     ReefDao getReefDao();
 
