@@ -132,11 +132,12 @@ public class ApplicationContext implements Configuration, ServletContextListener
         if (!isTestSetup) {
             throw new IllegalStateException("Database reset is only allowed in test mode");
         }
-        deleteAll(getSurveyRecordDao());
-        deleteAll(getSurveyDao());
-        deleteAll(getKitRequestDao());
-        deleteAll(getUserDao());
         deleteAll(getTrustDao());
+        deleteAll(getKitRequestDao());
+        deleteAll(getSurveyRecordDao());
+        deleteAll(getReefDao());
+        deleteAll(getSurveyDao());
+        deleteAll(getUserDao());
         createDefaultUsers();
     }
 
