@@ -136,6 +136,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         deleteAll(getSurveyDao());
         deleteAll(getKitRequestDao());
         deleteAll(getUserDao());
+        deleteAll(getTrustDao());
         createDefaultUsers();
     }
 
