@@ -13,20 +13,7 @@
         var json = {
             "id": "${userimpl.id?c}",
             "name": "${userimpl.displayName!}",
-            "children": [
-                <#--<#list trustTable as trust>-->
-                <#--<#if trust.trustee.id = userimpl.id>-->
-                <#--{-->
-                <#--"id": "${trust.trustor.id}",-->
-                <#--"name": "${trust.trustor.displayName!}",-->
-                <#--"data": {-->
-                <#--"trustValue": "${trust.trustValue?c}"-->
-                <#--},-->
-                <#--"children": []-->
-                <#--},-->
-                <#--</#if>-->
-                <#--</#list>-->
-            ],
+            "children": [],
             "data": {
                 "avatar":"${userimpl.gravatarUrl!}"
             }
@@ -70,6 +57,8 @@
         //init RGraph
         var rgraph = new RGraph(canvas, {
             //Set Node and Edge colors.
+            interpolation: 'polar',
+            levelDistance: 100,
             Node: {
                 color: '#ccddee'
             },
@@ -132,7 +121,7 @@
         rgraph.loadJSON(json);
 
     <#list trustTable as trust>
-        rgraph.graph.addAdjacence({'id': '${trust.trustor.id!}', 'name' : '${trust.trustor.displayName!}',"data": {"avatar":"${trust.trustor.gravatarUrl!}"}}, {'id': '${trust.trustee.id!}', 'name' : '${trust.trustee.displayName!}', "data": {"avatar":"${trust.trustee.gravatarUrl!}"}}, null);
+        rgraph.graph.addAdjacence({'id': '${trust.trustee.id!}', 'name' : '${trust.trustee.displayName!}', "data": {"avatar":"${trust.trustee.gravatarUrl!}"}}, {'id': '${trust.trustor.id!}', 'name' : '${trust.trustor.displayName!}',"data": {"avatar":"${trust.trustor.gravatarUrl!}"}}, null);
     </#list>
         rgraph.refresh();
     }
