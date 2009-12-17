@@ -428,3 +428,15 @@ height:550px;
 margin:auto;
 overflow:hidden;
 }
+
+/************************************JQuery**************************************/
+.ui-tabs {
+border: none;
+}
+.ui-tabs .ui-tabs-nav {
+border: none;
+border-bottom: 1px solid #aaaaaa;
+background: transparent;
+padding: 0 0.3em;
+}
+/************************************JQuery**************************************/                        
