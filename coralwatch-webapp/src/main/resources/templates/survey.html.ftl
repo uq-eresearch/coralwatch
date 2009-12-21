@@ -57,9 +57,8 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
 
 <div id="tabs">
     <ul>
-        <li><a href="#fragment-1"><span>Details</span></a></li>
+        <li><a href="#fragment-1"><span>Metadata</span></a></li>
         <li><a href="#fragment-2"><span>Data</span></a></li>
-        <li><a href="#fragment-3"><span>Graphs</span></a></li>
     </ul>
     <div id="fragment-1">
         <#if survey.creator.gravatarUrl??>
@@ -68,7 +67,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
             <@createReadOnlyRator communityTrust "communityTrust" false/>
         </div>
         </#if>
-        <table>
+        <table width="70%">
             <tr>
                 <td class="headercell">Creator:</td>
                 <td>${(survey.creator.displayName)!}</td>
@@ -151,6 +150,10 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
 
     <div id="fragment-2">
         <#if (surveyRecs?size > 0)>
+        <div>
+            <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=coralCount" width="300" height="200"/>
+            <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=shapePie" width="300" height="200"/>
+        </div>
         <table width="100%">
             <tr>
                 <th class="headercell" nowrap="nowrap">Coral Type</th>
@@ -219,13 +222,6 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
         </div>
         </#if>
     </div>
-    <div id="fragment-3">
-        <div>
-            <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=coralCount" width="300" height="200"/>
-            <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=shapePie" width="300" height="200"/>
-        </div>
-    </div>
-
 </div>
 
 

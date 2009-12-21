@@ -1,8 +1,15 @@
 <div class="breadcrumbs">
     <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;Login
 </div>
-<div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:100%;height:35ex">
-<div id="tabLogin" dojoType="dijit.layout.ContentPane" title="Login">
+
+
+<div id="tabs">
+<ul>
+    <li><a href="#fragment-1"><span>Login</span></a></li>
+    <li><a href="#fragment-2"><span>Sign up</span></a></li>
+    <li><a href="#fragment-3"><span>Submit Data</span></a></li>
+</ul>
+<div id="fragment-1">
     <div dojoType="dijit.form.Form" method="post" action="login" style="padding:5px;">
         <script type="dojo/method" event="onSubmit">
             if(!this.validate()){
@@ -58,7 +65,7 @@
         </table>
     </div>
 </div>
-<div id="tabSignUp" dojoType="dijit.layout.ContentPane" title="Sign Up">
+<div id="fragment-2">
 <div dojoType="dijit.form.Form" method="post" action="users?new" style="padding:5px;">
 <script type="dojo/method" event="onSubmit">
     if(!this.validate()){
@@ -386,7 +393,7 @@
 </table>
 </div>
 </div>
-<div id="tabSubmitData" dojoType="dijit.layout.ContentPane" title="Submit Data">
+<div id="fragment-3">
     <div dojoType="dijit.form.Form" method="post" action="oneoff" style="padding:5px;">
         <script type="dojo/method" event="onSubmit">
             if(!this.validate()){
