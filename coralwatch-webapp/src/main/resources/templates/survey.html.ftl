@@ -70,7 +70,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
         <table width="70%">
             <tr>
                 <td class="headercell">Creator:</td>
-                <td>${(survey.creator.displayName)!}</td>
+                <td><a href="${baseUrl}/users/${survey.creator.id?c}">${(survey.creator.displayName)!}</a></td>
             </tr>
             <tr>
                 <td class="headercell">Group Name:</td>
@@ -87,15 +87,15 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
 
             <tr>
                 <td class="headercell">Reef Name:</td>
-                <td>${(survey.reef.name)!}</td>
+                <td><a href="${baseUrl}/reef/${survey.reef.id?c}">${(survey.reef.name)!}</a></td>
             </tr>
             <tr>
                 <td class="headercell">Latitude:</td>
-                <td><@lonLat (survey.latitude) 'N' 'S'/></td>
+                <td><a href="#"><@lonLat (survey.latitude) 'N' 'S'/></a></td>
             </tr>
             <tr>
                 <td class="headercell">Longitude:</td>
-                <td><@lonLat (survey.longitude) 'E' 'W'/></td>
+                <td><a href="#"><@lonLat (survey.longitude) 'E' 'W'/></a></td>
             </tr>
             <tr>
                 <td class="headercell">Date (d/m/y):</td>

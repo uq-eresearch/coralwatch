@@ -1,4 +1,111 @@
 <#-- @ftlvariable name="reefRecs" type="java.util.List<org.coralwatch.model.Reef>" -->
+<script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $("#locateMapLink").qtip(
+        {
+            content: '<form onsubmit="showAddress(); return false">Search Location:<input name="text" type="text" id="search"/><input name="submit" type="submit" value="Geocode!"/></form><div id="map" style="width: 400px; height: 300px"></div>',
+            position: {
+                corner: {
+                    tooltip: 'bottomLeft',
+                    target: 'topMiddle'
+                }
+            },
+            show: {
+                when: 'click', // Show it on click...
+                solo: true // ...but hide all others when its shown
+            },
+            hide: 'unfocus', // Hide when it loses focus...
+            style: {
+                width: 420,
+                tip: true, // Give it a speech bubble tip with automatic corner detection
+                name: 'cream'
+            },
+            api: {
+                // Retrieve the content when tooltip is first rendered
+                onRender: function()
+                {
+                    if (GBrowserIsCompatible()) {
+                        var marker = null;
+                        var map = new GMap2(document.getElementById("map"));
+                        map.addControl(new GLargeMapControl());
+                        map.addControl(new GMapTypeControl());
+                        map.setCenter(new GLatLng(80, -20), 1);
+                        map.removeMapType(G_SATELLITE_MAP);
+                        map.addMapType(G_PHYSICAL_MAP);
+                        map.setMapType(G_PHYSICAL_MAP);        //  ======= Set Map Type to TERRAIN ============
+                        map.enableScrollWheelZoom();          //  ======= Enabled Scroll Wheel Zoom =========
+                        map.enableContinuousZoom();
+                        map.getContainer().style.overflow = "hidden"; // hides any copyright overflow
+
+                        GEvent.addListener(map, "moveend", function() {  //  ======= EventListener to display center coordinates ============
+                            var center2 = map.getCenter();
+                            var Lat5 = Math.round(center2.y * 100000) / 100000;
+                            var Lng5 = Math.round(center2.x * 100000) / 100000;
+                            //            var mymsg = "<strong>Location of map's center: <br />Latitude: " + Lat5 + "<br />" + "Longitude: " + Lng5 + "</strong>";
+                            document.getElementById("latitude").value = Lat5;
+                            document.getElementById("longitude").value = Lng5;
+                            //            document.getElementById("LatLonMsg").innerHTML = mymsg;
+                        });
+                        // ====== Create a Client Geocoder ======
+                        var geo = new GClientGeocoder();
+
+                        // ====== Array for decoding the failure codes ======
+                        var reasons = [];
+                        reasons[G_GEO_SUCCESS] = "Success";
+                        reasons[G_GEO_MISSING_ADDRESS] = "Missing Address: The address was either missing or had no value.";
+                        reasons[G_GEO_UNKNOWN_ADDRESS] = "Unknown Address:  No corresponding geographic location could be found for the specified address.";
+                        reasons[G_GEO_UNAVAILABLE_ADDRESS] = "Unavailable Address:  The geocode for the given address cannot be returned due to legal or contractual reasons.";
+                        reasons[G_GEO_BAD_KEY] = "Bad Key: The API key is either invalid or does not match the domain for which it was given";
+                        reasons[G_GEO_TOO_MANY_QUERIES] = "Too Many Queries: The daily geocoding quota for this site has been exceeded.";
+                        reasons[G_GEO_SERVER_ERROR] = "Server error: The geocoding request could not be successfully processed.";
+
+                        // ====== Geocoding ======
+                        function showAddress() {
+                            var search = document.getElementById("search").value;
+                            // ====== Perform the Geocoding ======
+                            geo.getLocations(search, function (result)
+                            {
+                                // If that was successful
+                                if (result.Status.code == G_GEO_SUCCESS) {
+                                    // How many resuts were found
+                                    //                    document.getElementById("message").innerHTML = "Found " + result.Placemark.length + " result(s)";
+                                    // Loop through the results, placing markers
+                                    //                    for (var i = 0; i < result.Placemark.length; i++) {
+                                    //                        var p = result.Placemark[i].Point.coordinates;
+                                    //                        var marker = new GMarker(new GLatLng(p[1], p[0]));
+                                    //                        document.getElementById("message").innerHTML += "<br>" + (i + 1) + ": " + result.Placemark[i].address + marker.getPoint();
+                                    //                        map.addOverlay(marker);
+                                    //                    }
+                                    // centre the map on the first result
+                                    var p = result.Placemark[0].Point.coordinates;
+                                    map.setCenter(new GLatLng(p[1], p[0]), 12);  // the last number is the zoom factor
+                                }
+                                // ====== Decode the error status ======
+                                else {
+                                    var reason = "Code " + result.Status.code;
+                                    if (reasons[result.Status.code]) {
+                                        reason = reasons[result.Status.code]
+                                    }
+                                    alert('Could not find "' + search + '" ' + reason);
+                                }
+                            }
+                                    );
+                        }
+                    }
+
+                    // display a warning if the browser was not compatible
+                    else {
+                        alert("Sorry, the Google Maps API is not compatible with this browser");
+                    }
+
+                }
+            }
+        });
+    });
+</script>
+
 <#assign newObject=!(survey??)/>
 <#if newObject>
 <div class="breadcrumbs">
@@ -17,6 +124,7 @@
 </#if>
 <p>Thanks for participating in this survey, please complete the following information before you enter your data for
     each sample.</p>
+
 <div dojoType="dijit.form.Form" method="post">
 <script type="dojo/method" event="onSubmit">
     if(!this.validate()){
@@ -93,7 +201,7 @@
     }
 
 </script>
-<table>
+<table onunload="GUnload()">
 <#if !newObject>
 <tr>
     <td class="headercell">Creator:</td>
@@ -409,7 +517,7 @@
                                    trim="true"
                                    onBlur="updateLatFromDecimal()"
                                    invalidMessage="Enter a valid latitude value."
-                                   value="${(survey.latitude)!}"/>
+                                   value="${(survey.latitude)!}"/> <a id="locateMapLink" href="#">Locate on map</a>
                         </td>
                     </tr>
                     <tr>
