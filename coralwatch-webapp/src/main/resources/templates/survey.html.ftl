@@ -110,8 +110,8 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                 <td>${(survey.weather)!}</td>
             </tr>
             <tr>
-                <td class="headercell">Temperature (&deg;C):</td>
-                <td>${(survey.temperature)!}</td>
+                <td class="headercell">Temperature:</td>
+                <td>${(survey.temperature)!} &deg;C (${(212-32)/100 * (survey.temperature) + 32} &deg;F)</td>
             </tr>
             <tr>
                 <td class="headercell">Activity:</td>

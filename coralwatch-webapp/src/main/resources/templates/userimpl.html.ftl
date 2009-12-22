@@ -8,6 +8,11 @@
     }
     ;
 
+    function showHide(elementId) {
+        var id = document.getElementById(elementId);
+        id.style.display = (id.style.display == 'none') ? '' : 'none';
+    }
+
     function getTree() {
         //init data
         var json = {
@@ -196,7 +201,7 @@
             <tr>
                 <td class="headercell">Surveys:</td>
                 <td colspan="2"><#if (conductedSurveys?size < 1)>No surveys yet<#elseif (conductedSurveys?size = 1)>1
-                    Survey<#else>${conductedSurveys?size!} surveys</#if></td>
+                    survey<#else>${conductedSurveys?size!} surveys</#if></td>
             </tr>
             <tr>
                 <td class="headercell">Photos:</td>
