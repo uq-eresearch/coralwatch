@@ -1,14 +1,14 @@
 <title>${frameData.title}</title>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="CoralWatch" content="CoralWatch">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="CoralWatch" content="CoralWatch"/>
 <meta name="description"
       content="CoralWatch is an organisation built on a research project at the University of Queensland, Brisbane, Australia. We have developed a cheap, simple, non-invasive method for the monitoring of coral bleaching, and assessment of coral health. Our Coral Health Chart is basically a series of sample colours, with variation in brightness representing different stages of bleaching/recovery, based on controlled experiments."/>
 <meta name="keyword"
       content="coralwatch, coral, feef, monitoring, bleaching, The University of Queensland, Brisbane, Australia"/>
 
-<link rel="icon" href="${baseUrl}/icons/favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="${baseUrl}/icons/favicon.ico" type="image/x-icon">
+<link rel="icon" href="${baseUrl}/icons/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="${baseUrl}/icons/favicon.ico" type="image/x-icon"/>
 <link rel="stylesheet" type="text/css" href="${baseUrl}/style.css"/>
 
 

@@ -1,65 +1,40 @@
 <#-- @ftlvariable name="reefRecs" type="java.util.List<org.coralwatch.model.Reef>" -->
 <script type="text/javascript"
         src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">
 
+    function showMap(elementId) {
+        var id = document.getElementById(elementId);
+        id.style.display = (id.style.display == 'none') ? '' : 'none';
+    }
     $(document).ready(function() {
-        $("#locateMapLink").qtip(
-        {
-            content: '<div id="map" style="width: 450px; height: 300px"></div>',
-            position: {
-                corner: {
-                    tooltip: 'bottomLeft',
-                    target: 'topMiddle'
-                }
-            },
-            show: {
-                when: 'click', // Show it on click...
-                solo: true // ...but hide all others when its shown
-            },
-            hide: 'unfocus', // Hide when it loses focus...
-            style: {
-                width: 470,
-                tip: true, // Give it a speech bubble tip with automatic corner detection
-            },
-            api: {
-                // Retrieve the content when tooltip is first rendered
-                onRender: function()
-                {
-                    if (GBrowserIsCompatible()) {
-                        var map = new GMap2(document.getElementById("map"));
-                        map.setCenter(new GLatLng(75.4419, -140.1419), 1);
-                        map.enableScrollWheelZoom();          //  ======= Enabled Scroll Wheel Zoom =========
-                        map.enableContinuousZoom();
-                        map.addControl(new GLargeMapControl3D());
-                        map.addControl(new GMapTypeControl());
-                        map.removeMapType(G_SATELLITE_MAP);
-                        map.addMapType(G_PHYSICAL_MAP);
-                        map.setMapType(G_HYBRID_MAP);        //  ======= Set Map Type to TERRAIN ============
-                        //                        map.getContainer().style.overflow = "hidden"; // hides any copyright overflow
-
-                        GEvent.addListener(map, "click", function(overlay, latlng) {  //  ======= EventListener to display center coordinates ============
-                            var center2 = map.getCenter();
-                            //                            var Lat5 = Math.round(center2.y * 100000) / 100000;
-                            var Lat5 = latlng.lat();
-                            //                            var Lng5 = Math.round(center2.x * 100000) / 100000;
-                            var Lng5 = latlng.lng();
-                            document.getElementById("latitude").value = Lat5;
-                            updateLatFromDecimal();
-                            document.getElementById("longitude").value = Lng5;
-                            updateLonFromDecimal();
-                        });
-                    }
-
-                    // display a warning if the browser was not compatible
-                    else {
-                        alert("Sorry, the Google Maps API is not compatible with this browser");
-                    }
-
-                }
-            }
-        });
+        if (GBrowserIsCompatible()) {
+            var mapDiv = document.getElementById("locatorMap");
+            var map = new GMap2(mapDiv);
+            map.setCenter(new GLatLng(0, 0), 1);
+            map.enableScrollWheelZoom();
+            map.enableContinuousZoom();
+            map.addControl(new GLargeMapControl3D());
+            map.addControl(new GMapTypeControl());
+            map.addMapType(G_PHYSICAL_MAP);
+            map.setMapType(G_HYBRID_MAP);
+            map.removeMapType(G_SATELLITE_MAP);
+            map.getContainer().style.overflow = "hidden";
+            GEvent.addListener(map, 'click', function(overlay, latlng) {
+                var Lat5 = latlng.lat();
+                var Lng5 = latlng.lng();
+                document.getElementById("latitude").value = Lat5;
+                updateLatFromDecimal();
+                document.getElementById("longitude").value = Lng5;
+                updateLonFromDecimal();
+            });
+            mapDiv.style.display = 'none';
+        }
+        else {
+            alert("Sorry, the Google Maps API is not compatible with this browser");
+        }
+        //        jQuery("#map").dialog({ autoOpen: false, width: 470, height: 330 });
+        jQuery("#locatorMap").dialog({ autoOpen: false, width: 470, height: 320 });
     });
 </script>
 
@@ -164,6 +139,9 @@
     }
 
 </script>
+
+<div id="locatorMap" style="width: 470px; height: 320px;"></div>
+
 <table>
 <#if !newObject>
 <tr>
@@ -480,7 +458,9 @@
                                    trim="true"
                                    onBlur="updateLatFromDecimal()"
                                    invalidMessage="Enter a valid latitude value."
-                                   value="${(survey.latitude)!}"/> <a id="locateMapLink" href="#">Locate on map</a>
+                                   value="${(survey.latitude)!}"/> <a
+                                onClick="jQuery('#locatorMap').dialog('open');return false;" id="locateMapLink"
+                                href="#">Locate on map</a>
                         </td>
                     </tr>
                     <tr>
@@ -501,6 +481,7 @@
                         </td>
                     </tr>
                 </table>
+
             </div>
             <div id="tabDegrees" dojoType="dijit.layout.ContentPane" title="Degrees">
                 <table>
