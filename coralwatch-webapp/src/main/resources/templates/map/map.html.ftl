@@ -1,3 +1,3 @@
 <#--<div id="mapMain">-->
-<div id="openlayersmap" class="smallmap"></div>
+<div id="map" style="height: 600px;"></div>
         <#--</div>-->
