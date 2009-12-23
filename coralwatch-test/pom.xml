@@ -100,6 +100,10 @@ This configuration can be run with "mvn integration-test".
             <scope>test</scope>
             <exclusions>
                 <exclusion>
+                    <groupId>net.sourceforge.htmlunit</groupId>
+                    <artifactId>htmlunit</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>javax.servlet</groupId>
                     <artifactId>servlet-api</artifactId>
                 </exclusion>
@@ -111,6 +115,12 @@ This configuration can be run with "mvn integration-test".
             <artifactId>coralwatch-webapp</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.6</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
