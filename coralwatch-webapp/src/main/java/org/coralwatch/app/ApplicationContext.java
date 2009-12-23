@@ -153,18 +153,28 @@ public class ApplicationContext implements Configuration, ServletContextListener
     }
 
     private void createDefaultUsers() {
-        UserImpl admin = new UserImpl("Administrator", "admin@coralwatch.org", BCrypt.hashpw("admin", BCrypt.gensalt()), true);
+        UserImpl admin = new UserImpl("Administrator", "abdul2000@gmail.com", BCrypt.hashpw("admin", BCrypt.gensalt()), true);
         userDao.save(admin);
-        userDao.save(new UserImpl("Charlie", "brooking@itee.uq.edu.au", BCrypt.hashpw("Charlie", BCrypt.gensalt()), false));
-        userDao.save(new UserImpl("Peter", "pbecker@itee.uq.edu.au", BCrypt.hashpw("Peter", BCrypt.gensalt()), false));
-        userDao.save(new UserImpl("Abdul", "alabri@itee.uq.edu.au", BCrypt.hashpw("Abdul", BCrypt.gensalt()), false));
-        for (int i = 0; i < 100; i++) {
-            UserImpl newUser = new UserImpl("User" + i, "user" + i + "@coralwatch.org", BCrypt.hashpw("user" + i, BCrypt.gensalt()), false);
+        UserImpl charlie = new UserImpl("Charlie", "brooking@itee.uq.edu.au", BCrypt.hashpw("charlie", BCrypt.gensalt()), false);
+        userDao.save(charlie);
+        userTrustDao.save(new UserTrust(admin, charlie, 5.0));
+        userTrustDao.save(new UserTrust(charlie, admin, 5.0));
+        UserImpl peter = new UserImpl("Peter", "pbecker@itee.uq.edu.au", BCrypt.hashpw("peter", BCrypt.gensalt()), false);
+        userDao.save(peter);
+        userTrustDao.save(new UserTrust(charlie, peter, 3));
+        String[] names = getTestUsernames();
+        for (int i = 0; i < names.length; i++) {
+            UserImpl newUser = new UserImpl(names[i], names[i].toLowerCase() + "@coralwatch.org", BCrypt.hashpw(names[i].toLowerCase(), BCrypt.gensalt()), false);
             userDao.save(newUser);
             if (i % 4 == 0) {
                 Random rand = new Random();
                 double randomNumber = rand.nextDouble() * 5;
                 userTrustDao.save(new UserTrust(admin, newUser, randomNumber));
+            }
+            if (i % 9 == 0) {
+                Random rand = new Random();
+                double randomNumber = rand.nextDouble() * 5;
+                userTrustDao.save(new UserTrust(charlie, newUser, randomNumber));
             }
         }
 
@@ -269,5 +279,191 @@ public class ApplicationContext implements Configuration, ServletContextListener
             logger.log(Level.SEVERE, "Error while closing Coralwatch application", ex);
         }
         logger.log(Level.INFO, "Closed Coralwatch application.........OK");
+    }
+
+    private String[] getTestUsernames() {
+        String[] names = {"Bakar",
+                "Abolahrari",
+                "Ahmad",
+                "Akhand",
+                "Aldhubaib",
+                "Ali",
+                "Altinay",
+                "Alyousef",
+                "Arief",
+                "Arnott",
+                "Au",
+                "Avery",
+                "Azeezullah",
+                "Aziz",
+                "Azman",
+                "Azzuhri",
+                "Benson",
+                "Bertling",
+                "Bhattacharya",
+                "Boden",
+                "Boldaji",
+                "Bradley",
+                "Bray",
+                "Brough",
+                "Campbell",
+                "Carter",
+                "Chang",
+                "Chin",
+                "Chung",
+                "Clough",
+                "Cole",
+                "Connelly",
+                "Croft",
+                "Crosthwaite",
+                "Dahal",
+                "Dawson",
+                "Dekker",
+                "Ding",
+                "Domyo",
+                "Donovan",
+                "Duczmal",
+                "Eizad",
+                "Emami",
+                "Escott",
+                "Field",
+                "Finlayson",
+                "Fong",
+                "Fu",
+                "Gal",
+                "Gearon",
+                "Gilmore",
+                "Glover",
+                "Gollapalli",
+                "Greaves",
+                "Green",
+                "Guerin",
+                "Gujrathi",
+                "Hakimipour",
+                "Han",
+                "Hargrave",
+                "Hill",
+                "Ho",
+                "Hochwald",
+                "Hou",
+                "Hua",
+                "Hunchangsith",
+                "Ibrahim",
+                "Jadav",
+                "Javed",
+                "Jeremijenko",
+                "Jin",
+                "Kamaruddin",
+                "Kanagarajah",
+                "Karunajeewa",
+                "Khodabandehloo",
+                "Khor",
+                "Kim",
+                "Kliese",
+                "Kong",
+                "Kumar",
+                "Lam",
+                "Lee",
+                "Lessner",
+                "Leung",
+                "Li",
+                "Lim",
+                "Lin",
+                "Liu",
+                "Loch",
+                "Long",
+                "Low",
+                "Lu",
+                "MacDiarmid",
+                "Macdonald",
+                "Madden",
+                "Maddern",
+                "Mahinderjit",
+                "Mahrin",
+                "Makukhin",
+                "Marwaha",
+                "Matharu",
+                "McKilliam",
+                "McPartland",
+                "Mealy",
+                "Meng",
+                "Mishra",
+                "Modi",
+                "Mohamed",
+                "Mohammad",
+                "Mohd",
+                "Morrison",
+                "Murray",
+                "Nadler",
+                "Nappu",
+                "Nguyen",
+                "Nolan",
+                "Norouznezhad",
+                "Noske",
+                "Nuske",
+                "Parsley",
+                "Pathak",
+                "Pathigoda",
+                "Pedersen",
+                "Petoe",
+                "Pham",
+                "Pierce",
+                "Piper",
+                "Puade",
+                "Qin",
+                "Raboczi",
+                "Raffelt",
+                "Rathnayake",
+                "Razali",
+                "Reddy",
+                "Rittenbruch",
+                "Samsudin",
+                "Sandhu",
+                "Sanin",
+                "Sankupellay",
+                "Schmidt",
+                "Seman",
+                "Setiawan",
+                "Shang",
+                "Shield",
+                "Sien",
+                "Simpson",
+                "Smith",
+                "Stockwell",
+                "Su",
+                "Suksawatchon",
+                "Syed",
+                "Symons",
+                "Tan",
+                "Tang",
+                "Taraporewalla",
+                "Terrill",
+                "Thanigaivelan",
+                "Thomas",
+                "Timms",
+                "Tohnak",
+                "Valencia",
+                "Vasudevan",
+                "Wang",
+                "Wee",
+                "Wilson",
+                "Wong",
+                "Wu",
+                "Xie",
+                "Yan",
+                "Yang",
+                "Yao",
+                "Ye",
+                "Yeh",
+                "Yin",
+                "Yu",
+                "Zagriatski",
+                "Zhang",
+                "Zheng",
+                "Zhou",
+                "Zhu",
+                "Zhuang",
+                "Ziser"};
+        return names;
     }
 }
