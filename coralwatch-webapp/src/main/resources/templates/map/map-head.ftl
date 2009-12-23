@@ -1,7 +1,9 @@
 <#if baseUrl?starts_with("http://localhost")>
-<script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
+<script type="text/javascript"
+        src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
 <#else>
-<script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA-Y-sXcS7Cho7UUEWAL06lBQwtEFLLcTdtVnYJARPXeJhL0yKvxQD__Boj0suUIzkmUZHRHxL-cUVyw'></script>
+<script type="text/javascript"
+        src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA-Y-sXcS7Cho7UUEWAL06lBQwtEFLLcTdtVnYJARPXeJhL0yKvxQD__Boj0suUIzkmUZHRHxL-cUVyw'></script>
 </#if>
 <script type="text/javascript">
     function init() {
@@ -32,10 +34,11 @@
                 jQuery(xml).find("marker").each(function() {
                     var longitude = jQuery(this).find('longitude').text();
                     var latitude = jQuery(this).find('latitude').text();
+                    var reef = jQuery(this).find('reef').text();
 
                     var marker = new GMarker(new GLatLng(latitude, longitude));
                     GEvent.addListener(marker, "click", function() {
-                        marker.openInfoWindowHtml("Hello World!");
+                        marker.openInfoWindowHtml(reef);
                     });
 
                     map.addOverlay(marker);

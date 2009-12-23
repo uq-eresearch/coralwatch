@@ -1,6 +1,6 @@
 <#macro entry survey>
-<#--<#assign url = baseUrl + "/reportcard/${area.year?c}/" + type?lower_case + "/" + area.name?url + "?noframe=true"/>-->
 <marker>
+    <reef>${survey.reef.name}</reef>
     <longitude>${survey.longitude?c}</longitude>
     <latitude>${survey.latitude?c}</latitude>
 </marker>

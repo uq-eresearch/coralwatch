@@ -18,6 +18,7 @@ import org.coralwatch.dataaccess.jpa.JpaSurveyRatingDao;
 import org.coralwatch.dataaccess.jpa.JpaSurveyRecordDao;
 import org.coralwatch.dataaccess.jpa.JpaUserDao;
 import org.coralwatch.dataaccess.jpa.JpaUserTrustDao;
+import org.coralwatch.model.Reef;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.model.UserTrust;
 import org.restlet.service.ConnectorService;
@@ -162,9 +163,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
         UserImpl peter = new UserImpl("Peter", "pbecker@itee.uq.edu.au", BCrypt.hashpw("peter", BCrypt.gensalt()), false);
         userDao.save(peter);
         userTrustDao.save(new UserTrust(charlie, peter, 3));
-        String[] names = getTestUsernames();
-        for (int i = 0; i < names.length; i++) {
-            UserImpl newUser = new UserImpl(names[i], names[i].toLowerCase() + "@coralwatch.org", BCrypt.hashpw(names[i].toLowerCase(), BCrypt.gensalt()), false);
+
+        //Add dummy usernames with rating
+        String[] testUsernames = getTestUsernames();
+        for (int i = 0; i < testUsernames.length; i++) {
+            UserImpl newUser = new UserImpl(testUsernames[i], testUsernames[i].toLowerCase() + "@coralwatch.org", BCrypt.hashpw(testUsernames[i].toLowerCase(), BCrypt.gensalt()), false);
             userDao.save(newUser);
             if (i % 4 == 0) {
                 Random rand = new Random();
@@ -177,6 +180,15 @@ public class ApplicationContext implements Configuration, ServletContextListener
                 userTrustDao.save(new UserTrust(charlie, newUser, randomNumber));
             }
         }
+
+        //Add dummy reefs
+        String[] testReefNames = getTestReefNames();
+        for (String testReefName : testReefNames) {
+            reefDao.save(new Reef(testReefName, "Australia"));
+        }
+
+        //Add surveys
+
 
         Logger.getLogger(getClass().getName()).log(Level.INFO,
                 "Created new default admin user with email address 'admin@coralwatch.org' and password 'admin'.");
@@ -282,7 +294,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
     }
 
     private String[] getTestUsernames() {
-        String[] names = {"Bakar",
+        return new String[]{"Bakar",
                 "Abolahrari",
                 "Ahmad",
                 "Akhand",
@@ -464,6 +476,35 @@ public class ApplicationContext implements Configuration, ServletContextListener
                 "Zhu",
                 "Zhuang",
                 "Ziser"};
-        return names;
+    }
+
+    private String[] getTestReefNames() {
+        return new String[]{
+                "Nymph Island",
+                "Eagle Island",
+                "Lizard Island",
+                "Osprey Island",
+                "Palfrey Island",
+                "Seabird Islets",
+                "South Island",
+                "Turtle Island Group",
+                "Pethebridge Isles",
+                "Rocky Islets",
+                "Two Islands",
+                "Three Islands",
+                "Hope Islands",
+                "Snapper Island",
+                "Michaelmas Cay",
+                "Upolu Cay",
+                "Green Island",
+                "Fitzroy Island",
+                "High Island",
+                "Mabel Island",
+                "Normanby Island",
+                "Round Island",
+                "Hutchison Island",
+                "Jessie Island",
+                "Sisters Island",
+                "Stephens Island"};
     }
 }

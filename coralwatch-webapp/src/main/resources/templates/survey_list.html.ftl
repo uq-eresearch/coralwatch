@@ -13,7 +13,8 @@
     <#list surveyList as survey>
     <tr>
         <td align="center"><a href="${baseUrl}/surveys/${survey.id?c}"><img class="icon"
-                                                                            src="${baseUrl}/icons/fam/survey.png"/></a>
+                                                                            src="${baseUrl}/icons/fam/survey.png"
+                                                                            alt="Survey"/></a>
         </td>
         <td><a href="${baseUrl}/users/${survey.creator.id?c}">${(survey.creator.displayName)}</a></td>
         <td>${(survey.date)!?date}</td>

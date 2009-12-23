@@ -63,7 +63,8 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     <div id="fragment-1">
         <#if survey.creator.gravatarUrl??>
         <div style="float:right;">
-            <a href="${baseUrl}/users/${survey.creator.id?c}"><img src="${survey.creator.gravatarUrl}"/></a><br/>
+            <a href="${baseUrl}/users/${survey.creator.id?c}"><img src="${survey.creator.gravatarUrl}"
+                                                                   alt="${survey.creator.displayName}"/></a><br/>
             <@createReadOnlyRator communityTrust "communityTrust" false/>
         </div>
         </#if>
@@ -151,8 +152,10 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     <div id="fragment-2">
         <#if (surveyRecs?size > 0)>
         <div>
-            <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=coralCount" width="300" height="200"/>
-            <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=shapePie" width="300" height="200"/>
+            <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=coralCount" width="300" height="200"
+                 alt="Colour Distribution"/>
+            <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=shapePie" width="300" height="200"
+                 alt="Shape Distribution"/>
         </div>
         <table width="100%">
             <tr>
@@ -196,16 +199,16 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                 <tr>
                     <td nowrap="nowrap">
                         <input dojoType="dijit.form.RadioButton" id="coralType_0" name="coralType" value="Branching"
-                               type="radio">
+                               type="radio"/>
                         <label for="coralType_0"> Branching </label>
                         <input dojoType="dijit.form.RadioButton" id="coralType_1" name="coralType" value="Boulder"
-                               type="radio">
+                               type="radio"/>
                         <label for="coralType_1"> Boulder </label>
                         <input dojoType="dijit.form.RadioButton" id="coralType_2" name="coralType" value="Plate"
-                               type="radio">
+                               type="radio"/>
                         <label for="coralType_2"> Plate </label>
                         <input dojoType="dijit.form.RadioButton" id="coralType_3" name="coralType" value="Soft"
-                               type="radio">
+                               type="radio"/>
                         <label for="coralType_3"> Soft </label>
                     </td>
                     <td nowrap="nowrap">

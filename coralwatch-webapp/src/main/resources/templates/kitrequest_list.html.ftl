@@ -15,8 +15,10 @@
 
     <#list kitrequestList as kitrequest>
     <tr>
-        <td align="center"><a href="${baseUrl}/kit/${kitrequest.id?c}"><img class="icon"
-                                                                            src="${baseUrl}/icons/fam/application_view_detail.png"/></a>
+        <td align="center">
+            <a href="${baseUrl}/kit/${kitrequest.id?c}">
+                <img class="icon" src="${baseUrl}/icons/fam/application_view_detail.png" alt="Kit Request"/>
+            </a>
         </td>
         <td><a href="${baseUrl}/users/${kitrequest.requester.id?c}">${(kitrequest.requester.displayName)}</a></td>
         <td>${(kitrequest.requestDate)!?datetime}</td>

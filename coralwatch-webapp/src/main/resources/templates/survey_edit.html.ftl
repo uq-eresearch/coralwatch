@@ -606,7 +606,6 @@
                dojoType="dijit.form.DateTextBox"
                constraints="{datePattern: 'dd/MM/yyyy', min:'2000-01-01'}"
                lang="en-au"
-               required="true"
                promptMessage="dd/mm/yyyy"
                invalidMessage="Invalid date. Use dd/mm/yyyy format."/>
     </td>

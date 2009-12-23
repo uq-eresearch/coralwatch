@@ -16,7 +16,7 @@
     <tr>
         <td align="center">
             <a href="${baseUrl}/users/${userimpl.id?c}">
-                <img class="icon" src="${baseUrl}/icons/fam/user.png"/>
+                <img class="icon" src="${baseUrl}/icons/fam/user.png" alt="Coral Watcher"/>
             </a>
         </td>
         <td><a href="${baseUrl}/users/${userimpl.id?c}">${userimpl.displayName}</a></td>

@@ -79,7 +79,7 @@
                 domElement.innerHTML = node.name;
                 $(domElement).qtip(
                 {
-                    content: '<img src="' + node.data.avatar + '" />',
+                    content: '<img src="' + node.data.avatar + '"/>',
                     //                        content: node.data,
                     position: {
                         corner: {
@@ -167,7 +167,7 @@
                 <td class="headercell"></td>
                 <td style="width:60%"></td>
                 <td rowspan="4" style="text-align:right">
-                    <img src="${userimpl.gravatarUrl!}"/>
+                    <img src="${userimpl.gravatarUrl!}" alt="${userimpl.displayName!}"/>
                     <#if userimpl == currentUser><#-- only the user themselves can change, not admins -->
                     <br/>
                     <a href="http://www.gravatar.com">Change Image</a>
