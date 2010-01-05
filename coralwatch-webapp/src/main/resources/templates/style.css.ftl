@@ -337,8 +337,10 @@ text-decoration: line-through;
 
 .xmpl {
 padding: 10px 15px 10px 15px !important;
-background-color: #FFFFEE !important;
+background-color: #1a1a1a !important;
 border: 1px solid #F8E78C !important;
+height:550px;
+width:700px;
 }
 table.xmpl {
 padding: 0px !important;
@@ -349,11 +351,6 @@ padding: 5px 15px 5px 30px !important;
 .xmpl th {
 background-color: #F8E78C !important;
 border: 0px !important;
-}
-
-
-#delicious {
-display: none;
 }
 
 .xmpl li a {
@@ -407,12 +404,7 @@ clear:both;
 /**********************************Map CSS****************************************/
 
 /************************************Jit Css**************************************/
-#container {
-height: 700px;
-margin:0 auto;
-}
-
-#center-container {
+#jit-container {
 height:550px;
 width:700px;
 margin:0 auto;

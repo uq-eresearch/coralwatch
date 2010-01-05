@@ -1,7 +1,26 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        jQuery("#cloudPopup").dialog({ autoOpen: false, position: 'center', modal: true, width: 660, height:420 });
+        //        jQuery("#cloudPopup").dialog({ autoOpen: false, position: 'center', modal: true, width: 660, height:420 });
         getTree();
+        $('#xpower').tagcloud({type:'sphere',sizemin:8,sizemax:26,power:.2, height: 360});
+        $("#cloud-container").hide();
+        $("#show-trust-cloud").click(function() {
+            if ($("#jit-container").css("display") != "none") {
+                $("#jit-container").toggle(400)
+            }
+            $("#cloud-container").toggle(400);
+            //            $('#xpower').tagcloud({type:'sphere',sizemin:8,sizemax:26,power:.2, height: 360});
+            return false;
+        });
+
+        $("#jit-container").hide();
+        $("#show-trust-network").click(function() {
+            if ($("#cloud-container").css("display") != "none") {
+                $("#cloud-container").toggle(400)
+            }
+            $("#jit-container").toggle(400);
+            return false;
+        });
         // Notice the use of the each method to gain access to each element individually
     });
     function deleteUser(id) {

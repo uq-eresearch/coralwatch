@@ -215,14 +215,23 @@
                 <td class="headercell">Community Trust:</td>
                 <td colspan="2">
                     <@createReadOnlyRator communityTrust "communityTrust" true/>
-                    <a onClick="jQuery('#cloudPopup').dialog('open');$('#xpower').tagcloud({type:'sphere',sizemin:8,sizemax:26,power:.2, height: 360});return false;"
-                       href=".">
-                        Trust Cloud
-                    </a>
-
-                    <div id="cloudPopup" title="CoralWatch Trust Cloud" style="display:none;">
-                        <pre class="example" style="display:none">$("#xpower");</pre>
-                        <ul id="delicious" class="xmpl">
+                    <a href="#" id="show-trust-cloud">Trust Cloud</a>&nbsp;<a href="#" id="show-trust-network">Trust
+                    Network</a>
+                </td>
+                <#--</#if>-->
+            </tr>
+            <#if userimpl != currentUser>
+            <tr>
+                <td class="headercell">Your Trust:</td>
+                <td colspan="2">
+                    <@createRator userTrust "ratings" userimpl.id "${baseUrl}/usertrust" "${baseUrl}/users/${userimpl.id?c}"/>
+                </td>
+            </tr>
+            </#if>
+            <tr>
+                <td colspan="3">
+                    <div id="cloud-container">
+                        <ul id="xpower" class="xmpl">
                             <#list allUsers as user>
                             <#if user = currentUser>
                             <li rating="${communityTrustForAll[user.id?string]}" rel="${user.gravatarUrl!}"><a
@@ -244,22 +253,11 @@
                         </ul>
                     </div>
                 </td>
-                <#--</#if>-->
             </tr>
-            <#if userimpl != currentUser>
-            <tr>
-                <td class="headercell">Your Trust:</td>
-                <td colspan="2">
-                    <@createRator userTrust "ratings" userimpl.id "${baseUrl}/usertrust" "${baseUrl}/users/${userimpl.id?c}"/>
-                </td>
-            </tr>
-            </#if>
             <tr>
                 <td colspan="3">
-                    <div id="container">
-                        <div id="center-container">
-                            <div id="infovis"></div>
-                        </div>
+                    <div id="jit-container">
+                        <div id="infovis"></div>
                     </div>
                 </td>
             </tr>
