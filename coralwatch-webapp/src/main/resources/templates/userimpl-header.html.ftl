@@ -1,6 +1,5 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        //        jQuery("#cloudPopup").dialog({ autoOpen: false, position: 'center', modal: true, width: 660, height:420 });
         getTree();
         $('#xpower').tagcloud({type:'sphere',sizemin:8,sizemax:26,power:.2, height: 360});
         $("#cloud-container").hide();
@@ -9,7 +8,6 @@
                 $("#jit-container").toggle(400)
             }
             $("#cloud-container").toggle(400);
-            //            $('#xpower').tagcloud({type:'sphere',sizemin:8,sizemax:26,power:.2, height: 360});
             return false;
         });
 
@@ -41,31 +39,128 @@
         }
     }
 
-    $(function() {
-        var aLi = $("#delicious>li");
-        var iLi = aLi.length;
-        $.each(aLi, function(i, o) {
-            //$(o).val(iLi-i);
-            //$(o).val(Math.round(iLi*Math.sqrt(1-i/iLi)));
-            $(o).val(Math.round(iLi * Math.pow(1 - i / iLi, 2))).attr("title", $(o).text());
-        });
-
-
-        $("pre.example").each(function(i, o) {
-            var mPre = $(o);
-            var aTg = mPre.text().match(/(\w+)(?=#)/);
-            var sTg = aTg === null ? "ul" : aTg[0];
-            var sId = mPre.text().match(/(?:#)(\w+)/)[1];
-            mPre.after("<" + sTg + " id=\"" + sId + "\" class=\"xmpl\"></" + sTg + ">");
-            refill(sId);
-        });
-    });
-
-    function refill(s) {
-        var mList = $("#" + s);
-        mList.html($("#delicious>li").clone());
-        $.each(["list-style","margin","padding","position","height"], function(i, o) {
-            mList.css(o, $("#delicious").css(o));
-        });
+    function addEvent(obj, type, fn) {
+        if (obj.addEventListener) obj.addEventListener(type, fn, false);
+        else obj.attachEvent('on' + type, fn);
     }
+    ;
+
+    function getTree() {
+        //init data
+        var json = {
+            "id": "${userimpl.id?c}",
+            "name": "${userimpl.displayName!}",
+            "children": [],
+            "data": {
+                "avatar":"${userimpl.gravatarUrl!}"
+            }
+        };
+
+        var infovis = document.getElementById('infovis');
+        var w = infovis.offsetWidth, h = infovis.offsetHeight;
+
+        //init canvas
+        //Create a new canvas instance.
+        var canvas = new Canvas('mycanvas', {
+            //Where to append the canvas widget
+            'injectInto': 'infovis',
+            'width': w,
+            'height': h,
+
+            //Optional: create a background canvas and plot
+            //concentric circles in it.
+            'backgroundCanvas': {
+                'styles': {
+                    'strokeStyle': '#555'
+                },
+
+                'impl': {
+                    'init': function() {
+                    },
+                    'plot': function(canvas, ctx) {
+                        var times = 6, d = 100;
+                        var pi2 = Math.PI * 2;
+                        for (var i = 1; i <= times; i++) {
+                            ctx.beginPath();
+                            ctx.arc(0, 0, i * d, 0, pi2, true);
+                            ctx.stroke();
+                            ctx.closePath();
+                        }
+                    }
+                }
+            }
+        });
+        //end
+        //init RGraph
+        var rgraph = new RGraph(canvas, {
+            //Set Node and Edge colors.
+            interpolation: 'polar',
+            levelDistance: 100,
+            Node: {
+                color: '#ccddee'
+            },
+
+            Edge: {
+                color: '#772277'
+            },
+
+            //Add the name of the node in the correponding label
+            //and a click handler to move the graph.
+            //This method is called once, on label creation.
+            onCreateLabel: function(domElement, node) {
+                domElement.innerHTML = node.name;
+                $(domElement).qtip(
+                {
+                    content: '<img src="' + node.data.avatar + '"/>',
+                    //                        content: node.data,
+                    position: {
+                        corner: {
+                            tooltip: 'bottomMiddle',
+                            target: 'topMiddle'
+                        }
+                    },
+                    style: {
+                        tip: true, // Give it a speech bubble tip with automatic corner detection
+                        name: 'cream'
+                    }
+
+                });
+                domElement.onclick = function() {
+                    rgraph.onClick(node.id);
+                };
+            },
+            //Change some label dom properties.
+            //This method is called each time a label is plotted.
+            onPlaceLabel: function(domElement, node) {
+                var style = domElement.style;
+                style.display = '';
+                style.cursor = 'pointer';
+
+                if (node._depth <= 1) {
+                    style.fontSize = "0.8em";
+                    style.color = "#ccc";
+
+                } else if (node._depth == 2) {
+                    style.fontSize = "0.7em";
+                    style.color = "#494949";
+
+                } else {
+                    style.display = 'none';
+                }
+
+                var left = parseInt(style.left);
+                var w = domElement.offsetWidth;
+                style.left = (left - w / 2) + 'px';
+            }
+        });
+
+        //load JSON data
+        rgraph.loadJSON(json);
+
+    <#list trustTable as trust>
+        rgraph.graph.addAdjacence({'id': '${trust.trustee.id!}', 'name' : '${trust.trustee.displayName!}', "data": {"avatar":"${trust.trustee.gravatarUrl!}"}}, {'id': '${trust.trustor.id!}', 'name' : '${trust.trustor.displayName!}',"data": {"avatar":"${trust.trustor.gravatarUrl!}"}}, null);
+    </#list>
+        rgraph.refresh();
+    }
+
 </script>
