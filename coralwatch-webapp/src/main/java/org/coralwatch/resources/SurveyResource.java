@@ -177,6 +177,8 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
             }
         }
 
+        survey.setDateModified(new Date());
+
         String weather = form.getFirstValue("weather");
         if ((weather == null) || weather.isEmpty()) {
             errors.add(new SubmissionError("No weather condition was provided. Weather condition must be supplied."));

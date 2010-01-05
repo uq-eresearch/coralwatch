@@ -123,6 +123,14 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                 <td>${(survey.comments)!}</td>
             </tr>
             <tr>
+                <td class="headercell">Submitted (d/m/y):</td>
+                <td>${(survey.dateSubmitted?string("dd/MM/yyyy hh:mm:ss a '('zzz')'"))!}</td>
+            </tr>
+            <tr>
+                <td class="headercell">Last Modified (d/m/y):</td>
+                <td>${(survey.dateModified?string("dd/MM/yyyy hh:mm:ss a '('zzz')'"))!}</td>
+            </tr>
+            <tr>
                 <td class="headercell">Community Rating:</td>
                 <td>
                     <@createReadOnlyRator communityRating  "communityRating" true/>

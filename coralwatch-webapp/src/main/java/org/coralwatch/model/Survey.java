@@ -56,6 +56,14 @@ public class Survey implements Serializable {
     private Date time;
 
     @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateSubmitted;
+
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateModified;
+
+    @NotNull
     private String weather;
 
     @NotNull
@@ -79,7 +87,8 @@ public class Survey implements Serializable {
     private String qaState;
 
     public Survey() {
-
+        dateSubmitted = new Date();
+        dateModified = new Date();
     }
 
     public long getId() {
@@ -152,6 +161,22 @@ public class Survey implements Serializable {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public Date getDateSubmitted() {
+        return dateSubmitted;
+    }
+
+    public void setDateSubmitted(Date dateSubmitted) {
+        this.dateSubmitted = dateSubmitted;
+    }
+
+    public Date getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(Date dateModified) {
+        this.dateModified = dateModified;
     }
 
     public String getWeather() {
