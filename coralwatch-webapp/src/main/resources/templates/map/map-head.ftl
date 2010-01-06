@@ -6,6 +6,45 @@
         src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA-Y-sXcS7Cho7UUEWAL06lBQwtEFLLcTdtVnYJARPXeJhL0yKvxQD__Boj0suUIzkmUZHRHxL-cUVyw'></script>
 </#if>
 <script type="text/javascript">
+    var saved = [];
+
+    function MDControl() {
+    }
+    MDControl.prototype = new GControl();
+    MDControl.prototype.initialize = function(map) {
+        var container = document.createElement("div");
+        var newSurveyButton = document.createElement("div");
+        newSurveyButton.title = "Add new survey";
+        newSurveyButton.className = "MDbuttons";
+        container.appendChild(newSurveyButton);
+        newSurveyButton.appendChild(document.createTextNode("New Survey"));
+        GEvent.addDomListener(newSurveyButton, "click", function() {
+            var center = map.getCenter();
+            var zoom = map.getZoom();
+            saved.splice(0, 2, center, zoom);
+            alert("Saved Position: " + center.toUrlValue() + "\nZoomlevel: " + zoom);
+        });
+
+        var tosaved = document.createElement("div");
+        tosaved.title = "Show surveys based on ratings";
+        tosaved.className = "MDbuttons";
+        container.appendChild(tosaved);
+        tosaved.appendChild(document.createTextNode("Ratings"));
+        GEvent.addDomListener(tosaved, "click", function() {
+            if (saved.length > 0) {
+                map.setZoom(saved[1]);
+                map.panTo(saved[0]);
+            }
+        });
+        map.getContainer().appendChild(container);
+        return container;
+    }
+
+    MDControl.prototype.getDefaultPosition = function() {
+        return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(7, 31));
+    }
+
+
     function init() {
         if (GBrowserIsCompatible()) {
             var mapDiv = document.getElementById("map");
@@ -19,6 +58,7 @@
             map.setMapType(G_HYBRID_MAP);
             map.removeMapType(G_SATELLITE_MAP);
             map.getContainer().style.overflow = "hidden";
+            map.addControl(new MDControl());
             placeMarkers(map);
         }
         else {

@@ -133,6 +133,9 @@
         </table>
     </div>
     <div id="fragment-2">
+        <#if currentUser == userimpl>
+        <a href="${baseUrl}/surveys?new">New Survey</a><br/>
+        </#if>
         <@createList "${conductedSurveys?size!} Surveys" conductedSurveys; item><a href="
             ${baseUrl}/surveys/${item.id?c}"><img src="${baseUrl}/icons/fam/survey.png"/></a> Conducted
         on ${(item.date)!?date}

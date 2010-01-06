@@ -401,6 +401,18 @@ height: 550px;
 border: 1px solid black;
 clear:both;
 }
+
+.MDbuttons {
+color: black;
+background-color: white;
+font-size: 12px;
+border: 1px solid black;
+padding: 1px;
+margin-bottom: 4px;
+text-align: center;
+cursor: pointer;
+}
+
 /**********************************Map CSS****************************************/
 
 /************************************Jit Css**************************************/
