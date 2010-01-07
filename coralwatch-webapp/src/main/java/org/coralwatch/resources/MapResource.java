@@ -4,6 +4,7 @@ import au.edu.uq.itee.maenad.restlet.AbstractFreemarkerResource;
 import au.edu.uq.itee.maenad.restlet.auth.User;
 import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.restlet.errorhandling.NoDataFoundException;
+import org.coralwatch.app.CoralwatchApplication;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
@@ -18,6 +19,7 @@ public class MapResource extends AbstractFreemarkerResource<User> {
     @Override
     protected void fillDatamodel(Map<String, Object> datamodel) throws NoDataFoundException, ResourceException {
         datamodel.put("extraHeadContent", "map/map-head.ftl");
+        datamodel.put("surveys", CoralwatchApplication.getConfiguration().getSurveyDao().getAll());
         datamodel.put("initJSOnLoad", "true");
         datamodel.put("fullUI", true);
     }

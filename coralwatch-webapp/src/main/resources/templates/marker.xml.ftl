@@ -1,13 +1,13 @@
 <#macro entry survey>
-<marker>
+<event start="${survey.date?string("EEE, dd MMM yyyy HH:mm:ss Z")}" title="${survey.reef.name}">
     <reef>${survey.reef.name}</reef>
     <longitude>${survey.longitude?c}</longitude>
     <latitude>${survey.latitude?c}</latitude>
-</marker>
+</event>
 </#macro>
 <?xml version="1.0" encoding="UTF-8"?>
-<markers>
+<data>
     <#list surveys as survey>
     <@entry survey/>
     </#list>
-</markers>
+</data>

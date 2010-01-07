@@ -10,10 +10,7 @@
     <#include "include/header.html.ftl"/>
     <#if extraHeadContent??><#include "${extraHeadContent}"></#if>
 </head>
-<body class="${dijitTheme}" id="index" onload="new ElementMaxHeight()">
-<#if initJSOnLoad??>
-<script type="text/javascript">jQuery(document).ready(init);</script>
-</#if>
+<body class="${dijitTheme}" id="index">
 <div id="header_tall">
     <#if frameData.currentUser??>
     <p style="font-size: 10px; text-align:left; margin: 1px;">Logged in as <a
@@ -50,6 +47,9 @@
             </div>
         </div>
         <div class="main_content" style="display:none;">
+            <noscript>
+                This page uses Javascript. Please enable Javascript in your browser to see the full page. Thank you.
+            </noscript>
             <#include "${contentTemplate}"/>
         </div>
         <#include "include/footer.html.ftl"/>

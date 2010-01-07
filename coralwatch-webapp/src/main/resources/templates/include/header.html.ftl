@@ -35,6 +35,7 @@
     };
 </script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.3.2/dojo/dojo.xd.js">
+
     // leave separate begin+end tag, otherwise the browser will ignore
     // the next /script/ section
 </script>
@@ -44,6 +45,10 @@
     $(document).ready(function() {
         $('.main_content').show();
         $("#tabs").tabs();
+        new ElementMaxHeight()
+    <#if initJSOnLoad??>
+        init();
+    </#if>
     });
 </script>
 
@@ -74,3 +79,7 @@
 <link type="text/css" href="../css/Hypertree.css" rel="stylesheet"/>
 <!--[if IE]><script language="javascript" type="text/javascript" src="${baseUrl}/javascript/jit/Extras/excanvas.js"></script><![endif]-->
 <script language="javascript" type="text/javascript" src="${baseUrl}/javascript/jit/jit.js"></script>
+
+<#--Exhibit stuff-->
+
+        <#--<script type="text/javascript" src="http://api.simile-widgets.org/exhibit/2.2.0/exhibit-api.js">-->

@@ -140,7 +140,7 @@ background-color: #e8e8e8;
 }
 
 #main {
-width: 800px;
+width: 90%;
 }
 
 #header {
@@ -443,4 +443,5 @@ border-bottom: 1px solid #aaaaaa;
 background: transparent;
 padding: 0 0.3em;
 }
-/************************************JQuery**************************************/                        
+/************************************JQuery**************************************/
+                      
