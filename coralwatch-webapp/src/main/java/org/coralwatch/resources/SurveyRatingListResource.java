@@ -9,6 +9,7 @@ import org.coralwatch.dataaccess.SurveyRatingDao;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRating;
 import org.coralwatch.model.UserImpl;
+import org.coralwatch.util.TrustUtil;
 import org.restlet.data.Form;
 import org.restlet.resource.Representation;
 import org.restlet.resource.Variant;
@@ -57,6 +58,7 @@ public class SurveyRatingListResource extends ModifiableListResource<SurveyRatin
 
     @Override
     protected String getRedirectLocation(SurveyRating surveyRating) {
+        TrustUtil.evaluateSurveyTrust(surveyRating.getSurvey());
         return String.valueOf("survey/" + surveyRating.getSurvey().getId());
     }
 

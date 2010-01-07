@@ -75,6 +75,9 @@ public class Survey implements Serializable {
     @Column(length = 2000)
     private String comments;
 
+    private double totalRatingValue;
+    private int numberOfRatings;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey", fetch = FetchType.LAZY)
     private List<SurveyRecord> dataset = new ArrayList<SurveyRecord>();
 
@@ -89,6 +92,8 @@ public class Survey implements Serializable {
     public Survey() {
         dateSubmitted = new Date();
         dateModified = new Date();
+        totalRatingValue = 0;
+        numberOfRatings = 0;
     }
 
     public long getId() {
@@ -209,6 +214,22 @@ public class Survey implements Serializable {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public double getTotalRatingValue() {
+        return totalRatingValue;
+    }
+
+    public void setTotalRatingValue(double totalRatingValue) {
+        this.totalRatingValue = Math.round(totalRatingValue);
+    }
+
+    public int getNumberOfRatings() {
+        return numberOfRatings;
+    }
+
+    public void setNumberOfRatings(int numberOfRatings) {
+        this.numberOfRatings = numberOfRatings;
     }
 
     public List<SurveyRecord> getDataset() {

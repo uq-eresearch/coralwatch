@@ -19,6 +19,7 @@ import org.coralwatch.dataaccess.jpa.JpaSurveyRecordDao;
 import org.coralwatch.dataaccess.jpa.JpaUserDao;
 import org.coralwatch.dataaccess.jpa.JpaUserTrustDao;
 import org.coralwatch.model.Reef;
+import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.model.UserTrust;
 import org.restlet.service.ConnectorService;
@@ -32,6 +33,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
@@ -154,6 +156,8 @@ public class ApplicationContext implements Configuration, ServletContextListener
     }
 
     private void createDefaultUsers() {
+
+
         UserImpl admin = new UserImpl("Administrator", "abdul2000@gmail.com", BCrypt.hashpw("admin", BCrypt.gensalt()), true);
         userDao.save(admin);
         UserImpl charlie = new UserImpl("Charlie", "brooking@itee.uq.edu.au", BCrypt.hashpw("charlie", BCrypt.gensalt()), false);
@@ -164,6 +168,18 @@ public class ApplicationContext implements Configuration, ServletContextListener
         userDao.save(peter);
         userTrustDao.save(new UserTrust(charlie, peter, 3));
 
+        //Add dummy reefs
+        String[] testReefNames = getTestReefNames();
+        for (String testReefName : testReefNames) {
+            reefDao.save(new Reef(testReefName, "Australia"));
+        }
+
+        //Add some test surveys
+        surveyDao.save(getTestSurvey(admin));
+        surveyDao.save(getTestSurvey(admin));
+        surveyDao.save(getTestSurvey(admin));
+        surveyDao.save(getTestSurvey(admin));
+
         //Add dummy usernames with rating
         String[] testUsernames = getTestUsernames();
         for (int i = 0; i < testUsernames.length; i++) {
@@ -173,6 +189,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
                 Random rand = new Random();
                 double randomNumber = rand.nextDouble() * 5;
                 userTrustDao.save(new UserTrust(admin, newUser, randomNumber));
+                surveyDao.save(getTestSurvey(newUser));
             }
             if (i % 9 == 0) {
                 Random rand = new Random();
@@ -181,17 +198,30 @@ public class ApplicationContext implements Configuration, ServletContextListener
             }
         }
 
-        //Add dummy reefs
-        String[] testReefNames = getTestReefNames();
-        for (String testReefName : testReefNames) {
-            reefDao.save(new Reef(testReefName, "Australia"));
-        }
-
-        //Add surveys
-
-
         Logger.getLogger(getClass().getName()).log(Level.INFO,
                 "Created new default admin user with email address 'admin@coralwatch.org' and password 'admin'.");
+    }
+
+    private Survey getTestSurvey(UserImpl user) {
+        Random rand = new Random(new Date().getTime());
+        Survey survey = new Survey();
+        survey.setCreator(user);
+        survey.setOrganisation("eResearch");
+        survey.setOrganisationType("School/University");
+        survey.setReef(reefDao.getAll().get(rand.nextInt(24)));
+        survey.setLatitude(new Float(-16 - rand.nextInt(10) - rand.nextDouble()));
+        survey.setLongitude(new Float(153 - rand.nextInt(10) + rand.nextDouble()));
+        Date date = new Date(2000 + rand.nextInt(10) - 1900, rand.nextInt(12), rand.nextInt(30));
+        survey.setDate(date);
+        survey.setTime(date);
+        survey.setDateSubmitted(new Date());
+        survey.setDateModified(new Date());
+        survey.setWeather("Full Sunshine");
+        survey.setActivity("Reef Walking");
+        survey.setTemperature(rand.nextInt(25) + 1);
+        survey.setTotalRatingValue(rand.nextInt(5) + 1);
+        survey.setNumberOfRatings(rand.nextInt(100) + 1);
+        return survey;
     }
 
     @Override
