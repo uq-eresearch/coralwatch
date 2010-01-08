@@ -20,6 +20,7 @@ import org.coralwatch.dataaccess.jpa.JpaUserDao;
 import org.coralwatch.dataaccess.jpa.JpaUserTrustDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
+import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.model.UserTrust;
 import org.restlet.service.ConnectorService;
@@ -175,10 +176,21 @@ public class ApplicationContext implements Configuration, ServletContextListener
         }
 
         //Add some test surveys
-        surveyDao.save(getTestSurvey(admin));
-        surveyDao.save(getTestSurvey(admin));
-        surveyDao.save(getTestSurvey(admin));
-        surveyDao.save(getTestSurvey(admin));
+        Survey testSurvey1 = getTestSurvey(admin);
+        surveyDao.save(testSurvey1);
+        addTestSurveyRecord(testSurvey1);
+
+        Survey testSurvey2 = getTestSurvey(admin);
+        surveyDao.save(testSurvey2);
+        addTestSurveyRecord(testSurvey2);
+
+        Survey testSurvey3 = getTestSurvey(admin);
+        surveyDao.save(testSurvey3);
+        addTestSurveyRecord(testSurvey3);
+
+        Survey testSurvey4 = getTestSurvey(admin);
+        surveyDao.save(testSurvey4);
+        addTestSurveyRecord(testSurvey4);
 
         //Add dummy usernames with rating
         String[] testUsernames = getTestUsernames();
@@ -189,7 +201,9 @@ public class ApplicationContext implements Configuration, ServletContextListener
                 Random rand = new Random();
                 double randomNumber = rand.nextDouble() * 5;
                 userTrustDao.save(new UserTrust(admin, newUser, randomNumber));
-                surveyDao.save(getTestSurvey(newUser));
+                Survey testSurvey = getTestSurvey(newUser);
+                surveyDao.save(testSurvey);
+                addTestSurveyRecord(testSurvey);
             }
             if (i % 9 == 0) {
                 Random rand = new Random();
@@ -222,6 +236,16 @@ public class ApplicationContext implements Configuration, ServletContextListener
         survey.setTotalRatingValue(rand.nextInt(5) + 1);
         survey.setNumberOfRatings(rand.nextInt(100) + 1);
         return survey;
+    }
+
+    private void addTestSurveyRecord(Survey survey) {
+        Random rand = new Random(new Date().getTime());
+        String[] coralType = {" Branching", "Boulder", "Plate", "Soft"};
+        char[] letters = {'B', 'C', 'D', 'E'};
+        for (int i = 0; i < rand.nextInt(15); i++) {
+            SurveyRecord record = new SurveyRecord(survey, coralType[rand.nextInt(4)], letters[rand.nextInt(4)], rand.nextInt(6) + 1, letters[rand.nextInt(4)], rand.nextInt(6) + 1);
+            surveyRecordDao.save(record);
+        }
     }
 
     @Override
