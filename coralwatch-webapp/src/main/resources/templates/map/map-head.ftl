@@ -7,6 +7,11 @@
 },
 "title" : "${survey.reef.name}, ${survey.totalRatingValue?c} Stars (${survey.numberOfRatings?c} Ratings)",
 "options" : {
+theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
+<#elseif (survey.totalRatingValue > 1) && survey.totalRatingValue <= 2>'yellow'
+<#elseif (survey.totalRatingValue > 2) && survey.totalRatingValue <= 3>'green'
+<#elseif (survey.totalRatingValue > 3) && survey.totalRatingValue <= 4>'blue'
+<#elseif (survey.totalRatingValue > 4) && survey.totalRatingValue <= 5>'purple'</#if>,
 tags: [${survey.totalRatingValue?c}]
 }
 }
