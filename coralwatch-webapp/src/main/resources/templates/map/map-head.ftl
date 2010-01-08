@@ -47,7 +47,7 @@ tags: [${survey.totalRatingValue?c}]
             ],
             bandIntervals: [
                 Timeline.DateTime.MONTH,
-                Timeline.DateTime.DECADE
+                Timeline.DateTime.YEAR
             ]
         });
         // add our new function to the map and timeline filters
