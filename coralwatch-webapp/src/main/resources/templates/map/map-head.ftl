@@ -37,7 +37,6 @@ theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
             mapId: "map",               // Id of map div element (required)
             timelineId: "timeline",     // Id of timeline div element (required)
             options: {
-                // The maptype for the map
                 mapType: G_HYBRID_MAP,
                 eventIconPath: "${baseUrl}/icons/timemap/"
             },
@@ -63,6 +62,7 @@ theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
         // add our new function to the map and timeline filters
         tm.addFilter("map", TimeMap.filters.hasSelectedTag); // hide map markers on fail
         tm.addFilter("timeline", TimeMap.filters.hasSelectedTag); // hide timeline events on fail
+        tm.map.setCenter(new GLatLng(-28.397, 135.644), 4);
     }
 
 
