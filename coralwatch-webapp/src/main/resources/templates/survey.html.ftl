@@ -49,7 +49,7 @@
 </#if>
 ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;${((absValue*60 -(absValue*60)?floor)*60)?round}&quot; <#if (value < 0)>${negSym}<#else>${posSym}</#if>)
 </#macro>
-<div class="breadcrumbs">
+<div id="breadcrumbs" class="breadcrumbs">
     <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;<a
         href="${baseUrl}/surveys">Surveys</a>&ensp;&raquo;&ensp;${(survey.id)!}
 </div>
@@ -136,7 +136,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                     <@createReadOnlyRator communityRating  "communityRating" true/>
                 </td>
             </tr>
-            <#if survey.creator != currentUser>
+            <#if currentUser?? && survey.creator != currentUser>
             <tr>
                 <td class="headercell">Your Rating:</td>
 
@@ -159,12 +159,16 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
 
     <div id="fragment-2">
         <#if (surveyRecs?size > 0)>
-        <div>
-            <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=coralCount" width="300" height="200"
-                 alt="Colour Distribution"/>
-            <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=shapePie" width="300" height="200"
-                 alt="Shape Distribution"/>
-        </div>
+        <table>
+            <tr>
+                <td>
+                    <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=coralCount" width="300" height="200"
+                         alt="Colour Distribution"/></td>
+                <td>
+                    <img src="${baseUrl}/surveys/${survey.id?c}?format=png&chart=shapePie" width="300" height="200"
+                         alt="Shape Distribution"/></td>
+            </tr>
+        </table>
         <table width="100%">
             <tr>
                 <th class="headercell" nowrap="nowrap">Coral Type</th>

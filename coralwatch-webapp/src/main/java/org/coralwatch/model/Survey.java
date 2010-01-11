@@ -76,7 +76,7 @@ public class Survey implements Serializable {
     private String comments;
 
     private double totalRatingValue;
-    private int numberOfRatings;
+    private long numberOfRatings;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey", fetch = FetchType.LAZY)
     private List<SurveyRecord> dataset = new ArrayList<SurveyRecord>();
@@ -224,11 +224,11 @@ public class Survey implements Serializable {
         this.totalRatingValue = Math.round(totalRatingValue);
     }
 
-    public int getNumberOfRatings() {
+    public long getNumberOfRatings() {
         return numberOfRatings;
     }
 
-    public void setNumberOfRatings(int numberOfRatings) {
+    public void setNumberOfRatings(long numberOfRatings) {
         this.numberOfRatings = numberOfRatings;
     }
 

@@ -14,6 +14,7 @@ import org.coralwatch.services.PlotService;
 import org.jfree.chart.JFreeChart;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
+import org.restlet.data.Parameter;
 import org.restlet.resource.OutputRepresentation;
 import org.restlet.resource.Representation;
 import org.restlet.resource.ResourceException;
@@ -40,15 +41,24 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
     private static final Logger LOGGER = Logger.getLogger(SurveyResource.class.getName());
     private static final int IMAGE_WIDTH = 300;
     private static final int IMAGE_HEIGHT = 200;
+    private boolean noFrame = false;
 
     public SurveyResource() throws InitializationException {
         super(CoralwatchApplication.getConfiguration().getSurveyDao());
-        getVariants().add(new Variant(MediaType.IMAGE_PNG));
+        //TODO move the creation of graphs to a different resource
+//        getVariants().add(0, new Variant(MediaType.IMAGE_PNG));
     }
 
     @Override
     protected Representation protectedRepresent(Variant variant)
             throws ResourceException {
+
+        Parameter param = getQuery().getFirst("noframe");
+        if (param != null && Boolean.parseBoolean(param.getValue())) {
+            noFrame = true;
+            setMainTemplateName("noframe.html.ftl");
+        }
+
         String format = getQuery().getFirstValue("format");
         if (variant.getMediaType().equals(MediaType.IMAGE_PNG)
                 || "png".equals(format)) {
@@ -62,8 +72,7 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
             } else {
                 newChart = PlotService.createCoralCountPlot(surveys);
             }
-            OutputRepresentation r = new OutputRepresentation(
-                    MediaType.IMAGE_PNG) {
+            OutputRepresentation r = new OutputRepresentation(MediaType.IMAGE_PNG) {
                 @Override
                 public void write(OutputStream stream) throws IOException {
                     BufferedImage image = new BufferedImage(IMAGE_WIDTH,
@@ -83,6 +92,7 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
     protected void fillDatamodel(Map<String, Object> datamodel) throws NoDataFoundException {
         super.fillDatamodel(datamodel);
         Survey survey = (Survey) datamodel.get(getTemplateObjectName());
+        datamodel.put("noFrame", noFrame);
         datamodel.put("surveyRecs", getDao().getSurveyRecords(survey));
         datamodel.put("reefRecs", CoralwatchApplication.getConfiguration().getReefDao().getAll());
         datamodel.put("communityTrust", CoralwatchApplication.getConfiguration().getTrustDao().getCommunityTrustValue(survey.getCreator()));
@@ -218,10 +228,11 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
 
     @Override
     protected boolean getAllowed(UserImpl userImpl, Variant variant) {
+        return true;
         //Only logged in users and super users can edit profiles
         //Logged in users can only edit their own survey
-        long id = Long.valueOf((String) getRequest().getAttributes().get("id"));
-        Survey survey = getDao().load(id);
-        return getAccessPolicy().getAccessLevelForInstance(userImpl, survey).canRead();
+//        long id = Long.valueOf((String) getRequest().getAttributes().get("id"));
+//        Survey survey = getDao().load(id);
+//        return getAccessPolicy().getAccessLevelForInstance(userImpl, survey).canRead();
     }
 }

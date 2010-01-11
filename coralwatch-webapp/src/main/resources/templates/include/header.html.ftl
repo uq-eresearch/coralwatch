@@ -62,9 +62,9 @@
 
 <#--Page Initialisations-->
 <script type="text/javascript">
-    $('.main_content').corner("5px");
-    $('.rounded').corner("5px");
     $(document).ready(function() {
+        $('.main_content').corner("5px");
+        $('.rounded').corner("5px");
         $('.main_content').show();
         $("#tabs").tabs();
         new ElementMaxHeight()

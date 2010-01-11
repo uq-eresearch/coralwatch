@@ -32,4 +32,5 @@ public class FrameDataProvider implements au.edu.uq.itee.maenad.restlet.model.Fr
         return new FrameData("CoralWatch", navItems, currentUserImpl);
 
     }
+
 }

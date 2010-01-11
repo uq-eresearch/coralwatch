@@ -62,9 +62,9 @@ public class JpaSurveyRatingDao extends JpaDao<SurveyRating> implements SurveyRa
 
     @Override
     @SuppressWarnings("unchecked")
-    public int getNumberOfRatingsForASurvey(Survey survey) {
+    public long getNumberOfRatingsForASurvey(Survey survey) {
         try {
-            Integer ratingValue = (Integer) entityManagerSource.getEntityManager().createQuery(
+            Long ratingValue = (Long) entityManagerSource.getEntityManager().createQuery(
                     "SELECT count(o) FROM SurveyRating o WHERE o.survey = :survey").setParameter("survey", survey).getSingleResult();
             return ratingValue == null ? 0 : ratingValue;
         } catch (NoResultException ex) {

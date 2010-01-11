@@ -13,5 +13,5 @@ public interface SurveyRatingDao extends Dao<SurveyRating> {
 
     double getCommunityRatingValue(Survey survey);
 
-    int getNumberOfRatingsForASurvey(Survey survey);
+    long getNumberOfRatingsForASurvey(Survey survey);
 }

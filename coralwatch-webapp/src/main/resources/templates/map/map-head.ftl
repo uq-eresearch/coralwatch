@@ -1,18 +1,19 @@
 <#macro entry survey>
 {
-"start" : "${survey.date?string("EEE, dd MMM yyyy HH:mm:ss Z")}",
-"point" : {
-"lat" : ${survey.latitude?c},
-"lon" : ${survey.longitude?c}
+start : "${survey.date?string("EEE, dd MMM yyyy HH:mm:ss Z")}",
+point : {
+lat : ${survey.latitude?c},
+lon : ${survey.longitude?c}
 },
-"title" : "${survey.reef.name}, ${survey.totalRatingValue?c} Stars (${survey.numberOfRatings?c} Ratings)",
-"options" : {
+title : "${survey.reef.name}, ${survey.totalRatingValue?c} Stars (${survey.numberOfRatings?c} Ratings)",
+options : {
+infoUrl: "surveys/${survey.id?c}?noframe=true",
+tags: [${survey.totalRatingValue?c}],
 theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
 <#elseif (survey.totalRatingValue > 1) && survey.totalRatingValue <= 2>'yellow'
 <#elseif (survey.totalRatingValue > 2) && survey.totalRatingValue <= 3>'green'
 <#elseif (survey.totalRatingValue > 3) && survey.totalRatingValue <= 4>'blue'
-<#elseif (survey.totalRatingValue > 4) && survey.totalRatingValue <= 5>'purple'</#if>,
-tags: [${survey.totalRatingValue?c}]
+<#elseif (survey.totalRatingValue > 4) && survey.totalRatingValue <= 5>'purple'</#if>
 }
 }
 </#macro>
@@ -25,7 +26,9 @@ tags: [${survey.totalRatingValue?c}]
         src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA-Y-sXcS7Cho7UUEWAL06lBQwtEFLLcTdtVnYJARPXeJhL0yKvxQD__Boj0suUIzkmUZHRHxL-cUVyw'></script>
 </#if>
 
-<script type="text/javascript" src="http://static.simile.mit.edu/timeline/api-2.2.0/timeline-api.js"></script>
+<#--<script type="text/javascript" src="http://static.simile.mit.edu/timeline/api-2.2.0/timeline-api.js"></script>-->
+<script type="text/javascript" src="http://static.simile.mit.edu/timeline/api/timeline-api.js"></script>
+
 <script language="javascript" type="text/javascript" src="${baseUrl}/javascript/timemap/timemap_full.pack.js"></script>
 <script type="text/javascript">
     var tm;
@@ -34,6 +37,8 @@ tags: [${survey.totalRatingValue?c}]
             mapId: "map",               // Id of map div element (required)
             timelineId: "timeline",     // Id of timeline div element (required)
             options: {
+                // The maptype for the map
+                mapType: G_HYBRID_MAP,
                 eventIconPath: "${baseUrl}/icons/timemap/"
             },
             datasets: [
