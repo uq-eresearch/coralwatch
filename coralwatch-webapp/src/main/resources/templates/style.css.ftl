@@ -412,7 +412,12 @@ margin-bottom: 4px;
 text-align: center;
 cursor: pointer;
 }
-
+#sidebar {
+padding: 10px;
+}
+.sidebar-form{
+margin: 5px;
+}
 /**********************************Map CSS****************************************/
 
 /************************************Jit Css**************************************/
