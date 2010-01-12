@@ -61,11 +61,12 @@ public class CoralwatchApplication extends Application {
 
     @Override
     public Restlet createRoot() {
+
         Router router = new Router(getContext());
-        getContext().getAttributes().put(FrameDataProvider.class.getName(),
-                new org.coralwatch.resources.FrameDataProvider());
-        getContext().getAttributes().put(AccessPolicy.class.getName(),
-                new CoralwatchAccessPolicy());
+
+        getContext().getAttributes().put(FrameDataProvider.class.getName(), new org.coralwatch.resources.FrameDataProvider());
+        getContext().getAttributes().put(AccessPolicy.class.getName(), new CoralwatchAccessPolicy());
+
         String baseUrl = configuration.getBaseUrl();
         if (baseUrl != null) {
             getContext().getAttributes().put("baseUrl", baseUrl);

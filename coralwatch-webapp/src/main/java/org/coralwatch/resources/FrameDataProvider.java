@@ -22,6 +22,7 @@ public class FrameDataProvider implements au.edu.uq.itee.maenad.restlet.model.Fr
         navItems.add(new NavigationItem("Education", "${baseUrl}/education"));
         navItems.add(new NavigationItem("Going Green", "${baseUrl}/goinggreen"));
         navItems.add(new NavigationItem("Related", "${baseUrl}/links"));
+        navItems.add(new NavigationItem("Statistics", "#"));
 
         if (currentUserImpl != null) {
             navItems.add(new NavigationItem("Dashboard", "${baseUrl}/dashboard"));

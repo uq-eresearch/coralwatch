@@ -170,9 +170,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
         userTrustDao.save(new UserTrust(charlie, peter, 3));
 
         //Add dummy reefs
+        Random rand = new Random();
         String[] testReefNames = getTestReefNames();
         for (String testReefName : testReefNames) {
-            reefDao.save(new Reef(testReefName, "Australia"));
+            String[] countries = {"Australia", "New Zealand"};
+            reefDao.save(new Reef(testReefName, countries[rand.nextInt(2)]));
         }
 
         //Add some test surveys
@@ -197,18 +199,22 @@ public class ApplicationContext implements Configuration, ServletContextListener
         for (int i = 0; i < testUsernames.length; i++) {
             UserImpl newUser = new UserImpl(testUsernames[i], testUsernames[i].toLowerCase() + "@coralwatch.org", BCrypt.hashpw(testUsernames[i].toLowerCase(), BCrypt.gensalt()), false);
             userDao.save(newUser);
+            Survey testSurvey = getTestSurvey(newUser);
+            surveyDao.save(testSurvey);
+            addTestSurveyRecord(testSurvey);
             if (i % 4 == 0) {
-                Random rand = new Random();
                 double randomNumber = rand.nextDouble() * 5;
                 userTrustDao.save(new UserTrust(admin, newUser, randomNumber));
-                Survey testSurvey = getTestSurvey(newUser);
-                surveyDao.save(testSurvey);
-                addTestSurveyRecord(testSurvey);
+                Survey testSurvey5 = getTestSurvey(newUser);
+                surveyDao.save(testSurvey5);
+                addTestSurveyRecord(testSurvey5);
             }
             if (i % 9 == 0) {
-                Random rand = new Random();
                 double randomNumber = rand.nextDouble() * 5;
                 userTrustDao.save(new UserTrust(charlie, newUser, randomNumber));
+                Survey testSurvey6 = getTestSurvey(newUser);
+                surveyDao.save(testSurvey6);
+                addTestSurveyRecord(testSurvey6);
             }
         }
 
