@@ -20,6 +20,7 @@ public class MapResource extends AbstractFreemarkerResource<User> {
     protected void fillDatamodel(Map<String, Object> datamodel) throws NoDataFoundException, ResourceException {
         datamodel.put("extraHeadContent", "map/map-head.ftl");
         datamodel.put("surveys", CoralwatchApplication.getConfiguration().getSurveyDao().getAll());
+        datamodel.put("reefList", CoralwatchApplication.getConfiguration().getReefDao().getAll());
         datamodel.put("initJSOnLoad", "true");
         datamodel.put("fullUI", true);
     }
