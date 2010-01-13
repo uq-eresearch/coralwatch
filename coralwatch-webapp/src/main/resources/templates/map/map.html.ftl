@@ -5,20 +5,20 @@
             <div id="sidebar">
                 <h3>CoralWatch Surveys</h3>
 
-                <form class="sidebar-form">
-                    Search: <input style="width: 150px;" type="text" id="search-text" name="search-text"/>
+                <form class="sidebar-form" onsubmit="findLocation(); return false;">
+                    Find Location: <input style="width: 150px;" type="text" id="search-text" name="search-text"/>
                 </form>
                 <br/>
                 <ul>
-                    <#if currentUser??>
+                <#if currentUser??>
                     <li><a href="${baseUrl}/users">${users?size} Coral Watchers</a></li>
                     <li><a href="${baseUrl}/reef">${reefList?size} Coral Reefs</a></li>
                     <li><a href="${baseUrl}/surveys">${surveys?size} Surveys</a></li>
                     <#else>
-                    <li>${users?size} Coral Watchers</li>
-                    <li>${reefList?size} Coral Reefs</li>
-                    <li>${surveys?size} Surveys</li>
-                    </#if>
+                        <li>${users?size} Coral Watchers</li>
+                        <li>${reefList?size} Coral Reefs</li>
+                        <li>${surveys?size} Surveys</li>
+                </#if>
                 </ul>
                 <br/>
                 <hr/>
@@ -27,15 +27,15 @@
                 <form class="sidebar-form">
                     Country:<br/><select style="width: 150px;" onChange="setSelectedCountryTag(this);">
                     <option selected="selected" value="">All Countries</option>
-                    <#include "../macros/countrylist.html.ftl"/>
+                <#include "../macros/countrylist.html.ftl"/>
                 </select>
                 </form>
                 <form class="sidebar-form">
                     Reef Name:<br/><select style="width: 150px;" onChange="setSelectedReefTag(this);">
                     <option value="">All Reefs</option>
-                    <#list reefList as item>
+                <#list reefList as item>
                     <option value="${item.name!}">${item.name!}</option>
-                    </#list>
+                </#list>
                 </select>
                 </form>
                 <form class="sidebar-form">
@@ -52,16 +52,16 @@
                 <hr/>
                 <br/><b>Options</b><br/>
                 <ul>
-                    <#if currentUser??>
+                <#if currentUser??>
                     <li><a href="${baseUrl}/dashboard">Dashboard</a></li>
                     <li><a href="${baseUrl}/surveys?new">Upload Data</a></li>
                     <li><a href="${baseUrl}/kit?new">Request Kit</a></li>
                     <#else>
-                    <li><a href="${baseUrl}/login?redirectUrl=${baseUrl}/dashboard">Login</a></li>
-                    <li><a href="${baseUrl}/login?redirectUrl=${baseUrl}/dashboard">Sign Up</a></li>
-                    <li><a href="${baseUrl}/login?redirectUrl=${baseUrl}/surveys?new">Upload Data</a></li>
-                    <li><a href="${baseUrl}/login?redirectUrl=${baseUrl}/kit?new">Request Kit</a></li>
-                    </#if>
+                        <li><a href="${baseUrl}/login?redirectUrl=${baseUrl}/dashboard">Login</a></li>
+                        <li><a href="${baseUrl}/login?redirectUrl=${baseUrl}/dashboard">Sign Up</a></li>
+                        <li><a href="${baseUrl}/login?redirectUrl=${baseUrl}/surveys?new">Upload Data</a></li>
+                        <li><a href="${baseUrl}/login?redirectUrl=${baseUrl}/kit?new">Request Kit</a></li>
+                </#if>
                 </ul>
                 <br/>
                 <hr/>

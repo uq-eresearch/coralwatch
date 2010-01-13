@@ -10,10 +10,10 @@ options : {
 infoUrl: "surveys/${survey.id?c}?noframe=true",
 tags: ['${survey.totalRatingValue?c}', '${survey.reef.country}', '${survey.reef.name}'],
 theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
-<#elseif (survey.totalRatingValue > 1) && survey.totalRatingValue <= 2>'yellow'
-<#elseif (survey.totalRatingValue > 2) && survey.totalRatingValue <= 3>'green'
-<#elseif (survey.totalRatingValue > 3) && survey.totalRatingValue <= 4>'blue'
-<#elseif (survey.totalRatingValue > 4) && survey.totalRatingValue <= 5>'purple'</#if>
+    <#elseif (survey.totalRatingValue > 1) && survey.totalRatingValue <= 2>'yellow'
+    <#elseif (survey.totalRatingValue > 2) && survey.totalRatingValue <= 3>'green'
+    <#elseif (survey.totalRatingValue > 3) && survey.totalRatingValue <= 4>'blue'
+    <#elseif (survey.totalRatingValue > 4) && survey.totalRatingValue <= 5>'purple'</#if>
 }
 }
 </#macro>
@@ -21,9 +21,9 @@ theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
 <#if baseUrl?starts_with("http://localhost")>
 <script type="text/javascript"
         src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
-<#else>
-<script type="text/javascript"
-        src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA-Y-sXcS7Cho7UUEWAL06lBQwtEFLLcTdtVnYJARPXeJhL0yKvxQD__Boj0suUIzkmUZHRHxL-cUVyw'></script>
+    <#else>
+    <script type="text/javascript"
+            src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA-Y-sXcS7Cho7UUEWAL06lBQwtEFLLcTdtVnYJARPXeJhL0yKvxQD__Boj0suUIzkmUZHRHxL-cUVyw'></script>
 </#if>
 
 <#--<script type="text/javascript" src="http://static.simile.mit.edu/timeline/api-2.2.0/timeline-api.js"></script>-->
@@ -37,6 +37,7 @@ theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
             mapId: "map",               // Id of map div element (required)
             timelineId: "timeline",     // Id of timeline div element (required)
             options: {
+                hidePastFuture: false,
                 mapType: G_HYBRID_MAP,
                 eventIconPath: "${baseUrl}/icons/timemap/"
             },
@@ -137,4 +138,25 @@ theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
         // update the timeline
         tm.timeline.layout();
     }
+
+    function findLocation() {
+        var search = document.getElementById("search-text").value;
+        var geo = new GClientGeocoder();
+        geo.getLocations(search, function (result)
+        {
+            for (var i = 0; i < result.Placemark.length; i++) {
+                var p = result.Placemark[i].Point.coordinates;
+                var blueIcon = new GIcon(G_DEFAULT_ICON);
+                blueIcon.image = "${baseUrl}/icons/timemap/arrow.png";
+                blueIcon.iconSize = new GSize(39, 34);
+                markerOptions = { icon:blueIcon };
+                var marker = new GMarker(new GLatLng(p[1], p[0]), markerOptions);
+                tm.map.addOverlay(marker);
+            }
+            var p = result.Placemark[0].Point.coordinates;
+            tm.map.setCenter(new GLatLng(p[1], p[0]), 10);
+        });
+    }
+
+
 </script>

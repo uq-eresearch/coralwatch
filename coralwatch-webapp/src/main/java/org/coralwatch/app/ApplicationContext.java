@@ -229,8 +229,8 @@ public class ApplicationContext implements Configuration, ServletContextListener
         survey.setOrganisation("eResearch");
         survey.setOrganisationType("School/University");
         survey.setReef(reefDao.getAll().get(rand.nextInt(24)));
-        survey.setLatitude(new Float(-16 - rand.nextInt(10) - rand.nextDouble()));
-        survey.setLongitude(new Float(153 - rand.nextInt(10) + rand.nextDouble()));
+        survey.setLatitude(new Float(-11 - rand.nextInt(20) - rand.nextDouble()));
+        survey.setLongitude(new Float(154 + rand.nextInt(10) + rand.nextDouble()));
         Date date = new Date(2000 + rand.nextInt(11) - 1900, rand.nextInt(12), rand.nextInt(30));
         survey.setDate(date);
         survey.setTime(date);
