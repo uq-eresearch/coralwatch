@@ -17,20 +17,20 @@
 
 <form id="${formId}" method="post">
     <input name="trustValue" value="1" type="radio"
-           <#if (ratingValue >= 0) && (ratingValue < 1.5)>checked="checked"</#if>/>
+           <#if (ratingValue >= 0) && (ratingValue <= 1)>checked="checked"</#if>/>
     <input name="trustValue" value="2" type="radio"
-           <#if (ratingValue >= 1.5) && (ratingValue < 2.5)>checked="checked"</#if>/>
+           <#if (ratingValue > 1) && (ratingValue <= 2)>checked="checked"</#if>/>
     <input name="trustValue" value="3" type="radio"
-           <#if (ratingValue >= 2.5) && (ratingValue < 3.5)>checked="checked"</#if>/>
+           <#if (ratingValue > 2) && (ratingValue <= 3)>checked="checked"</#if>/>
     <input name="trustValue" value="4" type="radio"
-           <#if (ratingValue >= 3.5) && (ratingValue < 4.5)>checked="checked"</#if>/>
+           <#if (ratingValue > 3) && (ratingValue <= 4)>checked="checked"</#if>/>
     <input name="trustValue" value="5" type="radio"
-           <#if (ratingValue >= 4.5) && (ratingValue <= 5)>checked="checked"</#if>/>
+           <#if (ratingValue > 4) && (ratingValue <= 5)>checked="checked"</#if>/>
     <input type="submit" value="Rate" name="submit"/>
 </form>
-<#if (ratingValue >= 0)><span>&ensp;(${ratingValue?c})</span>
-<#else><span>&ensp;(Not Recorded)</span>
-</#if>
+    <#if (ratingValue >= 0)><span>&ensp;(${ratingValue?c})</span>
+        <#else><span>&ensp;(Not Recorded)</span>
+    </#if>
 </#macro>
 
 
@@ -47,17 +47,17 @@
 </script>
 <div class="rator" id="${divId}">
     <input name="ratingValue" value="1" type="radio"
-           <#if (ratingValue >= 0) && (ratingValue < 1.5)>checked="checked"</#if>/>
+           <#if (ratingValue >= 0) && (ratingValue <= 1)>checked="checked"</#if>/>
     <input name="ratingValue" value="2" type="radio"
-           <#if (ratingValue >= 1.5) && (ratingValue < 2.5)>checked="checked"</#if>/>
+           <#if (ratingValue > 1) && (ratingValue <= 2)>checked="checked"</#if>/>
     <input name="ratingValue" value="3" type="radio"
-           <#if (ratingValue >= 2.5) && (ratingValue < 3.5)>checked="checked"</#if>/>
+           <#if (ratingValue > 2) && (ratingValue <= 3)>checked="checked"</#if>/>
     <input name="ratingValue" value="4" type="radio"
-           <#if (ratingValue >= 3.5) && (ratingValue < 4.5)>checked="checked"</#if>/>
+           <#if (ratingValue > 3) && (ratingValue <= 4)>checked="checked"</#if>/>
     <input name="ratingValue" value="5" type="radio"
-           <#if (ratingValue >= 4.5) && (ratingValue <= 5)>checked="checked"</#if>/>
+           <#if (ratingValue > 4) && (ratingValue <= 5)>checked="checked"</#if>/>
 </div>
-<#if showValue>
-<#if (ratingValue >= 0)><span>&ensp;(${ratingValue?c})</span><#else><span>&ensp;(Not Recorded)</span></#if>
-</#if>
-        </#macro>
+    <#if showValue>
+        <#if (ratingValue >= 0)><span>&ensp;(${ratingValue?c})</span><#else><span>&ensp;(Not Recorded)</span></#if>
+    </#if>
+</#macro>

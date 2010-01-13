@@ -6,7 +6,8 @@
                 <h3>CoralWatch Surveys</h3>
 
                 <form class="sidebar-form" onsubmit="findLocation(); return false;">
-                    Find Location: <input style="width: 150px;" type="text" id="search-text" name="search-text"/>
+                    <label for="search-text">Find Location:</label><input style="width: 150px;" type="text"
+                                                                          id="search-text" name="search-text"/>
                 </form>
                 <br/>
                 <ul>

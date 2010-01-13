@@ -42,11 +42,11 @@
 <#include "macros/basic.html.ftl"/>
 <#include "macros/rating.html.ftl"/>
 <#macro lonLat value posSym negSym>
-<#if (value < 0)>
-<#assign absValue = -value/>
-<#else>
-<#assign absValue = value/>
-</#if>
+    <#if (value < 0)>
+        <#assign absValue = -value/>
+        <#else>
+            <#assign absValue = value/>
+    </#if>
 ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;${((absValue*60 -(absValue*60)?floor)*60)?round}&quot; <#if (value < 0)>${negSym}<#else>${posSym}</#if>)
 </#macro>
 <div id="breadcrumbs" class="breadcrumbs">
@@ -61,13 +61,13 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
         <li><a href="#fragment-2"><span>Data</span></a></li>
     </ul>
     <div id="fragment-1">
-        <#if survey.creator.gravatarUrl??>
+    <#if survey.creator.gravatarUrl??>
         <div style="float:right;">
             <a href="${baseUrl}/users/${survey.creator.id?c}"><img src="${survey.creator.gravatarUrl}"
                                                                    alt="${survey.creator.displayName}"/></a><br/>
-            <@createReadOnlyRator communityTrust "communityTrust" false/>
+        <@createReadOnlyRator communityTrustOnCreator "communityTrust" false/>
         </div>
-        </#if>
+    </#if>
         <table width="70%">
             <tr>
                 <td class="headercell">Creator:</td>
@@ -133,32 +133,32 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
             <tr>
                 <td class="headercell">Community Rating:</td>
                 <td>
-                    <@createReadOnlyRator communityRating  "communityRating" true/>
+                <@createReadOnlyRator survey.totalRatingValue  "communityRating" true/>
                 </td>
             </tr>
-            <#if currentUser?? && survey.creator != currentUser>
+        <#if currentUser?? && survey.creator != currentUser>
             <tr>
                 <td class="headercell">Your Rating:</td>
 
                 <td>
-                    <@createRator userRating "ratings" survey.id "${baseUrl}/surveyrating" "${baseUrl}/surveys/${survey.id?c}"/>
+                <@createRator userRating "ratings" survey.id "${baseUrl}/surveyrating" "${baseUrl}/surveys/${survey.id?c}"/>
                 </td>
             </tr>
-            </#if>
+        </#if>
         </table>
         <br/>
-        <#if canUpdate>
+    <#if canUpdate>
         <button dojoType="dijit.form.Button" onClick="window.location='${baseUrl}/surveys/${survey.id?c}?edit'">Edit
         </button>
-        </#if>
-        <#if canDelete>
+    </#if>
+    <#if canDelete>
         <button dojoType="dijit.form.Button" onClick="deleteSurvey(${survey.id?c})">Delete</button>
-        </#if>
+    </#if>
     </div>
 
 
     <div id="fragment-2">
-        <#if (surveyRecs?size > 0)>
+    <#if (surveyRecs?size > 0)>
         <table>
             <tr>
                 <td>
@@ -177,24 +177,25 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                 <th class="headercell" nowrap="nowrap">Delete</th>
             </tr>
             <#list surveyRecs as item>
-            <tr>
-                <td>${item.coralType!}</td>
-                <td>${item.lightestLetter!}${item.lightestNumber!}</td>
-                <td>${item.darkestLetter!}${item.darkestNumber!}</td>
-                <td>
-                    <#if canDelete>
-                    <button dojoType="dijit.form.Button" onClick="deleteSurveyRecord(${item.id?c}, ${survey.id?c})">
-                        Delete
-                    </button>
-                    </#if>
-                </td>
-            </tr>
+                <tr>
+                    <td>${item.coralType!}</td>
+                    <td>${item.lightestLetter!}${item.lightestNumber!}</td>
+                    <td>${item.darkestLetter!}${item.darkestNumber!}</td>
+                    <td>
+                        <#if canDelete>
+                            <button dojoType="dijit.form.Button"
+                                    onClick="deleteSurveyRecord(${item.id?c}, ${survey.id?c})">
+                                Delete
+                            </button>
+                        </#if>
+                    </td>
+                </tr>
             </#list>
         </table>
         <#else>
-        <p>No Data Available</p>
-        </#if>
-        <#if canUpdate>
+            <p>No Data Available</p>
+    </#if>
+    <#if canUpdate>
         <br/>
 
         <h3>Add Data</h3>
@@ -224,10 +225,10 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                         <label for="coralType_3"> Soft </label>
                     </td>
                     <td nowrap="nowrap">
-                        <@createColorField "lightColor"/>
+                    <@createColorField "lightColor"/>
                     </td>
                     <td nowrap="nowrap">
-                        <@createColorField "darkColor"/>
+                    <@createColorField "darkColor"/>
                     </td>
                     <td>
                         <button dojoType="dijit.form.Button" type="submit" name="submit">Add</button>
@@ -235,7 +236,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
                 </tr>
             </table>
         </div>
-        </#if>
+    </#if>
     </div>
 </div>
 

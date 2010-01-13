@@ -144,15 +144,6 @@ theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
         var geo = new GClientGeocoder();
         geo.getLocations(search, function (result)
         {
-            for (var i = 0; i < result.Placemark.length; i++) {
-                var p = result.Placemark[i].Point.coordinates;
-                var blueIcon = new GIcon(G_DEFAULT_ICON);
-                blueIcon.image = "${baseUrl}/icons/timemap/arrow.png";
-                blueIcon.iconSize = new GSize(39, 34);
-                markerOptions = { icon:blueIcon };
-                var marker = new GMarker(new GLatLng(p[1], p[0]), markerOptions);
-                tm.map.addOverlay(marker);
-            }
             var p = result.Placemark[0].Point.coordinates;
             tm.map.setCenter(new GLatLng(p[1], p[0]), 10);
         });
