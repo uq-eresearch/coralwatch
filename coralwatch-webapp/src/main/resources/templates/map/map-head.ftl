@@ -140,9 +140,11 @@ theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
     }
 
     function findLocation() {
-        var search = document.getElementById("search-text").value;
+        var searchField = document.getElementById("search-text");
+        var searchText = searchField.value;
+        searchField.value = "";
         var geo = new GClientGeocoder();
-        geo.getLocations(search, function (result)
+        geo.getLocations(searchText, function (result)
         {
             var p = result.Placemark[0].Point.coordinates;
             tm.map.setCenter(new GLatLng(p[1], p[0]), 10);

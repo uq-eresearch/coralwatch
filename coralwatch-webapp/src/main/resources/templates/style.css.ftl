@@ -426,8 +426,8 @@ margin: 5px;
 
 /************************************Jit Css**************************************/
 #jit-container {
-height:400px;
-width:400px;
+height:450px;
+width:450px;
 margin:0 auto;
 top:0;
 color:#ccc;
@@ -435,8 +435,8 @@ color:#ccc;
 
 #infovis {
 position:relative;
-width:400px;
-height:400px;
+width:450px;
+height:450px;
 margin:auto;
 overflow:hidden;
 }
