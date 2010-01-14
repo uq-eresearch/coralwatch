@@ -103,6 +103,8 @@
             },
 
             Edge: {
+                overridable: true,
+                type: "arrow",
                 color: '#772277'
             },
 
@@ -174,7 +176,7 @@
 
     <#list trustTable as trust>
         <#if  userimpl.id == trust.trustee.id>
-            rgraph.graph.addAdjacence({'id': '${trust.trustee.id!}', 'name' : '${trust.trustee.displayName!}', "data": {"avatar":"${trust.trustee.gravatarUrl!}"}}, {'id': '${trust.trustor.id!}', 'name' : '${trust.trustor.displayName!}',"data": {"avatar":"${trust.trustor.gravatarUrl!}"}}, null);
+            rgraph.graph.addAdjacence({'id': '${trust.trustor.id!}', 'name' : '${trust.trustor.displayName!}',"data": {"avatar":"${trust.trustor.gravatarUrl!}"}}, {'id': '${trust.trustee.id!}', 'name' : '${trust.trustee.displayName!}', "data": {"avatar":"${trust.trustee.gravatarUrl!}"}}, null);
         </#if>
     </#list>
         rgraph.refresh();
