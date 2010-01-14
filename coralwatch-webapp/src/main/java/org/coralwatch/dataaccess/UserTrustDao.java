@@ -4,6 +4,7 @@ import au.edu.uq.itee.maenad.dataaccess.Dao;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.model.UserTrust;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserTrustDao extends Dao<UserTrust> {
@@ -15,5 +16,7 @@ public interface UserTrustDao extends Dao<UserTrust> {
     double getTrustValueByUser(UserImpl trustor, UserImpl trustee);
 
     Map<Long, Double> getCommunityTrustForAll();
+
+    List<UserImpl> getTrustorsForUser(long trusteeId);
 }
 

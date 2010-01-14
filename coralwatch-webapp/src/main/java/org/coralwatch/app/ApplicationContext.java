@@ -216,6 +216,14 @@ public class ApplicationContext implements Configuration, ServletContextListener
                 surveyDao.save(testSurvey6);
                 addTestSurveyRecord(testSurvey6);
             }
+            if (i % 31 == 0) {
+                double randomNumber = rand.nextDouble() * 5;
+                userTrustDao.save(new UserTrust(newUser, admin, randomNumber));
+            }
+            if (i % 35 == 0) {
+                double randomNumber = rand.nextDouble() * 5;
+                userTrustDao.save(new UserTrust(newUser, charlie, randomNumber));
+            }
         }
 
         Logger.getLogger(getClass().getName()).log(Level.INFO,

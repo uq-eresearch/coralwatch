@@ -80,4 +80,18 @@ public class JpaUserTrustDao extends JpaDao<UserTrust> implements UserTrustDao {
 
         return map;
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<UserImpl> getTrustorsForUser(long trusteeId) {
+        UserImpl trustee = CoralwatchApplication.getConfiguration().getUserDao().getById(trusteeId);
+        try {
+            List<UserImpl> trustors = entityManagerSource.getEntityManager().createQuery(
+                    "SELECT o.trustor FROM UserTrust o WHERE o.trustee = :trustee")
+                    .setParameter("trustee", trustee).getResultList();
+            return trustors;
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
 }

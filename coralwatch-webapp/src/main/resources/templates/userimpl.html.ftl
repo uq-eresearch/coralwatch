@@ -16,108 +16,100 @@
     </ul>
     <div id="fragment-1">
 
-        <table style="width:100%">
-
+        <table class="entity-table" style="width:100%">
             <tr>
-                <td></td>
-                <td colspan="2">
-                    <#if canUpdate>
+                <th width="180">Display Name:</th>
+                <td>${userimpl.displayName!}</td>
+                <td nowrap="nowrap" style="text-align:right">
+                <#if canUpdate>
                     <button dojoType="dijit.form.Button" id="editButton"
                             onClick="window.location='${baseUrl}/users/${userimpl.id?c}?edit'">Edit
                     </button>
-                    </#if>
-                    <#if canDelete>
+                </#if>
+                <#if canDelete>
                     <button dojoType="dijit.form.Button" onClick="deleteUser(${userimpl.id?c})">Delete</button>
-                    </#if>
+                </#if>
                 </td>
             </tr>
             <tr>
-                <td class="headercell"></td>
-                <td style="width:60%"></td>
+                <th>Email:</th>
+                <td><a href="mailto:${userimpl.email!}">${userimpl.email!}</a></td>
                 <td rowspan="4" style="text-align:right">
                     <img src="${userimpl.gravatarUrl!}" alt="${userimpl.displayName!}"/>
-                    <#if userimpl == currentUser><#-- only the user themselves can change, not admins -->
+                <#if userimpl == currentUser><#-- only the user themselves can change, not admins -->
                     <br/>
                     <a href="http://www.gravatar.com">Change Image</a>
-                    </#if>
+                </#if>
                 </td>
             </tr>
             <tr>
-                <td class="headercell">Display Name:</td>
-                <td colspan="2">${userimpl.displayName!}</td>
-            </tr>
-            <tr>
-                <td class="headercell">Email:</td>
-                <td colspan="2"><a href="mailto:${userimpl.email!}">${userimpl.email!}</a></td>
-            </tr>
-            <tr>
-                <td class="headercell">Member since (d/m/y):</td>
+                <th>Member since (d/m/y):</th>
                 <td colspan="2">${(userimpl.registrationDate)!?string("dd/MM/yyyy")}</td>
             </tr>
             <tr>
-                <td class="headercell">Occupation:</td>
+                <th>Occupation:</th>
                 <td colspan="2">${userimpl.occupation!}</td>
             </tr>
             <tr>
-                <td class="headercell">Address:</td>
+                <th>Address:</th>
                 <td colspan="2">${userimpl.address!}</td>
             </tr>
             <tr>
-                <td class="headercell">Country:</td>
+                <th>Country:</th>
                 <td colspan="2">${userimpl.country!}</td>
             </tr>
             <tr>
-                <td class="headercell">Surveys:</td>
+                <th>Surveys:</th>
                 <td colspan="2"><#if (conductedSurveys?size < 1)>No surveys yet<#elseif (conductedSurveys?size = 1)>1
                     survey<#else>${conductedSurveys?size!} surveys</#if></td>
             </tr>
             <tr>
-                <td class="headercell">Photos:</td>
+                <th>Photos:</th>
                 <td colspan="2">No photos yet</td>
             </tr>
             <tr>
-                <td class="headercell">Videos:</td>
+                <th>Videos:</th>
                 <td colspan="2">No videos yet</td>
             </tr>
             <tr>
-                <td class="headercell">Community Trust:</td>
+                <th>Community Trust:</th>
                 <td colspan="2">
-                    <@createReadOnlyRator communityTrust "communityTrust" true/>
+                <@createReadOnlyRator communityTrust "communityTrust" true/>
                     <a href="#" id="show-trust-cloud">Trust Cloud</a>&nbsp;<a href="#" id="show-trust-network">Trust
                     Network</a>
                 </td>
-                <#--</#if>-->
+            <#--</#if>-->
             </tr>
-            <#if userimpl != currentUser>
+        <#if userimpl != currentUser>
             <tr>
-                <td class="headercell">Your Trust:</td>
+                <th>Your Trust:</th>
                 <td colspan="2">
-                    <@createRator userTrust "ratings" userimpl.id "${baseUrl}/usertrust" "${baseUrl}/users/${userimpl.id?c}"/>
+                <@createRator userTrust "ratings" userimpl.id "${baseUrl}/usertrust" "${baseUrl}/users/${userimpl.id?c}"/>
                 </td>
             </tr>
-            </#if>
+        </#if>
             <tr>
                 <td colspan="3">
                     <div id="cloud-container">
                         <ul id="xpower" class="xmpl">
-                            <#list allUsers as user>
+                        <#list allUsers as user>
                             <#if user = currentUser>
-                            <li rating="${communityTrustForAll[user.id?string]}" rel="${user.gravatarUrl!}"><a
-                                    class="tagLink" style="color:#00ff00;"
-                                    href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
-                            </li>
-                            <#elseif user = userimpl>
-                            <li rating="${communityTrustForAll[user.id?string]}" rel="${user.gravatarUrl!}"><a
-                                    class="tagLink" style="color:#ff0000;"
-                                    href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
-                            </li>
-                            <#else>
-                            <li rating="${communityTrustForAll[user.id?string]}" rel="${user.gravatarUrl!}"><a
-                                    class="tagLink" style="color:#0066cc"
-                                    href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
-                            </li>
+                                <li rating="${communityTrustForAll[user.id?string]}" rel="${user.gravatarUrl!}"><a
+                                        class="tagLink" style="color:#00ff00;"
+                                        href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
+                                </li>
+                                <#elseif user = userimpl>
+                                    <li rating="${communityTrustForAll[user.id?string]}" rel="${user.gravatarUrl!}"><a
+                                            class="tagLink" style="color:#ff0000;"
+                                            href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
+                                    </li>
+                                <#else>
+                                    <li rating="${communityTrustForAll[user.id?string]}" rel="${user.gravatarUrl!}"><a
+                                            class="tagLink" style="color:#0066cc"
+                                            href="${baseUrl}/users/${user.id?c}">${user.displayName}</a>
+                                    </li>
                             </#if>
-                            </#list>
+                        </#list>
                         </ul>
                     </div>
                 </td>
@@ -133,12 +125,12 @@
         </table>
     </div>
     <div id="fragment-2">
-        <#if currentUser == userimpl>
+    <#if currentUser == userimpl>
         <a href="${baseUrl}/surveys?new">New Survey</a><br/>
-        </#if>
-        <@createList "${conductedSurveys?size!} Surveys" conductedSurveys; item><a href="
+    </#if>
+    <@createList "${conductedSurveys?size!} Surveys" conductedSurveys; item><a href="
             ${baseUrl}/surveys/${item.id?c}"><img src="${baseUrl}/icons/fam/survey.png"/></a> Conducted
         on ${(item.date)!?date}
-        </@createList>
+    </@createList>
     </div>
 </div>

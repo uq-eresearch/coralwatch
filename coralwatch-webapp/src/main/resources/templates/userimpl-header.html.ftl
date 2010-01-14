@@ -57,6 +57,7 @@
                 "avatar":"${userimpl.gravatarUrl!}"
             }
         };
+        var graph = '[{id:"1", adjacencies:["node0"]}, {id:"node0", name:"node0 name", data:{$dim:8.660354683365695, "some other key":"some other value"}, adjacencies:["node1", "node2", "node3", "node4", "node5"]}, {id:"node1", name:"node1 name", data:{$dim:21.118129724156983, "some other key":"some other value"}, adjacencies:["node0", "node2", "node3", "node4", "node5"]}, {id:"node2", name:"node2 name", data:{$dim:6.688951018413683, "some other key":"some other value"}, adjacencies:["node0", "node1", "node3", "node4", "node5"]}, {id:"node3", name:"node3 name", data:{$dim:19.78771599710248, "some other key":"some other value"}, adjacencies:["node0", "node1", "node2", "node4", "node5"]}, {id:"node4", name:"node4 name", data:{$dim:3.025781742947326, "some other key":"some other value"}, adjacencies:["node0", "node1", "node2", "node3", "node5"]}, {id:"node5", name:"node5 name", data:{$dim:9.654383829711456, "some other key":"some other value"}, adjacencies:["node0", "node1", "node2", "node3", "node4"]}]';
 
         var infovis = document.getElementById('infovis');
         var w = infovis.offsetWidth, h = infovis.offsetHeight;
@@ -73,7 +74,7 @@
             //concentric circles in it.
             'backgroundCanvas': {
                 'styles': {
-                    'strokeStyle': '#555'
+                    'strokeStyle': '#3d6f92'
                 },
 
                 'impl': {
@@ -128,7 +129,21 @@
 
                 });
                 domElement.onclick = function() {
-                    rgraph.onClick(node.id);
+                    jQuery.ajax({
+                        type: "GET",
+                        url: "${baseUrl}/trustors?trusteeId=" + node.id,
+                        dataType: "json",
+                        success: function(json) {
+                            //                            var trueGraph = eval('(' + json + ')');
+                            rgraph.op.sum(json, {
+                                type: 'fade:seq',
+                                duration: 1000,
+                                onComplete: function() {
+                                    rgraph.onClick(node.id);
+                                }
+                            });
+                        }
+                    });
                 };
             },
             //Change some label dom properties.
@@ -140,12 +155,11 @@
 
                 if (node._depth <= 1) {
                     style.fontSize = "0.8em";
-                    style.color = "#ccc";
+                    style.color = "#000";
 
                 } else if (node._depth == 2) {
                     style.fontSize = "0.7em";
                     style.color = "#494949";
-
                 } else {
                     style.display = 'none';
                 }
@@ -160,7 +174,9 @@
         rgraph.loadJSON(json);
 
     <#list trustTable as trust>
-        rgraph.graph.addAdjacence({'id': '${trust.trustee.id!}', 'name' : '${trust.trustee.displayName!}', "data": {"avatar":"${trust.trustee.gravatarUrl!}"}}, {'id': '${trust.trustor.id!}', 'name' : '${trust.trustor.displayName!}',"data": {"avatar":"${trust.trustor.gravatarUrl!}"}}, null);
+        <#if  userimpl.id == trust.trustee.id>
+            rgraph.graph.addAdjacence({'id': '${trust.trustee.id!}', 'name' : '${trust.trustee.displayName!}', "data": {"avatar":"${trust.trustee.gravatarUrl!}"}}, {'id': '${trust.trustor.id!}', 'name' : '${trust.trustor.displayName!}',"data": {"avatar":"${trust.trustor.gravatarUrl!}"}}, null);
+        </#if>
     </#list>
         rgraph.refresh();
     }

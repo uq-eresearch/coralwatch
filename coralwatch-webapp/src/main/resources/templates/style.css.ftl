@@ -83,6 +83,10 @@ font-size: 12px;
 color: #444444;
 }
 
+.entity-table th {
+text-align:left;
+}
+
 textarea {
 width: 516px;
 height: 68px;
@@ -422,18 +426,17 @@ margin: 5px;
 
 /************************************Jit Css**************************************/
 #jit-container {
-height:550px;
-width:700px;
+height:400px;
+width:400px;
 margin:0 auto;
 top:0;
-background-color:#1a1a1a;
 color:#ccc;
 }
 
 #infovis {
 position:relative;
-width:700px;
-height:550px;
+width:400px;
+height:400px;
 margin:auto;
 overflow:hidden;
 }
