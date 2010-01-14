@@ -193,7 +193,7 @@ padding: 9px 0;
 
 #menu li {
 float: left;
-width: 113px;
+width: 124px;
 background: url(${baseUrl}/icons/menu_libg.gif) top right repeat-y;
 font-size: 12px;
 text-align: center;

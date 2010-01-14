@@ -28,7 +28,7 @@
            <#if (ratingValue > 4) && (ratingValue <= 5)>checked="checked"</#if>/>
     <input type="submit" value="Rate" name="submit"/>
 </form>
-    <#if (ratingValue >= 0)><span>&ensp;(${ratingValue?c})</span>
+    <#if (ratingValue >= 0)><span>&ensp;(${ratingValue?string("0.#")})</span>
         <#else><span>&ensp;(Not Recorded)</span>
     </#if>
 </#macro>
@@ -58,6 +58,7 @@
            <#if (ratingValue > 4) && (ratingValue <= 5)>checked="checked"</#if>/>
 </div>
     <#if showValue>
-        <#if (ratingValue >= 0)><span>&ensp;(${ratingValue?c})</span><#else><span>&ensp;(Not Recorded)</span></#if>
+        <#if (ratingValue >= 0)><span>&ensp;(${ratingValue?string("0.#")})</span><#else>
+        <span>&ensp;(Not Recorded)</span></#if>
     </#if>
 </#macro>
