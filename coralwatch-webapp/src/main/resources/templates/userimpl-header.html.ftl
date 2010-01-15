@@ -42,10 +42,12 @@
     }
 
     function addEvent(obj, type, fn) {
-        if (obj.addEventListener) obj.addEventListener(type, fn, false);
-        else obj.attachEvent('on' + type, fn);
+        if (obj.addEventListener) {
+            obj.addEventListener(type, fn, false);
+        } else {
+            obj.attachEvent('on' + type, fn);
+        }
     }
-    ;
 
     function getTree() {
         //init data
@@ -173,13 +175,20 @@
 
         //load JSON data
         rgraph.loadJSON(json);
-
-    <#list trustTable as trust>
-        <#if  userimpl.id == trust.trustee.id>
-            rgraph.graph.addAdjacence({'id': '${trust.trustor.id!}', 'name' : '${trust.trustor.displayName!}',"data": {"avatar":"${trust.trustor.gravatarUrl!}"}}, {'id': '${trust.trustee.id!}', 'name' : '${trust.trustee.displayName!}', "data": {"avatar":"${trust.trustee.gravatarUrl!}"}}, null);
-        </#if>
-    </#list>
-        rgraph.refresh();
+        jQuery.ajax({
+            type: "GET",
+            url: "${baseUrl}/trustors?trusteeId=" + ${userimpl.id},
+            dataType: "json",
+            success: function(json) {
+                rgraph.op.sum(json, {
+                    type: 'fade:seq',
+                    duration: 1000,
+                    onComplete: function() {
+                        rgraph.refresh();
+                    }
+                });
+            }
+        });
     }
 
 </script>

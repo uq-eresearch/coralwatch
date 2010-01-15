@@ -60,13 +60,13 @@ theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
                 Timeline.DateTime.YEAR
             ]
         });
+        tm.addFilter("timeline", TimeMap.filters.countryFilter);
+        tm.addFilter("timeline", TimeMap.filters.reefFilter);
+        tm.addFilter("timeline", TimeMap.filters.ratingFilter);
         // add our new function to the map and timeline filters
         tm.addFilter("map", TimeMap.filters.countryFilter);
         tm.addFilter("map", TimeMap.filters.reefFilter);
         tm.addFilter("map", TimeMap.filters.ratingFilter);
-        tm.addFilter("timeline", TimeMap.filters.countryFilter);
-        tm.addFilter("timeline", TimeMap.filters.reefFilter);
-        tm.addFilter("timeline", TimeMap.filters.ratingFilter);
         tm.map.setCenter(new GLatLng(-28.397, 135.644), 4);
         tm.timeline.getBand(1).setCenterVisibleDate(new Date(new Date().getYear() + 1900, new Date().getMonth(), 1));
     }
@@ -133,8 +133,8 @@ theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
         runFilters();
     }
     function runFilters() {
-        tm.filter('map');
         tm.filter('timeline');
+        tm.filter('map');
         // update the timeline
         tm.timeline.layout();
     }

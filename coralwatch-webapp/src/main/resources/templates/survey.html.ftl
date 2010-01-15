@@ -53,7 +53,6 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
     <a href="${baseUrl}/">Home</a>&ensp;&raquo;&ensp;<a href="${baseUrl}/dashboard">Dashboard</a>&ensp;&raquo;&ensp;<a
         href="${baseUrl}/surveys">Surveys</a>&ensp;&raquo;&ensp;${(survey.id)!}
 </div>
-<h3>Coral Bleaching Survey</h3>
 
 <div id="tabs">
     <ul>
@@ -133,7 +132,7 @@ ${value} (${absValue?floor}&deg;${((absValue - absValue?floor)*60)?floor}&apos;$
             <tr>
                 <td class="headercell">Community Rating:</td>
                 <td>
-                <@createReadOnlyRator survey.totalRatingValue  "communityRating" true/>
+                <@createReadOnlyRator communityRating  "communityRating" true/>
                 </td>
             </tr>
         <#if currentUser?? && survey.creator != currentUser>
