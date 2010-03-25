@@ -8,6 +8,7 @@
 	<Style name="Introduction" element="div">
 		<Attribute name="class" value="introduction" />
 	</Style>
+	<Style name="Caption" element="caption" />
 	<Style name="Preformatted Text" element="pre" />
 	<Style name="Cited Work" element="cite" />
 	<Style name="Computer Code" element="code" />
