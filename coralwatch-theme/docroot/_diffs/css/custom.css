@@ -159,6 +159,7 @@ caption {
 
 #navigation .child-menu li a {
 	cursor: pointer !important;
+    text-transform: capitalize;
 }
 
 .ie7 #navigation .child-menu li a {
@@ -335,4 +336,8 @@ body.lfr-has-sidebar {
 .lfr-has-sidebar #content-wrapper {
 	padding-left: 270px;
 	width: auto;
+}
+
+.portlet-journal-content-search {
+    margin: 1em 0;
 }
