@@ -1,1 +1,0 @@
-<p>Japanese About</p>

@@ -11,13 +11,13 @@
 <script src="${baseUrl}/javascript/site/maxheight.js" type="text/javascript"></script>
 
 <#--JQuery Related Libraries-->
-<link rel="stylesheet" type="text/css" href="http://jqueryui.com/latest/themes/base/ui.all.css"/>
+<link rel="stylesheet" type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/1.7.2/themes/base/ui.all.css"/>
 <link rel="stylesheet" type="text/css" href="${baseUrl}/javascript/jquery/star-rating/css/ui.stars.css"/>
 <script type="text/javascript"
         src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery<#if !testMode??>.min</#if>.js"></script>
 <script type="text/javascript"
         src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui<#if !testMode??>.min</#if>.js"></script>
-<script type="text/javascript" src="http://jqueryui.com/latest/ui/ui.tabs.js"></script>
+<script type="text/javascript" src="http://jquery-ui.googlecode.com/svn/tags/1.7.2/ui/ui.tabs.js"></script>
 <script type="text/javascript" src="${baseUrl}/javascript/jquery/corners/jquery.corner.js"></script>
 <script type="text/javascript" src="${baseUrl}/javascript/jquery/cloud/jquery.tagcloud.min.js"></script>
 <script type="text/javascript" src="${baseUrl}/javascript/jquery/qtip/jquery.qtip-1.0.0-rc3.min.js"></script>
