@@ -1,47 +1,65 @@
-/* This file allows you to override default styles in one central location for easier upgrade and maintenance. */ @import url(color_schemes/green.css); @import url(color_schemes/orange.css); /* ---------- Base styles ---------- */
+/* This file allows you to override default styles in one central location for easier upgrade and maintenance. */
+@import url(color_schemes/green.css);
+@import url(color_schemes/orange.css);
+
+/* ---------- Base styles ---------- */
 
 html {
-	height: 100%;
+    height: 100%;
 }
 
 body {
-	font-size: 12px;
-        font-family: Arial, Helvetica, sans-serif;
-        line-height: 17px;
-	background: #0172be url(../images/common/body_bg.png) repeat-x 0 116px;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 17px;
+    background: #0172be url(../images/common/body_bg.png) repeat-x 0 116px;
 }
 
-h1 { /* -- pageheader -- */
-	color: #f9911f;
-        font-size: 200%;
-        font-family: Geneva, Arial, Helvetica, sans-serif;
-        margin-top: 0;
+a {
+    color: #336699;
+    text-decoration: none;
 }
 
-h2 { /* -- paragraphheaders -- */
-	color: #2e317c;
+a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+/* -- pageheader -- */
+    color: #f9911f;
+    font-size: 200%;
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+    margin-top: 0;
+}
+
+h2 {
+/* -- paragraphheaders -- */
+    color: #2e317c;
     font-size: 125%;
     margin: 1em 0 0.5em;
 }
 
 h3 {
-	color: #000000;
-    font-size: 110%;
+    color: #000000;
+    font-size: 100%;
+    font-weight: bold;
     margin: 1em 0 0.5em;
 }
 
-h4 { /* -- factoid -- */
-	color: #f9911f;
-        font-size: 150%;
-        font-style: italic;
-        font-weight: bold;
-        margin: 1em 0;
+h4 {
+/* -- factoid -- */
+    color: #f9911f;
+    font-size: 150%;
+    font-style: italic;
+    font-weight: bold;
+    margin: 1em 0;
 }
 
 .introduction {
-        font-size: 120%;
-        line-height: 18px;
-        font-family: Geneva, Arial, Helvetica, sans-serif;
+    font-size: 110%;
+    line-height: 18px;
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+    font-weight: bold;
 }
 
 caption {
@@ -49,157 +67,177 @@ caption {
     font-style: italic;
 }
 
+td {
+    padding: 0.5em;
+    vertical-align: top;
+}
+
+table {
+    width: 100%;
+    border: 0;
+}
+
+li ul {
+    margin: 0 0 0 2em;
+}
+
 /* ---------- Main content body ---------- */
 
 #wrapper {
+
 }
 
 #content-wrapper {
-	margin: 0 auto;
-	width: 90%;
+    margin: 0 auto;
+    width: 90%;
 }
 
 /* ---------- Banner ---------- */
 
 #banner {
-	background: #fff url(../images/common/banner_bg.jpg) no-repeat 0 0;
-	height: 82px;
+    background: #fff url(../images/common/banner_bg.jpg) no-repeat 0 0;
+    height: 100px;
 }
 
 #banner h1.logo {
-	display: none
+    margin: 25px 25px 0 0;
+    position:fixed;
+    right: 0;
 }
 
 .ie6 #banner .logo {
-	zoom: 1;
+    zoom: 1;
 }
 
 .logo .current-community {
-	background: url(../images/dock/my_places_public.png) no-repeat 15px 50%;
-	border-left: 1px solid #D3DADD;
-	color: #D3DADD;
-	display: block;
-	float: left;
-	font-size: 0.8em;
-	font-weight: bold;
-	margin: 0 0 0 20px;
-	padding: 20px;
-	padding-left: 40px;
+    background: url(../images/dock/my_places_public.png) no-repeat 15px 50%;
+    border-left: 1px solid #D3DADD;
+    color: #D3DADD;
+    display: block;
+    float: left;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin: 0 0 0 20px;
+    padding: 20px;
+    padding-left: 40px;
 }
 
 .guest-community .logo .current-community {
-	display: none;
+    display: none;
 }
 
 .private-page .logo .current-community {
-	background-image: url(../images/dock/my_places_private.png);
+    background-image: url(../images/dock/my_places_private.png);
 }
 
 /* ---------- Main navigation ---------- */
 
 #navigation {
-	background: #f9911f;
-	margin: 0 auto 20px;
-	min-height: 3em;
-	width: 100%;
+    background: #f9911f;
+    margin: 0 auto 20px;
+    min-height: 3em;
+    width: 100%;
 }
 
 #navigation ul {
-	min-height: 2em;
-	width: 90%;
+    min-height: 2em;
+    width: 90%;
 }
 
 #navigation li {
-	display: inline;
-	padding: 0;
+    display: inline;
+    padding: 0;
 }
 
 #navigation a {
-	color: #0c0b01;
-	text-transform: uppercase;
-	font-size: 14pt;
-	padding: 8px;
+    color: #0c0b01;
+    text-transform: uppercase;
+    font-size: 11pt;
+    padding: 8px;
 }
 
 #navigation li a {
-	display: block;
-	text-decoration: none;
+    display: block;
+    text-decoration: none;
 }
 
 #navigation li a span {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 #navigation li.selected a, #navigation li a:hover, #navigation .child-menu li a {
-	background-color: #f9911f;
+    background-color: #f9911f;
 }
 
 #navigation li:hover .child-menu {
-	background: #f9911f;
-	display: block;
-	position: absolute;
-	width: 200px;
-	z-index: 300;
+    background: #f9911f;
+    display: block;
+    position: absolute;
+    width: 200px;
+    z-index: 300;
 }
 
 .ie6 #navigation li.hover .child-menu {
-	background: #f9911f;
-	display: block;
-	position: absolute;
-	width: 200px;
-	z-index: 300;
+    background: #f9911f;
+    display: block;
+    position: absolute;
+    width: 200px;
+    z-index: 300;
 }
 
 #navigation .child-menu li {
-	display: block;
-	float: none;
-	margin: 0;
+    display: block;
+    float: none;
+    margin: 0;
 }
 
 #navigation .child-menu li a {
-	cursor: pointer !important;
+    cursor: pointer !important;
     text-transform: capitalize;
 }
 
 .ie7 #navigation .child-menu li a {
-	zoom: 1;
+    zoom: 1;
 }
 
 #navigation .child-menu li a:hover {
-	background-color: #f9911f;
+    background-color: #f9911f;
 }
 
 /* ---------- Secondary navigation (portlet in left column) ----------*/
-.nav-menu h2 a { /* --- navigationtopoflist --- */
-        font-size: 14px;
-        color: #0c0b01;
-        text-decoration: none;
-        text-transform: uppercase;
+.nav-menu h2 a {
+/* --- navigationtopoflist --- */
+    font-size: 14px;
+    color: #0c0b01;
+    text-decoration: none;
+    text-transform: uppercase;
 }
 
-.nav-menu .level-1 a { /* --- navigation --- */
-        font-size: 12px;
-        color: #0c0b01;
-        text-decoration: none;
-        line-height: 24px;
+.nav-menu .level-1 a {
+/* --- navigation --- */
+    font-size: 12px;
+    color: #0c0b01;
+    text-decoration: none;
+    line-height: 24px;
 }
 
-.nav-menu li a.selected  { /* --- navigation, selected entry --- */
-        color: #f9911f;
+.nav-menu li a.selected {
+/* --- navigation, selected entry --- */
+    color: #f9911f;
 }
 
 .nav-menu ul {
-        padding: 0;
-        margin: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .nav-menu li {
-        list-style: none;
+    list-style: none;
 }
 
 /* ---------- Footer (abused for graphic in corner) ----------*/
 #footer {
-    background-image:url("../images/common/coral_with_fish.png");
+    background-image: url("../images/common/coral_with_fish.png");
     width: 311px;
     height: 318px;
     position: fixed;
@@ -211,65 +249,65 @@ caption {
 /* ---------- Add/remove page ---------- */
 
 .js #navigation .enter-page {
-	background-color: #f9911f;
-	padding: 2px;
+    background-color: #f9911f;
+    padding: 2px;
 }
 
 .js #navigation .enter-page a {
-	background: none;
-	display: inline;
-	font-weight: bold;
-	padding: 0;
+    background: none;
+    display: inline;
+    font-weight: bold;
+    padding: 0;
 }
 
 .js #navigation .enter-page .save-page {
-	background: url(../images/dock/my_place_current.png) no-repeat 0 50%;
-	margin: 0 10px;
-	padding-left: 20px;
+    background: url(../images/dock/my_place_current.png) no-repeat 0 50%;
+    margin: 0 10px;
+    padding-left: 20px;
 }
 
 .ie.js #navigation .enter-page .save-page {
-	display: inline-block;
-	padding-bottom: 5px;
-	padding-top: 5px;
-	vertical-align: top;
+    display: inline-block;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    vertical-align: top;
 }
 
 .js #navigation .enter-page .cancel-page {
-	display: none;
+    display: none;
 }
 
 .ie.js #navigation .enter-page {
-	padding: 0;
+    padding: 0;
 }
 
 .ie.js #navigation .enter-page input.text {
-	margin: 2px;
-	padding: 3px 1px;
+    margin: 2px;
+    padding: 3px 1px;
 }
 
 .js #navigation {
-	position: relative;
+    position: relative;
 }
 
 .js #add-page {
-	background: #f9911f;
-	bottom: 100%;
-	font-weight: bold;
-	position: absolute;
-	right: 5%;
+    background: #f9911f;
+    bottom: 100%;
+    font-weight: bold;
+    position: absolute;
+    right: 5%;
 }
 
 .js #add-page a {
-	display: block;
-	text-decoration: none;
+    display: block;
+    text-decoration: none;
 }
 
 .js #add-page a span {
-	background: url(../images/common/add.png) no-repeat 0 50%;
-	display: block;
-	margin-left: 15px;
-	padding: 5px 20px 2px;
+    background: url(../images/common/add.png) no-repeat 0 50%;
+    display: block;
+    margin-left: 15px;
+    padding: 5px 20px 2px;
 }
 
 .js #add-page a:hover span {
@@ -286,55 +324,55 @@ caption {
 /* ---------- Portlet wrapper and icons ---------- */
 
 .portlet {
-	background: #fff;
-	border: 2px solid #F9911F;
-	margin: 0 0 10px;
-	padding: 3px;
+    background: #fff;
+    border: 2px solid #F9911F;
+    margin: 0 0 10px;
+    padding: 3px;
 }
 
 .portlet-topper {
-	background: #D3DADD;
-	border-bottom: 1px solid #AEB8BC;
-	overflow: hidden;
-	position: static;
-        display: none;
+    background: #D3DADD;
+    border-bottom: 1px solid #AEB8BC;
+    overflow: hidden;
+    position: static;
+    display: none;
 }
 
 .controls-visible .portlet-topper {
-        display: block;
+    display: block;
 }
 
 .portlet-title {
-        display: none;
+    display: none;
 }
 
 .controls-visible .portlet-title {
-	float: left;
-	padding: 5px;
-        display: block;
+    float: left;
+    padding: 5px;
+    display: block;
 }
 
 .ie .portlet-title {
-	padding-bottom: 5px;
+    padding-bottom: 5px;
 }
 
 .ie6 .portlet-topper {
-	zoom: 1;
+    zoom: 1;
 }
 
 .portlet-icons {
-	float: right;
-	margin: 0.4em 0.2em 0 0;
-	position: static;
+    float: right;
+    margin: 0.4em 0.2em 0 0;
+    position: static;
 }
 
 body.lfr-has-sidebar {
-	padding-left: 0;
+    padding-left: 0;
 }
 
 .lfr-has-sidebar #content-wrapper {
-	padding-left: 270px;
-	width: auto;
+    padding-left: 270px;
+    width: auto;
 }
 
 .portlet-journal-content-search {
