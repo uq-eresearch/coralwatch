@@ -92,6 +92,16 @@ li ul {
     width: 90%;
 }
 
+.lfr-column.seventy {
+min-width:700px;
+width:80%;
+}
+
+
+.lfr-column.thirty {
+min-width:150px;
+width:20%;
+}
 /* ---------- Banner ---------- */
 
 #banner {
@@ -135,7 +145,6 @@ li ul {
 #navigation {
     background: #f9911f;
     margin: 0 auto 20px;
-    min-height: 3em;
     width: 100%;
 }
 
@@ -153,7 +162,7 @@ li ul {
     color: #0c0b01;
     text-transform: uppercase;
     font-size: 11pt;
-    padding: 8px;
+    padding: 3px 8px;
 }
 
 #navigation li a {
@@ -166,7 +175,7 @@ li ul {
 }
 
 #navigation li.selected a, #navigation li a:hover, #navigation .child-menu li a {
-    background-color: #f9911f;
+    background-color: #f0b310;
 }
 
 #navigation li:hover .child-menu {
@@ -193,6 +202,7 @@ li ul {
 
 #navigation .child-menu li a {
     cursor: pointer !important;
+    padding:1px 8px;
     text-transform: capitalize;
 }
 
