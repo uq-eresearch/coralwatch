@@ -184,6 +184,11 @@
             <url>http://maven.restlet.org</url>
         </repository>
         <repository>
+            <id>eresearch_ext_snapshots</id>
+            <name>External eResearch repository for snapshots</name>
+            <url>http://g709-0157.itee.uq.edu.au:8081/artifactory/ext-snapshots-local</url>
+        </repository>
+        <repository>
             <id>eresearch_snapshots</id>
             <name>Internal eResearch repository for snapshots</name>
             <url>http://g709-0157.itee.uq.edu.au:8081/artifactory/libs-snapshots-local</url>
