@@ -79,23 +79,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.commsen.liferay</groupId>
-            <artifactId>liferay-lib</artifactId>
-            <version>5.2.3-r2</version>
-            <scope>provided</scope>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>taglibs</groupId>
-            <artifactId>standard</artifactId>
-            <version>1.1.2</version>
-        </dependency>
-        <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>transaction-api</artifactId>
             <version>1.1</version>
@@ -111,6 +94,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <!-- TODO manage which JDBC driver we include depending on what RDBMS we really want to use -->
         <dependency>
             <groupId>hsqldb</groupId>
@@ -170,6 +154,25 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!--Liferay stuff-->
+        <dependency>
+            <groupId>com.commsen.liferay</groupId>
+            <artifactId>liferay-lib</artifactId>
+            <version>5.2.3-r2</version>
+            <scope>provided</scope>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>
@@ -182,11 +185,6 @@
             <id>maven-restlet</id>
             <name>Public online Restlet repository</name>
             <url>http://maven.restlet.org</url>
-        </repository>
-        <repository>
-            <id>eresearch_ext_snapshots</id>
-            <name>External eResearch repository for snapshots</name>
-            <url>http://g709-0157.itee.uq.edu.au:8081/artifactory/ext-snapshots-local</url>
         </repository>
         <repository>
             <id>eresearch_ext_releases</id>
