@@ -17,14 +17,6 @@ public class FrameDataProvider implements au.edu.uq.itee.maenad.restlet.model.Fr
     public FrameData getFrameData(UserImpl currentUserImpl) {
         List<NavigationItem> navItems = new ArrayList<NavigationItem>(Arrays.asList(new NavigationItem("Home", "${baseUrl}")));
 
-        navItems.add(new NavigationItem("Graphs", "${baseUrl}/graphs"));
-        navItems.add(new NavigationItem("Education", "${baseUrl}/education"));
-        navItems.add(new NavigationItem("Going Green", "${baseUrl}/goinggreen"));
-        navItems.add(new NavigationItem("Related", "${baseUrl}/links"));
-        navItems.add(new NavigationItem("Publications", "#"));
-        navItems.add(new NavigationItem("Statistics", "#"));
-        navItems.add(new NavigationItem("About", "${baseUrl}/about"));
-
         if (currentUserImpl != null) {
             navItems.add(new NavigationItem("Dashboard", "${baseUrl}/dashboard"));
         } else {
