@@ -3,7 +3,7 @@
 
 <display>
     <category name="category.sample">
-        <portlet id="coralwatch-portlet"/>
+        <portlet id="registration-portlet"/>
         <portlet id="login-portlet"/>
     </category>
 </display>

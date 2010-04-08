@@ -6,34 +6,8 @@
                  http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <display-name>Coralwatch</display-name>
 
+    <listener>
+        <listener-class>org.coralwatch.app.ApplicationContext</listener-class>
+    </listener>
 
-    <!--&lt;!&ndash; Restlet adapter &ndash;&gt;-->
-    <!--<servlet>-->
-    <!--<servlet-name>RestletServlet</servlet-name>-->
-    <!--<servlet-class>-->
-    <!--com.noelios.restlet.ext.servlet.ServerServlet-->
-    <!--</servlet-class>-->
-    <!--</servlet>-->
-
-    <!--<listener>-->
-    <!--<listener-class>org.coralwatch.app.ApplicationContext</listener-class>-->
-    <!--</listener>-->
-
-    <!--<context-param>-->
-    <!--<param-name>org.restlet.application</param-name>-->
-    <!--<param-value>org.coralwatch.app.CoralwatchApplication</param-value>-->
-    <!--</context-param>-->
-
-    <!--&lt;!&ndash; as long as we support standalone operation the protocols need to be-->
-    <!--added in the CoralwatchComponent class, too &ndash;&gt;-->
-    <!--<context-param>-->
-    <!--<param-name>org.restlet.clients</param-name>-->
-    <!--<param-value>CLAP FILE</param-value>-->
-    <!--</context-param>-->
-
-    <!--&lt;!&ndash; Catch all requests &ndash;&gt;-->
-    <!--<servlet-mapping>-->
-    <!--<servlet-name>RestletServlet</servlet-name>-->
-    <!--<url-pattern>/*</url-pattern>-->
-    <!--</servlet-mapping>-->
 </web-app>

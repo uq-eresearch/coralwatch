@@ -4,21 +4,21 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
     <portlet>
-        <portlet-name>coralwatch-portlet</portlet-name>
-        <display-name>CoralWatch Portlet</display-name>
-        <portlet-class>org.coralwatch.portlets.JSPPortlet</portlet-class>
+        <portlet-name>registration-portlet</portlet-name>
+        <display-name>Registration Portlet</display-name>
+        <portlet-class>org.coralwatch.portlets.RegistrationPortlet</portlet-class>
         <init-param>
-            <name>view-jsp</name>
-            <value>/view.jsp</value>
+            <name>registration-jsp</name>
+            <value>/user-management/registration.jsp</value>
         </init-param>
         <expiration-cache>0</expiration-cache>
         <supports>
             <mime-type>text/html</mime-type>
         </supports>
         <portlet-info>
-            <title>CoralWatch Test Portlet</title>
-            <short-title>Test</short-title>
-            <keywords>coralwatch</keywords>
+            <title>CoralWatch Registration Portlet</title>
+            <short-title>Registration</short-title>
+            <keywords>registration</keywords>
         </portlet-info>
         <security-role-ref>
             <role-name>administrator</role-name>

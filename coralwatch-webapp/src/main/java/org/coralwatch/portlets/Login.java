@@ -10,9 +10,6 @@ import java.io.IOException;
 public class Login extends GenericPortlet {
 
     private static Log _log = LogFactoryUtil.getLog(JSPPortlet.class);
-
-    protected String editJSP;
-    protected String helpJSP;
     protected String viewJSP;
 
     public void init() throws PortletException {
