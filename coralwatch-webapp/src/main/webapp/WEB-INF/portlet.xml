@@ -35,6 +35,36 @@
     </portlet>
 
     <portlet>
+        <portlet-name>kitrequest-portlet</portlet-name>
+        <display-name>Kit Request</display-name>
+        <portlet-class>org.coralwatch.portlets.KitRequestPortlet</portlet-class>
+        <init-param>
+            <name>kitrequest-jsp</name>
+            <value>/data/kit-request/kitrequest.jsp</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>CoralWatch Kit Request</title>
+            <short-title>Kit Request</short-title>
+            <keywords>Kit Request</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
+    <portlet>
         <portlet-name>login-portlet</portlet-name>
         <display-name>CoralWatch Login</display-name>
         <portlet-class>org.coralwatch.portlets.Login</portlet-class>
