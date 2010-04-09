@@ -21,7 +21,7 @@ public class KitRequestPortlet extends GenericPortlet {
     protected String viewJSP;
     protected UserDao userdao;
     protected KitRequestDao kitRequestDao;
-    List<SubmissionError> errors;
+    protected List<SubmissionError> errors;
 
     public void init() throws PortletException {
         viewJSP = getInitParameter("kitrequest-jsp");

@@ -56,6 +56,9 @@
 <%
     }
 %>
+<br/>
+<span>Submit Kit Requests</span>
+
 <form action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
     <table>
         <tr>

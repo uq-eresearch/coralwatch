@@ -1,11 +1,25 @@
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <%@ page import="com.liferay.portal.kernel.util.Constants" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
+<%@ page import="org.coralwatch.portlets.error.SubmissionError" %>
 <%@ page import="javax.portlet.PortletSession" %>
+<%@ page import="java.util.List" %>
 <portlet:defineObjects/>
 <%
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
 %>
+
+<%
+    List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getPortletSession().getAttribute("errors");
+    if (!errors.isEmpty()) {
+        for (SubmissionError error : errors) {
+%>
+<div><span class="portlet-msg-error"><%=error.getErrorMessage()%></span></div>
+<%
+        }
+    }
+%>
+
 <form action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
     <%
         if (currentUser == null) {
