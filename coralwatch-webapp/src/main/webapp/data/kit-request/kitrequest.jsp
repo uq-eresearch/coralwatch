@@ -1,14 +1,61 @@
 <%@ page import="org.coralwatch.dataaccess.KitRequestDao" %>
+<%@ page import="org.coralwatch.model.KitRequest" %>
+<%@ page import="org.coralwatch.model.UserImpl" %>
+<%@ page import="org.coralwatch.portlets.error.SubmissionError" %>
+<%@ page import="javax.portlet.PortletSession" %>
+<%@ page import="java.util.List" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <portlet:defineObjects/>
 <%
+
+    List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getPortletSession().getAttribute("errors");
     KitRequestDao kitRequestDao = (KitRequestDao) renderRequest.getPortletSession().getAttribute("kitrequestdao");
+    UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("kitrequestdao", PortletSession.APPLICATION_SCOPE);
 %>
 <h3>Kit Request</h3>
 
-<p>Number of kit requests <%= kitRequestDao.getAll().size() %>
-</p>
-
+<%
+    if (!errors.isEmpty()) {
+        for (SubmissionError error : errors) {
+%>
+<div><span class="portlet-msg-error"><%=error.getErrorMessage()%></span></div>
+<%
+        }
+    }
+    List<KitRequest> kitRequests = kitRequestDao.getAll();
+    if (kitRequests.size() > 0) {
+%>
+<span>Previous Kit Requests</span>
+<table>
+    <tr>
+        <td>#</td>
+        <td>Requester</td>
+        <td>Date</td>
+        <td>Address</td>
+        <td>Notes</td>
+    </tr>
+    <%
+        for (int i = 0; i < kitRequests.size(); i++) {
+    %>
+    <tr>
+        <td><%=(i + 1)%>
+        </td>
+        <td><%=kitRequests.get(i).getRequester().getDisplayName()%>
+        </td>
+        <td><%=kitRequests.get(i).getRequestDate()%>
+        </td>
+        <td><%=kitRequests.get(i).getAddress()%>
+        </td>
+        <td><%=kitRequests.get(i).getNotes()%>
+        </td>
+    </tr>
+    <%
+        }
+    %>
+</table>
+<%
+    }
+%>
 <form action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
     <table>
         <tr>

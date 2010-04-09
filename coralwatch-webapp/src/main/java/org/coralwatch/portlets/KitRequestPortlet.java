@@ -8,9 +8,12 @@ import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.KitRequest;
 import org.coralwatch.model.UserImpl;
+import org.coralwatch.portlets.error.SubmissionError;
 
 import javax.portlet.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KitRequestPortlet extends GenericPortlet {
 
@@ -18,42 +21,51 @@ public class KitRequestPortlet extends GenericPortlet {
     protected String viewJSP;
     protected UserDao userdao;
     protected KitRequestDao kitRequestDao;
+    List<SubmissionError> errors;
 
     public void init() throws PortletException {
         viewJSP = getInitParameter("kitrequest-jsp");
         userdao = CoralwatchApplication.getConfiguration().getUserDao();
         kitRequestDao = CoralwatchApplication.getConfiguration().getKitRequestDao();
+        errors = new ArrayList<SubmissionError>();
     }
 
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         PortletSession session = renderRequest.getPortletSession();
         session.setAttribute("kitrequestdao", kitRequestDao, PortletSession.PORTLET_SCOPE);
+        session.setAttribute("errors", errors, PortletSession.PORTLET_SCOPE);
         include(viewJSP, renderRequest, renderResponse);
     }
 
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
+
+        PortletSession session = actionRequest.getPortletSession();
+        ((List<SubmissionError>) session.getAttribute("errors")).clear();
+
         String address = actionRequest.getParameter("address");
         String notes = actionRequest.getParameter("notes");
         boolean agreement = ParamUtil.getBoolean(actionRequest, "agreement");
 
-        if (agreement) {
-            //TODO change this to use the current logged in user
-            UserImpl user = userdao.getById(new Long(1));
+        UserImpl user = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
+
+        if (user == null) {
+            errors.add(new SubmissionError("You must be logged in to submit a kit request."));
+        }
+        if (!agreement) {
+            errors.add(new SubmissionError("You must agree to the terms and conditions to submit a kit request."));
+        }
+
+        if (address == null || address.isEmpty()) {
+            errors.add(new SubmissionError("No address was provided. Postal address must be supplied for kit request."));
+        }
+        if (errors.isEmpty()) {
 
             KitRequest kitRequest = new KitRequest(user);
-            if (address == null || address.isEmpty()) {
-
-            } else {
-                kitRequest.setAddress(address);
-            }
+            kitRequest.setAddress(address);
             kitRequest.setNotes(notes);
-
             kitRequestDao.save(kitRequest);
-            _log.info("===number of kit requests: " + kitRequestDao.getAll().size() + " =======");
-            actionResponse.sendRedirect("/user-management/registration.jsp");
-        } else {
-            _log.error("===You must agree to the terms and conditions.=======");
         }
+
     }
 
     protected void include(String path, RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
