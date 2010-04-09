@@ -1,4 +1,5 @@
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
+<%@ page import="com.liferay.portal.kernel.util.Constants" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
 <%@ page import="javax.portlet.PortletSession" %>
 <portlet:defineObjects/>
@@ -25,7 +26,9 @@
     <%
     } else {
     %>
-    <span>You are logged in as <%= currentUser.getDisplayName()%></span></span>
+    <span>You are logged in as <a href="#"><%= currentUser.getDisplayName()%>
+    </a><br/><br/><a href="#">Dashboard</a> | <a href="#"
+                                                 onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DEACTIVATE %>" /></portlet:actionURL>';">Logout</a></span>
     <%
         }
     %>
