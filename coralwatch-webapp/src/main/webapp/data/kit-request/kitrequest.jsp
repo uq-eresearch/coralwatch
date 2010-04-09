@@ -1,6 +1,13 @@
+<%@ page import="org.coralwatch.dataaccess.KitRequestDao" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <portlet:defineObjects/>
+<%
+    KitRequestDao kitRequestDao = (KitRequestDao) renderRequest.getPortletSession().getAttribute("kitrequestdao");
+%>
 <h3>Kit Request</h3>
+
+<p>Number of kit requests <%= kitRequestDao.getAll().size() %>
+</p>
 
 <form action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
     <table>

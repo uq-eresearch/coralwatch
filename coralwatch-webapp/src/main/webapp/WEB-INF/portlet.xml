@@ -67,10 +67,10 @@
     <portlet>
         <portlet-name>login-portlet</portlet-name>
         <display-name>CoralWatch Login</display-name>
-        <portlet-class>org.coralwatch.portlets.Login</portlet-class>
+        <portlet-class>org.coralwatch.portlets.LoginPortlet</portlet-class>
         <init-param>
             <name>login-jsp</name>
-            <value>/login.jsp</value>
+            <value>/user-management/login.jsp</value>
         </init-param>
         <expiration-cache>0</expiration-cache>
         <supports>

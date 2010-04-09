@@ -26,6 +26,8 @@ public class KitRequestPortlet extends GenericPortlet {
     }
 
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
+        PortletSession session = renderRequest.getPortletSession();
+        session.setAttribute("kitrequestdao", kitRequestDao, PortletSession.PORTLET_SCOPE);
         include(viewJSP, renderRequest, renderResponse);
     }
 
