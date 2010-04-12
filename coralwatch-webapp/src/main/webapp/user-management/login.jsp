@@ -24,6 +24,7 @@
     <%
         if (currentUser == null) {
     %>
+    <h2>Member's Sign In</h2>
     <table>
         <tr>
             <td>Email:</td>

@@ -4,13 +4,6 @@
 
 <liferay-portlet-app>
     <portlet>
-        <portlet-name>registration-portlet</portlet-name>
-        <icon>/icon.png</icon>
-        <instanceable>true</instanceable>
-        <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
-        <footer-portlet-javascript>/js/test.js</footer-portlet-javascript>
-    </portlet>
-    <portlet>
         <portlet-name>kitrequest-portlet</portlet-name>
         <icon>/icon.png</icon>
         <instanceable>true</instanceable>
@@ -19,6 +12,20 @@
     </portlet>
     <portlet>
         <portlet-name>login-portlet</portlet-name>
+        <icon>/icon.png</icon>
+        <instanceable>true</instanceable>
+        <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
+        <footer-portlet-javascript>/js/test.js</footer-portlet-javascript>
+    </portlet>
+    <portlet>
+        <portlet-name>registration-portlet</portlet-name>
+        <icon>/icon.png</icon>
+        <instanceable>true</instanceable>
+        <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
+        <footer-portlet-javascript>/js/test.js</footer-portlet-javascript>
+    </portlet>
+    <portlet>
+        <portlet-name>survey-portlet</portlet-name>
         <icon>/icon.png</icon>
         <instanceable>true</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>

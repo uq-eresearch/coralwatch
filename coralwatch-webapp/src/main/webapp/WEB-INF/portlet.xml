@@ -33,6 +33,36 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
+    <portlet>
+        <portlet-name>login-portlet</portlet-name>
+        <display-name>CoralWatch Login</display-name>
+        <portlet-class>org.coralwatch.portlets.LoginPortlet</portlet-class>
+        <init-param>
+            <name>login-jsp</name>
+            <value>/user-management/login.jsp</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>CoralWatch Login</title>
+            <short-title>Login</short-title>
+            <keywords>Login</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
 
     <portlet>
         <portlet-name>kitrequest-portlet</portlet-name>
@@ -64,22 +94,23 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
+
     <portlet>
-        <portlet-name>login-portlet</portlet-name>
-        <display-name>CoralWatch Login</display-name>
-        <portlet-class>org.coralwatch.portlets.LoginPortlet</portlet-class>
+        <portlet-name>survey-portlet</portlet-name>
+        <display-name>CoralWatch Survey</display-name>
+        <portlet-class>org.coralwatch.portlets.SurveyPortlet</portlet-class>
         <init-param>
-            <name>login-jsp</name>
-            <value>/user-management/login.jsp</value>
+            <name>survey-jsp</name>
+            <value>/data/survey/survey.jsp</value>
         </init-param>
         <expiration-cache>0</expiration-cache>
         <supports>
             <mime-type>text/html</mime-type>
         </supports>
         <portlet-info>
-            <title>CoralWatch Login</title>
-            <short-title>Login</short-title>
-            <keywords>Login</keywords>
+            <title>CoralWatch Survey</title>
+            <short-title>Survey</short-title>
+            <keywords>Survey</keywords>
         </portlet-info>
         <security-role-ref>
             <role-name>administrator</role-name>

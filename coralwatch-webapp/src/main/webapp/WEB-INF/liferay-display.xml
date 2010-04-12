@@ -3,8 +3,9 @@
 
 <display>
     <category name="category.sample">
+        <portlet id="kitrequest-portlet"/>
         <portlet id="login-portlet"/>
         <portlet id="registration-portlet"/>
-        <portlet id="kitrequest-portlet"/>
+        <portlet id="survey-portlet"/>
     </category>
 </display>
