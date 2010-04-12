@@ -12,7 +12,7 @@
     KitRequestDao kitRequestDao = (KitRequestDao) renderRequest.getPortletSession().getAttribute("kitrequestdao");
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("kitrequestdao", PortletSession.APPLICATION_SCOPE);
 %>
-<h3>Kit Request</h3>
+<div class="coralwatch-portlet-header"><span>Kit Request</span></div>
 
 <%
     if (!errors.isEmpty()) {
@@ -63,15 +63,16 @@
     <table>
         <tr>
             <td width="10%"><label for="address">Address</label></td>
-            <td width="90%"><input class="stretched" type="text" name="address" id="address"/></td>
+            <td width="90%"><input class="coralwatch-input-stretched" type="text" name="address" id="address"/></td>
         </tr>
         <tr>
             <td><label for="notes">Notes</label></td>
-            <td><input class="stretched" type="text" name="notes" id="notes"/></td>
+            <td><input class="coralwatch-input-stretched" type="text" name="notes" id="notes"/></td>
         </tr>
         <tr>
-            <td colspan="2"><textarea cols="80" rows="5" readonly="readonly" name="conditions" id="conditions">Terms and
-                conditions here.</textarea></td>
+            <td colspan="2"><textarea cols="80" rows="5" readonly="readonly" name="conditions" id="conditions">
+                Terms and conditions here.
+            </textarea></td>
         </tr>
         <tr>
             <td colspan="2"><input type="checkbox" name="agreement" id="agreement"/><label> I agree to the terms and

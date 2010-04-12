@@ -6,25 +6,25 @@
 <%@ page import="java.util.List" %>
 <portlet:defineObjects/>
 <%
+    List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getPortletSession().getAttribute("errors");
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
 %>
 
-<%
-    List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getPortletSession().getAttribute("errors");
-    if (!errors.isEmpty()) {
-        for (SubmissionError error : errors) {
-%>
-<div><span class="portlet-msg-error"><%=error.getErrorMessage()%></span></div>
-<%
-        }
-    }
-%>
 
 <form action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
     <%
         if (currentUser == null) {
     %>
-    <h2>Member's Sign In</h2>
+    <div class="coralwatch-portlet-header"><span>Member's Sign In</span></div>
+    <%
+        if (!errors.isEmpty()) {
+            for (SubmissionError error : errors) {
+    %>
+    <div><span class="portlet-msg-error"><%=error.getErrorMessage()%></span></div>
+    <%
+            }
+        }
+    %>
     <table>
         <tr>
             <td>Email:</td>
