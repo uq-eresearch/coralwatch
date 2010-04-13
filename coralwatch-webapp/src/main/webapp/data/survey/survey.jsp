@@ -228,19 +228,25 @@
     List<Survey> surveys = surveyDao.getAll();
     int numberOfSurveys = surveys.size();
     int pageSize = 10;
-    int numberOfPages = numberOfSurveys / pageSize + 1;
     int pageNumber = ParamUtil.getInteger(request, "page");
     if (pageNumber <= 0) {
         pageNumber = 1;
     }
     int lowerLimit = (pageNumber - 1) * pageSize;
-    int upperLimit = (pageNumber) * pageSize;
+    int upperLimit = lowerLimit + pageSize;
+    int numberOfPages = numberOfSurveys / pageSize;
+    if (numberOfSurveys % pageSize > 0) {
+        numberOfPages++;
+        if (pageNumber == numberOfPages) {
+            upperLimit = lowerLimit + (numberOfSurveys % pageSize);
+        }
+    }
 %>
 <div class="coralwatch-portlet-header"><span>View Survey</span></div>
 <br/>
 <table>
     <tr>
-        <th align="center">#</th>
+        <th>#</th>
         <th>Creator</th>
         <th>Date</th>
         <th>Reef</th>
@@ -283,11 +289,18 @@
 <div style="text-align:center;"><span>Page:</span>
     <%
         for (int i = 0; i < numberOfPages; i++) {
+            if (i == pageNumber - 1) {
     %>
+    <span style="text-decoration:underline;"><%=i + 1%></span>
+    <%
+    } else {
+    %>
+
     <a href="#"
        onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.PREVIEW %>" /><portlet:param name="page" value="<%= String.valueOf(i + 1) %>" /></portlet:renderURL>';"><%=i + 1%>
     </a>
     <%
+            }
         }
     %>
 </div>
