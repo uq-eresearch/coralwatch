@@ -3,6 +3,8 @@ package org.coralwatch.portlets;
 import au.edu.uq.itee.maenad.util.BCrypt;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.ParamUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.UserImpl;
@@ -18,13 +20,13 @@ public class RegistrationPortlet extends GenericPortlet {
 
     private static Log _log = LogFactoryUtil.getLog(JSPPortlet.class);
     protected String viewJSP;
-    protected UserDao userdao;
+    protected UserDao userDao;
     protected List<SubmissionError> errors;
     protected HashMap<String, String> params;
 
     public void init() throws PortletException {
         viewJSP = getInitParameter("registration-jsp");
-        userdao = CoralwatchApplication.getConfiguration().getUserDao();
+        userDao = CoralwatchApplication.getConfiguration().getUserDao();
         errors = new ArrayList<SubmissionError>();
         params = new HashMap<String, String>();
     }
@@ -32,6 +34,7 @@ public class RegistrationPortlet extends GenericPortlet {
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         PortletSession session = renderRequest.getPortletSession();
         session.setAttribute("errors", errors, PortletSession.PORTLET_SCOPE);
+        session.setAttribute("userDao", userDao, PortletSession.PORTLET_SCOPE);
         session.setAttribute("params", params, PortletSession.PORTLET_SCOPE);
         include(viewJSP, renderRequest, renderResponse);
     }
@@ -40,42 +43,64 @@ public class RegistrationPortlet extends GenericPortlet {
         PortletSession session = actionRequest.getPortletSession(true);
         ((List<SubmissionError>) session.getAttribute("errors")).clear();
 
+        String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+
         String email = actionRequest.getParameter("email");
-        params.put("email", email);
         String email2 = actionRequest.getParameter("email2");
-        params.put("email2", email2);
         String password = actionRequest.getParameter("password");
         String password2 = actionRequest.getParameter("password2");
         String country = actionRequest.getParameter("country");
-        params.put("country", country);
         String displayName = actionRequest.getParameter("displayName");
+        String address = actionRequest.getParameter("address");
+        long userId = ParamUtil.getLong(actionRequest, "userId");
+
+        _log.info("User id " + userId + " CMD " + cmd);
+
+        params.put("email", email);
+        params.put("email2", email2);
+        params.put("password", password);
+        params.put("country", country);
         params.put("displayName", displayName);
+        params.put("address", address);
 
-        if ((email == null) || email.isEmpty() || (displayName == null) || displayName.isEmpty() || (password == null) || (country == null) || country.isEmpty()) {
-            errors.add(new SubmissionError("All fields are required."));
-        } else {
-            //TODO validate email
-            if (!email.equals(email2)) {
-                errors.add(new SubmissionError("Confirm your email address."));
+        if (cmd.equals(Constants.ADD)) {
+            if ((email == null) || email.isEmpty() || (displayName == null) || displayName.isEmpty() || (password == null) || (country == null) || country.isEmpty()) {
+                errors.add(new SubmissionError("All fields are required."));
             } else {
-                if (password.length() < 6) {
-                    errors.add(new SubmissionError("Password must be at least 6 characters."));
+                //TODO validate email
+                if (!email.equals(email2)) {
+                    errors.add(new SubmissionError("Confirm your email address."));
                 } else {
-                    if (!password.equals(password2)) {
-                        errors.add(new SubmissionError("Confirm your password."));
+                    if (password.length() < 6) {
+                        errors.add(new SubmissionError("Password must be at least 6 characters."));
                     } else {
-                        if (userdao.getByEmail(email) != null) {
-                            errors.add(new SubmissionError("An account with the same email already exists."));
+                        if (!password.equals(password2)) {
+                            errors.add(new SubmissionError("Confirm your password."));
                         } else {
-                            UserImpl userImpl = new UserImpl(displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
-                            userImpl.setCountry(country);
-                            userdao.save(userImpl);
-                            session.setAttribute("currentUser", userImpl, PortletSession.APPLICATION_SCOPE);
+                            if (userDao.getByEmail(email) != null) {
+                                errors.add(new SubmissionError("An account with the same email already exists."));
+                            } else {
+                                UserImpl userImpl = new UserImpl(displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
+                                userImpl.setCountry(country);
+                                userDao.save(userImpl);
+                                session.setAttribute("currentUser", userImpl, PortletSession.APPLICATION_SCOPE);
+                            }
                         }
-                    }
 
+
+                    }
                 }
             }
+        } else {
+            UserImpl user = userDao.getById(userId);
+            user.setEmail(email);
+            if (password != null && password2 != null) {
+                user.setPasswordHash(BCrypt.hashpw(password, BCrypt.gensalt()));
+            }
+            user.setCountry(country);
+            user.setDisplayName(displayName);
+            user.setAddress(address);
+            userDao.update(user);
         }
     }
 
