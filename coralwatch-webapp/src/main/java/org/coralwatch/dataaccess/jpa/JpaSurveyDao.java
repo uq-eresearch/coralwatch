@@ -20,4 +20,17 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao {
         return entityManagerSource.getEntityManager().createQuery("SELECT o FROM SurveyRecord o WHERE o.survey = :survey ORDER BY o.id").setParameter("survey",
                 survey).getResultList();
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Survey getById(Long id) {
+        List<?> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM Survey o WHERE o.id = :id").setParameter("id", id).getResultList();
+        if (resultList.isEmpty()) {
+            return null;
+        }
+        assert resultList.size() == 1 : "Email should be unique";
+        return (Survey) resultList.get(0);
+
+    }
+
 }

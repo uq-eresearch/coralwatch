@@ -56,7 +56,7 @@
     <table>
         <tr>
             <td><label for="email">Email:</label></td>
-            <td><input type="text" name="email" id="email" value="<%=email%>"/></td>
+            <td><input type="text" name="email" id="email" value="<%=email == null ? "" : email%>"/></td>
         </tr>
         <tr>
             <td><label for="email2">Confirm Email:</label></td>
@@ -72,14 +72,15 @@
         </tr>
         <tr>
             <td><label for="displayName">Display Name:</label></td>
-            <td><input type="text" name="displayName" id="displayName" value="<%=displayName%>"/></td>
+            <td><input type="text" name="displayName" id="displayName"
+                       value="<%=displayName == null ? "" : displayName%>"/></td>
         </tr>
         <%
             if (cmd.equals(Constants.EDIT)) {
         %>
         <tr>
             <td><label for="address">Address:</label></td>
-            <td><input type="text" name="address" id="address" value="<%=address%>"/></td>
+            <td><input type="text" name="address" id="address" value="<%=address == null ? "" : address%>"/></td>
         </tr>
         <%
             }

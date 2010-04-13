@@ -1,13 +1,14 @@
 package org.coralwatch.dataaccess;
 
-import java.util.List;
-
+import au.edu.uq.itee.maenad.dataaccess.Dao;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 
-import au.edu.uq.itee.maenad.dataaccess.Dao;
+import java.util.List;
 
 
 public interface SurveyDao extends Dao<Survey> {
-     List<SurveyRecord> getSurveyRecords(Survey survey);
+    List<SurveyRecord> getSurveyRecords(Survey survey);
+
+    Survey getById(Long id);
 }

@@ -5,10 +5,7 @@ import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
 import au.edu.uq.itee.maenad.util.BCrypt;
 import org.coralwatch.dataaccess.*;
 import org.coralwatch.dataaccess.jpa.*;
-import org.coralwatch.model.Survey;
-import org.coralwatch.model.SurveyRecord;
-import org.coralwatch.model.UserImpl;
-import org.coralwatch.model.UserTrust;
+import org.coralwatch.model.*;
 import org.restlet.service.ConnectorService;
 
 import javax.persistence.EntityManagerFactory;
@@ -151,65 +148,65 @@ public class ApplicationContext implements Configuration, ServletContextListener
         userDao.save(peter);
         userTrustDao.save(new UserTrust(charlie, peter, 3));
 
-//        //Add dummy reefs
-//        Random rand = new Random();
-//        String[] testReefNames = getTestReefNames();
-//        for (String testReefName : testReefNames) {
-//            String[] countries = {"Australia", "New Zealand"};
-//            reefDao.save(new Reef(testReefName, countries[rand.nextInt(2)]));
-//        }
-//
-//        //Add some test surveys
-//        Survey testSurvey1 = getTestSurvey(admin);
-//        surveyDao.save(testSurvey1);
-//        addTestSurveyRecord(testSurvey1);
-//
-//        Survey testSurvey2 = getTestSurvey(admin);
-//        surveyDao.save(testSurvey2);
-//        addTestSurveyRecord(testSurvey2);
-//
-//        Survey testSurvey3 = getTestSurvey(admin);
-//        surveyDao.save(testSurvey3);
-//        addTestSurveyRecord(testSurvey3);
-//
-//        Survey testSurvey4 = getTestSurvey(admin);
-//        surveyDao.save(testSurvey4);
-//        addTestSurveyRecord(testSurvey4);
-//
-//        //Add dummy usernames with rating
-//        String[] testUsernames = getTestUsernames();
-//        for (int i = 0; i < testUsernames.length; i++) {
-//            UserImpl newUser = new UserImpl(testUsernames[i], testUsernames[i].toLowerCase() + "@coralwatch.org", BCrypt.hashpw(testUsernames[i].toLowerCase(), BCrypt.gensalt()), false);
-//            userDao.save(newUser);
-//            Survey testSurvey = getTestSurvey(newUser);
-//            surveyDao.save(testSurvey);
-//            addTestSurveyRecord(testSurvey);
-//            if (i % 4 == 0) {
-//                double randomNumber = rand.nextDouble() * 5;
-//                userTrustDao.save(new UserTrust(admin, newUser, randomNumber));
-//                Survey testSurvey5 = getTestSurvey(newUser);
-//                surveyDao.save(testSurvey5);
-//                addTestSurveyRecord(testSurvey5);
-//            }
-//            if (i % 9 == 0) {
-//                double randomNumber = rand.nextDouble() * 5;
-//                userTrustDao.save(new UserTrust(charlie, newUser, randomNumber));
-//                Survey testSurvey6 = getTestSurvey(newUser);
-//                surveyDao.save(testSurvey6);
-//                addTestSurveyRecord(testSurvey6);
-//            }
-//            if (i % 31 == 0) {
-//                double randomNumber = rand.nextDouble() * 5;
-//                userTrustDao.save(new UserTrust(newUser, admin, randomNumber));
-//            }
-//            if (i % 35 == 0) {
-//                double randomNumber = rand.nextDouble() * 5;
-//                userTrustDao.save(new UserTrust(newUser, charlie, randomNumber));
-//            }
-//        }
-//
-//        Logger.getLogger(getClass().getName()).log(Level.INFO,
-//                "Created new default admin user with email address 'admin@coralwatch.org' and password 'admin'.");
+        //Add dummy reefs
+        Random rand = new Random();
+        String[] testReefNames = getTestReefNames();
+        for (String testReefName : testReefNames) {
+            String[] countries = {"Australia", "New Zealand"};
+            reefDao.save(new Reef(testReefName, countries[rand.nextInt(2)]));
+        }
+
+        //Add some test surveys
+        Survey testSurvey1 = getTestSurvey(admin);
+        surveyDao.save(testSurvey1);
+        addTestSurveyRecord(testSurvey1);
+
+        Survey testSurvey2 = getTestSurvey(admin);
+        surveyDao.save(testSurvey2);
+        addTestSurveyRecord(testSurvey2);
+
+        Survey testSurvey3 = getTestSurvey(admin);
+        surveyDao.save(testSurvey3);
+        addTestSurveyRecord(testSurvey3);
+
+        Survey testSurvey4 = getTestSurvey(admin);
+        surveyDao.save(testSurvey4);
+        addTestSurveyRecord(testSurvey4);
+
+        //Add dummy usernames with rating
+        String[] testUsernames = getTestUsernames();
+        for (int i = 0; i < testUsernames.length; i++) {
+            UserImpl newUser = new UserImpl(testUsernames[i], testUsernames[i].toLowerCase() + "@coralwatch.org", BCrypt.hashpw(testUsernames[i].toLowerCase(), BCrypt.gensalt()), false);
+            userDao.save(newUser);
+            Survey testSurvey = getTestSurvey(newUser);
+            surveyDao.save(testSurvey);
+            addTestSurveyRecord(testSurvey);
+            if (i % 4 == 0) {
+                double randomNumber = rand.nextDouble() * 5;
+                userTrustDao.save(new UserTrust(admin, newUser, randomNumber));
+                Survey testSurvey5 = getTestSurvey(newUser);
+                surveyDao.save(testSurvey5);
+                addTestSurveyRecord(testSurvey5);
+            }
+            if (i % 9 == 0) {
+                double randomNumber = rand.nextDouble() * 5;
+                userTrustDao.save(new UserTrust(charlie, newUser, randomNumber));
+                Survey testSurvey6 = getTestSurvey(newUser);
+                surveyDao.save(testSurvey6);
+                addTestSurveyRecord(testSurvey6);
+            }
+            if (i % 31 == 0) {
+                double randomNumber = rand.nextDouble() * 5;
+                userTrustDao.save(new UserTrust(newUser, admin, randomNumber));
+            }
+            if (i % 35 == 0) {
+                double randomNumber = rand.nextDouble() * 5;
+                userTrustDao.save(new UserTrust(newUser, charlie, randomNumber));
+            }
+        }
+
+        Logger.getLogger(getClass().getName()).log(Level.INFO,
+                "Created new default admin user with email address 'admin@coralwatch.org' and password 'admin'.");
     }
 
     private Survey getTestSurvey(UserImpl user) {
