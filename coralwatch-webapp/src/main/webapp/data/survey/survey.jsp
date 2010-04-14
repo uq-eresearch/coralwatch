@@ -16,6 +16,13 @@
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <portlet:defineObjects/>
 <jsp:include page="/include/jquery.jsp"/>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#tabs2").tabs();
+        $("#tabs1").tabs();
+        $("#tabs").tabs();
+    });
+</script>
 <%
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
     SurveyDao surveyDao = (SurveyDao) renderRequest.getPortletSession().getAttribute("surveyDao");
@@ -445,7 +452,7 @@
 
 <div id="tabs">
     <ul>
-        <li><a href="#fragment-2"><span>Metadata</span></a></li>
+        <li><a href="#fragment-2"><span>Survey</span></a></li>
         <li><a href="#fragment-3"><span>Data</span></a></li>
     </ul>
     <div id="fragment-2">
@@ -609,12 +616,9 @@
         }
     }
 %>
-<div class="coralwatch-portlet-header"><span>CoralWatch Surveys</span></div>
-<br/>
-
 <div id="tabs2">
     <ul>
-        <li><a href="#fragment-4"><span>Metadata</span></a></li>
+        <li><a href="#fragment-4"><span>Surveys</span></a></li>
     </ul>
     <div id="fragment-4">
         <%

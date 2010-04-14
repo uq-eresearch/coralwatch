@@ -41,10 +41,11 @@
     <%
     } else {
     %>
+    <div class="coralwatch-portlet-header"><span>Current User</span></div>
     <span>You are logged in as <a href="#"
                                   onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="userId" value="<%= String.valueOf(currentUser.getId()) %>" /></portlet:actionURL>';"><%= currentUser.getDisplayName()%>
-    </a><br/><br/><a href="#">Dashboard</a> | <a href="#"
-                                                 onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DEACTIVATE %>" /></portlet:actionURL>';">Logout</a></span>
+    </a> | <a href="#"
+              onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DEACTIVATE %>" /></portlet:actionURL>';">Logout</a></span>
     <%
         }
     %>

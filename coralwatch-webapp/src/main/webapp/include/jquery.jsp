@@ -15,11 +15,3 @@
 <script type="text/javascript"
         src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
 <script type="text/javascript" src="http://jquery-ui.googlecode.com/svn/tags/1.7.2/ui/ui.tabs.js"></script>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#tabs2").tabs();
-        $("#tabs1").tabs();
-        $("#tabs").tabs();
-    });
-</script>

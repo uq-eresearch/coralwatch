@@ -5,6 +5,7 @@
     <category name="category.sample">
         <portlet id="kitrequest-portlet"/>
         <portlet id="login-portlet"/>
+        <portlet id="map-portlet"/>
         <portlet id="registration-portlet"/>
         <portlet id="survey-portlet"/>
     </category>

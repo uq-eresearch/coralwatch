@@ -6,6 +6,8 @@
 <%@ page import="org.coralwatch.portlets.error.SubmissionError" %>
 <%@ page import="javax.portlet.PortletSession" %>
 <%@ page import="javax.portlet.WindowState" %>
+<%@ page import="java.text.DateFormat" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 
@@ -17,6 +19,7 @@
     List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getPortletSession().getAttribute("errors");
     UserDao userDao = (UserDao) renderRequest.getPortletSession().getAttribute("userDao");
     HashMap<String, String> params = (HashMap<String, String>) renderRequest.getPortletSession().getAttribute("params");
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     String cmd = ParamUtil.getString(request, Constants.CMD);
     if (currentUser == null) {
         cmd = Constants.ADD;
@@ -121,7 +124,7 @@
 <% } else {
     UserImpl user;
     if (userId <= 0) {
-        user = userDao.getById(currentUser.getId());
+        user = currentUser;
     } else {
         user = userDao.getById(userId);
     }
@@ -133,6 +136,17 @@
         <th>Display Name:</th>
         <td><%= user.getDisplayName()%>
         </td>
+        <td rowspan="4" style="text-align:right">
+            <img src="<%=user.getGravatarUrl()%>" alt="<%=user.getDisplayName()%>"/>
+            <%
+                if (user.equals(currentUser)) {
+            %>
+            <br/>
+            <a href="http://www.gravatar.com">Change Image</a>
+            <%
+                }
+            %>
+        </td>
     </tr>
     <tr>
         <th>Email:</th>
@@ -141,34 +155,45 @@
     </tr>
     <tr>
         <th>Member since (d/m/y):</th>
-        <td><%= user.getRegistrationDate()%>
+        <td><%= dateFormat.format(user.getRegistrationDate())%>
         </td>
     </tr>
     <tr>
         <th>Occupation:</th>
-        <td><%= user.getOccupation() == null ? "" : user.getOccupation()%>
+        <td><%= user.getOccupation() == null ? "Not Set" : user.getOccupation()%>
         </td>
     </tr>
     <tr>
         <th>Address:</th>
-        <td><%= user.getAddress() == null ? "" : user.getAddress()%>
+        <td><%= user.getAddress() == null ? "Not Set" : user.getAddress()%>
         </td>
     </tr>
     <tr>
         <th>Aurveys:</th>
-        <td></td>
+        <td><a href="#"><%=userDao.getSurveyEntriesCreated(user).size()%> survey(s)</a></td>
     </tr>
-    <%
-        if (currentUser.equals(user)) {
-    %>
     <tr>
+        <th>Photos:</th>
+        <td>No Photos Yet</td>
+    </tr>
+    <tr>
+        <%
+            if (currentUser.equals(user)) {
+        %>
         <td colspan="2"><input type="button" value="Edit"
                                onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
         </td>
+        <%
+            }
+            if (currentUser.isSuperUser()) {
+        %>
+        <td colspan="2"><input type="button" value="Delete"
+                               onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
+        </td>
+        <%
+            }
+        %>
     </tr>
-    <%
-        }
-    %>
 </table>
 <%
     }

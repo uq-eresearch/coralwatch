@@ -63,6 +63,36 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
+    <portlet>
+        <portlet-name>map-portlet</portlet-name>
+        <display-name>CoralWatch Map</display-name>
+        <portlet-class>org.coralwatch.portlets.MapPortlet</portlet-class>
+        <init-param>
+            <name>map-jsp</name>
+            <value>/map/map.jsp</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>CoralWatch Map</title>
+            <short-title>Map</short-title>
+            <keywords>Map</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
 
     <portlet>
         <portlet-name>kitrequest-portlet</portlet-name>
