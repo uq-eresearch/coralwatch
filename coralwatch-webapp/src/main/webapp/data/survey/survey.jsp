@@ -16,6 +16,10 @@
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <portlet:defineObjects/>
 <jsp:include page="/include/jquery.jsp"/>
+<script type="text/javascript" language="javascript"
+        src="http://craigsworks.com/projects/qtip/packages/1.0.0-rc3/jquery.qtip-1.0.0-rc3.min.js">
+
+</script>
 <script type="text/javascript">
     $(document).ready(function() {
         $("#tabs2").tabs();
@@ -26,6 +30,7 @@
 <%
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
     SurveyDao surveyDao = (SurveyDao) renderRequest.getPortletSession().getAttribute("surveyDao");
+    String qtip = (String) renderRequest.getPortletSession().getAttribute("qtip");
     String cmd = ParamUtil.getString(request, Constants.CMD);
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat timeFormat = new SimpleDateFormat("HH:mm");
@@ -594,6 +599,42 @@
                 }
             %>
         </table>
+        <form method="post">
+            <input type="hidden" name="surveyId" value="<%=survey.getId()%>"/>
+            <table width="100%">
+                <tr>
+                    <th nowrap="nowrap">Coral Type</th>
+                    <th nowrap="nowrap">Lightest</th>
+                    <th nowrap="nowrap">Darkest</th>
+                    <th nowrap="nowrap"></th>
+                </tr>
+                <tr>
+                    <td nowrap="nowrap">
+                        <input dojoType="dijit.form.RadioButton" id="coralType_0" name="coralType" value="Branching"
+                               type="radio"/>
+                        <label for="coralType_0"> Branching </label>
+                        <input dojoType="dijit.form.RadioButton" id="coralType_1" name="coralType" value="Boulder"
+                               type="radio"/>
+                        <label for="coralType_1"> Boulder </label>
+                        <input dojoType="dijit.form.RadioButton" id="coralType_2" name="coralType" value="Plate"
+                               type="radio"/>
+                        <label for="coralType_2"> Plate </label>
+                        <input dojoType="dijit.form.RadioButton" id="coralType_3" name="coralType" value="Soft"
+                               type="radio"/>
+                        <label for="coralType_3"> Soft </label>
+                    </td>
+                    <td nowrap="nowrap">
+                        <jsp:include page="light-color-field.jsp"/>
+                    </td>
+                    <td nowrap="nowrap">
+                        <jsp:include page="dark-color-field.jsp"/>
+                    </td>
+                    <td>
+                        <button dojoType="dijit.form.Button" type="submit" name="submit">Add</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
     </div>
 </div>
 <%

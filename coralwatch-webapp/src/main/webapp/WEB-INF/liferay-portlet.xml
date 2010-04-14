@@ -36,7 +36,7 @@
         <icon>/icon.png</icon>
         <instanceable>true</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
-        <footer-portlet-javascript>/js/test.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/qtip/jquery.qtip-1.0.0-rc3.min.js</footer-portlet-javascript>
     </portlet>
     <role-mapper>
         <role-name>administrator</role-name>
