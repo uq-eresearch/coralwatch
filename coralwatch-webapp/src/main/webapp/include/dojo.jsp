@@ -20,6 +20,7 @@
     dojo.locale = "en";
     dojo.require("dojo.fx");
     dojo.require("dojo.parser");
+    dojo.require("dojo._base.query");
     dojo.require("dijit.Dialog");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.Button");
@@ -35,6 +36,7 @@
     dojo.require("dijit.layout.TabContainer");
     dojo.require("dijit.Menu");
     dojo.require("dijit.Tooltip");
+
 
     dojo.query("body").addClass("tundra");
 </script>

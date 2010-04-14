@@ -18,7 +18,7 @@ import java.util.List;
 
 public class LoginPortlet extends GenericPortlet {
 
-    private static Log _log = LogFactoryUtil.getLog(JSPPortlet.class);
+    private static Log _log = LogFactoryUtil.getLog(LoginPortlet.class);
     protected String viewJSP;
     protected UserDao userdao;
     protected List<SubmissionError> errors;
