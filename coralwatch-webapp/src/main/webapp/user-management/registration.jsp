@@ -150,8 +150,7 @@
     </tr>
     <tr>
         <th>Email:</th>
-        <td><a href="mailto:<%= user.getEmail()%>"><%= user.getEmail()%>
-        </a></td>
+        <td><a href="mailto:<%= user.getEmail()%>">Send Email</a></td>
     </tr>
     <tr>
         <th>Member since (d/m/y):</th>

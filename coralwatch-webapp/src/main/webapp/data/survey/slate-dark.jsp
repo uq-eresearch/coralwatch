@@ -4,7 +4,7 @@
         $('.colored-dark-color-field').each(function()
         {
             $(this).click(function() {
-                $('#light-color-field').val($(this).text());
+                $('#dark-color-field').val($(this).text());
             });
         });
     });

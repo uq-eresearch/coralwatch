@@ -21,7 +21,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
 import javax.imageio.ImageIO;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -29,11 +29,8 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -75,11 +72,9 @@ public class SurveyResource extends ModifiableEntityResource<Survey, SurveyDao, 
             OutputRepresentation r = new OutputRepresentation(MediaType.IMAGE_PNG) {
                 @Override
                 public void write(OutputStream stream) throws IOException {
-                    BufferedImage image = new BufferedImage(IMAGE_WIDTH,
-                            IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                    BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
                     Graphics2D g2d = image.createGraphics();
-                    newChart.draw(g2d, new Rectangle2D.Double(0, 0, image
-                            .getWidth(), image.getHeight()));
+                    newChart.draw(g2d, new Rectangle2D.Double(0, 0, image.getWidth(), image.getHeight()));
                     ImageIO.write(image, "PNG", stream);
                 }
             };
