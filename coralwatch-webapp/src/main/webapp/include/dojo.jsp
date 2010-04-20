@@ -10,13 +10,11 @@
     }
 </script>
 
-<script type="text/javascript">
-    var djConfig = {
-        isDebug:false, parseOnLoad:true, locale:"en"
-    };
-</script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.3.2/dojo/dojo.xd.js"></script>
 <script type="text/javascript">
+    djConfig = {
+        isDebug:false, parseOnLoad:true, locale:"en"
+    };
     dojo.locale = "en";
     dojo.require("dojo.fx");
     dojo.require("dojo.parser");
@@ -46,6 +44,7 @@
         dijit.byId("organisation").focus();
         updateLonFromDecimal();
         updateLatFromDecimal();
+        updateFTemperature();
     });
 
     function updateLonFromDecimal() {

@@ -5,45 +5,55 @@
 <liferay-portlet-app>
     <portlet>
         <portlet-name>kitrequest-portlet</portlet-name>
-        <icon>/icon.png</icon>
+        <icon>/icon/icon.png</icon>
         <instanceable>true</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
-        <footer-portlet-javascript>/js/test.js</footer-portlet-javascript>
+        <header-portlet-javascript>/js/test.js</header-portlet-javascript>
     </portlet>
     <portlet>
         <portlet-name>login-portlet</portlet-name>
-        <icon>/icon.png</icon>
+        <icon>/icon/survey.png</icon>
         <instanceable>true</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
-        <footer-portlet-javascript>/js/test.js</footer-portlet-javascript>
+        <!--<header-portlet-css>/js/dojo-release-1.4.1/dijit/themes/tundra/tundra.css</header-portlet-css>-->
+        <!--<header-portlet-javascript>/js/dojo-release-1.4.1/dojo/dojo.js</header-portlet-javascript>-->
     </portlet>
     <portlet>
         <portlet-name>map-portlet</portlet-name>
-        <icon>/icon.png</icon>
+        <icon>/icon/icon.png</icon>
         <instanceable>true</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
-        <footer-portlet-javascript>/js/test.js</footer-portlet-javascript>
+        <header-portlet-javascript>/js/test.js</header-portlet-javascript>
     </portlet>
     <portlet>
         <portlet-name>members-portlet</portlet-name>
-        <icon>/icon.png</icon>
+        <icon>/icon/icon.png</icon>
         <instanceable>true</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
-        <footer-portlet-javascript>/js/test.js</footer-portlet-javascript>
+        <header-portlet-javascript>/js/test.js</header-portlet-javascript>
     </portlet>
     <portlet>
         <portlet-name>registration-portlet</portlet-name>
-        <icon>/icon.png</icon>
+        <icon>/icon/icon.png</icon>
         <instanceable>true</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
-        <footer-portlet-javascript>/js/test.js</footer-portlet-javascript>
+        <!--<header-portlet-css>/js/dojo-release-1.4.1/dijit/themes/tundra/tundra.css</header-portlet-css>-->
+        <!--<header-portlet-javascript>/js/dojo-release-1.4.1/dojo/dojo.js</header-portlet-javascript>-->
     </portlet>
     <portlet>
         <portlet-name>survey-portlet</portlet-name>
-        <icon>/icon.png</icon>
+        <icon>/icon/icon.png</icon>
         <instanceable>true</instanceable>
-        <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
-        <footer-portlet-javascript>/js/qtip/jquery.qtip-1.0.0-rc3.min.js</footer-portlet-javascript>
+        <header-portlet-css>/js/dojo-release-1.4.1/dijit/themes/tundra/tundra.css</header-portlet-css>
+        <!--<header-portlet-css>/css/jquery/jquery-ui-1.7.2.cutom.css</header-portlet-css>-->
+
+        <header-portlet-javascript>/js/dojo-release-1.4.1/dojo/dojo.js</header-portlet-javascript>
+        <!--<header-portlet-javascript>/js/jquery/jquery-ui.min.js</header-portlet-javascript>-->
+        <header-portlet-javascript>/js/jquery/ui.tabs.js</header-portlet-javascript>
+        <header-portlet-javascript>/js/qtip/jquery.qtip-1.0.0-rc3.min.js</header-portlet-javascript>
+
+        <!--<header-portlet-javascript>/js/dojo-release-1.4.1/dijit/dijit.js</header-portlet-javascript>-->
+        <!--<header-portlet-javascript>/js/coralwatch/coralwatch-dojo.js</header-portlet-javascript>-->
     </portlet>
     <role-mapper>
         <role-name>administrator</role-name>
