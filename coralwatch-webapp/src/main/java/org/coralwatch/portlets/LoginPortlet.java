@@ -42,7 +42,7 @@ public class LoginPortlet extends GenericPortlet {
         if (cmd.equals(Constants.DEACTIVATE)) {
             session.removeAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
         } else {
-            String email = actionRequest.getParameter("email");
+            String email = actionRequest.getParameter("signinEmail");
             //TODO validate the email here
             UserImpl currentUser;
             if (email == null || email.isEmpty()) {
@@ -52,7 +52,7 @@ public class LoginPortlet extends GenericPortlet {
                 if (currentUser == null) {
                     errors.add(new SubmissionError("Enter valid sign in details."));
                 } else {
-                    String password = actionRequest.getParameter("password");
+                    String password = actionRequest.getParameter("signinPassword");
                     if (password == null || password.isEmpty() || !BCrypt.checkpw(password, currentUser.getPasswordHash())) {
                         errors.add(new SubmissionError("Enter a valid password."));
                     } else {

@@ -24,26 +24,53 @@
     if (currentUser == null) {
         cmd = Constants.ADD;
     }
+    long userId = ParamUtil.getLong(request, "userId");
+    String email = params.get("email");
+    String displayName = params.get("displayName");
+    String country = params.get("country");
+    String address = params.get("address");
+    if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
 %>
-<form action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
+<%--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.3.2/dojo/dojo.xd.js"></script>--%>
+<script type="text/javascript">
+    dojo.locale = "en";
+    dojo.require("dojo.fx");
+    dojo.require("dojo.parser");
+    dojo.require("dojo._base.query");
+    dojo.require("dijit.form.Form");
+    dojo.require("dijit.form.ComboBox");
+    dojo.require("dijit.form.Textarea");
+    dojo.require("dijit.form.ValidationTextBox");
+    dojo.require("dijit.Tooltip");
+</script>
+<form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
+    <script type="dojo/method" event="onSubmit">
+        if(!this.validate()){
+        alert('Form contains invalid data. Please correct errors first');
+        return false;
+        }
+        return true;
+    </script>
     <%
-        long userId = ParamUtil.getLong(request, "userId");
-        String email = params.get("email");
-        String displayName = params.get("displayName");
-        String country = params.get("country");
-        String address = params.get("address");
-        if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
-            if (cmd.equals(Constants.EDIT)) {
-                UserImpl user = userDao.getById(userId);
-                email = user.getEmail();
-                displayName = user.getDisplayName();
+        if (cmd.equals(Constants.EDIT)) {
+            UserImpl user = userDao.getById(userId);
+            email = user.getEmail();
+            displayName = user.getDisplayName();
     %>
-    <div class="coralwatch-portlet-header"><span>Edit User Profile</span></div>
+    <h2>Edit User Profile</h2>
+    <br/>
+
+    <p style="text-align:justify;">CoralWatch requires all users to provide real contact details to encourage
+        authenticity of data. Your profile is protected from others.</p>
     <input name="userId" type="hidden" value="<%= userId %>"/>
     <%
     } else {
     %>
-    <div class="coralwatch-portlet-header"><span>Sign Up</span></div>
+    <h2>Sign Up</h2>
+    <br/>
+
+    <p style="text-align:justify;">CoralWatch requires all users to provide real contact details to encourage
+        authenticity of data. Your profile is protected from others.</p>
     <%
         }
 
@@ -59,23 +86,58 @@
     <table>
         <tr>
             <td><label for="email">Email:</label></td>
-            <td><input type="text" name="email" id="email" value="<%=email == null ? "" : email%>"/></td>
+            <td><input type="text" name="email" id="email"
+                       dojoType="dijit.form.ValidationTextBox"
+                    <%if (cmd.equals(Constants.ADD)) {%>
+                       required="true"
+                    <%}%>
+                       regExp="[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]{2,6}"
+                       trim="true"
+                       invalidMessage="Enter a valid email address."
+                       value="<%=email == null ? "" : email%>"/></td>
         </tr>
         <tr>
             <td><label for="email2">Confirm Email:</label></td>
-            <td><input type="text" name="email2" id="email2" value=""/></td>
+            <td><input type="text" name="email2" id="email2"
+                       dojoType="dijit.form.ValidationTextBox"
+                    <%if (cmd.equals(Constants.ADD)) {%>
+                       required="true"
+                    <%}%>
+                       validator="return this.getValue() == dijit.byId('email').getValue()"
+                       trim="true"
+                       invalidMessage="Re-enter your email address."
+                       value=""/></td>
         </tr>
         <tr>
             <td><label for="password">Password:</label></td>
-            <td><input type="password" name="password" id="password" value=""/></td>
+            <td><input type="password" name="password" id="password"
+                    <%if (cmd.equals(Constants.ADD)) {%>
+                       required="true"
+                    <%}%>
+                       dojoType="dijit.form.ValidationTextBox"
+                       validator="var pwLen = this.getValue().length; return <%=cmd.equals(Constants.ADD) ? "(pwLen >= 6)" : "(pwLen == 0)"%>"
+                       invalidMessage="Please enter a password with at least 6 characters"
+                       value=""/></td>
         </tr>
         <tr>
             <td><label for="password2">Confirm Password:</label></td>
-            <td><input type="password" name="password2" id="password2"/></td>
+            <td><input type="password"
+                       name="password2"
+                       id="password2"
+                    <%if (cmd.equals(Constants.ADD)) {%>
+                       required="true"
+                    <%}%>
+                       dojoType="dijit.form.ValidationTextBox"
+                       validator="return this.getValue() == dijit.byId('password').getValue()"
+                       invalidMessage="Re-enter the same password again."/></td>
         </tr>
         <tr>
             <td><label for="displayName">Display Name:</label></td>
             <td><input type="text" name="displayName" id="displayName"
+                       required="true"
+                       dojoType="dijit.form.ValidationTextBox"
+                       regExp=".......*"
+                       invalidMessage="Please enter a display name with at least 6 characters"
                        value="<%=displayName == null ? "" : displayName%>"/></td>
         </tr>
         <%
@@ -83,15 +145,23 @@
         %>
         <tr>
             <td><label for="address">Address:</label></td>
-            <td><input type="text" name="address" id="address" value="<%=address == null ? "" : address%>"/></td>
+            <td><input type="text" name="address" id="address"
+                       style="width:300px"
+                       dojoType="dijit.form.Textarea"
+                       trim="true"
+                       value="<%=address == null ? "" : address%>"/></td>
         </tr>
         <%
             }
         %>
         <tr>
             <td><label for="country">Country:</label></td>
-            <td><select name="country" id="country">
-                <option selected="selected" value="<%=country%>"></option>
+            <td><select name="country" id="country"
+                        required="true"
+                        dojoType="dijit.form.ComboBox"
+                        hasDownArrow="true"
+                        value="<%=country == null ? "" : country%>">
+                <option selected="selected" value=""></option>
                 <jsp:include page="/include/countrylist.jsp"/>
             </select>
             </td>
@@ -130,7 +200,7 @@
     }
 
 %>
-<div class="coralwatch-portlet-header"><span>User Profile</span></div>
+<h2>User Profile</h2>
 <table>
     <tr>
         <th>Display Name:</th>
@@ -158,6 +228,11 @@
         </td>
     </tr>
     <tr>
+        <th>Role:</th>
+        <td><%= user.isSuperUser() ? "Administrator" : "Member"%>
+        </td>
+    </tr>
+    <tr>
         <th>Occupation:</th>
         <td><%= user.getOccupation() == null ? "Not Set" : user.getOccupation()%>
         </td>
@@ -181,17 +256,17 @@
         %>
         <td colspan="2"><input type="button" value="Edit"
                                onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
+
+            <%
+                }
+                if (currentUser.isSuperUser()) {
+            %>
+            <input type="button" value="Delete"
+                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
+            <%
+                }
+            %>
         </td>
-        <%
-            }
-            if (currentUser.isSuperUser()) {
-        %>
-        <td colspan="2"><input type="button" value="Delete"
-                               onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
-        </td>
-        <%
-            }
-        %>
     </tr>
 </table>
 <%

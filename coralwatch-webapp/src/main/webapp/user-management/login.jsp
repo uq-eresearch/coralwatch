@@ -9,9 +9,26 @@
     List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getPortletSession().getAttribute("errors");
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
 %>
+<script type="text/javascript">
+    dojo.locale = "en";
+    dojo.require("dojo.fx");
+    dojo.require("dojo.parser");
+    dojo.require("dojo._base.query");
+    dojo.require("dijit.form.Form");
+    dojo.require("dijit.form.ComboBox");
+    dojo.require("dijit.form.Textarea");
+    dojo.require("dijit.form.ValidationTextBox");
+    dojo.require("dijit.Tooltip");
+</script>
+<form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
+    <script type="dojo/method" event="onSubmit">
+        if(!this.validate()){
+        alert('Form contains invalid data. Please correct errors first');
+        return false;
+        }
+        return true;
+    </script>
 
-
-<form action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
     <%
         if (currentUser == null) {
     %>
@@ -28,11 +45,23 @@
     <table>
         <tr>
             <td>Email:</td>
-            <td><input type="text" name="email"/></td>
+            <td><input type="text"
+                       name="signinEmail"
+                       id="signinEmail"
+                       dojoType="dijit.form.ValidationTextBox"
+                       required="true"
+                       regExp="[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]{2,6}"
+                       trim="true"
+                       invalidMessage="Enter a valid email address."/></td>
         </tr>
         <tr>
             <td>Password:</td>
-            <td><input type="password" name="password"/></td>
+            <td><input type="password"
+                       name="signinPassword"
+                       id="signinPassword"
+                       required="true"
+                       dojoType="dijit.form.ValidationTextBox"
+                       invalidMessage="Please enter a password"/></td>
         </tr>
         <tr>
             <td colspan="2"><input type="submit" name="signin" value="Sign In"/></td>
@@ -41,7 +70,6 @@
     <%
     } else {
     %>
-    <div class="coralwatch-portlet-header"><span>Current User</span></div>
     <span>You are logged in as <a href="#"
                                   onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="userId" value="<%= String.valueOf(currentUser.getId()) %>" /></portlet:actionURL>';"><%= currentUser.getDisplayName()%>
     </a> | <a href="#"

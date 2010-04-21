@@ -54,8 +54,6 @@ public class RegistrationPortlet extends GenericPortlet {
         String address = actionRequest.getParameter("address");
         long userId = ParamUtil.getLong(actionRequest, "userId");
 
-        _log.info("User id " + userId + " CMD " + cmd);
-
         params.put("email", email);
         params.put("email2", email2);
         params.put("password", password);
@@ -91,16 +89,32 @@ public class RegistrationPortlet extends GenericPortlet {
                     }
                 }
             }
-        } else {
-            UserImpl user = userDao.getById(userId);
-            user.setEmail(email);
-            if (password != null && password2 != null) {
-                user.setPasswordHash(BCrypt.hashpw(password, BCrypt.gensalt()));
+        } else if (cmd.equals(Constants.EDIT)) {
+            if ((email == null) || email.isEmpty()) {
+                errors.add(new SubmissionError("Email is required."));
+            } else {
+                if (!email.equals(email2)) {
+                    errors.add(new SubmissionError("Confirm your email address."));
+                } else {
+                    UserImpl user = userDao.getById(userId);
+                    user.setEmail(email);
+                    if (password != null && password2 != null && password.length() >= 6 && password.equals(password2)) {
+                        user.setPasswordHash(BCrypt.hashpw(password, BCrypt.gensalt()));
+                    }
+                    if (displayName == null || displayName.isEmpty()) {
+                        errors.add(new SubmissionError("Display Name is required."));
+                    } else {
+                        user.setDisplayName(displayName);
+                        if (country == null || country.isEmpty()) {
+                            errors.add(new SubmissionError("Country is required."));
+                        } else {
+                            user.setCountry(country);
+                            user.setAddress(address);
+                            userDao.update(user);
+                        }
+                    }
+                }
             }
-            user.setCountry(country);
-            user.setDisplayName(displayName);
-            user.setAddress(address);
-            userDao.update(user);
         }
     }
 
