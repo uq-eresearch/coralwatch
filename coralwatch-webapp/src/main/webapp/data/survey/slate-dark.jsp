@@ -1,10 +1,10 @@
 <script type="text/javascript">
-    $('#slate-dark-color-field').ready(function()
+    jQuery('#slate-dark-color-field').ready(function()
     {
-        $('.colored-dark-color-field').each(function()
+        jQuery('.colored-dark-color-field').each(function()
         {
-            $(this).click(function() {
-                $('#dark-color-field').val($(this).text());
+            jQuery(this).click(function() {
+                jQuery('#dark-color-field').val(jQuery(this).text());
             });
         });
     });
@@ -73,4 +73,6 @@
         <td class="colored-dark-color-field" style="background-color:#ffcc99;">D2</td>
         <td class="colored-dark-color-field" style="background-color:#ffffff;">D1</td>
     </tr>
-</table>                                                             
+</table>
+
+

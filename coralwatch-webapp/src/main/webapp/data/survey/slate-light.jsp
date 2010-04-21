@@ -1,10 +1,10 @@
 <script type="text/javascript">
-    $('#slate-light-color-field').ready(function()
+    jQuery('#slate-light-color-field').ready(function()
     {
-        $('.colored-light-color-field').each(function()
+        jQuery('.colored-light-color-field').each(function()
         {
-            $(this).click(function() {
-                $('#light-color-field').val($(this).text());
+            jQuery(this).click(function() {
+                jQuery('#light-color-field').val(jQuery(this).text());
             });
         });
     });

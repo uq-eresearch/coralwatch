@@ -7,12 +7,12 @@
 <script type="text/javascript">
     // Create the tooltips only on document load
 
-    $(document).ready(function()
+    jQuery(document).ready(function()
     {
         // Use the each() method to gain access to each elements attributes
-        $('#dark-color-field').each(function()
+        jQuery('#dark-color-field').each(function()
         {
-            $(this).qtip(
+            jQuery(this).qtip(
             {
                 content: {
                     // Set the text to an image HTML string with the correct src URL to the loading image you want to use

@@ -15,16 +15,12 @@
 
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <portlet:defineObjects/>
-<jsp:include page="/include/jquery.jsp"/>
-<script type="text/javascript" language="javascript"
-        src="http://craigsworks.com/projects/qtip/packages/1.0.0-rc3/jquery.qtip-1.0.0-rc3.min.js">
 
-</script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $("#tabs2").tabs();
-        $("#tabs1").tabs();
-        $("#tabs").tabs();
+    jQuery(document).ready(function() {
+        jQuery("#tabs2").tabs();
+        jQuery("#tabs1").tabs();
+        jQuery("#tabs").tabs();
     });
 </script>
 <%
@@ -55,7 +51,7 @@
     String comments = "";
 %>
 
-<jsp:include page="/include/dojo.jsp"/>
+<%--<jsp:include page="/include/dojo.jsp"/>--%>
 <script type="text/javascript">
     function validate()
     {
