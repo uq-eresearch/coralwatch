@@ -28,6 +28,12 @@
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>
     <portlet>
+        <portlet-name>stats-portlet</portlet-name>
+        <icon>/icon/icon.png</icon>
+        <instanceable>true</instanceable>
+        <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
+    </portlet>
+    <portlet>
         <portlet-name>registration-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
         <instanceable>true</instanceable>

@@ -156,6 +156,37 @@
     </portlet>
 
     <portlet>
+        <portlet-name>stats-portlet</portlet-name>
+        <display-name>Stats Updates</display-name>
+        <portlet-class>org.coralwatch.portlets.StatsUpdatePortlet</portlet-class>
+        <init-param>
+            <name>stats-jsp</name>
+            <value>/data/news/stats.jsp</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>CoralWatch Stats Update</title>
+            <short-title>Stats Update</short-title>
+            <keywords>Stats</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
+
+    <portlet>
         <portlet-name>survey-portlet</portlet-name>
         <display-name>CoralWatch Survey</display-name>
         <portlet-class>org.coralwatch.portlets.SurveyPortlet</portlet-class>

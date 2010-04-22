@@ -2,11 +2,12 @@
 <!DOCTYPE display PUBLIC "-//Liferay//DTD Display 5.2.0//EN" "http://www.liferay.com/dtd/liferay-display_5_2_0.dtd">
 
 <display>
-    <category name="category.sample">
-        <portlet id="kitrequest-portlet"/>
+    <category name="CoralWatch Portlets">
+        <!--<portlet id="kitrequest-portlet"/>-->
         <portlet id="login-portlet"/>
-        <portlet id="map-portlet"/>
-        <portlet id="members-portlet"/>
+        <!--<portlet id="map-portlet"/>-->
+        <!--<portlet id="members-portlet"/>-->
+        <portlet id="stats-portlet"/>
         <portlet id="registration-portlet"/>
         <portlet id="survey-portlet"/>
     </category>
