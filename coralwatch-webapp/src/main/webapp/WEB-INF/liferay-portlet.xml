@@ -43,8 +43,8 @@
         <portlet-name>survey-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
         <instanceable>true</instanceable>
-        <header-portlet-javascript>/js/coralwatch/survey.js</header-portlet-javascript>
         <header-portlet-javascript>/js/qtip/jquery.qtip-1.0.0-rc3.min.js</header-portlet-javascript>
+        <footer-portlet-javascript>/js/coralwatch/survey.js</footer-portlet-javascript>
     </portlet>
     <role-mapper>
         <role-name>administrator</role-name>

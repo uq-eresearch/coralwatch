@@ -19,10 +19,9 @@
     dojo.locale = "en";
     dojo.require("dojo.fx");
     dojo.require("dojo.parser");
-    dojo.require("dijit.Dialog");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.Button");
-    dojo.require("dijit.form.CheckBox");
+    dojo.require("dijit.form.RadioButton");
     dojo.require("dijit.form.ComboBox");
     dojo.require("dijit.form.DateTextBox");
     dojo.require("dijit.form.TimeTextBox");
@@ -32,8 +31,6 @@
     dojo.require("dijit.form.ValidationTextBox");
     dojo.require("dijit.layout.ContentPane");
     dojo.require("dijit.layout.TabContainer");
-    dojo.require("dijit.Menu");
-    dojo.require("dijit.Tooltip");
 </script>
 
 <%
@@ -42,6 +39,7 @@
     String cmd = ParamUtil.getString(request, Constants.CMD);
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat timeFormat = new SimpleDateFormat("'T'HH:mm");
+    DateFormat timeFormatDisplay = new SimpleDateFormat("HH:mm");
 
     long surveyId = 0;
     Survey survey = null;
@@ -92,6 +90,17 @@
 %>
 
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
+<script type="text/javascript">
+    dojo.addOnLoad(
+            function() {
+                dojo.byId("organisation").focus();
+                updateLonFromDecimal();
+                updateLatFromDecimal();
+                updateFTemperature();
+                updateCTemperature();
+            }
+            );
+</script>
 <script type="dojo/method" event="onSubmit">
     if(!this.validate()){
     alert('Form contains invalid data. Please correct errors first.');
@@ -388,14 +397,14 @@
                onBlur="updateFTemperature()"
                invalidMessage="Enter a valid temperature value."
                value="<%=cmd.equals(Constants.EDIT) ? survey.getTemperature() : ""%>"/>
-        (&deg;F):<input type="text"
-                        id="temperatureF"
-                        name="temperatureF"
-                        required="true"
-                        dojoType="dijit.form.NumberTextBox"
-                        onBlur="updateCTemperature()"
-                        trim="true"
-                        invalidMessage="Enter a valid temperature value."/>
+        (&deg;F): <input type="text"
+                         id="temperatureF"
+                         name="temperatureF"
+                         required="true"
+                         dojoType="dijit.form.NumberTextBox"
+                         onBlur="updateCTemperature()"
+                         trim="true"
+                         invalidMessage="Enter a valid temperature value."/>
     </td>
 </tr>
 <tr>
@@ -512,7 +521,7 @@
             </tr>
             <tr>
                 <th>Time:</th>
-                <td><%=survey.getTime() == null ? "" : timeFormat.format(survey.getTime())%>
+                <td><%=survey.getTime() == null ? "" : timeFormatDisplay.format(survey.getTime())%>
                 </td>
             </tr>
             <tr>
@@ -662,7 +671,6 @@
 
 <table>
     <tr>
-        <th>#</th>
         <th>Creator</th>
         <th>Date</th>
         <th>Reef</th>
@@ -676,8 +684,6 @@
             Survey aSurvey = surveys.get(i);
     %>
     <tr>
-        <td><%=aSurvey.getId()%>
-        </td>
         <td><%=aSurvey.getCreator().getDisplayName()%>
         </td>
         <td><%=dateFormat.format(aSurvey.getDate())%>

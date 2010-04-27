@@ -1,11 +1,3 @@
-dojo.addOnLoad(function() {
-    dijit.byId("organisation").focus();
-    updateLonFromDecimal();
-    updateLatFromDecimal();
-    updateFTemperature();
-    updateCTemperature();
-});
-
 function updateLonFromDecimal() {
     var dec = dijit.byId("longitude").getValue();
     if (dec > 180) {
