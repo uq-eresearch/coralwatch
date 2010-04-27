@@ -23,7 +23,7 @@
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
     <script type="dojo/method" event="onSubmit">
         if(!this.validate()){
-        alert('Form contains invalid data. Please correct errors first');
+        alert('Form contains invalid data. Please correct errors first.');
         return false;
         }
         return true;
@@ -32,7 +32,7 @@
     <%
         if (currentUser == null) {
     %>
-    <div class="coralwatch-portlet-header"><span>Member's Sign In</span></div>
+    <h2>Member's Sign In</h2>
     <%
         if (!errors.isEmpty()) {
             for (SubmissionError error : errors) {
@@ -70,6 +70,7 @@
     <%
     } else {
     %>
+    <h2>Current User</h2>
     <span>You are logged in as <a href="#"
                                   onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="userId" value="<%= String.valueOf(currentUser.getId()) %>" /></portlet:actionURL>';"><%= currentUser.getDisplayName()%>
     </a> | <a href="#"

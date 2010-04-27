@@ -15,21 +15,33 @@
 
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <portlet:defineObjects/>
-
 <script type="text/javascript">
-    jQuery(document).ready(function() {
-        jQuery("#tabs2").tabs();
-        jQuery("#tabs1").tabs();
-        jQuery("#tabs").tabs();
-    });
+    dojo.locale = "en";
+    dojo.require("dojo.fx");
+    dojo.require("dojo.parser");
+    dojo.require("dijit.Dialog");
+    dojo.require("dijit.form.Form");
+    dojo.require("dijit.form.Button");
+    dojo.require("dijit.form.CheckBox");
+    dojo.require("dijit.form.ComboBox");
+    dojo.require("dijit.form.DateTextBox");
+    dojo.require("dijit.form.TimeTextBox");
+    dojo.require("dijit.form.Textarea");
+    dojo.require("dijit.form.TextBox");
+    dojo.require("dijit.form.NumberTextBox");
+    dojo.require("dijit.form.ValidationTextBox");
+    dojo.require("dijit.layout.ContentPane");
+    dojo.require("dijit.layout.TabContainer");
+    dojo.require("dijit.Menu");
+    dojo.require("dijit.Tooltip");
 </script>
+
 <%
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
     SurveyDao surveyDao = (SurveyDao) renderRequest.getPortletSession().getAttribute("surveyDao");
-    String qtip = (String) renderRequest.getPortletSession().getAttribute("qtip");
     String cmd = ParamUtil.getString(request, Constants.CMD);
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+    DateFormat timeFormat = new SimpleDateFormat("'T'HH:mm");
 
     long surveyId = 0;
     Survey survey = null;
@@ -49,22 +61,6 @@
     String weatherCondition = "";
     String activity = "";
     String comments = "";
-%>
-
-<%--<jsp:include page="/include/dojo.jsp"/>--%>
-<script type="text/javascript">
-    function validate()
-    {
-        var myform = dojo.query(".surveyform");
-        myform.validate();
-        if (!myform.isValid()) {
-            alert('Form contains invalid data. Please correct first');
-            return false;
-        }
-        return true;
-    }
-</script>
-<%
     if (cmd.equals(Constants.EDIT)) {
         surveyId = ParamUtil.getLong(request, "surveyId");
         survey = surveyDao.getById(surveyId);
@@ -77,19 +73,13 @@
         comments = survey.getComments();
 %>
 
-<div class="coralwatch-portlet-header"><span>Edit Survey</span></div>
+<h2>Edit Survey</h2>
 <br/>
 <%
 } else if (cmd.equals(Constants.ADD)) {
 %>
-<div class="coralwatch-portlet-header"><span>Add New Survey</span></div>
+<h2>Add New Survey</h2>
 <br/>
-
-<div id="tabs1">
-<ul>
-    <li><a href="#fragment-1"><span>Survey</span></a></li>
-</ul>
-<div id="fragment-1">
 <%
     }
     if (!errors.isEmpty()) {
@@ -101,8 +91,15 @@
     }
 %>
 
-<form action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm" class="surveyform"
-      onsubmit="return validate();">
+<form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
+<script type="dojo/method" event="onSubmit">
+    if(!this.validate()){
+    alert('Form contains invalid data. Please correct errors first.');
+    return false;
+    }
+    return true;
+</script>
+
 <input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
 <table>
 <%
@@ -355,7 +352,11 @@
     <td><input id="time"
                name="time"
                type="text"
-               value="<%=cmd.equals(Constants.EDIT) ? (survey.getTime().getHours() + ":" + survey.getTime().getMinutes()) : ""%>"
+               timePattern="HH:mm"
+               clickableIncrement="T00:15:00"
+               visibleIncrement="T00:15:00"
+               visibleRange="T03:00:00"
+               value="<%=cmd.equals(Constants.EDIT) ? timeFormat.format(survey.getTime()) : ""%>"
                required="true"
                dojoType="dijit.form.TimeTextBox"/>
     </td>
@@ -439,8 +440,6 @@
 </tr>
 </table>
 </form>
-</div>
-</div>
 <%
     }
 } else if (cmd.equals(Constants.VIEW)) {
@@ -448,15 +447,11 @@
     survey = surveyDao.getById(surveyId);
 %>
 
-<div class="coralwatch-portlet-header"><span>Survey</span></div>
+<h2>Survey Details</h2>
 <br/>
 
-<div id="tabs">
-    <ul>
-        <li><a href="#fragment-2"><span>Survey</span></a></li>
-        <li><a href="#fragment-3"><span>Data</span></a></li>
-    </ul>
-    <div id="fragment-2">
+<div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:650px;height:60ex">
+    <div id="surveyMetadataTab" dojoType="dijit.layout.ContentPane" title="Metadata" style="width:650px; height:60ex">
         <table>
             <%
                 if (survey.getCreator().equals(currentUser)) {
@@ -568,7 +563,7 @@
             %>
         </table>
     </div>
-    <div id="fragment-3">
+    <div id="dataTab" dojoType="dijit.layout.ContentPane" title="Data" style="width:650px; height:60ex">
         <table>
             <tr>
                 <th nowrap="nowrap">Coral Type</th>
@@ -653,86 +648,83 @@
         }
     }
 %>
-<div id="tabs2">
-    <ul>
-        <li><a href="#fragment-4"><span>Surveys</span></a></li>
-    </ul>
-    <div id="fragment-4">
+
+<%
+    if (currentUser != null) {
+%>
+<a href="#"
+   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>';">New
+    Survey</a>
+<br/><br/>
+<%
+    }
+%>
+
+<table>
+    <tr>
+        <th>#</th>
+        <th>Creator</th>
+        <th>Date</th>
+        <th>Reef</th>
+        <th>Country</th>
+        <th>View</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    <%
+        for (int i = lowerLimit; i < upperLimit; i++) {
+            Survey aSurvey = surveys.get(i);
+    %>
+    <tr>
+        <td><%=aSurvey.getId()%>
+        </td>
+        <td><%=aSurvey.getCreator().getDisplayName()%>
+        </td>
+        <td><%=dateFormat.format(aSurvey.getDate())%>
+        </td>
+        <td><%=aSurvey.getReef().getName()%>
+        </td>
+        <td><%=aSurvey.getReef().getCountry()%>
+        </td>
+        <td><input type="button" value="View"
+                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';"/>
+        </td>
         <%
-            if (currentUser != null) {
+            if (currentUser != null && currentUser.equals(aSurvey.getCreator())) {
         %>
-        <a href="#"
-           onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>';">New
-            Survey</a>
-        <br/><br/>
+        <td><input type="button" value="Edit"
+                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';"/>
+        </td>
+        <td><input type="button" value="Delete"
+                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';"/>
+        </td>
         <%
             }
         %>
-        <table>
-            <tr>
-                <th>#</th>
-                <th>Creator</th>
-                <th>Date</th>
-                <th>Reef</th>
-                <th>Country</th>
-                <th>View</th>
-                <th>Edit</th>
-            </tr>
-            <%
-                for (int i = lowerLimit; i < upperLimit; i++) {
-                    Survey aSurvey = surveys.get(i);
-            %>
-            <tr>
-                <td><%=aSurvey.getId()%>
-                </td>
-                <td><%=aSurvey.getCreator().getDisplayName()%>
-                </td>
-                <td><%=dateFormat.format(aSurvey.getDate())%>
-                </td>
-                <td><%=aSurvey.getReef().getName()%>
-                </td>
-                <td><%=aSurvey.getReef().getCountry()%>
-                </td>
-                <td><input type="button" value="View"
-                           onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';"/>
-                </td>
-                <%
-                    if (currentUser != null && currentUser.equals(aSurvey.getCreator())) {
-                %>
-                <td><input type="button" value="Edit"
-                           onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';"/>
-                </td>
-                <td><input type="button" value="Delete"
-                           onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';"/>
-                </td>
-                <%
-                    }
-                %>
-            </tr>
-            <%
-                }
-            %>
-        </table>
-        <div style="text-align:center;"><span>Page:</span>
-            <%
-                for (int i = 0; i < numberOfPages; i++) {
-                    if (i == pageNumber - 1) {
-            %>
-            <span style="text-decoration:underline;"><%=i + 1%></span>
-            <%
-            } else {
-            %>
+    </tr>
+    <%
+        }
+    %>
+</table>
+<div style="text-align:center;"><span>Page:</span>
+    <%
+        for (int i = 0; i < numberOfPages; i++) {
+            if (i == pageNumber - 1) {
+    %>
+    <span style="text-decoration:underline;"><%=i + 1%></span>
+    <%
+    } else {
+    %>
 
-            <a href="#"
-               onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.PREVIEW %>" /><portlet:param name="page" value="<%= String.valueOf(i + 1) %>" /></portlet:renderURL>';"><%=i + 1%>
-            </a>
-            <%
-                    }
-                }
-            %>
-        </div>
-    </div>
+    <a href="#"
+       onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.PREVIEW %>" /><portlet:param name="page" value="<%= String.valueOf(i + 1) %>" /></portlet:renderURL>';"><%=i + 1%>
+    </a>
+    <%
+            }
+        }
+    %>
 </div>
+
 <%
 
     }
