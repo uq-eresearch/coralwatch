@@ -31,6 +31,9 @@
     dojo.require("dijit.form.ValidationTextBox");
     dojo.require("dijit.layout.ContentPane");
     dojo.require("dijit.layout.TabContainer");
+    dojo.require("dijit.TooltipDialog");
+    dojo.require("dijit.form.DropDownButton");
+
 </script>
 
 <%
@@ -460,182 +463,429 @@
 <br/>
 
 <div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:650px;height:60ex">
-    <div id="surveyMetadataTab" dojoType="dijit.layout.ContentPane" title="Metadata" style="width:650px; height:60ex">
-        <table>
-            <%
-                if (survey.getCreator().equals(currentUser)) {
-            %>
+<div id="surveyMetadataTab" dojoType="dijit.layout.ContentPane" title="Metadata" style="width:650px; height:60ex">
+    <table>
+        <%
+            if (survey.getCreator().equals(currentUser)) {
+        %>
 
-            <%
-                }
-            %>
-            <tr>
-                <th>Creator</th>
-                <td><%= survey.getCreator().getDisplayName() == null ? "" : survey.getCreator().getDisplayName()%>
-                </td>
-                <td rowspan="4">
-                    <%
-                        if (survey.getCreator().getGravatarUrl() != null) {
-                    %>
-                    <div style="float:right;"><a href=""><img src="<%=survey.getCreator().getGravatarUrl()%>"
-                                                              alt="<%=survey.getCreator().getDisplayName()%>"/></a><br/>
+        <%
+            }
+        %>
+        <tr>
+            <th>Creator</th>
+            <td><%= survey.getCreator().getDisplayName() == null ? "" : survey.getCreator().getDisplayName()%>
+            </td>
+            <td rowspan="4">
+                <%
+                    if (survey.getCreator().getGravatarUrl() != null) {
+                %>
+                <div style="float:right;"><a href=""><img src="<%=survey.getCreator().getGravatarUrl()%>"
+                                                          alt="<%=survey.getCreator().getDisplayName()%>"/></a><br/>
+                </div>
+                <%
+                    }
+                %></td>
+        </tr>
+        <tr>
+            <th>Group Name:</th>
+            <td><%=survey.getOrganisation() == null ? "" : survey.getOrganisation()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Participating As:</th>
+            <td><%= survey.getOrganisationType() == null ? "" : survey.getOrganisationType()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Country:</th>
+            <td><%= survey.getReef().getCountry() == null ? "" : survey.getReef().getCountry()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Reef:</th>
+            <td><%= survey.getReef().getName() == null ? "" : survey.getReef().getName()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Latitude:</th>
+            <td><%=survey.getLatitude()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Longitude:</th>
+            <td><%=survey.getLongitude()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Observation Date:</th>
+            <td><%=survey.getDate() == null ? "" : dateFormat.format(survey.getDate())%>
+            </td>
+        </tr>
+        <tr>
+            <th>Time:</th>
+            <td><%=survey.getTime() == null ? "" : timeFormatDisplay.format(survey.getTime())%>
+            </td>
+        </tr>
+        <tr>
+            <th>Weather Condition:</th>
+            <td><%=survey.getWeather() == null ? "" : survey.getWeather()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Temperature:</th>
+            <td><%=survey.getTemperature()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Activity:</th>
+            <td><%=survey.getActivity() == null ? "" : survey.getActivity()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Comments:</th>
+            <td><%=survey.getComments() == null ? "" : survey.getComments()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Submitted:</th>
+            <td><%=survey.getDateSubmitted() == null ? "" : survey.getDateSubmitted()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Last Edited:</th>
+            <td><%=survey.getDateModified() == null ? "" : survey.getDateModified()%>
+            </td>
+        </tr>
+
+        <tr>
+            <th>Community Rating:</th>
+            <td></td>
+        </tr>
+        <%
+            if (currentUser != null && currentUser.equals(survey.getCreator())) {
+        %>
+        <tr>
+            <td colspan="2"><input type="button" value="Edit"
+                                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:renderURL>';"/>
+            </td>
+        </tr>
+        <%
+            }
+        %>
+    </table>
+</div>
+
+<div id="dataTab" dojoType="dijit.layout.ContentPane" title="Data" style="width:650px; height:60ex">
+<table>
+    <tr>
+        <th nowrap="nowrap">Coral Type</th>
+        <th nowrap="nowrap">Lightest</th>
+        <th nowrap="nowrap">Darkest</th>
+        <th nowrap="nowrap">Delete</th>
+    </tr>
+    <%
+        List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
+        for (SurveyRecord record : surveyRecords) {
+    %>
+    <tr>
+        <td><%=record.getCoralType()%>
+        </td>
+        <td><%=record.getLightestLetter() + "" + record.getLightestNumber()%>
+        </td>
+        <td><%=record.getDarkestLetter() + "" + record.getDarkestNumber()%>
+        </td>
+        <td>
+            <input type="button" value="Delete"/>
+        </td>
+    </tr>
+    <%
+        }
+    %>
+</table>
+<!--TODO enable this later-->
+<%--<%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>--%>
+<form method="post">
+    <input type="hidden" name="surveyId" value="<%=survey.getId()%>"/>
+    <script type="text/javascript">
+        function setColor(colorCode, slate, inputField) {
+            dijit.byId(slate).setAttribute('label', colorCode);
+            dojo.byId(inputField).setAttribute('value', colorCode);
+        }
+    </script>
+    <table width="100%">
+        <tr>
+            <th nowrap="nowrap">Coral Type</th>
+            <th nowrap="nowrap">Lightest</th>
+            <th nowrap="nowrap">Darkest</th>
+            <th nowrap="nowrap"></th>
+        </tr>
+
+        <tr>
+            <td nowrap="nowrap">
+                <input dojoType="dijit.form.RadioButton" id="coralType_0" name="coralType" value="Branching"
+                       type="radio"/>
+                <label for="coralType_0"> Branching </label>
+                <input dojoType="dijit.form.RadioButton" id="coralType_1" name="coralType" value="Boulder"
+                       type="radio"/>
+                <label for="coralType_1"> Boulder </label>
+                <input dojoType="dijit.form.RadioButton" id="coralType_2" name="coralType" value="Plate"
+                       type="radio"/>
+                <label for="coralType_2"> Plate </label>
+                <input dojoType="dijit.form.RadioButton" id="coralType_3" name="coralType" value="Soft"
+                       type="radio"/>
+                <label for="coralType_3"> Soft </label>
+            </td>
+            <td nowrap="nowrap">
+                <input id="light_color_input" type="hidden" value=""/>
+
+                <div id="light_color_slate" dojoType="dijit.form.DropDownButton" label="-" style="width:30px">
+                    <div dojoType="dijit.TooltipDialog">
+                        <table style="cursor:pointer;">
+                            <tr>
+                                <td style="background-color:#ffffff;"
+                                    onClick="setColor('B1', 'light_color_slate', 'light_color_input')">B1
+                                </td>
+                                <td style="background-color:#ccffcc;"
+                                    onClick="setColor('B2', 'light_color_slate', 'light_color_input')">B2
+                                </td>
+                                <td style="background-color:#99ff99;"
+                                    onClick="setColor('B3', 'light_color_slate', 'light_color_input')">B3
+                                </td>
+                                <td style="background-color:#66cc00;"
+                                    onClick="setColor('B4', 'light_color_slate', 'light_color_input')">B4
+                                </td>
+                                <td style="background-color:#339900;"
+                                    onClick="setColor('B5', 'light_color_slate', 'light_color_input')">B5
+                                </td>
+                                <td style="background-color:#006600;"
+                                    onClick="setColor('B6', 'light_color_slate', 'light_color_input')">B6
+                                </td>
+                                <td style="background-color:#ffffff;"
+                                    onClick="setColor('C1', 'light_color_slate', 'light_color_input')">C1
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#333300;"
+                                    onClick="setColor('E6', 'light_color_slate', light_color_input')">E6
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="background-color:#ffcccc;"
+                                    onClick="setColor('C2', 'light_color_slate', 'light_color_input')">C2
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#666600;"
+                                    onClick="setColor('E5', 'light_color_slate', 'light_color_input')">E5
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="background-color:#ff6666;"
+                                    onClick="setColor('C3', 'light_color_slate', 'light_color_input')">C3
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#666600;"
+                                    onClick="setColor('E4', 'light_color_slate', 'light_color_input')">E4
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="background-color:#cc3300;"
+                                    onClick="setColor('C4', 'light_color_slate', 'light_color_input')">C4
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#999900;"
+                                    onClick="setColor('E3', 'light_color_slate', 'light_color_input')">E3
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="background-color:#993300;"
+                                    onClick="setColor('C5', 'light_color_slate', 'light_color_input')">C5
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#cccc00;"
+                                    onClick="setColor('E2', 'light_color_slate', 'light_color_input')">E2
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="background-color:#330000;"
+                                    onClick="setColor('C6', 'light_color_slate', 'light_color_input')">C6
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#ffffff;"
+                                    onClick="setColor('E1', 'light_color_slate', 'light_color_input')">E1
+                                </td>
+                                <td style="background-color:#330000;"
+                                    onClick="setColor('D6', 'light_color_slate', 'light_color_input')">D6
+                                </td>
+                                <td style="background-color:#663300;"
+                                    onClick="setColor('D5', 'light_color_slate', 'light_color_input')">D5
+                                </td>
+                                <td style="background-color:#993300;"
+                                    onClick="setColor('D4', 'light_color_slate', 'light_color_input')">D4
+                                </td>
+                                <td style="background-color:#ff9933;"
+                                    onClick="setColor('D3', 'light_color_slate', 'light_color_input')">D3
+                                </td>
+                                <td style="background-color:#ffcc99;"
+                                    onClick="setColor('D2', 'light_color_slate', 'light_color_input')">D2
+                                </td>
+                                <td style="background-color:#ffffff;"
+                                    onClick="setColor('D1', 'light_color_slate', 'light_color_input')">D1
+                                </td>
+                            </tr>
+                        </table>
                     </div>
-                    <%
-                        }
-                    %></td>
-            </tr>
-            <tr>
-                <th>Group Name:</th>
-                <td><%=survey.getOrganisation() == null ? "" : survey.getOrganisation()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Participating As:</th>
-                <td><%= survey.getOrganisationType() == null ? "" : survey.getOrganisationType()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Country:</th>
-                <td><%= survey.getReef().getCountry() == null ? "" : survey.getReef().getCountry()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Reef:</th>
-                <td><%= survey.getReef().getName() == null ? "" : survey.getReef().getName()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Latitude:</th>
-                <td><%=survey.getLatitude()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Longitude:</th>
-                <td><%=survey.getLongitude()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Observation Date:</th>
-                <td><%=survey.getDate() == null ? "" : dateFormat.format(survey.getDate())%>
-                </td>
-            </tr>
-            <tr>
-                <th>Time:</th>
-                <td><%=survey.getTime() == null ? "" : timeFormatDisplay.format(survey.getTime())%>
-                </td>
-            </tr>
-            <tr>
-                <th>Weather Condition:</th>
-                <td><%=survey.getWeather() == null ? "" : survey.getWeather()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Temperature:</th>
-                <td><%=survey.getTemperature()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Activity:</th>
-                <td><%=survey.getActivity() == null ? "" : survey.getActivity()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Comments:</th>
-                <td><%=survey.getComments() == null ? "" : survey.getComments()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Submitted:</th>
-                <td><%=survey.getDateSubmitted() == null ? "" : survey.getDateSubmitted()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Last Edited:</th>
-                <td><%=survey.getDateModified() == null ? "" : survey.getDateModified()%>
-                </td>
-            </tr>
+                </div>
+            </td>
+            <td nowrap="nowrap">
+                <input id="dark_color_input" type="hidden" value=""/>
 
-            <tr>
-                <th>Community Rating:</th>
-                <td></td>
-            </tr>
-            <%
-                if (currentUser != null && currentUser.equals(survey.getCreator())) {
-            %>
-            <tr>
-                <td colspan="2"><input type="button" value="Edit"
-                                       onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:renderURL>';"/>
-                </td>
-            </tr>
-            <%
-                }
-            %>
-        </table>
-    </div>
-    <div id="dataTab" dojoType="dijit.layout.ContentPane" title="Data" style="width:650px; height:60ex">
-        <table>
-            <tr>
-                <th nowrap="nowrap">Coral Type</th>
-                <th nowrap="nowrap">Lightest</th>
-                <th nowrap="nowrap">Darkest</th>
-                <th nowrap="nowrap">Delete</th>
-            </tr>
-            <%
-                List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
-                for (SurveyRecord record : surveyRecords) {
-            %>
-            <tr>
-                <td><%=record.getCoralType()%>
-                </td>
-                <td><%=record.getLightestLetter() + "" + record.getLightestNumber()%>
-                </td>
-                <td><%=record.getDarkestLetter() + "" + record.getDarkestNumber()%>
-                </td>
-                <td>
-                    <input type="button" value="Delete"/>
-                </td>
-            </tr>
-            <%
-                }
-            %>
-        </table>
-        <form method="post">
-            <input type="hidden" name="surveyId" value="<%=survey.getId()%>"/>
-            <table width="100%">
-                <tr>
-                    <th nowrap="nowrap">Coral Type</th>
-                    <th nowrap="nowrap">Lightest</th>
-                    <th nowrap="nowrap">Darkest</th>
-                    <th nowrap="nowrap"></th>
-                </tr>
-                <tr>
-                    <td nowrap="nowrap">
-                        <input dojoType="dijit.form.RadioButton" id="coralType_0" name="coralType" value="Branching"
-                               type="radio"/>
-                        <label for="coralType_0"> Branching </label>
-                        <input dojoType="dijit.form.RadioButton" id="coralType_1" name="coralType" value="Boulder"
-                               type="radio"/>
-                        <label for="coralType_1"> Boulder </label>
-                        <input dojoType="dijit.form.RadioButton" id="coralType_2" name="coralType" value="Plate"
-                               type="radio"/>
-                        <label for="coralType_2"> Plate </label>
-                        <input dojoType="dijit.form.RadioButton" id="coralType_3" name="coralType" value="Soft"
-                               type="radio"/>
-                        <label for="coralType_3"> Soft </label>
-                    </td>
-                    <td nowrap="nowrap">
-                        <jsp:include page="light-color-field.jsp"/>
-                    </td>
-                    <td nowrap="nowrap">
-                        <jsp:include page="dark-color-field.jsp"/>
-                    </td>
-                    <td>
-                        <button dojoType="dijit.form.Button" type="submit" name="submit">Add</button>
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
+                <div id="dark_color_slate" dojoType="dijit.form.DropDownButton" label="-" style="width:30px">
+                    <div dojoType="dijit.TooltipDialog">
+                        <table style="cursor:pointer;">
+                            <tr>
+                                <td style="background-color:#ffffff;"
+                                    onClick="setColor('B1', 'dark_color_slate', 'dark_color_input')">B1
+                                </td>
+                                <td style="background-color:#ccffcc;"
+                                    onClick="setColor('B2', 'dark_color_slate', 'dark_color_input')">B2
+                                </td>
+                                <td style="background-color:#99ff99;"
+                                    onClick="setColor('B3', 'dark_color_slate', 'dark_color_input')">B3
+                                </td>
+                                <td style="background-color:#66cc00;"
+                                    onClick="setColor('B4', 'dark_color_slate', 'dark_color_input')">B4
+                                </td>
+                                <td style="background-color:#339900;"
+                                    onClick="setColor('B5', 'dark_color_slate', 'dark_color_input')">B5
+                                </td>
+                                <td style="background-color:#006600;"
+                                    onClick="setColor('B6', 'dark_color_slate', 'dark_color_input')">B6
+                                </td>
+                                <td style="background-color:#ffffff;"
+                                    onClick="setColor('C1', 'dark_color_slate', 'dark_color_input')">C1
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#333300;"
+                                    onClick="setColor('E6', 'dark_color_slate', 'dark_color_input')">E6
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="background-color:#ffcccc;"
+                                    onClick="setColor('C2', 'dark_color_slate', 'dark_color_input')">C2
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#666600;"
+                                    onClick="setColor('E5', 'dark_color_slate', 'dark_color_input')">E5
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="background-color:#ff6666;"
+                                    onClick="setColor('C3', 'dark_color_slate', 'dark_color_input')">C3
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#666600;"
+                                    onClick="setColor('E4', 'dark_color_slate', 'dark_color_input')">E4
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="background-color:#cc3300;"
+                                    onClick="setColor('C4', 'dark_color_slate', 'dark_color_input')">C4
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#999900;"
+                                    onClick="setColor('E3', 'dark_color_slate', 'dark_color_input')">E3
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="background-color:#993300;"
+                                    onClick="setColor('C5', 'dark_color_slate', 'dark_color_input')">C5
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#cccc00;"
+                                    onClick="setColor('E2', 'dark_color_slate', 'dark_color_input')">E2
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="background-color:#330000;"
+                                    onClick="setColor('C6', 'dark_color_slate', 'dark_color_input')">C6
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#ffffff;"
+                                    onClick="setColor('E1', 'dark_color_slate', 'dark_color_input')">E1
+                                </td>
+                                <td style="background-color:#330000;"
+                                    onClick="setColor('D6', 'dark_color_slate', 'dark_color_input')">D6
+                                </td>
+                                <td style="background-color:#663300;"
+                                    onClick="setColor('D5', 'dark_color_slate', 'dark_color_input')">D5
+                                </td>
+                                <td style="background-color:#993300;"
+                                    onClick="setColor('D4', 'dark_color_slate', 'dark_color_input')">D4
+                                </td>
+                                <td style="background-color:#ff9933;"
+                                    onClick="setColor('D3', 'dark_color_slate', 'dark_color_input')">D3
+                                </td>
+                                <td style="background-color:#ffcc99;"
+                                    onClick="setColor('D2', 'dark_color_slate', 'dark_color_input')">D2
+                                </td>
+                                <td style="background-color:#ffffff;"
+                                    onClick="setColor('D1', 'dark_color_slate', 'dark_color_input')">D1
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <button type="submit" name="submit">Add</button>
+            </td>
+        </tr>
+    </table>
+</form>
+<%--<%}%>--%>
+</div>
 </div>
 <%
 
