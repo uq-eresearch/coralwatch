@@ -85,18 +85,32 @@ li ul {
 
 #content-wrapper {
     margin: auto;
-    width: 950px;
+    width: 1000px;
 }
 
 .nav-menu h2 {
-    margin:0 0 0.5em;
+    margin: 0 0 0.5em;
 }
 
+.lfr-column.seventy {
+    padding: 5px;
+}
+.lfr-column.twintyfive {
+    width:25%;
+}
+.lfr-column fifty{
+    width:50%;
+}
+
+.twintyfivefiftytwintyfive {
+    background-color:#68D7FD;
+}
 /* ---------- Banner ---------- */
 
 #banner {
     background: #fff url(../images/common/banner_bg.jpg) no-repeat 0 0;
     height: 100px;
+    min-width:1000px;
 }
 
 #banner h1.logo {
@@ -131,16 +145,26 @@ li ul {
 }
 
 /* ---------- Main navigation ---------- */
+.coralwatch-portlet-header {
+    background: #EEEEEE none repeat scroll 0 0;
+    border-top: 1px solid #BFBFBF;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.coralwatch-input-stretched {
+    width: 100%;
+}
 
 #navigation {
     background: #f9911f;
     width: 100%;
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
 #navigation ul {
     min-height: 2em;
-    width: 950px;
+    width: 1000px;
     margin: auto;
 }
 
@@ -187,6 +211,7 @@ li ul {
 }
 
 #navigation .child-menu li {
+    border-bottom: 1px dotted #ffffff;
     display: block;
     float: none;
     margin: 0;
