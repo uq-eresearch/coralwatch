@@ -1,4 +1,3 @@
-<jsp:include page="/include/jquery.jsp"/>
 <script type="text/javascript"
         src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
 

@@ -7,9 +7,11 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
+import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.portlets.error.SubmissionError;
 
@@ -25,6 +27,7 @@ public class SurveyPortlet extends GenericPortlet {
     protected String viewJSP;
     protected UserDao userdao;
     protected SurveyDao surveyDao;
+    protected SurveyRecordDao surveyRecordDao;
     protected ReefDao reefDao;
     protected List<SubmissionError> errors;
 
@@ -33,6 +36,7 @@ public class SurveyPortlet extends GenericPortlet {
         viewJSP = getInitParameter("survey-jsp");
         userdao = CoralwatchApplication.getConfiguration().getUserDao();
         surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
+        surveyRecordDao = CoralwatchApplication.getConfiguration().getSurveyRecordDao();
         reefDao = CoralwatchApplication.getConfiguration().getReefDao();
         errors = new ArrayList<SubmissionError>();
     }
@@ -41,6 +45,7 @@ public class SurveyPortlet extends GenericPortlet {
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         PortletSession session = renderRequest.getPortletSession();
         session.setAttribute("surveyDao", surveyDao, PortletSession.PORTLET_SCOPE);
+        session.setAttribute("surveyRecordDao", surveyRecordDao, PortletSession.PORTLET_SCOPE);
         session.setAttribute("reefDao", reefDao, PortletSession.PORTLET_SCOPE);
         session.setAttribute("errors", errors, PortletSession.PORTLET_SCOPE);
         include(viewJSP, renderRequest, renderResponse);
@@ -124,6 +129,20 @@ public class SurveyPortlet extends GenericPortlet {
                 } else {
                     errors.add(new SubmissionError("You must be signed in to submit a survey."));
                 }
+            } else if (cmd.equals("RECORD")) {
+                long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
+                String coralType = actionRequest.getParameter("coralType");
+                String lightColor = actionRequest.getParameter("light_color_input");
+                String darkColor = actionRequest.getParameter("dark_color_input");
+
+                char lightestLetter = lightColor.trim().charAt(0);
+                int lightestNumber = Integer.parseInt(lightColor.trim().charAt(1) + "");
+                char darkLetter = darkColor.trim().charAt(0);
+                int darkNumber = Integer.parseInt(darkColor.trim().charAt(1) + "");
+
+                Survey survey = surveyDao.getById(suveyId);
+                SurveyRecord record = new SurveyRecord(survey, coralType, lightestLetter, lightestNumber, darkLetter, darkNumber);
+                surveyRecordDao.save(record);
             }
         } catch (Exception ex) {
             errors.add(new SubmissionError("Your submission contains invalid data. Check all fields."));

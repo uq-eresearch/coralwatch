@@ -2,6 +2,8 @@ package org.coralwatch.portlets;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.ParamUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.UserDao;
@@ -19,13 +21,19 @@ public class MembersPortlet extends GenericPortlet {
 
     @Override
     public void init() throws PortletException {
-        viewJSP = getInitParameter("survey-jsp");
+        viewJSP = getInitParameter("members-jsp");
         userDao = CoralwatchApplication.getConfiguration().getUserDao();
         surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
     }
 
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
+
+        String cmd = ParamUtil.getString(renderRequest, Constants.CMD);
+        String userId = ParamUtil.getString(renderRequest, "userId");
+        if (cmd.equals(Constants.VIEW)) {
+            include(getInitParameter("registration-jsp"), renderRequest, renderResponse);
+        }
         PortletSession session = renderRequest.getPortletSession();
         session.setAttribute("surveyDao", surveyDao, PortletSession.PORTLET_SCOPE);
         session.setAttribute("userDao", userDao, PortletSession.PORTLET_SCOPE);

@@ -7,7 +7,7 @@
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.List" %>
-
+<%@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %>
 
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <portlet:defineObjects/>
@@ -56,12 +56,12 @@
         </td>
         <td><%=dateFormat.format(aSurvey.getRegistrationDate())%>
         </td>
-        <td>
+        <td><%=userDao.getSurveyEntriesCreated(aSurvey).size()%>
         </td>
-        <td><%=aSurvey.getCountry()%>
+        <td><%=aSurvey.getCountry() == null ? "" : aSurvey.getCountry()%>
         </td>
         <td><input type="button" value="View"
-                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>"
+                   onClick="self.location = '<portlet:renderURL ><portlet:param name="<%= Constants.CMD %>"
             value="<%= Constants.VIEW %>" /><portlet:param name="surveyId"
                                                            value="<%= String.valueOf(aSurvey.getId()) %>"/></portlet:renderURL>';"/>
         </td>
@@ -69,9 +69,9 @@
             if (currentUser != null && currentUser.equals(aSurvey)) {
         %>
         <td><input type="button" value="Edit"
-                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>"
-            value="<%= Constants.EDIT %>" /><portlet:param name="surveyId"
-                                                           value="<%= String.valueOf(aSurvey.getId()) %>"/></portlet:renderURL>';"/>
+                   onClick="self.location = '<liferay-portlet:renderURL portletName="registration-portlet" ><liferay-portlet:param name="<%= Constants.CMD %>"
+            value="<%= Constants.EDIT %>" /><liferay-portlet:param name="surveyId"
+                                                           value="<%= String.valueOf(aSurvey.getId()) %>"/></liferay-portlet:renderURL>';"/>
         </td>
         <td><input type="button" value="Delete"
                    onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>"
@@ -86,6 +86,7 @@
         }
     %>
 </table>
+
 <div style="text-align:center;"><span>Page:</span>
     <%
         for (int i = 0; i < numberOfPages; i++) {
