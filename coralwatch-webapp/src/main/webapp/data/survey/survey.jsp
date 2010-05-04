@@ -605,13 +605,22 @@
 </table>
 <!--TODO enable this later-->
 <%--<%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>--%>
-<form method="post">
+<form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
 <script type="text/javascript">
     function setColor(colorCode, slate, inputField) {
         dijit.byId(slate).setAttribute('label', colorCode);
         dojo.byId(inputField).setAttribute('value', colorCode);
     }
 </script>
+<script type="dojo/method" event="onSubmit">
+    if(!this.validate()){
+    alert('All fields are required to submit survey records.');
+    return false;
+    }
+    return true;
+</script>
+<input type="hidden" name="surveyId" value="<%= String.valueOf(survey.getId()) %>"/>
+<input type="hidden" name="<%= Constants.CMD %>" value="<%= HtmlUtil.escape(Constants.SAVE)%>"/>
 <table width="100%">
 <tr>
     <th nowrap="nowrap">Coral Type</th>
@@ -622,7 +631,7 @@
 
 <tr>
 <td nowrap="nowrap">
-    <input dojoType="dijit.form.RadioButton" id="coralType_0" name="coralType" value="Branching"
+    <input dojoType="dijit.form.RadioButton" checked="checked" id="coralType_0" name="coralType" value="Branching"
            type="radio"/>
     <label for="coralType_0"> Branching </label>
     <input dojoType="dijit.form.RadioButton" id="coralType_1" name="coralType" value="Boulder"
@@ -636,9 +645,9 @@
     <label for="coralType_3"> Soft </label>
 </td>
 <td nowrap="nowrap">
-    <input name="light_color_input" id="light_color_input" type="hidden" value=""/>
+    <input dojoType="dijit.form.TextBox" name="light_color_input" id="light_color_input" type="hidden" value=""/>
 
-    <div id="light_color_slate" dojoType="dijit.form.DropDownButton" label="-" style="width:30px">
+    <div id="light_color_slate" dojoType="dijit.form.DropDownButton" label="" style="width:30px">
         <div dojoType="dijit.TooltipDialog">
             <table style="cursor:pointer;">
                 <tr>
@@ -757,9 +766,9 @@
     </div>
 </td>
 <td nowrap="nowrap">
-    <input name="dark_color_input" id="dark_color_input" type="hidden" value=""/>
+    <input dojoType="dijit.form.TextBox" name="dark_color_input" id="dark_color_input" type="hidden" value=""/>
 
-    <div id="dark_color_slate" dojoType="dijit.form.DropDownButton" label="-" style="width:30px">
+    <div id="dark_color_slate" dojoType="dijit.form.DropDownButton" label="" style="width:30px">
         <div dojoType="dijit.TooltipDialog">
             <table style="cursor:pointer;">
                 <tr>
@@ -878,8 +887,7 @@
     </div>
 </td>
 <td>
-    <input type="button" value="Add"
-           onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="RECORD" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:renderURL>';"/>
+    <input type="submit" name="submit" value="Add"/>
 </td>
 </tr>
 </table>

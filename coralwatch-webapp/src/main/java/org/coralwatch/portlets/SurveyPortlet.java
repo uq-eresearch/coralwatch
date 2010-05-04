@@ -54,9 +54,13 @@ public class SurveyPortlet extends GenericPortlet {
     @Override
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
         PortletSession session = actionRequest.getPortletSession();
-        ((List<SubmissionError>) session.getAttribute("errors")).clear();
+        List<SubmissionError> errorList = (List<SubmissionError>) session.getAttribute("errors");
+        if (!errorList.isEmpty()) {
+            errorList.clear();
+        }
 
         String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+        _log.info("Command: " + cmd);
         try {
             if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
                 UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
@@ -129,20 +133,21 @@ public class SurveyPortlet extends GenericPortlet {
                 } else {
                     errors.add(new SubmissionError("You must be signed in to submit a survey."));
                 }
-            } else if (cmd.equals("RECORD")) {
+            } else if (cmd.equals(Constants.SAVE)) {
                 long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
                 String coralType = actionRequest.getParameter("coralType");
                 String lightColor = actionRequest.getParameter("light_color_input");
                 String darkColor = actionRequest.getParameter("dark_color_input");
 
-                char lightestLetter = lightColor.trim().charAt(0);
-                int lightestNumber = Integer.parseInt(lightColor.trim().charAt(1) + "");
+                char lightLetter = lightColor.trim().charAt(0);
+                int lightNumber = Integer.parseInt(lightColor.trim().charAt(1) + "");
                 char darkLetter = darkColor.trim().charAt(0);
                 int darkNumber = Integer.parseInt(darkColor.trim().charAt(1) + "");
-
                 Survey survey = surveyDao.getById(suveyId);
-                SurveyRecord record = new SurveyRecord(survey, coralType, lightestLetter, lightestNumber, darkLetter, darkNumber);
+                SurveyRecord record = new SurveyRecord(survey, coralType, lightLetter, lightNumber, darkLetter, darkNumber);
                 surveyRecordDao.save(record);
+                actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
+                actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
             }
         } catch (Exception ex) {
             errors.add(new SubmissionError("Your submission contains invalid data. Check all fields."));
