@@ -458,12 +458,16 @@
     surveyId = ParamUtil.getLong(request, "surveyId");
     survey = surveyDao.getById(surveyId);
 %>
-
+<script type="text/javascript">
+    dojo.addOnLoad(function() {
+        dijit.byId('<%=ParamUtil.getString(request, "selectedTab")%>').setAttribute('selected', true);
+    });
+</script>
 <h2>Survey Details</h2>
 <br/>
 
 <div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:650px;height:60ex">
-<div id="surveyMetadataTab" dojoType="dijit.layout.ContentPane" title="Metadata" style="width:650px; height:60ex">
+<div id="metadataTab" dojoType="dijit.layout.ContentPane" title="Metadata" style="width:650px; height:60ex">
     <table>
         <%
             if (survey.getCreator().equals(currentUser)) {
@@ -603,11 +607,13 @@
         }
     %>
 </table>
-<!--TODO enable this later-->
-<%--<%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>--%>
+
+<%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm"
       jsId="recordForm" id="recordForm">
+
 <script type="text/javascript">
+
     function setColor(colorCode, slate, inputField) {
         dijit.byId(slate).setAttribute('label', colorCode);
         dojo.byId(inputField).setAttribute('value', colorCode);
@@ -908,7 +914,7 @@
 </tr>
 </table>
 </form>
-<%--<%}%>--%>
+<%}%>
 </div>
 </div>
 <%

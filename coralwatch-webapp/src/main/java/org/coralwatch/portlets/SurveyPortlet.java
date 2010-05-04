@@ -105,6 +105,7 @@ public class SurveyPortlet extends GenericPortlet {
                             surveyDao.save(survey);
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                             actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
+                            actionResponse.setRenderParameter("selectedTab", "metadataTab");
                         } else if (cmd.equals(Constants.EDIT)) {
                             long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
                             Survey survey = surveyDao.getById(suveyId);
@@ -123,6 +124,7 @@ public class SurveyPortlet extends GenericPortlet {
                             surveyDao.update(survey);
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                             actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
+                            actionResponse.setRenderParameter("selectedTab", "metadataTab");
                         }
                     } else {
                         actionResponse.setRenderParameter(Constants.CMD, cmd);
@@ -148,6 +150,7 @@ public class SurveyPortlet extends GenericPortlet {
                 surveyRecordDao.save(record);
                 actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                 actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
+                actionResponse.setRenderParameter("selectedTab", "dataTab");
             }
         } catch (Exception ex) {
             errors.add(new SubmissionError("Your submission contains invalid data. Check all fields."));
