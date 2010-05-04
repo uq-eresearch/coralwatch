@@ -605,7 +605,8 @@
 </table>
 <!--TODO enable this later-->
 <%--<%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>--%>
-<form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
+<form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm"
+      id="recordForm">
 <script type="text/javascript">
     function setColor(colorCode, slate, inputField) {
         dijit.byId(slate).setAttribute('label', colorCode);
@@ -613,12 +614,26 @@
     }
 </script>
 <script type="dojo/method" event="onSubmit">
-    if(!this.validate()){
-    alert('All fields are required to submit survey records.');
+    var isValid = dojo.query('INPUT[name=coralType]', 'recordForm').filter(function(n) { return n.checked }).length > 0;
+    var selectedLightColor = dojo.query('INPUT[name=light_color_input]', 'recordForm').filter(function(n) { return
+    n.getAttribute('value') != "" }).length > 0;
+    var selectedDarkColor = dojo.query('INPUT[name=dark_color_input]', 'recordForm').filter(function(n) { return
+    n.getAttribute('value') != "" }).length > 0;
+    if (!isValid) {
+    alert('You must select coral type to submit a record.');
+    return false;
+    }
+    if (!selectedLightColor) {
+    alert('You must select lightest colour.');
+    return false;
+    }
+    if (!selectedDarkColor) {
+    alert('You must select darkest colour.');
     return false;
     }
     return true;
 </script>
+
 <input type="hidden" name="surveyId" value="<%= String.valueOf(survey.getId()) %>"/>
 <input type="hidden" name="<%= Constants.CMD %>" value="<%= HtmlUtil.escape(Constants.SAVE)%>"/>
 <table width="100%">
@@ -631,7 +646,7 @@
 
 <tr>
 <td nowrap="nowrap">
-    <input dojoType="dijit.form.RadioButton" checked="checked" id="coralType_0" name="coralType" value="Branching"
+    <input dojoType="dijit.form.RadioButton" id="coralType_0" name="coralType" value="Branching"
            type="radio"/>
     <label for="coralType_0"> Branching </label>
     <input dojoType="dijit.form.RadioButton" id="coralType_1" name="coralType" value="Boulder"
