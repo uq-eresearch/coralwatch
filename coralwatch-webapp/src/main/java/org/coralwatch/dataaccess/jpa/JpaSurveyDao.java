@@ -28,7 +28,7 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao {
         if (resultList.isEmpty()) {
             return null;
         }
-        assert resultList.size() == 1 : "Email should be unique";
+        assert resultList.size() == 1 : "id should be unique";
         return (Survey) resultList.get(0);
 
     }

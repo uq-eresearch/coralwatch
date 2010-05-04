@@ -54,9 +54,9 @@ public class SurveyPortlet extends GenericPortlet {
     @Override
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
         PortletSession session = actionRequest.getPortletSession();
-        List<SubmissionError> errorList = (List<SubmissionError>) session.getAttribute("errors");
-        if (!errorList.isEmpty()) {
-            errorList.clear();
+        errors = (List<SubmissionError>) session.getAttribute("errors", PortletSession.PORTLET_SCOPE);
+        if (!errors.isEmpty()) {
+            errors.clear();
         }
 
         String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
@@ -91,6 +91,7 @@ public class SurveyPortlet extends GenericPortlet {
                         }
                         if (cmd.equals(Constants.ADD)) {
                             Survey survey = new Survey();
+                            survey.setCreator(currentUser);
                             survey.setOrganisation(organisation);
                             survey.setOrganisationType(organisationType);
                             survey.setReef(reef);
@@ -106,6 +107,7 @@ public class SurveyPortlet extends GenericPortlet {
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                             actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
                             actionResponse.setRenderParameter("selectedTab", "metadataTab");
+                            _log.info("Added survey");
                         } else if (cmd.equals(Constants.EDIT)) {
                             long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
                             Survey survey = surveyDao.getById(suveyId);
@@ -125,6 +127,7 @@ public class SurveyPortlet extends GenericPortlet {
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                             actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
                             actionResponse.setRenderParameter("selectedTab", "metadataTab");
+                            _log.info("Added survey");
                         }
                     } else {
                         actionResponse.setRenderParameter(Constants.CMD, cmd);
@@ -140,7 +143,7 @@ public class SurveyPortlet extends GenericPortlet {
                 String coralType = actionRequest.getParameter("coralType");
                 String lightColor = actionRequest.getParameter("light_color_input");
                 String darkColor = actionRequest.getParameter("dark_color_input");
-
+                //TODO need validation here
                 char lightLetter = lightColor.trim().charAt(0);
                 int lightNumber = Integer.parseInt(lightColor.trim().charAt(1) + "");
                 char darkLetter = darkColor.trim().charAt(0);
@@ -151,9 +154,18 @@ public class SurveyPortlet extends GenericPortlet {
                 actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                 actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
                 actionResponse.setRenderParameter("selectedTab", "dataTab");
+            } else if (cmd.equalsIgnoreCase("deleterecord")) {
+                long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
+                long recordId = ParamUtil.getLong(actionRequest, "recordId");
+                SurveyRecord surveyRec = surveyRecordDao.getById(recordId);
+                surveyRecordDao.delete(surveyRec);
+                actionResponse.setRenderParameter("surveyId", String.valueOf(suveyId));
+                actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
+                actionResponse.setRenderParameter("selectedTab", "dataTab");
             }
         } catch (Exception ex) {
             errors.add(new SubmissionError("Your submission contains invalid data. Check all fields."));
+            _log.error("Submission error ", ex);
         }
 
 

@@ -581,6 +581,10 @@
 </div>
 
 <div id="dataTab" dojoType="dijit.layout.ContentPane" title="Data" style="width:650px; height:60ex">
+<%
+    List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
+    if (!surveyRecords.isEmpty()) {
+%>
 <table>
     <tr>
         <th nowrap="nowrap">Coral Type</th>
@@ -589,7 +593,7 @@
         <th nowrap="nowrap">Delete</th>
     </tr>
     <%
-        List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
+
         for (SurveyRecord record : surveyRecords) {
     %>
     <tr>
@@ -600,14 +604,21 @@
         <td><%=record.getDarkestLetter() + "" + record.getDarkestNumber()%>
         </td>
         <td>
-            <input type="button" value="Delete"/>
+            <input type="button" value="Delete"
+                                   onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="deleterecord" /><portlet:param name="recordId" value="<%= String.valueOf(record.getId()) %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:actionURL>';"/>
         </td>
     </tr>
     <%
         }
     %>
 </table>
-
+<%
+}else {
+%>
+<span style="text-align:center;">No Data Recorded</span>
+<%
+    }
+%>
 <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm"
       jsId="recordForm" id="recordForm">
