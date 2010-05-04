@@ -606,7 +606,7 @@
 <!--TODO enable this later-->
 <%--<%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>--%>
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm"
-      id="recordForm">
+      jsId="recordForm" id="recordForm">
 <script type="text/javascript">
     function setColor(colorCode, slate, inputField) {
         dijit.byId(slate).setAttribute('label', colorCode);
@@ -614,11 +614,12 @@
     }
 </script>
 <script type="dojo/method" event="onSubmit">
-    var isValid = dojo.query('INPUT[name=coralType]', 'recordForm').filter(function(n) { return n.checked }).length > 0;
-    var selectedLightColor = dojo.query('INPUT[name=light_color_input]', 'recordForm').filter(function(n) { return
-    n.getAttribute('value') != "" }).length > 0;
-    var selectedDarkColor = dojo.query('INPUT[name=dark_color_input]', 'recordForm').filter(function(n) { return
-    n.getAttribute('value') != "" }).length > 0;
+    var isValid = dojo.query('INPUT[name=coralType]', 'recordForm').
+    filter(function(n) { return n.checked }).length > 0;
+    var selectedLightColor = dojo.query('INPUT[name=light_color_input]', 'recordForm').
+    filter(function(n) { return n.getAttribute('value') != ""; }).length > 0;
+    var selectedDarkColor = dojo.query('INPUT[name=dark_color_input]', 'recordForm').
+    filter(function(n) { return n.getAttribute('value') != ""; }).length > 0;
     if (!isValid) {
     alert('You must select coral type to submit a record.');
     return false;
@@ -635,7 +636,7 @@
 </script>
 
 <input type="hidden" name="surveyId" value="<%= String.valueOf(survey.getId()) %>"/>
-<input type="hidden" name="<%= Constants.CMD %>" value="<%= HtmlUtil.escape(Constants.SAVE)%>"/>
+<input type="hidden" name="<%= Constants.CMD %>" value="saverecord"/>
 <table width="100%">
 <tr>
     <th nowrap="nowrap">Coral Type</th>

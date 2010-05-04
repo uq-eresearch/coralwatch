@@ -133,7 +133,7 @@ public class SurveyPortlet extends GenericPortlet {
                 } else {
                     errors.add(new SubmissionError("You must be signed in to submit a survey."));
                 }
-            } else if (cmd.equals(Constants.SAVE)) {
+            } else if (cmd.equalsIgnoreCase("saverecord")) {
                 long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
                 String coralType = actionRequest.getParameter("coralType");
                 String lightColor = actionRequest.getParameter("light_color_input");
