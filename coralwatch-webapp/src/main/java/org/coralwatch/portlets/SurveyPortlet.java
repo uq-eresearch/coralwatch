@@ -48,6 +48,7 @@ public class SurveyPortlet extends GenericPortlet {
         session.setAttribute("surveyRecordDao", surveyRecordDao, PortletSession.PORTLET_SCOPE);
         session.setAttribute("reefDao", reefDao, PortletSession.PORTLET_SCOPE);
         session.setAttribute("errors", errors, PortletSession.PORTLET_SCOPE);
+        
         include(viewJSP, renderRequest, renderResponse);
     }
 

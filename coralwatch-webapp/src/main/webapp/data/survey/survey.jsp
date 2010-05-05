@@ -93,12 +93,20 @@
 %>
 
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
-<script type="text/javascript"
-        src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
+
+<% if (HttpUtils.getRequestURL(request).toString().startsWith("http://localhost")) {
+%>
+<script type="text/javascript" src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
+<% } else {%>
+<%--TODO Remove this. This key is for coralwatch.metadata.net--%>
+<script type="text/javascript" src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAYJ0-yjhies4aZVt60XiE1BRQUGumEEA5VNOyRfA6H2JcRBcMpRSGKOPhfWtwYIQIEFoWKsymkjiraw'></script>
+<%}%>
+
 <script type="text/javascript">
     dojo.addOnLoad(
             function() {
                 dojo.byId("organisation").focus();
+                dojo.byId("latitude").style.display = 'inline';
                 updateLonFromDecimal();
                 updateLatFromDecimal();
                 updateFTemperature();
@@ -216,7 +224,7 @@
                                    invalidMessage="Enter a valid latitude value."
                                    value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
 
-                            <div dojoType="dijit.form.DropDownButton" label="Locate On Map">
+                            <div id="locator" dojoType="dijit.form.DropDownButton" label="Locate On Map">
                                 <div id="mapDiv" dojoType="dijit.TooltipDialog">
                                     <div id="locatorMap" style="width: 470px; height: 320px;">
                                         <script type="text/javascript">
@@ -240,16 +248,13 @@
                                                     document.getElementById("longitude").value = Lng5.toFixed(6);
                                                     updateLonFromDecimal();
                                                 });
-//                                                mapDiv.style.display = '';
-                                            }
-                                            else {
+                                            } else {
                                                 alert("Sorry, the Google Maps API is not compatible with this browser");
                                             }
                                         </script>
                                     </div>
                                 </div>
                             </div>
-
                         </td>
                     </tr>
                     <tr>
@@ -388,7 +393,7 @@
                name="date"
                required="true"
                isDate="true"
-               value="<%=cmd.equals(Constants.EDIT) ? survey.getDate() : ""%>"
+               value="<%=cmd.equals(Constants.EDIT) ? dateFormat.format(survey.getDate()) : ""%>"
                dojoType="dijit.form.DateTextBox"
                constraints="{datePattern: 'dd/MM/yyyy', min:'2000-01-01'}"
                lang="en-au"
@@ -435,6 +440,7 @@
                dojoType="dijit.form.NumberTextBox"
                trim="true"
                onBlur="updateFTemperature()"
+               onChange="updateFTemperature()"
                invalidMessage="Enter a valid temperature value."
                value="<%=cmd.equals(Constants.EDIT) ? survey.getTemperature() : ""%>"/>
         (&deg;F): <input type="text"
@@ -443,6 +449,7 @@
                          required="true"
                          dojoType="dijit.form.NumberTextBox"
                          onBlur="updateCTemperature()"
+                         onChange="updateCTemperature()"
                          trim="true"
                          invalidMessage="Enter a valid temperature value."/>
     </td>
