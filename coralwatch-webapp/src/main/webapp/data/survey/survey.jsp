@@ -93,6 +93,8 @@
 %>
 
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
+<script type="text/javascript"
+        src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
 <script type="text/javascript">
     dojo.addOnLoad(
             function() {
@@ -111,7 +113,7 @@
     }
     return true;
 </script>
-
+<%--<div id="locatorMap" style="width: 470px; height: 320px;"></div>--%>
 <input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
 <table>
 <%
@@ -211,9 +213,42 @@
                                    trim="true"
                                    onBlur="updateLatFromDecimal()"
                                    invalidMessage="Enter a valid latitude value."
-                                   value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/> <a
-                                onClick="jQuery('#locatorMap').dialog('open');return false;" id="locateMapLink"
-                                href="#">Locate on map</a>
+                                   value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
+
+                            <div dojoType="dijit.form.DropDownButton" label="Locate On Map">
+                                <div id="mapDiv" dojoType="dijit.TooltipDialog">
+                                    <div id="locatorMap" style="width: 470px; height: 320px;">
+                                        <script type="text/javascript">
+                                            if (GBrowserIsCompatible()) {
+                                                var mapDiv = dojo.byId("locatorMap");
+                                                var map = new GMap2(mapDiv);
+                                                map.setCenter(new GLatLng(0, 0), 1);
+                                                map.enableScrollWheelZoom();
+                                                map.enableContinuousZoom();
+                                                map.addControl(new GLargeMapControl3D());
+                                                map.addControl(new GMapTypeControl());
+                                                map.addMapType(G_PHYSICAL_MAP);
+                                                map.setMapType(G_HYBRID_MAP);
+                                                map.removeMapType(G_SATELLITE_MAP);
+                                                map.getContainer().style.overflow = "hidden";
+                                                GEvent.addListener(map, 'click', function(overlay, latlng) {
+                                                    var Lat5 = latlng.lat();
+                                                    var Lng5 = latlng.lng();
+                                                    document.getElementById("latitude").value = Lat5;
+                                                    updateLatFromDecimal();
+                                                    document.getElementById("longitude").value = Lng5;
+                                                    updateLonFromDecimal();
+                                                });
+//                                                mapDiv.style.display = '';
+                                            }
+                                            else {
+                                                alert("Sorry, the Google Maps API is not compatible with this browser");
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+
                         </td>
                     </tr>
                     <tr>
@@ -605,7 +640,7 @@
         </td>
         <td>
             <input type="button" value="Delete"
-                                   onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="deleterecord" /><portlet:param name="recordId" value="<%= String.valueOf(record.getId()) %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:actionURL>';"/>
+                   onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="deleterecord" /><portlet:param name="recordId" value="<%= String.valueOf(record.getId()) %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:actionURL>';"/>
         </td>
     </tr>
     <%
@@ -613,7 +648,7 @@
     %>
 </table>
 <%
-}else {
+} else {
 %>
 <span style="text-align:center;">No Data Recorded</span>
 <%
@@ -708,7 +743,7 @@
                 </tr>
                 <tr>
                     <td style="background-color:#333300;"
-                        onClick="setColor('E6', 'light_color_slate', light_color_input')">E6
+                        onClick="setColor('E6', 'light_color_slate', 'light_color_input')">E6
                     </td>
                     <td></td>
                     <td></td>
