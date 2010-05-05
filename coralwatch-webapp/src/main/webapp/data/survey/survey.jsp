@@ -212,6 +212,7 @@
                                    constraints="{places:6,min:-90,max:90}"
                                    trim="true"
                                    onBlur="updateLatFromDecimal()"
+                                   onChange="updateLatFromDecimal"
                                    invalidMessage="Enter a valid latitude value."
                                    value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
 
@@ -234,9 +235,9 @@
                                                 GEvent.addListener(map, 'click', function(overlay, latlng) {
                                                     var Lat5 = latlng.lat();
                                                     var Lng5 = latlng.lng();
-                                                    document.getElementById("latitude").value = Lat5;
+                                                    document.getElementById("latitude").value = Lat5.toFixed(6);
                                                     updateLatFromDecimal();
-                                                    document.getElementById("longitude").value = Lng5;
+                                                    document.getElementById("longitude").value = Lng5.toFixed(6);
                                                     updateLonFromDecimal();
                                                 });
 //                                                mapDiv.style.display = '';
@@ -264,6 +265,7 @@
                                    constraints="{places:6,min:-180,max:360}"
                                    trim="true"
                                    onBlur="updateLonFromDecimal()"
+                                   onChange="updateLonFromDecimal()"
                                    invalidMessage="Enter a valid longitude value."
                                    value="<%=cmd.equals(Constants.EDIT) ? survey.getLongitude() : ""%>"/>
                         </td>
