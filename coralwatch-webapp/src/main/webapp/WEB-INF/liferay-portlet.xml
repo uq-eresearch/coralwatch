@@ -19,7 +19,6 @@
         <portlet-name>map-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
         <instanceable>true</instanceable>
-        <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>
     <portlet>
         <portlet-name>members-portlet</portlet-name>

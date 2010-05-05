@@ -26,8 +26,8 @@ theme: <#if (survey.totalRatingValue >= 0) && survey.totalRatingValue <= 1>'red'
             src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA-Y-sXcS7Cho7UUEWAL06lBQwtEFLLcTdtVnYJARPXeJhL0yKvxQD__Boj0suUIzkmUZHRHxL-cUVyw'></script>
 </#if>
 
-<#--<script type="text/javascript" src="http://static.simile.mit.edu/timeline/api-2.2.0/timeline-api.js"></script>-->
-<script type="text/javascript" src="http://static.simile.mit.edu/timeline/api/timeline-api.js"></script>
+<script src="http://simile.mit.edu/timeline/api/scripts/timeline-api.js" type="text/javascript"></script>
+<#--<script type="text/javascript" src="http://static.simile.mit.edu/timeline/api/timeline-api.js"></script>-->
 
 <script language="javascript" type="text/javascript" src="${baseUrl}/javascript/timemap/timemap_full.pack.js"></script>
 <script type="text/javascript">
