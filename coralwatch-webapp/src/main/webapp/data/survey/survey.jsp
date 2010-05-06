@@ -225,7 +225,7 @@
                                    value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
 
                             <div id="locator" dojoType="dijit.form.DropDownButton" label="Locate On Map">
-                                <div id="mapDiv" dojoType="dijit.TooltipDialog">
+                                <div dojoType="dijit.TooltipDialog">
                                     <div id="locatorMap" style="width: 470px; height: 320px;">
                                         <script type="text/javascript">
                                             if (GBrowserIsCompatible()) {

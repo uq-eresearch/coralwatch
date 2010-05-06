@@ -1,3 +1,10 @@
+<%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
+<%@ page import="org.coralwatch.dataaccess.SurveyDao" %>
+<%@ page import="org.coralwatch.model.Survey" %>
+<%@ page import="java.util.List" %>
+
+<portlet:defineObjects/>
+
 <% if (HttpUtils.getRequestURL(request).toString().startsWith("http://localhost")) {
 %>
 <script type="text/javascript"
@@ -12,11 +19,26 @@
     dojo.addOnLoad(
             function() {
                 if (GBrowserIsCompatible()) {
-                    var map = new GMap2(document.getElementById("map"));
+                    var map = new GMap2(document.getElementById("map_canvas"));
                     map.setCenter(new GLatLng(25.799891, 15.468750), 2);
-                    map.setMapType(G_MAPMAKER_HYBRID_MAP);
+                    map.setMapType(G_HYBRID_MAP);
                     map.setUIToDefault();
+
+                <%
+                SurveyDao surveyDao = (SurveyDao) renderRequest.getPortletSession().getAttribute("surveyDao");
+                List<Survey> surveys=surveyDao.getAll();
+                for(Survey survey: surveys){
+                %>
+                    var point = new GLatLng(<%=survey.getLatitude()%>, <%=survey.getLongitude()%>);
+                    var marker = new GMarker(point);
+                    GEvent.addListener(marker, "click", function() {
+                        marker.openInfoWindowHtml("<table><tr><td>Reef</td><td><%=survey.getReef().getName()%></td></tr></table><br /><br /><a href=\"#\">More info</a>");
+                    });
+                    map.addOverlay(marker);
+                <%
+                }
+                %>
                 }
             });
 </script>
-<div id="map" style="height: 650px;"></div>
+<div id="map_canvas" style="height: 650px;"></div>
