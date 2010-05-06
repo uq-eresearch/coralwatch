@@ -243,6 +243,11 @@
         </td>
     </tr>
     <tr>
+        <th>Country:</th>
+        <td><%= user.getCountry() == null ? "Not Set" : user.getCountry()%>
+        </td>
+    </tr>
+    <tr>
         <th>Aurveys:</th>
         <td><a href="#"><%=userDao.getSurveyEntriesCreated(user).size()%> survey(s)</a></td>
     </tr>

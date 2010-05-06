@@ -39,6 +39,6 @@
                 }
                 %>
                 }
-            });
+            });            
 </script>
 <div id="map_canvas" style="height: 650px;"></div>
