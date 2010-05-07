@@ -74,12 +74,12 @@
         comments = survey.getComments();
 %>
 
-<h2>Edit Survey</h2>
+<h2 style="margin-top:0;">Edit Survey</h2>
 <br/>
 <%
 } else if (cmd.equals(Constants.ADD)) {
 %>
-<h2>Add New Survey</h2>
+<h2 style="margin-top:0;">Add New Survey</h2>
 <br/>
 <%
     }
@@ -509,7 +509,7 @@
         dijit.byId('<%=ParamUtil.getString(request, "selectedTab")%>').setAttribute('selected', true);
     });
 </script>
-<h2>Survey Details</h2>
+<h2 style="margin-top:0;">Survey Details</h2>
 <br/>
 
 <div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:650px;height:60ex">
@@ -1023,13 +1023,14 @@
 <%
     }
 %>
-
+<h2 style="margin-top:0;">All Surveys</h2>
 <table>
     <tr>
         <th>Creator</th>
         <th>Date</th>
         <th>Reef</th>
         <th>Country</th>
+        <th>Records</th>
         <th>View</th>
         <%
             if (currentUser != null) {
@@ -1053,6 +1054,7 @@
         </td>
         <td><%=aSurvey.getReef().getCountry()%>
         </td>
+        <td><%=surveyDao.getSurveyRecords(aSurvey).size()%></td>
         <td><input type="button" value="View"
                    onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';"/>
         </td>

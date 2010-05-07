@@ -11,7 +11,7 @@
     SurveyDao surveyDao = (SurveyDao) renderRequest.getPortletSession().getAttribute("surveyDao");
 %>
 <div>
-    <h3>Updates</h3>
+    <h3 style="margin-top:0;">Updates</h3>
     <ul>
         <li><%=userDao.getAll().size()%> Member<%=userDao.getAll().size() > 1 ? "s" : ""%>
         </li>

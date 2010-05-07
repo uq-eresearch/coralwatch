@@ -57,7 +57,7 @@
             email = user.getEmail();
             displayName = user.getDisplayName();
     %>
-    <h2>Edit User Profile</h2>
+    <h2 style="margin-top:0;">Edit User Profile</h2>
     <br/>
 
     <p style="text-align:justify;">CoralWatch requires all users to provide real contact details to encourage
@@ -66,7 +66,7 @@
     <%
     } else {
     %>
-    <h2>Sign Up</h2>
+    <h2 style="margin-top:0;">Sign Up</h2>
     <br/>
 
     <p style="text-align:justify;">CoralWatch requires all users to provide real contact details to encourage
@@ -200,7 +200,7 @@
     }
 
 %>
-<h2>User Profile</h2>
+<h2 style="margin-top:0;">User Profile</h2>
 <table>
     <tr>
         <th>Display Name:</th>
