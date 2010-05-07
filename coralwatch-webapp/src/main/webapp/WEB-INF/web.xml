@@ -10,4 +10,13 @@
         <listener-class>org.coralwatch.app.ApplicationContext</listener-class>
     </listener>
 
+    <servlet id="graphServlet">
+        <servlet-name>graph</servlet-name>
+        <servlet-class>org.coralwatch.portlets.GraphsServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>graph</servlet-name>
+        <url-pattern>/graph/*</url-pattern>
+    </servlet-mapping>
 </web-app>

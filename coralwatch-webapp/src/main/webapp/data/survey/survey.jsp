@@ -96,10 +96,12 @@
 
 <% if (HttpUtils.getRequestURL(request).toString().startsWith("http://localhost")) {
 %>
-<script type="text/javascript" src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
+<script type="text/javascript"
+        src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
 <% } else {%>
 <%--TODO Remove this. This key is for coralwatch.metadata.net--%>
-<script type="text/javascript" src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAYJ0-yjhies4aZVt60XiE1BRQUGumEEA5VNOyRfA6H2JcRBcMpRSGKOPhfWtwYIQIEFoWKsymkjiraw'></script>
+<script type="text/javascript"
+        src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAYJ0-yjhies4aZVt60XiE1BRQUGumEEA5VNOyRfA6H2JcRBcMpRSGKOPhfWtwYIQIEFoWKsymkjiraw'></script>
 <%}%>
 
 <script type="text/javascript">
@@ -634,7 +636,9 @@
         <th nowrap="nowrap">Coral Type</th>
         <th nowrap="nowrap">Lightest</th>
         <th nowrap="nowrap">Darkest</th>
+        <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
         <th nowrap="nowrap">Delete</th>
+        <%}%>
     </tr>
     <%
 
@@ -647,10 +651,12 @@
         </td>
         <td><%=record.getDarkestLetter() + "" + record.getDarkestNumber()%>
         </td>
+        <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
         <td>
             <input type="button" value="Delete"
                    onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="deleterecord" /><portlet:param name="recordId" value="<%= String.valueOf(record.getId()) %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:actionURL>';"/>
         </td>
+        <%}%>
     </tr>
     <%
         }
@@ -971,13 +977,23 @@
 </form>
 <%}%>
 </div>
+<div id="graphTab" dojoType="dijit.layout.ContentPane" title="Graphs" style="width:650px; height:60ex">
+    <%
+    String url = "/graph?surveyId=" + survey.getId() + "&format=png&chart=shapePie";
+    %>
+     <table>
+         <tr>
+             <td><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + url)%>" alt="Shape Distribution"/></td>
+         </tr>
+     </table>
+</div>
 </div>
 <%
 
 } else {
     List<Survey> surveys = surveyDao.getAll();
     int numberOfSurveys = surveys.size();
-    int pageSize = 10;
+    int pageSize = 20;
     int pageNumber = ParamUtil.getInteger(request, "page");
     if (pageNumber <= 0) {
         pageNumber = 1;
@@ -1011,8 +1027,14 @@
         <th>Reef</th>
         <th>Country</th>
         <th>View</th>
+        <%
+            if (currentUser != null) {
+        %>
         <th>Edit</th>
         <th>Delete</th>
+        <%
+            }
+        %>
     </tr>
     <%
         for (int i = lowerLimit; i < upperLimit; i++) {
@@ -1031,7 +1053,7 @@
                    onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';"/>
         </td>
         <%
-            if (currentUser != null && currentUser.equals(aSurvey.getCreator())) {
+            if (currentUser != null && currentUser.equals(aSurvey.getCreator()) || (currentUser != null && currentUser.isSuperUser())) {
         %>
         <td><input type="button" value="Edit"
                    onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';"/>
