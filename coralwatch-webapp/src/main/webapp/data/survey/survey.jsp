@@ -979,11 +979,15 @@
 </div>
 <div id="graphTab" dojoType="dijit.layout.ContentPane" title="Graphs" style="width:650px; height:60ex">
     <%
-    String url = "/graph?surveyId=" + survey.getId() + "&format=png&chart=shapePie";
+    String pieChartUrl = "/graph?surveyId=" + survey.getId() + "&chart=shapePie";
+    String barChartUrl = "/graph?surveyId=" + survey.getId() + "&chart=coralCount";
     %>
      <table>
          <tr>
-             <td><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + url)%>" alt="Shape Distribution"/></td>
+             <td><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>" alt="Shape Distribution"/></td>
+         </tr>
+         <tr>
+             <td><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>" alt="Colour Distribution"/></td>
          </tr>
      </table>
 </div>

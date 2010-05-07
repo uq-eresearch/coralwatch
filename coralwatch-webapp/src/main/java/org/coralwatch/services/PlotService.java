@@ -76,8 +76,7 @@ public class PlotService {
             long numRecords = 0;
             long sumLight = 0;
             long sumDark = 0;
-        }
-        ;
+        };
         Map<Date, DataPoint> data = new HashMap<Date, DataPoint>();
         for (Survey survey : surveys) {
             if (survey.getDate() == null) {
@@ -145,7 +144,7 @@ public class PlotService {
                         rowKey, columnKey);
             }
         }
-        JFreeChart chart = ChartFactory.createBarChart("Color Distribution", null, null,
+        JFreeChart chart = ChartFactory.createBarChart("Colour Distribution", null, null,
                 dataset, PlotOrientation.HORIZONTAL, false, false, false);
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundAlpha(0);

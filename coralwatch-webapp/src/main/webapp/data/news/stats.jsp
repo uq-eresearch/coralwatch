@@ -20,4 +20,7 @@
         <li><a href="#"><%=surveyDao.getAll().size()%> Survey<%=surveyDao.getAll().size() > 1 ? "s" : ""%>
         </a></li>
     </ul>
+    <div align="center">
+    <img alt="Coralwatch Updates" src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/image/stats_updates.png")%>"/>
+    </div>
 </div>
