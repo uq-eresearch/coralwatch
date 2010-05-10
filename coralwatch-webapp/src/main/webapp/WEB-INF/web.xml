@@ -19,4 +19,14 @@
         <servlet-name>graph</servlet-name>
         <url-pattern>/graph/*</url-pattern>
     </servlet-mapping>
+
+    <servlet id="xmlSurveyServlet">
+        <servlet-name>json-surveys</servlet-name>
+        <servlet-class>org.coralwatch.servlets.JsonSurveyServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>json-surveys</servlet-name>
+        <url-pattern>/json-surveys/*</url-pattern>
+    </servlet-mapping>
 </web-app>
