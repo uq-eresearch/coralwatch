@@ -12,7 +12,7 @@
 
     <servlet id="graphServlet">
         <servlet-name>graph</servlet-name>
-        <servlet-class>org.coralwatch.portlets.GraphsServlet</servlet-class>
+        <servlet-class>org.coralwatch.servlets.GraphsServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>

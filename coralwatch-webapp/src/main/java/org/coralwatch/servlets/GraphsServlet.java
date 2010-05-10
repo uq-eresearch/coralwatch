@@ -1,4 +1,4 @@
-package org.coralwatch.portlets;
+package org.coralwatch.servlets;
 
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.SurveyDao;
