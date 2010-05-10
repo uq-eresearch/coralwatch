@@ -35,6 +35,8 @@ public class JsonSurveyServlet extends HttpServlet {
                 survey.putOpt("reef", srv.getReef().getName());
                 survey.putOpt("latitude", srv.getLatitude());
                 survey.putOpt("longitude", srv.getLongitude());
+                survey.putOpt("records", surveyDao.getSurveyRecords(srv).size());
+                survey.putOpt("date", srv.getDate().toLocaleString());
                 surveys.put(survey);
             } catch (JSONException e) {
                 LOGGER.fatal("Cannot create survey json object." + e.toString());

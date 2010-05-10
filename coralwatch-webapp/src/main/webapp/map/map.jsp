@@ -81,7 +81,7 @@
     function createMarker(point, icon, survey) {
         var marker = new GMarker(point, {icon: icon});
         GEvent.addListener(marker, "click", function() {
-            marker.openInfoWindowHtml(survey.reef);
+            marker.openInfoWindowHtml("<b>" + survey.reef + "</b><br />- " + survey.records + " Records <br />- " + survey.date + "<br />- <a href=\"#\">More info</a>");
         });
         return marker;
     }
