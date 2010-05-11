@@ -50,7 +50,6 @@ public class JsonSurveyServlet extends HttpServlet {
             LOGGER.fatal("Cannot create data json object." + ex.toString());
         }
         out.println(data);
-//        LOGGER.info(data.toString());
     }
 
 }

@@ -81,7 +81,12 @@
     function createMarker(point, icon, survey) {
         var marker = new GMarker(point, {icon: icon});
         GEvent.addListener(marker, "click", function() {
-            marker.openInfoWindowHtml("<b>" + survey.reef + "</b><br />- " + survey.records + " Records <br />- " + survey.date + "<br />- <a href=\"#\">More info</a>");
+            var baseUrl = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>";
+            var piechartUrl = baseUrl + "/graph?surveyId=" + survey.id + "&chart=shapePie&width=128&height=128&labels=false&legend=true&titleSize=11";
+            var coralcountchartUrl = baseUrl + "/graph?surveyId=" + survey.id + "&chart=coralCount&width=128&height=128&legend=false&titleSize=11";
+            var numberOfRecs = parseInt(survey.records);
+            var graphs = numberOfRecs <= 0 ? "" : "<br /><img src=\"" + piechartUrl + "\" alt=\"Shape Distribution\" width=\"128\" height=\"128\"/><img src=\"" + coralcountchartUrl + "\" alt=\"Shape Distribution\" width=\"128\" height=\"128\"/>";
+            marker.openInfoWindowHtml("<b>" + survey.reef + "</b><br />- " + numberOfRecs + " Record(s) <br />- " + survey.date + graphs + "<br />- <a href=\"#\">More info</a>");
         });
         return marker;
     }

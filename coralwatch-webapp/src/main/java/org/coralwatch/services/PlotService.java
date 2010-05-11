@@ -76,7 +76,8 @@ public class PlotService {
             long numRecords = 0;
             long sumLight = 0;
             long sumDark = 0;
-        };
+        }
+        ;
         Map<Date, DataPoint> data = new HashMap<Date, DataPoint>();
         for (Survey survey : surveys) {
             if (survey.getDate() == null) {
@@ -128,7 +129,7 @@ public class PlotService {
         return newChart;
     }
 
-    public static JFreeChart createCoralCountPlot(final List<Survey> surveys) {
+    public static JFreeChart createCoralCountPlot(final List<Survey> surveys, boolean legend, int titleSize) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         String rowKey = "All";
         for (int i = 1; i <= 6; i++) {
@@ -145,10 +146,12 @@ public class PlotService {
             }
         }
         JFreeChart chart = ChartFactory.createBarChart("Colour Distribution", null, null,
-                dataset, PlotOrientation.HORIZONTAL, false, false, false);
+                dataset, PlotOrientation.HORIZONTAL, legend, false, false);
+        chart.getTitle().setFont(new Font(null, Font.PLAIN, titleSize));
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundAlpha(0);
         plot.setRangeGridlinePaint(Color.GRAY);
+
         TickUnits tickUnits = new TickUnits();
         double[] ticks = new double[]{1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 1000000, 500000};
         for (double d : ticks) {
@@ -165,7 +168,7 @@ public class PlotService {
         return chart;
     }
 
-    public static JFreeChart createShapePiePlot(final List<Survey> surveys) {
+    public static JFreeChart createShapePiePlot(final List<Survey> surveys, boolean labels, boolean legend, int titleSize) {
         DefaultPieDataset dataset = new DefaultPieDataset();
         for (Survey survey : surveys) {
             for (SurveyRecord record : survey.getDataset()) {
@@ -179,12 +182,17 @@ public class PlotService {
             }
         }
         JFreeChart chart = ChartFactory.createPieChart("Shape Distribution", dataset,
-                false, false, false);
+                legend, false, false);
+        chart.getTitle().setFont(new Font(null, Font.PLAIN, titleSize));
         PiePlot plot = (PiePlot) chart.getPlot();
         plot.setBackgroundAlpha(0);
         plot.setSimpleLabels(true);
+        plot.setLabelGenerator(null);
         plot.setLabelBackgroundPaint(Color.WHITE);
-        plot.setLabelShadowPaint(null);
+        plot.setShadowPaint(Color.WHITE);
+        if (!labels) {
+            plot.setLabelShadowPaint(null);
+        }
         int i = 0;
         for (Object key : plot.getDataset().getKeys()) {
             plot.setSectionPaint((Comparable<?>) key, SHAPE_COLORS.get(key));

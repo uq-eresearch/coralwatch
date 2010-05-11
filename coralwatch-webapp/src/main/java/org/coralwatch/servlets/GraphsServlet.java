@@ -21,8 +21,8 @@ import java.util.List;
 
 public class GraphsServlet extends HttpServlet {
 
-    private static final int IMAGE_WIDTH = 300;
-    private static final int IMAGE_HEIGHT = 200;
+    private static int IMAGE_WIDTH = 300;
+    private static int IMAGE_HEIGHT = 200;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,14 +31,24 @@ public class GraphsServlet extends HttpServlet {
         SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
         String chart = request.getParameter("chart");
         long surveyId = Long.valueOf(request.getParameter("surveyId"));
-
+        int imageWidth = Integer.valueOf(request.getParameter("width"));
+        int imageHeight = Integer.valueOf(request.getParameter("height"));
+        boolean labels = Boolean.valueOf(request.getParameter("labels"));
+        boolean legend = Boolean.valueOf(request.getParameter("legend"));
+        int titleSize = Integer.valueOf(request.getParameter("titleSize"));
+        if (imageWidth > 5) {
+            IMAGE_WIDTH = imageWidth;
+        }
+        if (imageHeight > 5) {
+            IMAGE_HEIGHT = imageHeight;
+        }
         final Survey survey = surveyDao.getById(surveyId);
         final List<Survey> surveys = Collections.singletonList(survey);
         final JFreeChart newChart;
         if ("shapePie".equals(chart)) {
-            newChart = PlotService.createShapePiePlot(surveys);
+            newChart = PlotService.createShapePiePlot(surveys, labels, legend, titleSize);
         } else {
-            newChart = PlotService.createCoralCountPlot(surveys);
+            newChart = PlotService.createCoralCountPlot(surveys, legend, titleSize);
         }
         BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = image.createGraphics();
