@@ -2,14 +2,7 @@ package org.coralwatch.model;
 
 import org.hibernate.validator.NotNull;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -34,6 +27,9 @@ public class KitRequest implements Serializable {
 
     @Column(length = 500)
     private String address;
+
+    @Column(length = 256)
+    private String country;
 
     @Column(length = 2000)
     private String notes;
@@ -95,4 +91,11 @@ public class KitRequest implements Serializable {
         this.notes = notes;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 }

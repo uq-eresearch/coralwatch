@@ -43,6 +43,7 @@ public class KitRequestPortlet extends GenericPortlet {
         ((List<SubmissionError>) session.getAttribute("errors")).clear();
 
         String address = actionRequest.getParameter("address");
+        String country = actionRequest.getParameter("country");
         String notes = actionRequest.getParameter("notes");
         boolean agreement = ParamUtil.getBoolean(actionRequest, "agreement");
 
@@ -58,10 +59,14 @@ public class KitRequestPortlet extends GenericPortlet {
         if (address == null || address.isEmpty()) {
             errors.add(new SubmissionError("No address was provided. Postal address must be supplied for kit request."));
         }
-        if (errors.isEmpty()) {
 
+        if (country == null || country.isEmpty()) {
+            errors.add(new SubmissionError("Country name must be supplied for kit request."));
+        }
+        if (errors.isEmpty()) {
             KitRequest kitRequest = new KitRequest(user);
             kitRequest.setAddress(address);
+            kitRequest.setCountry(country);
             kitRequest.setNotes(notes);
             kitRequestDao.save(kitRequest);
         }

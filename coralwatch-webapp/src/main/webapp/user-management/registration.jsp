@@ -136,8 +136,7 @@
             <td><input type="text" name="displayName" id="displayName"
                        required="true"
                        dojoType="dijit.form.ValidationTextBox"
-                       regExp=".......*"
-                       invalidMessage="Please enter a display name with at least 6 characters"
+                       invalidMessage="Please enter a display name."
                        value="<%=displayName == null ? "" : displayName%>"/></td>
         </tr>
         <%
