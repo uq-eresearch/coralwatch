@@ -18,6 +18,9 @@ public class KitRequest implements Serializable {
     @NotNull
     private UserImpl requester;
 
+    @OneToOne
+    private UserImpl dispatcher;
+
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     private Date requestDate;
@@ -57,6 +60,14 @@ public class KitRequest implements Serializable {
 
     public void setRequester(UserImpl requester) {
         this.requester = requester;
+    }
+
+    public UserImpl getDispatcher() {
+        return dispatcher;
+    }
+
+    public void setDispatcher(UserImpl dispatcher) {
+        this.dispatcher = dispatcher;
     }
 
     public Date getRequestDate() {
