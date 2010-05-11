@@ -17,7 +17,7 @@
         </li>
         <li><a href="#"><%=reefDao.getAll().size()%> Reef<%=reefDao.getAll().size() > 1 ? "s" : ""%>
         </a></li>
-        <li><a href="#"><%=surveyDao.getAll().size()%> Survey<%=surveyDao.getAll().size() > 1 ? "s" : ""%>
+        <li><a href="view-surveys"><%=surveyDao.getAll().size()%> Survey<%=surveyDao.getAll().size() > 1 ? "s" : ""%>
         </a></li>
     </ul>
     <div align="center">
