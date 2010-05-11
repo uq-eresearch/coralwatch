@@ -3,7 +3,7 @@
 
 <display>
     <category name="CoralWatch Portlets">
-        <!--<portlet id="kitrequest-portlet"/>-->
+        <portlet id="kitrequest-portlet"/>
         <portlet id="login-portlet"/>
         <portlet id="map-portlet"/>
         <!--<portlet id="members-portlet"/>-->

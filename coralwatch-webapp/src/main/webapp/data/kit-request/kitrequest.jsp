@@ -195,9 +195,9 @@
                 </td>
                 <td><%=kitRequests.get(i).getNotes() == null ? "" : kitRequests.get(i).getNotes()%>
                 </td>
-                <td><%if(kitRequests.get(i).getDispatchdate() == null) { %><button dojoType="dijit.form.Button" name="dispatch" onClick="window.location='';">Dispatch</button><%} else {%> <%=dateFormat.format(kitRequests.get(i).getDispatchdate())%><%}%>
+                <td><%=kitRequests.get(i).getDispatcher() == null ? "" : kitRequests.get(i).getDispatcher().getDisplayName()%>
                 </td>
-                <td><%=kitRequests.get(i).getDispatcher().getDisplayName() == null ? "" : kitRequests.get(i).getDispatcher().getDisplayName()%>
+                <td><%if(kitRequests.get(i).getDispatchdate() == null) { %><button dojoType="dijit.form.Button" name="dispatch" onClick="window.location='';">Dispatch</button><%} else {%> <%=dateFormat.format(kitRequests.get(i).getDispatchdate())%><%}%>
                 </td>
             </tr>
             <%
