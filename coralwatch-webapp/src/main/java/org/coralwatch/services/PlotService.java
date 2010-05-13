@@ -1,5 +1,7 @@
 package org.coralwatch.services;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 import org.jfree.chart.ChartFactory;
@@ -26,6 +28,7 @@ import java.util.Map;
 
 @SuppressWarnings("serial")
 public class PlotService {
+    private static Log _log = LogFactoryUtil.getLog(PlotService.class);
     public static final Map<Character, Map<Integer, Color>> CORAL_COLORS = new HashMap<Character, Map<Integer, Color>>() {{
         HashMap<Integer, Color> bValues = new HashMap<Integer, Color>();
         bValues.put(1, new Color(247, 248, 232));
@@ -146,7 +149,7 @@ public class PlotService {
             }
         }
         JFreeChart chart = ChartFactory.createBarChart("Colour Distribution", null, null,
-                dataset, PlotOrientation.HORIZONTAL, legend, false, false);
+                dataset, PlotOrientation.VERTICAL, legend, false, false);
         chart.getTitle().setFont(new Font(null, Font.PLAIN, titleSize));
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundAlpha(0);
@@ -184,19 +187,19 @@ public class PlotService {
         JFreeChart chart = ChartFactory.createPieChart("Shape Distribution", dataset,
                 legend, false, false);
         chart.getTitle().setFont(new Font(null, Font.PLAIN, titleSize));
+        chart.getLegend().setItemFont(new Font("SansSerif", Font.PLAIN, titleSize - 2));
         PiePlot plot = (PiePlot) chart.getPlot();
         plot.setBackgroundAlpha(0);
         plot.setSimpleLabels(true);
         plot.setLabelGenerator(null);
         plot.setLabelBackgroundPaint(Color.WHITE);
         plot.setShadowPaint(Color.WHITE);
+
         if (!labels) {
             plot.setLabelShadowPaint(null);
         }
-        int i = 0;
         for (Object key : plot.getDataset().getKeys()) {
             plot.setSectionPaint((Comparable<?>) key, SHAPE_COLORS.get(key));
-            i++;
         }
         return chart;
     }
