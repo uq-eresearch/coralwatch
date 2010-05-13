@@ -211,6 +211,8 @@
                 timeout: 5000,
                 load: function(response, ioArgs) {
                     alert(response);
+                    dojo.byId("button" + id).innerHTML = "Today";
+                    dojo.byId("dispatcher" + id).innerHTML = "You";
                     return response;
                 },
                 error: function(response, ioArgs) {
@@ -253,9 +255,9 @@
             </td>
             <td><%=kitRequests.get(i).getNotes() == null ? "" : kitRequests.get(i).getNotes()%>
             </td>
-            <td><%=kitRequests.get(i).getDispatcher() == null ? "" : kitRequests.get(i).getDispatcher().getDisplayName()%>
+            <td id="dispatcher<%=kitRequests.get(i).getId()%>"><%=kitRequests.get(i).getDispatcher() == null ? "" : kitRequests.get(i).getDispatcher().getDisplayName()%>
             </td>
-            <td><%if (kitRequests.get(i).getDispatchdate() == null) { %>
+            <td id="button<%=kitRequests.get(i).getId()%>"><%if (kitRequests.get(i).getDispatchdate() == null) { %>
                 <button dojoType="dijit.form.Button" name="dispatch"
                         onClick="dispatch('<%=kitRequests.get(i).getId()%>'); return false;">Dispatch
                 </button>
