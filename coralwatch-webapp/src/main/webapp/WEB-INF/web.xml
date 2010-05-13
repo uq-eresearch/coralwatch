@@ -29,4 +29,14 @@
         <servlet-name>json-surveys</servlet-name>
         <url-pattern>/json-surveys/*</url-pattern>
     </servlet-mapping>
+
+    <servlet id="kitRequestDispatchServlet">
+        <servlet-name>dispatch</servlet-name>
+        <servlet-class>org.coralwatch.servlets.KitRequestDispatchServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatch</servlet-name>
+        <url-pattern>/dispatch/*</url-pattern>
+    </servlet-mapping>
 </web-app>

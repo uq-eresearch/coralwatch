@@ -44,6 +44,8 @@ public class KitRequestPortlet extends GenericPortlet {
 
         String address = actionRequest.getParameter("address");
         String country = actionRequest.getParameter("country");
+        String kitType = actionRequest.getParameter("kitType");
+        String language = actionRequest.getParameter("language");
         String notes = actionRequest.getParameter("notes");
         boolean agreement = ParamUtil.getBoolean(actionRequest, "agreement");
 
@@ -51,6 +53,12 @@ public class KitRequestPortlet extends GenericPortlet {
 
         if (user == null) {
             errors.add(new SubmissionError("You must be logged in to submit a kit request."));
+        }
+        if (kitType == null || kitType.isEmpty()) {
+            errors.add(new SubmissionError("Kit type must be supplied for kit request."));
+        }
+        if (language == null || language.isEmpty()) {
+            errors.add(new SubmissionError("Preferred language must be supplied for kit request."));
         }
         if (!agreement) {
             errors.add(new SubmissionError("You must agree to the terms and conditions to submit a kit request."));
@@ -65,6 +73,8 @@ public class KitRequestPortlet extends GenericPortlet {
         }
         if (errors.isEmpty()) {
             KitRequest kitRequest = new KitRequest(user);
+            kitRequest.setKitType(kitType);
+            kitRequest.setLanguage(language);
             kitRequest.setAddress(address);
             kitRequest.setCountry(country);
             kitRequest.setNotes(notes);

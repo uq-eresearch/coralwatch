@@ -23,7 +23,7 @@ public class GraphsServlet extends HttpServlet {
 
     private static int IMAGE_WIDTH = 300;
     private static int IMAGE_HEIGHT = 200;
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("image/png");

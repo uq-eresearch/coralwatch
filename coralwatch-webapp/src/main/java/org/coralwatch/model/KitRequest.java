@@ -34,12 +34,18 @@ public class KitRequest implements Serializable {
     @Column(length = 256)
     private String country;
 
+    @Column(length = 64)
+    private String language;
+
+    private String kitType;
+
     @Column(length = 2000)
     private String notes;
 
-    public KitRequest(){
-        
+    public KitRequest() {
+
     }
+
     public KitRequest(UserImpl requester) {
         this.requester = requester;
         this.requestDate = new Date();
@@ -109,4 +115,20 @@ public class KitRequest implements Serializable {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getKitType() {
+        return kitType;
+    }
+
+    public void setKitType(String kitType) {
+        this.kitType = kitType;
+    }    
 }
