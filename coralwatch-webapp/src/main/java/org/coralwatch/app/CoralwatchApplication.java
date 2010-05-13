@@ -44,29 +44,18 @@ public class CoralwatchApplication extends Application {
         if (baseUrl != null) {
             getContext().getAttributes().put("baseUrl", baseUrl);
         }
-//        router.attachDefault(FrontpageResource.class);
-        router.attachDefault(MapResource.class);
-//        router.attach("/map", MapResource.class);
-        router.attach("/slate", SlateResource.class);
+        router.attachDefault(FrontpageResource.class);
         router.attach("/dashboard", DashboardResource.class);
-        router.attach("/users", UserListResource.class);
-        router.attach("/users/{id}", UserResource.class);
         router.attach("/surveys", SurveyListResource.class);
-        router.attach("/markers", MarkerResource.class);
         router.attach("/trustors", TrustSubTreeResource.class);
         router.attach("/surveys/{id}", SurveyResource.class);
-        router.attach("/surveyrecord/{id}", SurveyRecordResource.class);
-        router.attach("/surveyrecord", SurveyRecordListResource.class);
         router.attach("/usertrust/{id}", UserTrustResource.class);
         router.attach("/usertrust", UserTrustListResource.class);
         router.attach("/surveyrating/{id}", SurveyRatingResource.class);
         router.attach("/surveyrating", SurveyRatingListResource.class);
         router.attach("/login", LoginResource.class);
         router.attach("/oneoff", OneOffSubmissionResource.class);
-        router.attach("/postsignup", PostSignUpResource.class);
         router.attach("/logout", LogoutResource.class);
-        router.attach("/kit", KitRequestListResource.class);
-        router.attach("/kit/{id}", KitRequestResource.class);
         router.attach("/reef", ReefListResource.class);
         router.attach("/reef/{id}", ReefResource.class);
         router.attach("/submissionError", SubmissionErrorResource.class);
