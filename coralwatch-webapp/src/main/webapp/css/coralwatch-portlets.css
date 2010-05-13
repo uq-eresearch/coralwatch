@@ -1,3 +1,21 @@
 .tundra .dijitComboBox .dijitButtonNode {
     height: 26px;
 }
+
+.coralwatch_list_table {
+    border: 1px solid #999999;
+    border-collapse: collapse;
+}
+
+.coralwatch_list_table th {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+}
+
+.coralwatch_list_table td {
+    border: 1px solid #999999;
+}
+
+.coralwatch_list_table tr {
+    border: 1px solid #999999;
+}

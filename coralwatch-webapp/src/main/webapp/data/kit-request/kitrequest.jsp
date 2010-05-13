@@ -39,7 +39,7 @@
         if (userKitRequests.size() > 0) {
     %>
     <div id="mykitrequest" dojoType="dijit.layout.ContentPane" title="My Kit Requests" style="width:650px; height:60ex">
-        <table>
+        <table class="coralwatch_list_table">
             <tr>
                 <th>#</th>
                 <th>Date</th>
@@ -171,15 +171,15 @@
     %>
     <div id="allkitrequests" dojoType="dijit.layout.ContentPane" title="All Kit Requests"
          style="width:650px; height:60ex">
-        <table>
+        <table class="coralwatch_list_table">
             <tr>
                 <th>#</th>
                 <th>Requester</th>
                 <th>Address</th>
                 <th>Country</th>
                 <th>Notes</th>
-                <th>Dispatch</th>
                 <th>Dispatcher</th>
+                <th>Dispatch</th>
             </tr>
             <%
                 for (int i = 0; i < kitRequests.size(); i++) {
