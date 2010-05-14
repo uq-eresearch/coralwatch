@@ -122,7 +122,7 @@
                             hasDownArrow="true"
                             value="">
                     <option selected="selected" value=""></option>
-                    <option value="Charts Only">Charts Only</option>
+                    <option value="Chart Only">Chart Only</option>
                     <option value="Full Pack">Full Pack</option>
                 </select>
                 </td>
