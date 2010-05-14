@@ -148,8 +148,8 @@ public class Survey implements Serializable {
         return isGPSDevice;
     }
 
-    public void setGPSDevice(boolean GPSDevice) {
-        isGPSDevice = GPSDevice;
+    public void setGPSDevice(boolean isGpsDevice) {
+        this.isGPSDevice = isGpsDevice;
     }
 
     public Date getDate() {

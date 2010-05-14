@@ -23,6 +23,7 @@
     dojo.require("dijit.form.Button");
     dojo.require("dijit.form.RadioButton");
     dojo.require("dijit.form.ComboBox");
+    dojo.require("dijit.form.CheckBox");
     dojo.require("dijit.form.DateTextBox");
     dojo.require("dijit.form.TimeTextBox");
     dojo.require("dijit.form.Textarea");
@@ -275,6 +276,8 @@
                                    onChange="updateLonFromDecimal()"
                                    invalidMessage="Enter a valid longitude value."
                                    value="<%=cmd.equals(Constants.EDIT) ? survey.getLongitude() : ""%>"/>
+                            <input id="isGpsDevice" name="isGpsDevice" dojoType="dijit.form.CheckBox" value="">
+                            <label for="isGpsDevice">I Used GPS Device</label>
                         </td>
                     </tr>
                 </table>
@@ -979,14 +982,17 @@
 </div>
 <div id="graphTab" dojoType="dijit.layout.ContentPane" title="Graphs" style="width:650px; height:60ex">
     <%
-    String pieChartUrl = "/graph?surveyId=" + survey.getId() + "&chart=shapePie&width=256&height=256&labels=true&legend=true&titleSize=12";
-    String barChartUrl = "/graph?surveyId=" + survey.getId() + "&chart=coralCount&width=256&height=256&legend=false&titleSize=12";
+        String pieChartUrl = "/graph?surveyId=" + survey.getId() + "&chart=shapePie&width=256&height=256&labels=true&legend=true&titleSize=12";
+        String barChartUrl = "/graph?surveyId=" + survey.getId() + "&chart=coralCount&width=256&height=256&legend=false&titleSize=12";
     %>
-     <table>
-         <tr>
-             <td><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>" alt="Shape Distribution" width="256" height="256"/><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>" alt="Colour Distribution" width="256" height="256"/></td>
-         </tr>
-     </table>
+    <table>
+        <tr>
+            <td><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
+                     alt="Shape Distribution" width="256" height="256"/><img
+                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
+                    alt="Colour Distribution" width="256" height="256"/></td>
+        </tr>
+    </table>
 </div>
 </div>
 <%
@@ -1051,7 +1057,8 @@
         </td>
         <td><%=aSurvey.getReef().getCountry()%>
         </td>
-        <td><%=surveyDao.getSurveyRecords(aSurvey).size()%></td>
+        <td><%=surveyDao.getSurveyRecords(aSurvey).size()%>
+        </td>
         <td><input type="button" value="View"
                    onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';"/>
         </td>
