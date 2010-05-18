@@ -2,6 +2,8 @@ package org.coralwatch.portlets;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.ParamUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
@@ -39,7 +41,20 @@ public class ReefPortlet extends GenericPortlet {
 
     @Override
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
+        PortletSession session = actionRequest.getPortletSession();
+        errors = (List<SubmissionError>) session.getAttribute("errors", PortletSession.PORTLET_SCOPE);
+        if (!errors.isEmpty()) {
+            errors.clear();
+        }
 
+        String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+        _log.info("Command: " + cmd);
+        try {
+            
+        } catch (Exception ex) {
+            errors.add(new SubmissionError("Your submission contains invalid data. Check all fields."));
+            _log.error("Submission error ", ex);
+        }
     }
 
     protected void include(String path, RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {

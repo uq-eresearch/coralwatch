@@ -13,8 +13,27 @@
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
     ReefDao reefDao = (ReefDao) renderRequest.getPortletSession().getAttribute("reefDao");
     SurveyDao surveyDao = (SurveyDao) renderRequest.getPortletSession().getAttribute("surveyDao");
+    String cmd = ParamUtil.getString(request, Constants.CMD);
+    if (cmd.equals(Constants.VIEW)) {
+        long reefId = ParamUtil.getLong(request, "reefId");
+        Reef reef = reefDao.getById(reefId);
 
+%>
+<script type="text/javascript">
+    dojo.require("dijit.layout.ContentPane");
+    dojo.require("dijit.layout.TabContainer");
+</script>
+<h2><%=reef.getName()%> (<%=reef.getCountry()%>)</h2>
 
+<div id="reefContainer" dojoType="dijit.layout.TabContainer" style="width:680px;height:60ex">
+    <div id="graphs" dojoType="dijit.layout.ContentPane" title="Graphs" style="width:680px; height:60ex">
+    </div>
+    <div id="surveys" dojoType="dijit.layout.ContentPane" title="Data" style="width:680px; height:60ex">
+    </div>
+</div>
+<%
+
+} else {
     List<Reef> reefs = reefDao.getAll();
     int numberOfSurveys = reefs.size();
     int pageSize = 20;
@@ -98,3 +117,6 @@
         }
     %>
 </div>
+<%
+    }
+%>

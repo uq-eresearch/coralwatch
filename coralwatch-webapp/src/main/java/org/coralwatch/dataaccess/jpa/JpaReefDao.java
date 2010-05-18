@@ -30,4 +30,16 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao {
         return entityManagerSource.getEntityManager().createQuery("SELECT o FROM Survey o WHERE o.reef.id = :reefId").setParameter("reefId",
                 reef.getId()).getResultList();
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Reef getById(Long id) {
+        List<?> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM Reef o WHERE o.id = :id").setParameter("id", id).getResultList();
+        if (resultList.isEmpty()) {
+            return null;
+        }
+        assert resultList.size() == 1 : "id should be unique";
+        return (Reef) resultList.get(0);
+
+    }
 }
