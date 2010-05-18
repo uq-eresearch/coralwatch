@@ -4,6 +4,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
+import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.portlets.error.SubmissionError;
 
 import javax.portlet.*;
@@ -16,12 +17,14 @@ public class ReefPortlet extends GenericPortlet {
     private static Log _log = LogFactoryUtil.getLog(ReefPortlet.class);
     protected String viewJSP;
     protected ReefDao reefDao;
+    protected SurveyDao surveyDao;
     protected List<SubmissionError> errors;
 
     @Override
     public void init() throws PortletException {
         viewJSP = getInitParameter("reef-jsp");
         reefDao = CoralwatchApplication.getConfiguration().getReefDao();
+        surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
         errors = new ArrayList<SubmissionError>();
     }
 
@@ -29,8 +32,8 @@ public class ReefPortlet extends GenericPortlet {
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         PortletSession session = renderRequest.getPortletSession();
         session.setAttribute("reefDao", reefDao, PortletSession.PORTLET_SCOPE);
+        session.setAttribute("surveyDao", surveyDao, PortletSession.PORTLET_SCOPE);
         session.setAttribute("errors", errors, PortletSession.PORTLET_SCOPE);
-
         include(viewJSP, renderRequest, renderResponse);
     }
 

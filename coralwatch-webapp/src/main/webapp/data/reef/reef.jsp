@@ -1,6 +1,7 @@
 <%@ page import="com.liferay.portal.kernel.util.Constants" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="org.coralwatch.dataaccess.ReefDao" %>
+<%@ page import="org.coralwatch.dataaccess.SurveyDao" %>
 <%@ page import="org.coralwatch.model.Reef" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
 <%@ page import="javax.portlet.PortletSession" %>
@@ -11,6 +12,9 @@
 <%
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
     ReefDao reefDao = (ReefDao) renderRequest.getPortletSession().getAttribute("reefDao");
+    SurveyDao surveyDao = (SurveyDao) renderRequest.getPortletSession().getAttribute("surveyDao");
+
+
     List<Reef> reefs = reefDao.getAll();
     int numberOfSurveys = reefs.size();
     int pageSize = 20;
@@ -35,7 +39,7 @@
         <th>Name</th>
         <th>Country</th>
         <th>Surveys</th>
-        <th>Download</th>
+        <th>View</th>
         <%
             if (currentUser != null && currentUser.isSuperUser()) {
         %>
@@ -54,9 +58,10 @@
         </td>
         <td><%=aReef.getCountry()%>
         </td>
-        <td>
+        <td><%=surveyDao.getSurveyForReef(aReef.getId()).size()%>
         </td>
-        <td>
+        <td><input type="button" value="View"
+                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>';"/>
         </td>
         <%
             if (currentUser != null && currentUser.isSuperUser()) {

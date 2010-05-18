@@ -11,4 +11,6 @@ public interface SurveyDao extends Dao<Survey> {
     List<SurveyRecord> getSurveyRecords(Survey survey);
 
     Survey getById(Long id);
+
+    List<Survey> getSurveyForReef(Long reefId);
 }
