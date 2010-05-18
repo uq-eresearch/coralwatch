@@ -44,6 +44,11 @@
         <instanceable>true</instanceable>
         <footer-portlet-javascript>/js/coralwatch/survey.js</footer-portlet-javascript>
     </portlet>
+    <portlet>
+        <portlet-name>reef-portlet</portlet-name>
+        <icon>/icon/icon.png</icon>
+        <instanceable>true</instanceable>
+    </portlet>
     <role-mapper>
         <role-name>administrator</role-name>
         <role-link>Administrator</role-link>
