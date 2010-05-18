@@ -74,7 +74,7 @@ public class PlotService {
 
     @SuppressWarnings("deprecation")
     // we don't want to use Calendar
-    public static JFreeChart createTimelinePlot(final List<Survey> surveys) {
+    public static JFreeChart createTimelinePlot(final List<Survey> surveys,boolean legend, int titleSize) {
         class DataPoint {
             long numRecords = 0;
             long sumLight = 0;
@@ -109,8 +109,9 @@ public class PlotService {
         }
         dataset.addSeries(series);
         final JFreeChart newChart = ChartFactory.createTimeSeriesChart(
-                "Average Color Over Time", "Time", "Average Color", dataset, false, false,
+                "Average Color Over Time", "Time", "Average Color", dataset, legend, false,
                 false);
+        newChart.getTitle().setFont(new Font(null, Font.PLAIN, titleSize));
         Color transparent = new Color(0, 0, 0, 0);
         newChart.setBackgroundPaint(transparent);
         XYPlot plot = newChart.getXYPlot();

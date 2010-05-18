@@ -33,11 +33,4 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao {
 
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Survey> getSurveyForReef(Long reefId) {
-        List<Survey> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM Survey o WHERE o.reef.id = :reefId").setParameter("reefId", reefId).getResultList();
-        return resultList;
-    }
-
 }
