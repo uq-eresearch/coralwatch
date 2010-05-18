@@ -758,17 +758,18 @@
 </div>
 <div id="graphTab" dojoType="dijit.layout.ContentPane" title="Graphs" style="width:650px; height:60ex">
     <%
-        String pieChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=shapePie&width=256&height=256&labels=true&legend=true&titleSize=12";
-        String barChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=coralCount&width=256&height=256&legend=false&titleSize=12";
+        String pieChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=shapePie&width=384&height=384&labels=true&legend=true&titleSize=12";
+        String barChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=coralCount&width=384&height=384&legend=false&titleSize=12";
     %>
-    <table>
-        <tr>
-            <td><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
-                     alt="Shape Distribution" width="256" height="256"/><img
-                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
-                    alt="Colour Distribution" width="256" height="256"/></td>
-        </tr>
-    </table>
+    <br/>
+    <div><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
+              alt="Shape Distribution" width="384" height="384"/>
+    </div>
+    <br/>
+    <div>
+    <img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
+         alt="Colour Distribution" width="384" height="384"/>
+    </div>
 </div>
 </div>
 <%

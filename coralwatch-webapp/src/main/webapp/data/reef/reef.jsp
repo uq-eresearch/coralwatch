@@ -32,12 +32,18 @@
             String barChartUrl = "/graph?type=reef&id=" + reef.getId() + "&chart=coralCount&width=512&height=512&legend=false&titleSize=12";
             String timelineChartUrl = "/graph?type=reef&id=" + reef.getId() + "&chart=timeline&width=512&height=512&legend=false&titleSize=12";
         %>
+        <br/>
         <div><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + timelineChartUrl)%>"
-                    alt="Colour Distribution" width="512" height="512"/></div>
+                    alt="Colour Distribution" width="512" height="512"/>
+        </div>
+        <br/>
         <div><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
-                    alt="Colour Distribution" width="512" height="512"/></div>
+                    alt="Colour Distribution" width="512" height="512"/>
+        </div>
+        <br/>
         <div><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
-                     alt="Shape Distribution" width="512" height="512"/></div>
+                     alt="Shape Distribution" width="512" height="512"/>
+        </div>
     </div>
     <div id="surveys" dojoType="dijit.layout.ContentPane" title="Data" style="width:680px; height:60ex">
     </div>
