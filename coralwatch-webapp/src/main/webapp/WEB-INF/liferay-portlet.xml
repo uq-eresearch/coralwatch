@@ -42,12 +42,14 @@
         <portlet-name>survey-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
         <instanceable>true</instanceable>
+        <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
         <footer-portlet-javascript>/js/coralwatch/survey.js</footer-portlet-javascript>
     </portlet>
     <portlet>
         <portlet-name>reef-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
         <instanceable>true</instanceable>
+        <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>
     <role-mapper>
         <role-name>administrator</role-name>

@@ -1,4 +1,4 @@
-<table style="cursor:pointer;">
+<table style="cursor:pointer; width: 215px;">
     <tr>
         <td style="background-color:#f7f8e8;" onClick="setColor('B1', 'dark_color_slate', 'dark_color_input')">B1</td>
         <td style="background-color:#f4f7c1;" onClick="setColor('B2', 'dark_color_slate', 'dark_color_input')">B2</td>
