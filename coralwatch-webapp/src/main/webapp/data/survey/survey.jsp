@@ -95,11 +95,16 @@
 
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
 
-<% if (HttpUtils.getRequestURL(request).toString().startsWith("http://localhost")) {
+<%
+    String domainUrl = HttpUtils.getRequestURL(request).toString();
+    if (domainUrl.startsWith("http://localhost")) {
 %>
 <script type="text/javascript"
         src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
-<% } else {%>
+<% } else if (domainUrl.startsWith("http://coralwatch-uat.metadata.net")) {%>
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAYJ0-yjhies4aZVt60XiE1BQBDfbYjKWh6s09x5iuKv0ZU2QAdBQAZkbafRsp-FfYRV_11IIBzwbCcw"
+        type="text/javascript"></script>
+<% } else if (domainUrl.startsWith("http://coralwatch.metadata.net")) {%>
 <%--TODO Remove this. This key is for coralwatch.metadata.net--%>
 <script type="text/javascript"
         src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAYJ0-yjhies4aZVt60XiE1BRQUGumEEA5VNOyRfA6H2JcRBcMpRSGKOPhfWtwYIQIEFoWKsymkjiraw'></script>
@@ -276,8 +281,8 @@
                                    onChange="updateLonFromDecimal()"
                                    invalidMessage="Enter a valid longitude value."
                                    value="<%=cmd.equals(Constants.EDIT) ? survey.getLongitude() : ""%>"/>
-                            <input id="isGpsDevice" name="isGpsDevice" dojoType="dijit.form.CheckBox" value="">
-                            <label for="isGpsDevice">I Used GPS Device</label>
+                            <input id="isGpsDevice" name="isGpsDevice" <%if(survey.isGPSDevice()) {%>checked="checked"<%}%> dojoType="dijit.form.CheckBox" value="">
+                            <label for="isGpsDevice">I used a GPS Device</label>
                         </td>
                     </tr>
                 </table>

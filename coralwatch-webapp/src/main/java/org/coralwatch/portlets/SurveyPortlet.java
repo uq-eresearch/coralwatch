@@ -74,6 +74,7 @@ public class SurveyPortlet extends GenericPortlet {
                     float latitude = ParamUtil.getFloat(actionRequest, "latitude");
                     String longitudeStr = actionRequest.getParameter("longitude");
                     float longitude = ParamUtil.getFloat(actionRequest, "longitude");
+                    boolean isGpsDevice = ParamUtil.getBoolean(actionRequest, "isGpsDevice");
                     Date date = ParamUtil.getDate(actionRequest, "date", new SimpleDateFormat("yyyy-MM-dd"));
                     Date time = ParamUtil.getDate(actionRequest, "time", new SimpleDateFormat("'T'HH:mm:ss"));
                     String weather = actionRequest.getParameter("weather");
@@ -98,6 +99,7 @@ public class SurveyPortlet extends GenericPortlet {
                             survey.setReef(reef);
                             survey.setLatitude(latitude);
                             survey.setLongitude(longitude);
+                            survey.setGPSDevice(isGpsDevice);
                             survey.setDate(date);
                             survey.setTime(time);
                             survey.setWeather(weather);
@@ -118,6 +120,7 @@ public class SurveyPortlet extends GenericPortlet {
                             survey.setReef(reef);
                             survey.setLatitude(latitude);
                             survey.setLongitude(longitude);
+                            survey.setGPSDevice(isGpsDevice);
                             survey.setDate(date);
                             survey.setTime(time);
                             survey.setWeather(weather);
