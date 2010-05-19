@@ -238,7 +238,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
 
     private void addTestSurveyRecord(Survey survey) {
         Random rand = new Random(new Date().getTime());
-        String[] coralType = {" Branching", "Boulder", "Plate", "Soft"};
+        String[] coralType = {"Branching", "Boulder", "Plate", "Soft"};
         char[] letters = {'B', 'C', 'D', 'E'};
         for (int i = 0; i < rand.nextInt(15); i++) {
             SurveyRecord record = new SurveyRecord(survey, coralType[rand.nextInt(4)], letters[rand.nextInt(4)], rand.nextInt(6) + 1, letters[rand.nextInt(4)], rand.nextInt(6) + 1);

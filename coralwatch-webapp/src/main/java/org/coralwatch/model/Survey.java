@@ -86,6 +86,7 @@ public class Survey implements Serializable {
         dateModified = new Date();
         totalRatingValue = 0;
         numberOfRatings = 0;
+        isGPSDevice = false;
     }
 
     public long getId() {
