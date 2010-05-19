@@ -758,6 +758,7 @@
 </div>
 <div id="graphTab" dojoType="dijit.layout.ContentPane" title="Graphs" style="width:650px; height:60ex">
     <%
+        if (surveyDao.getSurveyRecords(survey).size() > 0) {
         String pieChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=shapePie&width=384&height=384&labels=true&legend=true&titleSize=12";
         String barChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=coralCount&width=384&height=384&legend=false&titleSize=12";
     %>
@@ -770,6 +771,13 @@
     <img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
          alt="Colour Distribution" width="384" height="384"/>
     </div>
+    <%
+        } else {
+    %>
+    <span style="text-align:center;">No Data Recorded</span>
+    <%
+        }
+    %>
 </div>
 </div>
 <%

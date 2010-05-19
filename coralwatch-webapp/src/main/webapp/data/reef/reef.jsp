@@ -28,6 +28,7 @@
 <div id="reefContainer" dojoType="dijit.layout.TabContainer" style="width:680px;height:60ex">
     <div id="graphs" dojoType="dijit.layout.ContentPane" title="Graphs" style="width:680px; height:60ex">
         <%
+            if (reefDao.getSurveysByReef(reef).size() > 0) {
             String pieChartUrl = "/graph?type=reef&id=" + reefId + "&chart=shapePie&width=512&height=512&labels=true&legend=true&titleSize=12";
             String barChartUrl = "/graph?type=reef&id=" + reefId + "&chart=coralCount&width=512&height=512&legend=false&titleSize=12";
             String timelineChartUrl = "/graph?type=reef&id=" + reefId + "&chart=timeline&width=512&height=512&legend=false&titleSize=12";
@@ -44,12 +45,26 @@
         <div><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
                      alt="Shape Distribution" width="512" height="512"/>
         </div>
+        <%
+            }else {
+        %>
+        <span style="text-align:center;">No surveys conducted in this reef yet.</span>
+        <%
+            }
+        %>
     </div>
     <div id="surveys" dojoType="dijit.layout.ContentPane" title="Data" style="width:680px; height:60ex">
-        <%
+        <% if (reefDao.getSurveysByReef(reef).size() > 0) {
             String downloadUrl  ="/data-download?id=" + reefId;
         %>
         <a href="<%=renderResponse.encodeURL(renderRequest.getContextPath() + downloadUrl)%>">Dowload Data</a>
+        <%
+            } else {
+        %>
+        <span style="text-align:center;">No surveys conducted in this reef yet.</span>
+        <%
+            }
+        %>
     </div>
 </div>
 <%
