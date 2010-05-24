@@ -39,7 +39,7 @@
 
 <%
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
-    SurveyDao surveyDao = (SurveyDao) renderRequest.getPortletSession().getAttribute("surveyDao");
+    SurveyDao surveyDao = (SurveyDao) renderRequest.getAttribute("surveyDao");
     String cmd = ParamUtil.getString(request, Constants.CMD);
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat timeFormat = new SimpleDateFormat("'T'HH:mm");
@@ -53,8 +53,8 @@
 <div><span class="portlet-msg-error">You need to sign in to <%=cmd%> a survey.</span></div>
 <%
 } else {
-    List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getPortletSession().getAttribute("errors");
-    ReefDao reefDao = (ReefDao) renderRequest.getPortletSession().getAttribute("reefDao");
+    List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getAttribute("errors");
+    ReefDao reefDao = (ReefDao) renderRequest.getAttribute("reefDao");
 
     String groupName = "";
     String organisationType = "";
@@ -860,8 +860,7 @@
         </td>
         <td><%=surveyDao.getSurveyRecords(aSurvey).size()%>
         </td>
-        <td><a href="#"
-               onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';">View</a>
+        <td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">View</a>
         </td>
         <%
             if (currentUser != null && currentUser.equals(aSurvey.getCreator()) || (currentUser != null && currentUser.isSuperUser())) {

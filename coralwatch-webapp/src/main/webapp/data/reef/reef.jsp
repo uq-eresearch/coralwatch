@@ -10,6 +10,7 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
+<%@ taglib prefix="liferay-portlet" uri="http://liferay.com/tld/portlet" %>
 <portlet:defineObjects/>
 
 <%
@@ -118,7 +119,7 @@
                 </td>
                 <td><%=surveyDao.getSurveyRecords(aSurvey).size()%>
                 </td>
-                <td><a href="#" onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';">View</a>
+                <td><a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=<%= String.valueOf(aSurvey.getId()) %>">View</a>
                 </td>
                 <%
                     if (currentUser != null && currentUser.equals(aSurvey.getCreator()) || (currentUser != null && currentUser.isSuperUser())) {
@@ -183,7 +184,6 @@
         }
     }
 %>
-
 <h2 style="margin-top:0;">All Reefs</h2>
 <table class="coralwatch_list_table">
     <tr>

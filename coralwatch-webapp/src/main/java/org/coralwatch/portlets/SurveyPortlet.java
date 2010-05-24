@@ -43,19 +43,17 @@ public class SurveyPortlet extends GenericPortlet {
 
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
-        PortletSession session = renderRequest.getPortletSession();
-        session.setAttribute("surveyDao", surveyDao, PortletSession.PORTLET_SCOPE);
-        session.setAttribute("surveyRecordDao", surveyRecordDao, PortletSession.PORTLET_SCOPE);
-        session.setAttribute("reefDao", reefDao, PortletSession.PORTLET_SCOPE);
-        session.setAttribute("errors", errors, PortletSession.PORTLET_SCOPE);
-        
+        renderRequest.setAttribute("surveyDao", surveyDao);
+        renderRequest.setAttribute("surveyRecordDao", surveyRecordDao);
+        renderRequest.setAttribute("reefDao", reefDao);
+        renderRequest.setAttribute("errors", errors);
         include(viewJSP, renderRequest, renderResponse);
     }
 
     @Override
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
         PortletSession session = actionRequest.getPortletSession();
-        errors = (List<SubmissionError>) session.getAttribute("errors", PortletSession.PORTLET_SCOPE);
+        errors = (List<SubmissionError>) actionRequest.getAttribute("errors");
         if (!errors.isEmpty()) {
             errors.clear();
         }
