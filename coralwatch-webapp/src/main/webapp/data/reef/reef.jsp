@@ -15,8 +15,8 @@
 
 <%
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
-    ReefDao reefDao = (ReefDao) renderRequest.getPortletSession().getAttribute("reefDao");
-    SurveyDao surveyDao = (SurveyDao) renderRequest.getPortletSession().getAttribute("surveyDao");
+    ReefDao reefDao = (ReefDao) renderRequest.getAttribute("reefDao");
+    SurveyDao surveyDao = (SurveyDao) renderRequest.getAttribute("surveyDao");
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     String cmd = ParamUtil.getString(request, Constants.CMD);
     if (cmd.equals(Constants.VIEW)) {

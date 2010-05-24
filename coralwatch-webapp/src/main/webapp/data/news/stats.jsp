@@ -1,23 +1,19 @@
-<%@ page import="org.coralwatch.dataaccess.ReefDao" %>
-<%@ page import="org.coralwatch.dataaccess.SurveyDao" %>
-<%@ page import="org.coralwatch.dataaccess.UserDao" %>
-
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <portlet:defineObjects/>
 
 <%
-    UserDao userDao = (UserDao) renderRequest.getPortletSession().getAttribute("userDao");
-    ReefDao reefDao = (ReefDao) renderRequest.getPortletSession().getAttribute("reefDao");
-    SurveyDao surveyDao = (SurveyDao) renderRequest.getPortletSession().getAttribute("surveyDao");
+    int users = Integer.parseInt(renderRequest.getAttribute("users").toString());
+    int reefs = Integer.parseInt(renderRequest.getAttribute("reefs").toString());
+    int surveys = Integer.parseInt(renderRequest.getAttribute("surveys").toString());
 %>
 <div>
     <h3 style="margin-top:0;">Updates</h3>
     <ul>
-        <li><%=userDao.getAll().size()%> Member<%=userDao.getAll().size() > 1 ? "s" : ""%>
+        <li><%=users%> Member<%=users > 1 ? "s" : ""%>
         </li>
-        <li><a href="#"><%=reefDao.getAll().size()%> Reef<%=reefDao.getAll().size() > 1 ? "s" : ""%>
+        <li><a href="<%=renderRequest.getAttribute("reefUrl")%>?p_p_id=reefportlet_WAR_coralwatch"><%=reefs%> Reef<%=reefs > 1 ? "s" : ""%>
         </a></li>
-        <li><a href="view-surveys"><%=surveyDao.getAll().size()%> Survey<%=surveyDao.getAll().size() > 1 ? "s" : ""%>
+        <li><a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch"><%=surveys%> Survey<%=surveys > 1 ? "s" : ""%>
         </a></li>
     </ul>
     <div align="center">

@@ -33,10 +33,9 @@ public class ReefPortlet extends GenericPortlet {
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         PortletPreferences prefs = renderRequest.getPreferences();
-        PortletSession session = renderRequest.getPortletSession();
-        session.setAttribute("reefDao", reefDao, PortletSession.PORTLET_SCOPE);
-        session.setAttribute("surveyDao", surveyDao, PortletSession.PORTLET_SCOPE);
-        session.setAttribute("errors", errors, PortletSession.PORTLET_SCOPE);
+        renderRequest.setAttribute("reefDao", reefDao);
+        renderRequest.setAttribute("surveyDao", surveyDao);
+        renderRequest.setAttribute("errors", errors);
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
         include(viewJSP, renderRequest, renderResponse);
     }
@@ -44,19 +43,13 @@ public class ReefPortlet extends GenericPortlet {
     @Override
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
         PortletSession session = actionRequest.getPortletSession();
-        errors = (List<SubmissionError>) session.getAttribute("errors", PortletSession.PORTLET_SCOPE);
+        errors = (List<SubmissionError>) actionRequest.getAttribute("errors");
         if (!errors.isEmpty()) {
             errors.clear();
         }
 
         String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
         _log.info("Command: " + cmd);
-        try {
-            
-        } catch (Exception ex) {
-            errors.add(new SubmissionError("Your submission contains invalid data. Check all fields."));
-            _log.error("Submission error ", ex);
-        }
     }
 
     protected void include(String path, RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {

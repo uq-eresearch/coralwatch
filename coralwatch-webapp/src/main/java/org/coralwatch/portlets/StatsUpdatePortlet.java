@@ -28,10 +28,12 @@ public class StatsUpdatePortlet extends GenericPortlet {
 
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
-        PortletSession session = renderRequest.getPortletSession();
-        session.setAttribute("userDao", userDao, PortletSession.PORTLET_SCOPE);
-        session.setAttribute("reefDao", reefDao, PortletSession.PORTLET_SCOPE);
-        session.setAttribute("surveyDao", surveyDao, PortletSession.PORTLET_SCOPE);
+        PortletPreferences prefs = renderRequest.getPreferences();
+        renderRequest.setAttribute("users", userDao.getAll().size());
+        renderRequest.setAttribute("reefs", reefDao.getAll().size());
+        renderRequest.setAttribute("surveys", surveyDao.getAll().size());
+        renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
+        renderRequest.setAttribute("reefUrl", prefs.getValue("reefUrl", "reef"));
         include(viewJSP, renderRequest, renderResponse);
     }
 
