@@ -8,8 +8,9 @@ import org.coralwatch.model.SurveyRating;
 import org.coralwatch.model.UserImpl;
 
 import javax.persistence.NoResultException;
+import java.io.Serializable;
 
-public class JpaSurveyRatingDao extends JpaDao<SurveyRating> implements SurveyRatingDao {
+public class JpaSurveyRatingDao extends JpaDao<SurveyRating> implements SurveyRatingDao , Serializable {
     public JpaSurveyRatingDao(EntityManagerSource entityManagerSource) {
         super(entityManagerSource);
     }

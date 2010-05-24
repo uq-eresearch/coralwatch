@@ -6,9 +6,10 @@ import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class JpaReefDao extends JpaDao<Reef> implements ReefDao {
+public class JpaReefDao extends JpaDao<Reef> implements ReefDao , Serializable {
     public JpaReefDao(EntityManagerSource entityManagerSource) {
         super(entityManagerSource);
     }

@@ -5,9 +5,10 @@ import au.edu.uq.itee.maenad.dataaccess.jpa.JpaDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.model.SurveyRecord;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class JpaSurveyRecordDao extends JpaDao<SurveyRecord> implements SurveyRecordDao {
+public class JpaSurveyRecordDao extends JpaDao<SurveyRecord> implements SurveyRecordDao , Serializable {
     public JpaSurveyRecordDao(EntityManagerSource entityManagerSource) {
         super(entityManagerSource);
     }

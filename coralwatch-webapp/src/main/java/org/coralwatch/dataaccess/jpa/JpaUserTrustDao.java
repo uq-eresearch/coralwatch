@@ -8,11 +8,12 @@ import org.coralwatch.model.UserImpl;
 import org.coralwatch.model.UserTrust;
 
 import javax.persistence.NoResultException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JpaUserTrustDao extends JpaDao<UserTrust> implements UserTrustDao {
+public class JpaUserTrustDao extends JpaDao<UserTrust> implements UserTrustDao, Serializable {
     public JpaUserTrustDao(EntityManagerSource entityManagerSource) {
         super(entityManagerSource);
     }

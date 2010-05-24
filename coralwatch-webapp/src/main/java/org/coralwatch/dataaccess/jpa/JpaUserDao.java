@@ -6,9 +6,10 @@ import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class JpaUserDao extends JpaDao<UserImpl> implements UserDao {
+public class JpaUserDao extends JpaDao<UserImpl> implements UserDao , Serializable {
 
     public JpaUserDao(EntityManagerSource entityManagerSource) {
         super(entityManagerSource);

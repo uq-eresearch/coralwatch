@@ -6,9 +6,10 @@ import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.model.KitRequest;
 import org.coralwatch.model.UserImpl;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class JpaKitRequestDao extends JpaDao<KitRequest> implements KitRequestDao {
+public class JpaKitRequestDao extends JpaDao<KitRequest> implements KitRequestDao , Serializable {
     public JpaKitRequestDao(EntityManagerSource entityManagerSource) {
         super(entityManagerSource);
     }

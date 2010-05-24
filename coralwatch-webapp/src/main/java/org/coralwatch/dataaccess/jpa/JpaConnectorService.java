@@ -6,9 +6,10 @@ import org.restlet.service.ConnectorService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.io.Serializable;
 
 
-public class JpaConnectorService extends ConnectorService implements EntityManagerSource {
+public class JpaConnectorService extends ConnectorService implements EntityManagerSource , Serializable {
 
     private final EntityManagerFactory emf;
     private final ThreadLocal<EntityManager> entityManagerTL = new ThreadLocal<EntityManager>();
