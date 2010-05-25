@@ -138,8 +138,14 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private void createDefaultUsers() {
 
 
-        UserImpl admin = new UserImpl("Administrator", "abdul2000@gmail.com", BCrypt.hashpw("admin", BCrypt.gensalt()), true);
+        UserImpl admin = new UserImpl("Administrator", "admin@coralwatch.org", BCrypt.hashpw("coralwatch", BCrypt.gensalt()), true);
         userDao.save(admin);
+//        createTestUsers(admin);
+        Logger.getLogger(getClass().getName()).log(Level.INFO,
+                "Created new default admin user with email address 'admin@coralwatch.org' and password 'coralwatch'.");
+    }
+
+    private void createTestUsers(UserImpl admin) {
         UserImpl charlie = new UserImpl("Charlie", "brooking@itee.uq.edu.au", BCrypt.hashpw("charlie", BCrypt.gensalt()), false);
         userDao.save(charlie);
         userTrustDao.save(new UserTrust(admin, charlie, 5.0));
@@ -204,9 +210,6 @@ public class ApplicationContext implements Configuration, ServletContextListener
                 userTrustDao.save(new UserTrust(newUser, charlie, randomNumber));
             }
         }
-
-        Logger.getLogger(getClass().getName()).log(Level.INFO,
-                "Created new default admin user with email address 'admin@coralwatch.org' and password 'admin'.");
     }
 
     private Survey getTestSurvey(UserImpl user) {
