@@ -662,10 +662,20 @@
                 url:"<%=renderResponse.encodeURL(renderRequest.getContextPath())%>" + "/record?cmd=add&surveyId=<%=survey.getId()%>&coralType=" + coralType + "&light_color=" + lightColor + "&dark_color=" + darkColor,
                 timeout: 5000,
                 load: function(response, ioArgs) {
-//                    alert(response);
-                    //                    var row = dojo.create("tr")
-                    //                    dojo.byId("coralType")
-                    //                    dojo.byId("dispatcher" + id).innerHTML = "You";
+                    var tbody = dojo.byId("survey_records").getElementsByTagName("tbody")[0];
+                    var numberOfRaws = tbody.children.length;
+                    var row = dojo.create('tr');
+                    var td1 = dojo.create('td', { innerHTML: numberOfRaws });
+                    var td2 = dojo.create('td', { innerHTML: coralType });
+                    var td3 = dojo.create('td', { innerHTML: lightColor });
+                    var td4 = dojo.create('td', { innerHTML: darkColor });
+                    var td5 = dojo.create('td', { innerHTML: '<a href="#" onClick="return false;">Delete</a>' });
+                    row.appendChild(td1);
+                    row.appendChild(td2);
+                    row.appendChild(td3);
+                    row.appendChild(td4);
+                    row.appendChild(td5);
+                    tbody.appendChild(row);
                     return response;
                 },
                 error: function(response, ioArgs) {
@@ -681,7 +691,7 @@
         List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
         if (!surveyRecords.isEmpty()) {
     %>
-    <table class="coralwatch_list_table">
+    <table id="survey_records" class="coralwatch_list_table">
         <tr>
             <th nowrap="nowrap">No</th>
             <th nowrap="nowrap">Coral Type</th>
