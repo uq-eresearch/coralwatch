@@ -38,7 +38,9 @@ public class LoginPortlet extends GenericPortlet {
 
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
         PortletSession session = actionRequest.getPortletSession(true);
-//        ((List<SubmissionError>) session.getAttribute("errors")).clear();
+        if (!errors.isEmpty()) {
+            errors.clear();
+        }
         String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
         if (cmd.equals(Constants.DEACTIVATE)) {
             session.removeAttribute("currentUser", PortletSession.APPLICATION_SCOPE);

@@ -54,7 +54,6 @@ public class SurveyPortlet extends GenericPortlet {
     @Override
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
         PortletSession session = actionRequest.getPortletSession();
-        errors = (List<SubmissionError>) actionRequest.getAttribute("errors");
         if (!errors.isEmpty()) {
             errors.clear();
         }

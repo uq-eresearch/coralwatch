@@ -42,7 +42,6 @@ public class UserPortlet extends GenericPortlet {
 
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
         PortletSession session = actionRequest.getPortletSession(true);
-        errors = (List<SubmissionError>) actionRequest.getAttribute("errors");
         if (!errors.isEmpty()) {
             errors.clear();
         }

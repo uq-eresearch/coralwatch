@@ -40,7 +40,9 @@ public class KitRequestPortlet extends GenericPortlet {
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
 
         PortletSession session = actionRequest.getPortletSession();
-        ((List<SubmissionError>) session.getAttribute("errors")).clear();
+        if (!errors.isEmpty()) {
+            errors.clear();
+        }
 
         String address = actionRequest.getParameter("address");
         String country = actionRequest.getParameter("country");

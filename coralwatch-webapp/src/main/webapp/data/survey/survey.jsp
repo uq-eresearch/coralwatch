@@ -42,7 +42,8 @@
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
     SurveyDao surveyDao = (SurveyDao) renderRequest.getAttribute("surveyDao");
     String cmd = ParamUtil.getString(request, Constants.CMD);
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormatDisplay = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat timeFormat = new SimpleDateFormat("'T'HH:mm");
     DateFormat timeFormatDisplay = new SimpleDateFormat("HH:mm");
 
@@ -569,7 +570,7 @@
         </tr>
         <tr>
             <th>Observation Date:</th>
-            <td><%=survey.getDate() == null ? "" : dateFormat.format(survey.getDate())%>
+            <td><%=survey.getDate() == null ? "" : dateFormatDisplay.format(survey.getDate())%>
             </td>
         </tr>
         <tr>
@@ -608,15 +609,15 @@
             </td>
         </tr>
 
-        <tr>
-            <th>Community Rating:</th>
-            <td></td>
-        </tr>
+        <%--<tr>--%>
+            <%--<th>Community Rating:</th>--%>
+            <%--<td></td>--%>
+        <%--</tr>--%>
         <%
             if (currentUser != null && currentUser.equals(survey.getCreator())) {
         %>
         <tr>
-            <td colspan="2"><input type="button" value="Cancel" onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:renderURL>';">Edit</a>
+            <td colspan="2"><input type="button" value="Edit" onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:renderURL>';">
             </td>
         </tr>
         <%
@@ -759,19 +760,15 @@
 <div id="graphTab" dojoType="dijit.layout.ContentPane" title="Graphs" style="width:650px; height:60ex">
     <%
         if (surveyDao.getSurveyRecords(survey).size() > 0) {
-            String pieChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=shapePie&width=384&height=384&labels=true&legend=true&titleSize=12";
-            String barChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=coralCount&width=384&height=384&legend=false&titleSize=12";
+            String pieChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=shapePie&width=256&height=256&labels=true&legend=true&titleSize=12";
+            String barChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=coralCount&width=256&height=256&legend=false&titleSize=12";
     %>
     <br/>
 
     <div><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
-              alt="Shape Distribution" width="384" height="384"/>
-    </div>
-    <br/>
-
-    <div>
-        <img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
-             alt="Colour Distribution" width="384" height="384"/>
+              alt="Shape Distribution" width="256" height="256"/>
+         <img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
+             alt="Colour Distribution" width="256" height="256"/>
     </div>
     <%
     } else {
@@ -845,7 +842,7 @@
     <tr>
         <td><%=aSurvey.getCreator().getDisplayName()%>
         </td>
-        <td><%=dateFormat.format(aSurvey.getDate())%>
+        <td><%=dateFormatDisplay.format(aSurvey.getDate())%>
         </td>
         <td><%=aSurvey.getReef().getName()%>
         </td>
