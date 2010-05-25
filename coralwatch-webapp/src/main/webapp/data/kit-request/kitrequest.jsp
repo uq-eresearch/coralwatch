@@ -79,8 +79,7 @@
 <%
     }
 %>
-<div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Kit Request"
-     style="width:670px; height:60ex">
+<div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Kit Request" style="width:670px; height:60ex">
 
     <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm"
           jsId="kitReqForm" id="kitReqForm">
@@ -108,7 +107,7 @@
         </script>
         <table>
             <tr>
-                <td><label for="kitType">Applying for:</label></td>
+                <td><label for="kitType">Requesting:</label></td>
                 <td><select name="kitType" id="kitType"
                             required="true"
                             dojoType="dijit.form.ComboBox"
@@ -121,7 +120,7 @@
                 </td>
             </tr>
             <tr>
-                <td><label for="language">Preferred Language:</label></td>
+                <td><label for="language">Language:</label></td>
                 <td><select name="language" id="language"
                             required="true"
                             dojoType="dijit.form.ComboBox"
@@ -166,7 +165,7 @@
                            name="notes"
                            id="notes"
                            style="width:300px"
-                           dojoType="dijit.form.Textarea"
+                           dojoType="dijit.form.SimpleTextarea"
                            trim="true"/>
                 </td>
             </tr>
