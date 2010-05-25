@@ -610,14 +610,15 @@
         </tr>
 
         <%--<tr>--%>
-            <%--<th>Community Rating:</th>--%>
-            <%--<td></td>--%>
+        <%--<th>Community Rating:</th>--%>
+        <%--<td></td>--%>
         <%--</tr>--%>
         <%
             if (currentUser != null && currentUser.equals(survey.getCreator())) {
         %>
         <tr>
-            <td colspan="2"><input type="button" value="Edit" onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:renderURL>';">
+            <td colspan="2"><input type="button" value="Edit"
+                                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:renderURL>';">
             </td>
         </tr>
         <%
@@ -627,6 +628,55 @@
 </div>
 
 <div id="dataTab" dojoType="dijit.layout.ContentPane" title="Data" style="width:650px; height:60ex">
+    <script type="text/javascript">
+        function validate() {
+            var form = dijit.byId("recordForm");
+            if (!form.validate()) {
+                alert('You must select coral type to submit a record.');
+                return false;
+            }
+            var selectedLightColor = dojo.query('INPUT[name=light_color_input]', 'recordForm').filter(function(n) {
+                return n.getAttribute('value') != "";
+            }).length > 0;
+            var selectedDarkColor = dojo.query('INPUT[name=dark_color_input]', 'recordForm').filter(function(n) {
+                return n.getAttribute('value') != "";
+            }).length > 0;
+            if (!selectedLightColor) {
+                alert('You must select lightest colour.');
+                return false;
+            }
+            if (!selectedDarkColor) {
+                alert('You must select darkest colour.');
+                return false;
+            }
+            var type = dijit.byId('coralType').getValue();
+            var light = dijit.byId('light_color_input').getValue();
+            var dark = dijit.byId('dark_color_input').getValue();
+            saveRecord(type, light, dark);
+            return true;
+        }
+
+        function saveRecord(coralType, lightColor, darkColor) {
+            //            if (confirm("Are you sure you want to mark this request to dispatched?")) {
+            dojo.xhrPost({
+                url:"<%=renderResponse.encodeURL(renderRequest.getContextPath())%>" + "/record?cmd=add&surveyId=<%=survey.getId()%>&coralType=" + coralType + "&light_color=" + lightColor + "&dark_color=" + darkColor,
+                timeout: 5000,
+                load: function(response, ioArgs) {
+//                    alert(response);
+                    //                    var row = dojo.create("tr")
+                    //                    dojo.byId("coralType")
+                    //                    dojo.byId("dispatcher" + id).innerHTML = "You";
+                    return response;
+                },
+                error: function(response, ioArgs) {
+                    alert("Cannot add record: " + response);
+                    return response;
+                }
+            });
+            //            }
+        }
+
+    </script>
     <%
         List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
         if (!surveyRecords.isEmpty()) {
@@ -643,11 +693,12 @@
         </tr>
         <%
 
-            for (int index = 0; index< surveyRecords.size(); index++) {
+            for (int index = 0; index < surveyRecords.size(); index++) {
                 SurveyRecord record = surveyRecords.get(index);
         %>
-        <tr>
-            <td><%=(index + 1) + "" %></td>
+        <tr id="record<%=index%>">
+            <td><%=(index + 1) + "" %>
+            </td>
             <td><%=record.getCoralType()%>
             </td>
             <td><%=record.getLightestLetter() + "" + record.getLightestNumber()%>
@@ -674,39 +725,19 @@
     <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
     <br/>
     <br/>
-    <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm"
-          jsId="recordForm" id="recordForm">
+
+    <form dojoType="dijit.form.Form" jsId="recordForm" id="recordForm">
 
         <script type="text/javascript">
-
             function setColor(colorCode, slate, inputField) {
                 dijit.byId(slate).setAttribute('label', colorCode);
                 dojo.byId(inputField).setAttribute('value', colorCode);
             }
         </script>
-        <script type="dojo/method" event="onSubmit">
 
-            if (!this.validate()) {
-            alert('You must select coral type to submit a record.');
-            return false;
-            }
-            var selectedLightColor = dojo.query('INPUT[name=light_color_input]', 'recordForm').
-            filter(function(n) { return n.getAttribute('value') != ""; }).length > 0;
-            var selectedDarkColor = dojo.query('INPUT[name=dark_color_input]', 'recordForm').
-            filter(function(n) { return n.getAttribute('value') != ""; }).length > 0;
-            if (!selectedLightColor) {
-            alert('You must select lightest colour.');
-            return false;
-            }
-            if (!selectedDarkColor) {
-            alert('You must select darkest colour.');
-            return false;
-            }
-            return true;
-        </script>
 
-        <input type="hidden" name="surveyId" value="<%= String.valueOf(survey.getId()) %>"/>
-        <input type="hidden" name="<%= Constants.CMD %>" value="saverecord"/>
+        <%--<input type="hidden" name="surveyId" value="<%= String.valueOf(survey.getId()) %>"/>--%>
+        <%--<input type="hidden" name="<%= Constants.CMD %>" value="saverecord"/>--%>
         <table width="100%">
             <tr>
                 <th nowrap="nowrap">Coral Type</th>
@@ -750,7 +781,10 @@
                     </div>
                 </td>
                 <td>
-                    <input type="submit" name="submit" value="Add"/>
+                    <button dojoType="dijit.form.Button" name="record"
+                            onClick="validate(); return false;">Dispatch
+                    </button>
+                    <%--<input type="submit" name="submit" value="Add"/>--%>
                 </td>
             </tr>
         </table>
@@ -767,7 +801,7 @@
 
     <div><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
               alt="Shape Distribution" width="256" height="256"/>
-         <img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
+        <img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
              alt="Colour Distribution" width="256" height="256"/>
     </div>
     <%
@@ -811,8 +845,8 @@
     if (currentUser != null) {
 %>
 <div align="right">
-<a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">New
-    Survey</a>
+    <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">New
+        Survey</a>
 </div>
 <%
     }
@@ -850,14 +884,17 @@
         </td>
         <td><%=surveyDao.getSurveyRecords(aSurvey).size()%>
         </td>
-        <td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">View</a>
+        <td>
+            <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">View</a>
         </td>
         <%
             if (currentUser != null && currentUser.equals(aSurvey.getCreator()) || (currentUser != null && currentUser.isSuperUser())) {
         %>
-        <td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">Edit</a>
+        <td>
+            <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">Edit</a>
         </td>
-        <td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">Delete</a>
+        <td>
+            <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">Delete</a>
         </td>
         <%
             }

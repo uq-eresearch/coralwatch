@@ -49,4 +49,14 @@
         <servlet-name>dispatch</servlet-name>
         <url-pattern>/dispatch/*</url-pattern>
     </servlet-mapping>
+
+    <servlet id="surveyRecordServlet">
+        <servlet-name>record</servlet-name>
+        <servlet-class>org.coralwatch.servlets.SurveyRecordServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>record</servlet-name>
+        <url-pattern>/record/*</url-pattern>
+    </servlet-mapping>
 </web-app>
