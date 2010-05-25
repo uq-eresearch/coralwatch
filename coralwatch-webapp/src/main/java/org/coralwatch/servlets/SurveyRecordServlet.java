@@ -46,7 +46,7 @@ public class SurveyRecordServlet extends HttpServlet {
                 Survey survey = surveyDao.getById(suveyId);
                 SurveyRecord record = new SurveyRecord(survey, coralType, lightLetter, lightNumber, darkLetter, darkNumber);
                 surveyRecordDao.save(record);
-                out.println("OK");
+                out.println(record.getId());
             } else if (cmd.equals("delete")) {
                 long recordId = Long.valueOf(req.getParameter("recordId"));
                 SurveyRecord surveyRec = surveyRecordDao.getById(recordId);
@@ -54,7 +54,7 @@ public class SurveyRecordServlet extends HttpServlet {
                 out.println("Successfully deleted record");
             }
         } catch (Exception ex) {
-            out.println("System error. Cannot add record.");
+            out.println("System error." + ex.getMessage());
             _log.fatal("Error in record servlet ", ex);
         }
     }

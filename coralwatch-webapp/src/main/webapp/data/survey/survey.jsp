@@ -657,19 +657,18 @@
         }
 
         function saveRecord(coralType, lightColor, darkColor) {
-            //            if (confirm("Are you sure you want to mark this request to dispatched?")) {
             dojo.xhrPost({
                 url:"<%=renderResponse.encodeURL(renderRequest.getContextPath())%>" + "/record?cmd=add&surveyId=<%=survey.getId()%>&coralType=" + coralType + "&light_color=" + lightColor + "&dark_color=" + darkColor,
                 timeout: 5000,
                 load: function(response, ioArgs) {
                     var tbody = dojo.byId("survey_records").getElementsByTagName("tbody")[0];
                     var numberOfRaws = tbody.children.length;
-                    var row = dojo.create('tr');
+                    var row = dojo.create('tr', { id : 'record' + numberOfRaws });
                     var td1 = dojo.create('td', { innerHTML: numberOfRaws });
                     var td2 = dojo.create('td', { innerHTML: coralType });
                     var td3 = dojo.create('td', { innerHTML: lightColor });
                     var td4 = dojo.create('td', { innerHTML: darkColor });
-                    var td5 = dojo.create('td', { innerHTML: '<a href="#" onClick="return false;">Delete</a>' });
+                    var td5 = dojo.create('td', { innerHTML: '<a href="#" onClick="deleteRecord(response, numberOfRaws); return false;">Delete</a>' });
                     row.appendChild(td1);
                     row.appendChild(td2);
                     row.appendChild(td3);
@@ -683,9 +682,21 @@
                     return response;
                 }
             });
-            //            }
         }
-
+        function deleteRecord(id, pos) {
+            dojo.xhrPost({
+                url:"<%=renderResponse.encodeURL(renderRequest.getContextPath())%>" + "/record?cmd=delete&recordId=" + id,
+                timeout: 5000,
+                load: function(response, ioArgs) {
+                    dojo.destroy('record' + pos)
+                    return response;
+                },
+                error: function(response, ioArgs) {
+                    alert("Cannot delete record: " + response);
+                    return response;
+                }
+            });
+        }
     </script>
     <%
         List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
@@ -717,7 +728,7 @@
             </td>
             <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
             <td>
-                <a href="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="deleterecord" /><portlet:param name="recordId" value="<%= String.valueOf(record.getId()) %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:actionURL>">Delete</a>
+                <a href="#" onClick="deleteRecord(<%=record.getId()%>, <%=(index + 1)%>); return false;">Delete</a>
             </td>
             <%}%>
         </tr>
