@@ -802,10 +802,7 @@
                     </div>
                 </td>
                 <td>
-                    <button dojoType="dijit.form.Button" name="record"
-                            onClick="validate(); return false;">Dispatch
-                    </button>
-                    <%--<input type="submit" name="submit" value="Add"/>--%>
+                    <button dojoType="dijit.form.Button" name="record" onClick="validate(); return false;">Add</button>
                 </td>
             </tr>
         </table>
