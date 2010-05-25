@@ -668,7 +668,7 @@
                     var td2 = dojo.create('td', { innerHTML: coralType });
                     var td3 = dojo.create('td', { innerHTML: lightColor });
                     var td4 = dojo.create('td', { innerHTML: darkColor });
-                    var td5 = dojo.create('td', { innerHTML: '<a href="#" onClick="deleteRecord(response, numberOfRaws); return false;">Delete</a>' });
+                    var td5 = dojo.create('td', { innerHTML: '<a href="#" onClick="deleteRecord('+ Number(response) + ', '+Number(numberOfRaws)+'); return false;">Delete</a>' });
                     row.appendChild(td1);
                     row.appendChild(td2);
                     row.appendChild(td3);
