@@ -12,6 +12,7 @@
     <portlet>
         <portlet-name>login-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
+        <configuration-action-class>org.coralwatch.portlets.configuration.LoginConfigurationActionImpl</configuration-action-class>
         <instanceable>true</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>
@@ -34,9 +35,9 @@
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>
     <portlet>
-        <portlet-name>registration-portlet</portlet-name>
+        <portlet-name>user-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
-        <instanceable>true</instanceable>
+        <instanceable>false</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>
     <portlet>

@@ -6,7 +6,7 @@
 <%@ page import="java.util.List" %>
 <portlet:defineObjects/>
 <%
-    List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getPortletSession().getAttribute("errors");
+    List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getAttribute("errors");
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
 %>
 <script type="text/javascript">
@@ -71,10 +71,7 @@
     } else {
     %>
     <h2>Current User</h2>
-    <span>You are logged in as <a href="#"
-                                  onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="userId" value="<%= String.valueOf(currentUser.getId()) %>" /></portlet:actionURL>';"><%= currentUser.getDisplayName()%>
-    </a> | <a href="#"
-              onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DEACTIVATE %>" /></portlet:actionURL>';">Logout</a></span>
+    <span>You are logged in as <a href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch"><%= currentUser.getDisplayName()%></a> | <a href="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DEACTIVATE %>" /></portlet:actionURL>">Logout</a></span>
     <%
         }
     %>

@@ -9,7 +9,7 @@
         <!--<portlet id="members-portlet"/>-->
         <portlet id="stats-portlet"/>
         <portlet id="reef-portlet"/>
-        <portlet id="registration-portlet"/>
+        <portlet id="user-portlet"/>
         <portlet id="survey-portlet"/>
     </category>
 </display>

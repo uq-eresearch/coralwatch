@@ -16,16 +16,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class RegistrationPortlet extends GenericPortlet {
+public class UserPortlet extends GenericPortlet {
 
-    private static Log _log = LogFactoryUtil.getLog(RegistrationPortlet.class);
+    private static Log _log = LogFactoryUtil.getLog(UserPortlet.class);
     protected String viewJSP;
     protected UserDao userDao;
     protected List<SubmissionError> errors;
     protected HashMap<String, String> params;
 
     public void init() throws PortletException {
-        viewJSP = getInitParameter("registration-jsp");
+        viewJSP = getInitParameter("user-jsp");
         userDao = CoralwatchApplication.getConfiguration().getUserDao();
         errors = new ArrayList<SubmissionError>();
         params = new HashMap<String, String>();
@@ -41,7 +41,10 @@ public class RegistrationPortlet extends GenericPortlet {
 
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
         PortletSession session = actionRequest.getPortletSession(true);
-        ((List<SubmissionError>) session.getAttribute("errors")).clear();
+        errors = (List<SubmissionError>) actionRequest.getAttribute("errors");
+        if (!errors.isEmpty()) {
+            errors.clear();
+        }
 
         String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 
