@@ -32,10 +32,11 @@ public class UserPortlet extends GenericPortlet {
     }
 
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
-        PortletSession session = renderRequest.getPortletSession();
-        session.setAttribute("errors", errors, PortletSession.PORTLET_SCOPE);
-        session.setAttribute("userDao", userDao, PortletSession.PORTLET_SCOPE);
-        session.setAttribute("params", params, PortletSession.PORTLET_SCOPE);
+        renderRequest.setAttribute("errors", errors);
+        renderRequest.setAttribute("userDao", userDao);
+        renderRequest.setAttribute("params", params);
+        PortletPreferences prefs = renderRequest.getPreferences();
+        renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
         include(viewJSP, renderRequest, renderResponse);
     }
 

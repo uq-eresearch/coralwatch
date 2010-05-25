@@ -25,7 +25,7 @@ import java.util.List;
 public class SurveyPortlet extends GenericPortlet {
     private static Log _log = LogFactoryUtil.getLog(SurveyPortlet.class);
     protected String viewJSP;
-    protected UserDao userdao;
+    protected UserDao userDao;
     protected SurveyDao surveyDao;
     protected SurveyRecordDao surveyRecordDao;
     protected ReefDao reefDao;
@@ -34,7 +34,7 @@ public class SurveyPortlet extends GenericPortlet {
     @Override
     public void init() throws PortletException {
         viewJSP = getInitParameter("survey-jsp");
-        userdao = CoralwatchApplication.getConfiguration().getUserDao();
+        userDao = CoralwatchApplication.getConfiguration().getUserDao();
         surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
         surveyRecordDao = CoralwatchApplication.getConfiguration().getSurveyRecordDao();
         reefDao = CoralwatchApplication.getConfiguration().getReefDao();
@@ -44,6 +44,7 @@ public class SurveyPortlet extends GenericPortlet {
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         renderRequest.setAttribute("surveyDao", surveyDao);
+        renderRequest.setAttribute("userDao", userDao);
         renderRequest.setAttribute("surveyRecordDao", surveyRecordDao);
         renderRequest.setAttribute("reefDao", reefDao);
         renderRequest.setAttribute("errors", errors);

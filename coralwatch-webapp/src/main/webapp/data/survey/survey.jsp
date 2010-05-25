@@ -3,6 +3,7 @@
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="org.coralwatch.dataaccess.ReefDao" %>
 <%@ page import="org.coralwatch.dataaccess.SurveyDao" %>
+<%@ page import="org.coralwatch.dataaccess.UserDao" %>
 <%@ page import="org.coralwatch.model.Reef" %>
 <%@ page import="org.coralwatch.model.Survey" %>
 <%@ page import="org.coralwatch.model.SurveyRecord" %>
@@ -798,6 +799,13 @@
 
 } else {
     List<Survey> surveys = surveyDao.getAll();
+    long userId = ParamUtil.getLong(request, "userId");
+//    Long userId = Long.getLong(renderRequest.getAttribute("userId").toString());
+    if (userId > 0) {
+        UserDao userDao = (UserDao) renderRequest.getAttribute("userDao");
+        UserImpl user = userDao.getById(userId);
+        surveys = userDao.getSurveyEntriesCreated(user);
+    }
     int numberOfSurveys = surveys.size();
     int pageSize = 20;
     int pageNumber = ParamUtil.getInteger(request, "page");
@@ -818,9 +826,10 @@
 <%
     if (currentUser != null) {
 %>
+<div align="right">
 <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">New
     Survey</a>
-<br/><br/>
+</div>
 <%
     }
 %>

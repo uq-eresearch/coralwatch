@@ -32,10 +32,10 @@ public class ReefPortlet extends GenericPortlet {
 
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
-        PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("reefDao", reefDao);
         renderRequest.setAttribute("surveyDao", surveyDao);
         renderRequest.setAttribute("errors", errors);
+        PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
         include(viewJSP, renderRequest, renderResponse);
     }
