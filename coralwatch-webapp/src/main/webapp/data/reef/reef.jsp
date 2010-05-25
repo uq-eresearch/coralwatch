@@ -146,8 +146,7 @@
             } else {
             %>
 
-            <a href="#"
-               onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.PREVIEW %>" /><portlet:param name="page" value="<%= String.valueOf(i + 1) %>" /></portlet:renderURL>';"><%=i + 1%>
+            <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.PREVIEW %>" /><portlet:param name="page" value="<%= String.valueOf(i + 1) %>" /></portlet:renderURL>"><%=i + 1%>
             </a>
             <%
                     }
@@ -211,14 +210,14 @@
         </td>
         <td><%=reefDao.getSurveysByReef(aReef).size()%>
         </td>
-        <td><a href="#" onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>';">View</a>
+        <td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">View</a>
         </td>
         <%
             if (currentUser != null && currentUser.isSuperUser()) {
         %>
-        <td><a href="#" onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>';">Edit</a>
+        <td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">Edit</a>
         </td>
-        <td><a href="#" onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>';">Delete</a>
+        <td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">Delete</a>
         </td>
         <%
             }
@@ -238,8 +237,7 @@
     } else {
     %>
 
-    <a href="#"
-       onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.PREVIEW %>" /><portlet:param name="page" value="<%= String.valueOf(i + 1) %>" /></portlet:renderURL>';"><%=i + 1%>
+    <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.PREVIEW %>" /><portlet:param name="page" value="<%= String.valueOf(i + 1) %>" /></portlet:renderURL>"><%=i + 1%>
     </a>
     <%
             }

@@ -29,8 +29,9 @@ public class MapPortlet extends GenericPortlet {
 
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
-        PortletSession session = renderRequest.getPortletSession();
-        session.setAttribute("surveyDao", surveyDao, PortletSession.PORTLET_SCOPE);
+        renderRequest.setAttribute("surveyDao", surveyDao);
+        PortletPreferences prefs = renderRequest.getPreferences();
+        renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
         include(viewJSP, renderRequest, renderResponse);
     }
 
