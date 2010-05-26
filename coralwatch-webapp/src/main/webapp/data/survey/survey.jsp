@@ -203,8 +203,8 @@
         <label>Position:</label>
     </th>
     <td>
-        <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:18ex">
-            <div id="tabDecimal" dojoType="dijit.layout.ContentPane" title="Decimal">
+        <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:20ex">
+            <div id="tabDecimal" dojoType="dijit.layout.ContentPane" title="Decimal" style="width:40em;height:20ex;">
                 <table>
                     <tr>
                         <th>
@@ -281,7 +281,7 @@
                 </table>
 
             </div>
-            <div id="tabDegrees" dojoType="dijit.layout.ContentPane" title="Degrees">
+            <div id="tabDegrees" dojoType="dijit.layout.ContentPane" title="Degrees" style="width:40em;height:20ex;">
                 <table>
                     <tr>
                         <th>
