@@ -11,7 +11,6 @@ import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
-import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.portlets.error.SubmissionError;
 
@@ -107,7 +106,7 @@ public class SurveyPortlet extends GenericPortlet {
                             surveyDao.save(survey);
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                             actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
-                            actionResponse.setRenderParameter("selectedTab", "metadataTab");
+//                            actionResponse.setRenderParameter("selectedTab", "metadataTab");
                             _log.info("Added survey");
                         } else if (cmd.equals(Constants.EDIT)) {
                             long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
@@ -128,7 +127,7 @@ public class SurveyPortlet extends GenericPortlet {
                             surveyDao.update(survey);
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                             actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
-                            actionResponse.setRenderParameter("selectedTab", "metadataTab");
+//                            actionResponse.setRenderParameter("selectedTab", "metadataTab");
                             _log.info("Added survey");
                         }
                     } else {
@@ -140,30 +139,6 @@ public class SurveyPortlet extends GenericPortlet {
                 } else {
                     errors.add(new SubmissionError("You must be signed in to submit a survey."));
                 }
-            } else if (cmd.equalsIgnoreCase("saverecord")) {
-                long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
-                String coralType = actionRequest.getParameter("coralType");
-                String lightColor = actionRequest.getParameter("light_color_input");
-                String darkColor = actionRequest.getParameter("dark_color_input");
-                //TODO need validation here
-                char lightLetter = lightColor.trim().charAt(0);
-                int lightNumber = Integer.parseInt(lightColor.trim().charAt(1) + "");
-                char darkLetter = darkColor.trim().charAt(0);
-                int darkNumber = Integer.parseInt(darkColor.trim().charAt(1) + "");
-                Survey survey = surveyDao.getById(suveyId);
-                SurveyRecord record = new SurveyRecord(survey, coralType, lightLetter, lightNumber, darkLetter, darkNumber);
-                surveyRecordDao.save(record);
-                actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
-                actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
-                actionResponse.setRenderParameter("selectedTab", "dataTab");
-            } else if (cmd.equalsIgnoreCase("deleterecord")) {
-                long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
-                long recordId = ParamUtil.getLong(actionRequest, "recordId");
-                SurveyRecord surveyRec = surveyRecordDao.getById(recordId);
-                surveyRecordDao.delete(surveyRec);
-                actionResponse.setRenderParameter("surveyId", String.valueOf(suveyId));
-                actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
-                actionResponse.setRenderParameter("selectedTab", "dataTab");
             }
         } catch (Exception ex) {
             errors.add(new SubmissionError("Your submission contains invalid data. Check all fields."));

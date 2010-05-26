@@ -33,7 +33,19 @@ public class UserPortlet extends GenericPortlet {
 
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         renderRequest.setAttribute("errors", errors);
+        userDao = CoralwatchApplication.getConfiguration().getUserDao();
         renderRequest.setAttribute("userDao", userDao);
+        long userId = ParamUtil.getLong(renderRequest, "userId");
+        UserImpl user = userDao.getById(userId);
+        if (user != null) {
+            params.put("email", user.getEmail());
+            params.put("email2", "");
+            params.put("password", "");
+            params.put("country", user.getCountry());
+            params.put("displayName", user.getDisplayName());
+            params.put("occupation", user.getOccupation() == null ? "" : user.getOccupation());
+            params.put("address", user.getAddress() == null ? "" : user.getAddress());
+        }
         renderRequest.setAttribute("params", params);
         PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
@@ -54,6 +66,7 @@ public class UserPortlet extends GenericPortlet {
         String password2 = actionRequest.getParameter("password2");
         String country = actionRequest.getParameter("country");
         String displayName = actionRequest.getParameter("displayName");
+        String occupation = actionRequest.getParameter("occupation");
         String address = actionRequest.getParameter("address");
         long userId = ParamUtil.getLong(actionRequest, "userId");
 
@@ -62,6 +75,7 @@ public class UserPortlet extends GenericPortlet {
         params.put("password", password);
         params.put("country", country);
         params.put("displayName", displayName);
+        params.put("occupation", occupation);
         params.put("address", address);
 
         if (cmd.equals(Constants.ADD)) {
@@ -84,6 +98,8 @@ public class UserPortlet extends GenericPortlet {
                                 UserImpl userImpl = new UserImpl(displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
                                 userImpl.setCountry(country);
                                 userDao.save(userImpl);
+                                actionResponse.setRenderParameter("userId", String.valueOf(userImpl.getId()));
+                                actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
                                 session.setAttribute("currentUser", userImpl, PortletSession.APPLICATION_SCOPE);
                             }
                         }
@@ -112,8 +128,11 @@ public class UserPortlet extends GenericPortlet {
                             errors.add(new SubmissionError("Country is required."));
                         } else {
                             user.setCountry(country);
+                            user.setOccupation(occupation);
                             user.setAddress(address);
                             userDao.update(user);
+                            actionResponse.setRenderParameter("userId", String.valueOf(user.getId()));
+                            actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
                         }
                     }
                 }

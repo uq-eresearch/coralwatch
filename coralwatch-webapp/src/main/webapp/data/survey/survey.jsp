@@ -505,11 +505,6 @@
     surveyId = ParamUtil.getLong(request, "surveyId");
     survey = surveyDao.getById(surveyId);
 %>
-<script type="text/javascript">
-    dojo.addOnLoad(function() {
-        dijit.byId('<%=ParamUtil.getString(request, "selectedTab")%>').setAttribute('selected', true);
-    });
-</script>
 <h2 style="margin-top:0;">Survey Details</h2>
 <br/>
 
@@ -817,6 +812,12 @@
     %>
 </div>
 <div id="graphTab" dojoType="dijit.layout.ContentPane" title="Graphs" style="width:650px; height:60ex">
+    <script type="text/javascript">
+        function reloadImage() {
+            dojo.byId("pie").src = dojo.byId("pie").src + '&time=' + (new Date()).getTime();
+            dojo.byId("bar").src = dojo.byId("bar").src + '&time=' + (new Date()).getTime();
+        }
+    </script>
     <%
         if (surveyDao.getSurveyRecords(survey).size() > 0) {
             String pieChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=shapePie&width=256&height=256&labels=true&legend=true&titleSize=12";
@@ -824,18 +825,18 @@
     %>
     <br/>
     <div align="right">
-        <a href="#" onclick="window.location.reload();">Refresh</a>
+        <a href="#" onclick="reloadImage();">Refresh</a>
     </div>
-    <div><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
+    <div><img id="pie" src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
               alt="Shape Distribution" width="256" height="256"/>
-        <img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
+        <img id="bar" src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
              alt="Colour Distribution" width="256" height="256"/>
     </div>
     <%
     } else {
     %>
     <div align="center">
-    <span style="text-align:center;">No Data Recorded, <a href="#" onclick="window.location.reload();">Refresh</a></span>
+    <span style="text-align:center;">No graphs yet.</span>
         </div>
     <%
         }

@@ -27,6 +27,7 @@
     long userId = ParamUtil.getLong(request, "userId");
     String email = params.get("email");
     String displayName = params.get("displayName");
+    String occupation = params.get("occupation");
     String country = params.get("country");
     String address = params.get("address");
     if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
@@ -39,6 +40,7 @@
     dojo.require("dojo._base.query");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.ComboBox");
+    dojo.require("dijit.form.TextBox");
     dojo.require("dijit.form.Textarea");
     dojo.require("dijit.form.ValidationTextBox");
     dojo.require("dijit.Tooltip");
@@ -142,6 +144,12 @@
         <%
             if (cmd.equals(Constants.EDIT)) {
         %>
+        <tr>
+            <td><label for="occupation">Occupation:</label></td>
+            <td><input type="text" name="occupation" id="occupation"
+                       dojoType="dijit.form.TextBox"
+                       value="<%=occupation == null ? "" : occupation%>"/></td>
+        </tr>
         <tr>
             <td><label for="address">Address:</label></td>
             <td><input type="text" name="address" id="address"
@@ -248,11 +256,13 @@
     </tr>
     <tr>
         <th>Surveys:</th>
-        <td><a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_userId=<%=String.valueOf(user.getId())%>"><%=userDao.getSurveyEntriesCreated(user).size()%> survey(s)</a></td>
+        <td>
+            <a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_userId=<%=String.valueOf(user.getId())%>"><%=userDao.getSurveyEntriesCreated(user).size()%>
+                survey(s)</a></td>
     </tr>
     <%--<tr>--%>
-        <%--<th>Photos:</th>--%>
-        <%--<td>No Photos Yet</td>--%>
+    <%--<th>Photos:</th>--%>
+    <%--<td>No Photos Yet</td>--%>
     <%--</tr>--%>
     <tr>
         <%
