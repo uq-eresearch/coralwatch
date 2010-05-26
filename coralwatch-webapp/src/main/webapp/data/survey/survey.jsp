@@ -711,7 +711,7 @@
         }
     </script>
         <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
-    <span>Add Survey Records:</span>
+    <span>Add Survey Records:</span><br/>
     <form dojoType="dijit.form.Form" jsId="recordForm" id="recordForm">
 
         <script type="text/javascript">
@@ -823,7 +823,9 @@
             String barChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=coralCount&width=256&height=256&legend=false&titleSize=12";
     %>
     <br/>
-
+    <div align="right">
+        <a href="#" onclick="window.location.reload();">Refresh</a>
+    </div>
     <div><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
               alt="Shape Distribution" width="256" height="256"/>
         <img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
@@ -832,7 +834,9 @@
     <%
     } else {
     %>
-    <span style="text-align:center;">No Data Recorded</span>
+    <div align="center">
+    <span style="text-align:center;">No Data Recorded, <a href="#" onclick="window.location.reload();">Refresh</a></span>
+        </div>
     <%
         }
     %>

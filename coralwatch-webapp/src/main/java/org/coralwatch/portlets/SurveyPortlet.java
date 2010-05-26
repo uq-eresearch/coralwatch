@@ -86,8 +86,8 @@ public class SurveyPortlet extends GenericPortlet {
                     if (errors.isEmpty()) {
                         Reef reef = reefDao.getReefByName(reefName);
                         if (reef == null) {
-                            Reef newReef = new Reef(reefName, country);
-                            reefDao.save(newReef);
+                            reef = new Reef(reefName, country);
+                            reefDao.save(reef);
                         }
                         if (cmd.equals(Constants.ADD)) {
                             Survey survey = new Survey();
