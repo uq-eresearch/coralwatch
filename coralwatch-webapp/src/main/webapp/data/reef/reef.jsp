@@ -168,6 +168,11 @@
 } else {
     List<Reef> reefs = reefDao.getAll();
     int numberOfSurveys = reefs.size();
+    if (numberOfSurveys < 1) {
+        %>
+        <span style="text-align:center;">No reefs recorded yet.</span>
+        <%
+    } else {
     int pageSize = 20;
     int pageNumber = ParamUtil.getInteger(request, "page");
     if (pageNumber <= 0) {
@@ -245,5 +250,6 @@
     %>
 </div>
 <%
+        }
     }
 %>

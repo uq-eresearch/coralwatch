@@ -661,20 +661,32 @@
                 url:"<%=renderResponse.encodeURL(renderRequest.getContextPath())%>" + "/record?cmd=add&surveyId=<%=survey.getId()%>&coralType=" + coralType + "&light_color=" + lightColor + "&dark_color=" + darkColor,
                 timeout: 5000,
                 load: function(response, ioArgs) {
-                    var tbody = dojo.byId("survey_records").getElementsByTagName("tbody")[0];
+                    var table = dojo.byId("survey_records");
+                    if (table == null) {
+                        var table = dojo.create('table', { id : 'survey_records', class : 'coralwatch_list_table' });
+                        var tbody = dojo.create('tbody');
+                        var row = dojo.create('tr');
+                        row.appendChild(dojo.create('th', { innerHTML: 'No', nowrap:'nowrap' }));
+                        row.appendChild(dojo.create('th', { innerHTML: 'Coral Type', nowrap:'nowrap' }));
+                        row.appendChild(dojo.create('th', { innerHTML: 'Lightest', nowrap:'nowrap' }));
+                        row.appendChild(dojo.create('th', { innerHTML: 'Darkest', nowrap:'nowrap' }));
+                        row.appendChild(dojo.create('th', { innerHTML: 'Delete', nowrap:'nowrap' }));
+                        tbody.appendChild(row);
+                        table.appendChild(tbody);
+                        dojo.destroy("nodata");
+                        dojo.byId("dataTab").appendChild(table);
+
+                    }
+                    var tbody = table.getElementsByTagName("tbody")[0];
                     var numberOfRaws = tbody.children.length;
                     var row = dojo.create('tr', { id : 'record' + numberOfRaws });
-                    var td1 = dojo.create('td', { innerHTML: numberOfRaws });
-                    var td2 = dojo.create('td', { innerHTML: coralType });
-                    var td3 = dojo.create('td', { innerHTML: lightColor });
-                    var td4 = dojo.create('td', { innerHTML: darkColor });
-                    var td5 = dojo.create('td', { innerHTML: '<a href="#" onClick="deleteRecord('+ Number(response) + ', '+Number(numberOfRaws)+'); return false;">Delete</a>' });
-                    row.appendChild(td1);
-                    row.appendChild(td2);
-                    row.appendChild(td3);
-                    row.appendChild(td4);
-                    row.appendChild(td5);
+                    row.appendChild(dojo.create('td', { innerHTML: numberOfRaws }));
+                    row.appendChild(dojo.create('td', { innerHTML: coralType }));
+                    row.appendChild(dojo.create('td', { innerHTML: lightColor }));
+                    row.appendChild(dojo.create('td', { innerHTML: darkColor }));
+                    row.appendChild(dojo.create('td', { innerHTML: '<a href="#" onClick="deleteRecord(' + Number(response) + ', ' + Number(numberOfRaws) + '); return false;">Delete</a>' }));
                     tbody.appendChild(row);
+
                     return response;
                 },
                 error: function(response, ioArgs) {
@@ -698,55 +710,8 @@
             });
         }
     </script>
-    <%
-        List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
-        if (!surveyRecords.isEmpty()) {
-    %>
-    <table id="survey_records" class="coralwatch_list_table">
-        <tr>
-            <th nowrap="nowrap">No</th>
-            <th nowrap="nowrap">Coral Type</th>
-            <th nowrap="nowrap">Lightest</th>
-            <th nowrap="nowrap">Darkest</th>
-            <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
-            <th nowrap="nowrap">Delete</th>
-            <%}%>
-        </tr>
-        <%
-
-            for (int index = 0; index < surveyRecords.size(); index++) {
-                SurveyRecord record = surveyRecords.get(index);
-        %>
-        <tr id="record<%=index%>">
-            <td><%=(index + 1) + "" %>
-            </td>
-            <td><%=record.getCoralType()%>
-            </td>
-            <td><%=record.getLightestLetter() + "" + record.getLightestNumber()%>
-            </td>
-            <td><%=record.getDarkestLetter() + "" + record.getDarkestNumber()%>
-            </td>
-            <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
-            <td>
-                <a href="#" onClick="deleteRecord(<%=record.getId()%>, <%=(index + 1)%>); return false;">Delete</a>
-            </td>
-            <%}%>
-        </tr>
-        <%
-            }
-        %>
-    </table>
-    <%
-    } else {
-    %>
-    <span style="text-align:center;">No Data Recorded</span>
-    <%
-        }
-    %>
-    <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
-    <br/>
-    <br/>
-
+        <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
+    <span>Add Survey Records:</span>
     <form dojoType="dijit.form.Form" jsId="recordForm" id="recordForm">
 
         <script type="text/javascript">
@@ -755,10 +720,6 @@
                 dojo.byId(inputField).setAttribute('value', colorCode);
             }
         </script>
-
-
-        <%--<input type="hidden" name="surveyId" value="<%= String.valueOf(survey.getId()) %>"/>--%>
-        <%--<input type="hidden" name="<%= Constants.CMD %>" value="saverecord"/>--%>
         <table width="100%">
             <tr>
                 <th nowrap="nowrap">Coral Type</th>
@@ -808,6 +769,52 @@
         </table>
     </form>
     <%}%>
+    <%
+        List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
+        if (!surveyRecords.isEmpty()) {
+    %>
+    <br/>
+    <table id="survey_records" class="coralwatch_list_table">
+        <tr>
+            <th nowrap="nowrap">No</th>
+            <th nowrap="nowrap">Coral Type</th>
+            <th nowrap="nowrap">Lightest</th>
+            <th nowrap="nowrap">Darkest</th>
+            <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
+            <th nowrap="nowrap">Delete</th>
+            <%}%>
+        </tr>
+        <%
+
+            for (int index = 0; index < surveyRecords.size(); index++) {
+                SurveyRecord record = surveyRecords.get(index);
+        %>
+        <tr id="record<%=(index + 1)%>">
+            <td><%=(index + 1) + "" %>
+            </td>
+            <td><%=record.getCoralType()%>
+            </td>
+            <td><%=record.getLightestLetter() + "" + record.getLightestNumber()%>
+            </td>
+            <td><%=record.getDarkestLetter() + "" + record.getDarkestNumber()%>
+            </td>
+            <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
+            <td>
+                <a href="#" onClick="deleteRecord(<%=record.getId()%>, <%=(index + 1)%>); return false;">Delete</a>
+            </td>
+            <%}%>
+        </tr>
+        <%
+            }
+        %>
+    </table>
+    <%
+    } else {
+    %>
+    <span id="nodata" style="text-align:center;">No Data Recorded</span>
+    <%
+        }
+    %>
 </div>
 <div id="graphTab" dojoType="dijit.layout.ContentPane" title="Graphs" style="width:650px; height:60ex">
     <%
@@ -842,6 +849,11 @@
         UserImpl user = userDao.getById(userId);
         surveys = userDao.getSurveyEntriesCreated(user);
     }
+    if (surveys.size() < 1) {
+%>
+<span style="text-align:center;">No surveys yet</span>
+<%
+} else {
     int numberOfSurveys = surveys.size();
     int pageSize = 20;
     int pageNumber = ParamUtil.getInteger(request, "page");
@@ -941,6 +953,6 @@
 </div>
 
 <%
-
+        }
     }
 %>

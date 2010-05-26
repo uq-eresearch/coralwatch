@@ -45,11 +45,13 @@ public class SurveyRecordServlet extends HttpServlet {
                 int darkNumber = Integer.parseInt(darkColor.trim().charAt(1) + "");
                 Survey survey = surveyDao.getById(suveyId);
                 SurveyRecord record = new SurveyRecord(survey, coralType, lightLetter, lightNumber, darkLetter, darkNumber);
+                survey.getDataset().add(record);
                 surveyRecordDao.save(record);
                 out.println(record.getId());
             } else if (cmd.equals("delete")) {
                 long recordId = Long.valueOf(req.getParameter("recordId"));
                 SurveyRecord surveyRec = surveyRecordDao.getById(recordId);
+                surveyRec.getSurvey().getDataset().remove(surveyRec);
                 surveyRecordDao.delete(surveyRec);
                 out.println("Successfully deleted record");
             }
