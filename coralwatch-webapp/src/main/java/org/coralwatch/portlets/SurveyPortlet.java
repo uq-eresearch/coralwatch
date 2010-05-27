@@ -94,6 +94,7 @@ public class SurveyPortlet extends GenericPortlet {
                             survey.setOrganisation(organisation);
                             survey.setOrganisationType(organisationType);
                             survey.setReef(reef);
+                            survey.setQaState("Post Migration");
                             survey.setLatitude(latitude);
                             survey.setLongitude(longitude);
                             survey.setGPSDevice(isGpsDevice);

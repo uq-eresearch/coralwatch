@@ -860,7 +860,7 @@
 <%
 } else {
     int numberOfSurveys = surveys.size();
-    int pageSize = 20;
+    int pageSize = 40;
     int pageNumber = ParamUtil.getInteger(request, "page");
     if (pageNumber <= 0) {
         pageNumber = 1;
