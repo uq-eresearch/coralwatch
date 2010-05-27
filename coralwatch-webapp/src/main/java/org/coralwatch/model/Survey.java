@@ -32,11 +32,11 @@ public class Survey implements Serializable {
     @NotNull
     private Reef reef;
 
-    @NotNull
-    private float latitude;
+//    @NotNull
+    private Float latitude;
 
-    @NotNull
-    private float longitude;
+//    @NotNull
+    private Float longitude;
 
     private boolean isGPSDevice;
 
@@ -129,19 +129,19 @@ public class Survey implements Serializable {
         this.reef = reef;
     }
 
-    public float getLatitude() {
+    public Float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(Float latitude) {
         this.latitude = latitude;
     }
 
-    public float getLongitude() {
+    public Float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(Float longitude) {
         this.longitude = longitude;
     }
 
