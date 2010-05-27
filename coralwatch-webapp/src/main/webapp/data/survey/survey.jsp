@@ -128,7 +128,7 @@
 %>
 <input name="surveyId" type="hidden" value="<%= surveyId %>"/>
 <tr>
-    <th>Creator:</th>
+    <th>Surveyor:</th>
     <td><%= survey.getCreator().getDisplayName()%>
     </td>
 </tr>

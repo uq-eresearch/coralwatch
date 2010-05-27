@@ -28,23 +28,28 @@ public class JsonSurveyServlet extends HttpServlet {
         SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
         JSONArray surveys = new JSONArray();
         List<Survey> listOfSurveys = surveyDao.getAll();
+        int count = 0;
         for (Survey srv : listOfSurveys) {
             try {
-                JSONObject survey = new JSONObject();
-                survey.putOpt("id", srv.getId());
-                survey.putOpt("reef", srv.getReef().getName());
-                survey.putOpt("latitude", srv.getLatitude());
-                survey.putOpt("longitude", srv.getLongitude());
-                survey.putOpt("records", surveyDao.getSurveyRecords(srv).size());
-                survey.putOpt("date", srv.getDate().toLocaleString());
-                surveys.put(survey);
+                if (srv.getLatitude() != null && srv.getLongitude() != null) {
+                    JSONObject survey = new JSONObject();
+                    survey.putOpt("id", srv.getId());
+                    survey.putOpt("reef", srv.getReef().getName());
+                    survey.putOpt("country", srv.getReef().getCountry());
+                    survey.putOpt("latitude", srv.getLatitude());
+                    survey.putOpt("longitude", srv.getLongitude());
+                    survey.putOpt("records", surveyDao.getSurveyRecords(srv).size());
+                    survey.putOpt("date", srv.getDate().toLocaleString());
+                    surveys.put(survey);
+                    count++;
+                }
             } catch (JSONException e) {
                 LOGGER.fatal("Cannot create survey json object." + e.toString());
             }
         }
         JSONObject data = new JSONObject();
         try {
-            data.putOpt("count", listOfSurveys.size());
+            data.putOpt("count", count);
             data.putOpt("surveys", surveys);
         } catch (JSONException ex) {
             LOGGER.fatal("Cannot create data json object." + ex.toString());

@@ -76,7 +76,7 @@
             var coralcountchartUrl = baseUrl + "/graph?type=survey&id=" + survey.id + "&chart=coralCount&width=128&height=128&legend=false&titleSize=11";
             var numberOfRecs = parseInt(survey.records);
             var graphs = numberOfRecs <= 0 ? "" : "<br /><img src=\"" + piechartUrl + "\" alt=\"Shape Distribution\" width=\"128\" height=\"128\"/><img src=\"" + coralcountchartUrl + "\" alt=\"Shape Distribution\" width=\"128\" height=\"128\"/>";
-            marker.openInfoWindowHtml("<b>" + survey.reef + "</b><br />- " + numberOfRecs + " Record(s) <br />- " + survey.date + graphs + "<br />- <a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId="+ survey.id +"\">More info</a>");
+            marker.openInfoWindowHtml("<b>" + survey.reef + " ("+ survey.country +")</b><br />- " + numberOfRecs + " Record(s) <br />- " + survey.date + graphs + "<br />- <a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId="+ survey.id +"\">More info</a>");
         });
         return marker;
     }
@@ -84,7 +84,7 @@
         if (markerClusterer != null) {
             markerClusterer.clearMarkers();
         }
-        var zoom = null;
+        var zoom = 5;
         var size = null;
         var style = null;
         markerClusterer = new MarkerClusterer(map, markers, {maxZoom: zoom, gridSize: size, styles:styles[style]});
