@@ -68,15 +68,15 @@ public class SurveyPortlet extends GenericPortlet {
                     String country = actionRequest.getParameter("country");
                     String reefName = actionRequest.getParameter("reefName");
                     String latitudeStr = actionRequest.getParameter("latitude");
-                    float latitude = ParamUtil.getFloat(actionRequest, "latitude");
+                    Float latitude = ParamUtil.getFloat(actionRequest, "latitude");
                     String longitudeStr = actionRequest.getParameter("longitude");
-                    float longitude = ParamUtil.getFloat(actionRequest, "longitude");
+                    Float longitude = ParamUtil.getFloat(actionRequest, "longitude");
                     boolean isGpsDevice = ParamUtil.getBoolean(actionRequest, "isGpsDevice");
                     Date date = ParamUtil.getDate(actionRequest, "date", new SimpleDateFormat("yyyy-MM-dd"));
                     Date time = ParamUtil.getDate(actionRequest, "time", new SimpleDateFormat("'T'HH:mm:ss"));
                     String weather = actionRequest.getParameter("weather");
                     String temperatureStr = actionRequest.getParameter("temperature");
-                    double temperature = ParamUtil.getDouble(actionRequest, "temperature");
+                    Double temperature = ParamUtil.getDouble(actionRequest, "temperature");
                     String activity = actionRequest.getParameter("activity");
                     String comments = actionRequest.getParameter("comments");
 
@@ -129,7 +129,7 @@ public class SurveyPortlet extends GenericPortlet {
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                             actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
 //                            actionResponse.setRenderParameter("selectedTab", "metadataTab");
-                            _log.info("Added survey");
+                            _log.info("Edited survey");
                         }
                     } else {
                         actionResponse.setRenderParameter(Constants.CMD, cmd);

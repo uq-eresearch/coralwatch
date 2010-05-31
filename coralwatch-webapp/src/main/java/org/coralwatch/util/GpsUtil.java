@@ -25,6 +25,6 @@ public class GpsUtil {
         int minutes = (int) ((absValue - degree) * 60);
         int seconds = Math.round((((absValue - degree) * 60) - minutes) * 60);
 
-        return degree + "&deg; " + minutes + "&apos " + seconds + "&quot " + direction;
+        return degree + "&deg; " + minutes + "&apos; " + seconds + "&quot; " + direction;
     }
 }
