@@ -2,7 +2,6 @@ package org.coralwatch.portlets;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.UserDao;
@@ -49,7 +48,7 @@ public class KitRequestPortlet extends GenericPortlet {
         String kitType = actionRequest.getParameter("kitType");
         String language = actionRequest.getParameter("language");
         String notes = actionRequest.getParameter("notes");
-        boolean agreement = ParamUtil.getBoolean(actionRequest, "agreement");
+//        boolean agreement = ParamUtil.getBoolean(actionRequest, "agreement");
 
         UserImpl user = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
 
@@ -62,9 +61,9 @@ public class KitRequestPortlet extends GenericPortlet {
         if (language == null || language.isEmpty()) {
             errors.add(new SubmissionError("Preferred language must be supplied for kit request."));
         }
-        if (!agreement) {
-            errors.add(new SubmissionError("You must agree to the terms and conditions to submit a kit request."));
-        }
+//        if (!agreement) {
+//            errors.add(new SubmissionError("You must agree to the terms and conditions to submit a kit request."));
+//        }
 
         if (address == null || address.isEmpty()) {
             errors.add(new SubmissionError("No address was provided. Postal address must be supplied for kit request."));
