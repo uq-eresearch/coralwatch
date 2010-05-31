@@ -195,14 +195,14 @@
         <th>Country</th>
         <th>Surveys</th>
         <th>View</th>
-        <%
-            if (currentUser != null && currentUser.isSuperUser()) {
-        %>
-        <th>Edit</th>
-        <th>Delete</th>
-        <%
-            }
-        %>
+        <%--<%--%>
+            <%--if (currentUser != null && currentUser.isSuperUser()) {--%>
+        <%--%>--%>
+        <%--<th>Edit</th>--%>
+        <%--<th>Delete</th>--%>
+        <%--<%--%>
+            <%--}--%>
+        <%--%>--%>
     </tr>
     <%
         for (int i = lowerLimit; i < upperLimit; i++) {
@@ -217,16 +217,16 @@
         </td>
         <td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">View</a>
         </td>
-        <%
-            if (currentUser != null && currentUser.isSuperUser()) {
-        %>
-        <td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">Edit</a>
-        </td>
-        <td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">Delete</a>
-        </td>
-        <%
-            }
-        %>
+        <%--<%--%>
+            <%--if (currentUser != null && currentUser.isSuperUser()) {--%>
+        <%--%>--%>
+        <%--<td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">Edit</a>--%>
+        <%--</td>--%>
+        <%--<td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">Delete</a>--%>
+        <%--</td>--%>
+        <%--<%--%>
+            <%--}--%>
+        <%--%>--%>
     </tr>
     <%
         }
