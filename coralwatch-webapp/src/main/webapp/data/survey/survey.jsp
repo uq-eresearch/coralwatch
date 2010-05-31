@@ -348,8 +348,7 @@
                        trim="true"
                        style="width:6em;"
                        onBlur="updateLatFromDegrees()"
-                       invalidMessage="Enter a valid minute value."/>
-                &apos;
+                       invalidMessage="Enter a valid minute value."/>'
                 <input type="text"
                        id="latitudeSec"
                        name="latitudeSec"
@@ -398,8 +397,7 @@
                        trim="true"
                        style="width:6em;"
                        onBlur="updateLonFromDegrees()"
-                       invalidMessage="Enter a valid minute value."/>
-                &apos;
+                       invalidMessage="Enter a valid minute value."/>'
                 <input type="text"
                        id="longitudeSec"
                        name="longitudeSec"
