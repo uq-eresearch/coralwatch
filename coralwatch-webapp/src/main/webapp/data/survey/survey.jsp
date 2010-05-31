@@ -9,6 +9,7 @@
 <%@ page import="org.coralwatch.model.SurveyRecord" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
 <%@ page import="org.coralwatch.portlets.error.SubmissionError" %>
+<%@ page import="org.coralwatch.util.GpsUtil" %>
 <%@ page import="javax.portlet.PortletSession" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
@@ -555,12 +556,16 @@
         </tr>
         <tr>
             <th>Latitude:</th>
-            <td><%=survey.getLatitude()%>
+            <td><%if (survey.getLatitude() != null) {%>
+                <%=GpsUtil.formatGpsValue(survey.getLatitude(), GpsUtil.LAT)%>
+                <%}%>
             </td>
         </tr>
         <tr>
             <th>Longitude:</th>
-            <td><%=survey.getLongitude()%>
+            <td><%if (survey.getLongitude() != null) {%>
+                <%=GpsUtil.formatGpsValue(survey.getLongitude(), GpsUtil.LONG)%>
+                <%}%>
             </td>
         </tr>
         <tr>
@@ -580,7 +585,10 @@
         </tr>
         <tr>
             <th>Temperature:</th>
-            <td><%=survey.getTemperature()%>
+            <td>
+                <%if (survey.getTemperature() != null) {%>
+                    <%=survey.getTemperature()%> &deg;C (<%=((survey.getTemperature() * 9/5) + 32)%> &deg;F)
+                <%}%>
             </td>
         </tr>
         <tr>
@@ -899,7 +907,7 @@
             if (currentUser != null) {
         %>
         <th>Edit</th>
-        <th>Delete</th>
+        <%--<th>Delete</th>--%>
         <%
             }
         %>

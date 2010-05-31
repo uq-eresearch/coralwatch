@@ -6,9 +6,13 @@ import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.UserDao;
+import org.coralwatch.model.Reef;
+import org.coralwatch.model.Survey;
+import org.coralwatch.model.UserImpl;
 
 import javax.portlet.*;
 import java.io.IOException;
+import java.util.List;
 
 
 public class StatsUpdatePortlet extends GenericPortlet {
@@ -29,9 +33,12 @@ public class StatsUpdatePortlet extends GenericPortlet {
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         PortletPreferences prefs = renderRequest.getPreferences();
-        renderRequest.setAttribute("users", userDao.getAll() == null ? 0 : userDao.getAll().size());
-        renderRequest.setAttribute("reefs", reefDao.getAll() == null ? 0 : reefDao.getAll().size());
-        renderRequest.setAttribute("surveys", surveyDao.getAll() == null ? 0 : surveyDao.getAll().size());
+        List<UserImpl> users = userDao.getAll();
+        List<Reef> reefs = reefDao.getAll();
+        List<Survey> surveys = surveyDao.getAll();
+        renderRequest.setAttribute("users", users == null ? 0 : users.size());
+        renderRequest.setAttribute("reefs", reefs == null ? 0 : reefs.size());
+        renderRequest.setAttribute("surveys", surveys == null ? 0 : surveys.size());
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
         renderRequest.setAttribute("reefUrl", prefs.getValue("reefUrl", "reef"));
         include(viewJSP, renderRequest, renderResponse);

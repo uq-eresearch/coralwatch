@@ -61,8 +61,8 @@ public class Survey implements Serializable {
     @NotNull
     private String activity;
 
-    @NotNull
-    private double temperature;
+//    @NotNull
+    private Double temperature;
 
     @Column(length = 2000)
     private String comments;
@@ -201,11 +201,11 @@ public class Survey implements Serializable {
         this.activity = activity;
     }
 
-    public double getTemperature() {
+    public Double getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(double temperature) {
+    public void setTemperature(Double temperature) {
         this.temperature = temperature;
     }
 
