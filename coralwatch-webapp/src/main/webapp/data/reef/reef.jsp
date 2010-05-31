@@ -36,12 +36,12 @@
             if (reefDao.getSurveysByReef(reef).size() > 0) {
                 String pieChartUrl = "/graph?type=reef&id=" + reefId + "&chart=shapePie&width=256&height=256&labels=true&legend=true&titleSize=12";
                 String barChartUrl = "/graph?type=reef&id=" + reefId + "&chart=coralCount&width=256&height=256&legend=false&titleSize=12";
-                String timelineChartUrl = "/graph?type=reef&id=" + reefId + "&chart=timeline&width=256&height=256&legend=false&titleSize=12";
+                String timelineChartUrl = "/graph?type=reef&id=" + reefId + "&chart=timeline&width=512&height=512&legend=false&titleSize=12";
         %>
         <br/>
 
         <div><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + timelineChartUrl)%>"
-                  alt="Colour Distribution" width="256" height="256"/>
+                  alt="Reef Timeline" width="512" height="512"/>
         </div>
         <br/>
 
@@ -72,7 +72,7 @@
         </div>
         <%
 
-            int pageSize = 40;
+            int pageSize = 50;
             int pageNumber = ParamUtil.getInteger(request, "page");
             if (pageNumber <= 0) {
                 pageNumber = 1;
