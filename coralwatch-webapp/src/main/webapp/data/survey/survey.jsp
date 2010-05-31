@@ -609,7 +609,7 @@
         <%--<td></td>--%>
         <%--</tr>--%>
         <%
-            if (currentUser != null && currentUser.equals(survey.getCreator())) {
+            if (currentUser != null && (currentUser.equals(survey.getCreator()) || currentUser.isSuperUser())) {
         %>
         <tr>
             <td colspan="2"><input type="button" value="Edit"
