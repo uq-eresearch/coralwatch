@@ -44,7 +44,7 @@
                     map.setCenter(new GLatLng(25.799891, 15.468750), 2);
                     map.setMapType(G_HYBRID_MAP);
                     map.setUIToDefault();
-
+                    map.addControl(new GOverviewMapControl());
                     var xhrArgs = {
                         url: "<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/json-surveys")%>",
                         handleAs: "json",
