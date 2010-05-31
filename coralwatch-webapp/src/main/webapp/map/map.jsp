@@ -5,7 +5,6 @@
 
 <jsp:include page="map-head.jsp"/>
 <script type="text/javascript">
-
     var styles = [
         [
             {
@@ -37,6 +36,9 @@
     var surveyList = null;
     dojo.addOnLoad(
             function() {
+                var dialog = dijit.byId("dialog");
+                dialog.titleBar.style.display = 'none';
+                dialog.show();
                 if (GBrowserIsCompatible()) {
                     map = new GMap2(document.getElementById("map_canvas"));
                     map.setCenter(new GLatLng(25.799891, 15.468750), 2);
@@ -59,6 +61,7 @@
                                 markers.push(marker);
                             }
                             refreshMap();
+                            dialog.hide();
 
                         },
                         error: function(error) {
@@ -76,7 +79,7 @@
             var coralcountchartUrl = baseUrl + "/graph?type=survey&id=" + survey.id + "&chart=coralCount&width=128&height=128&legend=false&titleSize=11";
             var numberOfRecs = parseInt(survey.records);
             var graphs = numberOfRecs <= 0 ? "" : "<br /><img src=\"" + piechartUrl + "\" alt=\"Shape Distribution\" width=\"128\" height=\"128\"/><img src=\"" + coralcountchartUrl + "\" alt=\"Shape Distribution\" width=\"128\" height=\"128\"/>";
-            marker.openInfoWindowHtml("<b>" + survey.reef + " ("+ survey.country +")</b><br />- " + numberOfRecs + " Record(s) <br />- " + survey.date + graphs + "<br />- <a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId="+ survey.id +"\">More info</a>");
+            marker.openInfoWindowHtml("<b>" + survey.reef + " (" + survey.country + ")</b><br />- " + numberOfRecs + " Record(s) <br />- " + survey.date + graphs + "<br />- <a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + survey.id + "\">More info</a>");
         });
         return marker;
     }
@@ -91,4 +94,7 @@
     }
 
 </script>
+<div id="dialog" dojoType="dijit.Dialog" title="loading..." style="display:none;" align="center">
+    <h3 style="text-align:center;">Loading surveys...</h3>
+</div>
 <div id="map_canvas" style="height: 650px;"></div>
