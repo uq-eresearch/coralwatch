@@ -33,6 +33,7 @@
     dojo.require("dijit.form.NumberTextBox");
     dojo.require("dijit.form.ValidationTextBox");
     dojo.require("dijit.layout.ContentPane");
+    dojo.require("dijit.Dialog");
     dojo.require("dijit.layout.TabContainer");
     dojo.require("dijit.TooltipDialog");
     dojo.require("dijit.form.DropDownButton");
@@ -200,194 +201,232 @@
     </td>
 </tr>
 <tr>
-    <th>
-        <label>Position:</label>
-    </th>
-    <td>
-        <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:20ex">
-            <div id="tabDecimal" dojoType="dijit.layout.ContentPane" title="Decimal" style="width:40em;height:20ex;">
-                <table>
-                    <tr>
-                        <th>
-                            <label for="latitude">Latitude:</label>
-                        </th>
-                        <td>
-                            <input type="text"
-                                   id="latitude"
-                                   name="latitude"
-                                   required="true"
-                                   dojoType="dijit.form.NumberTextBox"
-                                   constraints="{places:6,min:-90,max:90}"
-                                   trim="true"
-                                   onBlur="updateLatFromDecimal()"
-                                   onChange="updateLatFromDecimal"
-                                   invalidMessage="Enter a valid latitude value."
-                                   value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
+<th>
+    <label>Position:</label>
+</th>
+<td>
+<div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:20ex">
+<div id="tabDecimal" dojoType="dijit.layout.ContentPane" title="Decimal" style="width:40em;height:20ex;">
+    <table>
+        <tr>
+            <th>
+                <label for="latitude">Latitude:</label>
+            </th>
+            <td>
+                <input type="text"
+                       id="latitude"
+                       name="latitude"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:6,min:-90,max:90}"
+                       trim="true"
+                       onBlur="updateLatFromDecimal()"
+                       onChange="updateLatFromDecimal"
+                       invalidMessage="Enter a valid latitude value."
+                       value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
+                <%
+                    String userAgent = request.getHeader("user-agent");
+                    if (userAgent.indexOf("MSIE") > -1) {
+                %>
+                <script type="text/javascript">
+                    function showMap() {
+                        var dialog = dijit.byId("mapDialog");
+                        dialog.setAttribute('modal', false);
+                        dialog.show();
+                        if (GBrowserIsCompatible()) {
+                            var mapDiv = dojo.byId("ieMap");
+                            var map = new GMap2(mapDiv);
+                            map.setCenter(new GLatLng(0, 0), 1);
+                            map.enableScrollWheelZoom();
+                            map.enableContinuousZoom();
+                            map.addControl(new GLargeMapControl3D());
+                            map.addControl(new GMapTypeControl());
+                            map.addMapType(G_PHYSICAL_MAP);
+                            map.setMapType(G_HYBRID_MAP);
+                            map.removeMapType(G_SATELLITE_MAP);
+                            map.getContainer().style.overflow = "hidden";
+                            GEvent.addListener(map, 'click', function(overlay, latlng) {
+                                var Lat5 = latlng.lat();
+                                var Lng5 = latlng.lng();
+                                document.getElementById("latitude").value = Lat5.toFixed(6);
+                                updateLatFromDecimal();
+                                document.getElementById("longitude").value = Lng5.toFixed(6);
+                                updateLonFromDecimal();
+                            });
+                        } else {
+                            alert("Sorry, the Google Maps API is not compatible with this browser");
+                        }
+                    }
+                </script>
+                <a href="#" onclick="showMap(); return false;">Locat On Map</a>
+                <%
+                } else {
+                %>
+                <div id="locator" dojoType="dijit.form.DropDownButton" label="Locate On Map">
+                    <div dojoType="dijit.TooltipDialog">
+                        <div id="locatorMap" style="width: 470px; height: 320px;">
+                            <script type="text/javascript">
+                                if (GBrowserIsCompatible()) {
+                                    var mapDiv = dojo.byId("locatorMap");
+                                    var map = new GMap2(mapDiv);
+                                    map.setCenter(new GLatLng(0, 0), 1);
+                                    map.enableScrollWheelZoom();
+                                    map.enableContinuousZoom();
+                                    map.addControl(new GLargeMapControl3D());
+                                    map.addControl(new GMapTypeControl());
+                                    map.addMapType(G_PHYSICAL_MAP);
+                                    map.setMapType(G_HYBRID_MAP);
+                                    map.removeMapType(G_SATELLITE_MAP);
+                                    map.getContainer().style.overflow = "hidden";
+                                    GEvent.addListener(map, 'click', function(overlay, latlng) {
+                                        var Lat5 = latlng.lat();
+                                        var Lng5 = latlng.lng();
+                                        document.getElementById("latitude").value = Lat5.toFixed(6);
+                                        updateLatFromDecimal();
+                                        document.getElementById("longitude").value = Lng5.toFixed(6);
+                                        updateLonFromDecimal();
+                                    });
+                                } else {
+                                    alert("Sorry, the Google Maps API is not compatible with this browser");
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+                <%}%>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="longitude">Longitude:</label>
+            </th>
+            <td>
+                <input type="text"
+                       id="longitude"
+                       name="longitude"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:6,min:-180,max:360}"
+                       trim="true"
+                       onBlur="updateLonFromDecimal()"
+                       onChange="updateLonFromDecimal()"
+                       invalidMessage="Enter a valid longitude value."
+                       value="<%=cmd.equals(Constants.EDIT) ? survey.getLongitude() : ""%>"/>
+                <input id="isGpsDevice" name="isGpsDevice"
+                       <%if(isGpsDevice) {%>checked="checked"<%}%> dojoType="dijit.form.CheckBox"
+                       value="">
+                <label for="isGpsDevice">I used a GPS Device</label>
+            </td>
+        </tr>
+    </table>
 
-                            <div id="locator" dojoType="dijit.form.DropDownButton" label="Locate On Map">
-                                <div dojoType="dijit.TooltipDialog">
-                                    <div id="locatorMap" style="width: 470px; height: 320px;">
-                                        <script type="text/javascript">
-                                            if (GBrowserIsCompatible()) {
-                                                var mapDiv = dojo.byId("locatorMap");
-                                                var map = new GMap2(mapDiv);
-                                                map.setCenter(new GLatLng(0, 0), 1);
-                                                map.enableScrollWheelZoom();
-                                                map.enableContinuousZoom();
-                                                map.addControl(new GLargeMapControl3D());
-                                                map.addControl(new GMapTypeControl());
-                                                map.addMapType(G_PHYSICAL_MAP);
-                                                map.setMapType(G_HYBRID_MAP);
-                                                map.removeMapType(G_SATELLITE_MAP);
-                                                map.getContainer().style.overflow = "hidden";
-                                                GEvent.addListener(map, 'click', function(overlay, latlng) {
-                                                    var Lat5 = latlng.lat();
-                                                    var Lng5 = latlng.lng();
-                                                    document.getElementById("latitude").value = Lat5.toFixed(6);
-                                                    updateLatFromDecimal();
-                                                    document.getElementById("longitude").value = Lng5.toFixed(6);
-                                                    updateLonFromDecimal();
-                                                });
-                                            } else {
-                                                alert("Sorry, the Google Maps API is not compatible with this browser");
-                                            }
-                                        </script>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <label for="longitude">Longitude:</label>
-                        </th>
-                        <td>
-                            <input type="text"
-                                   id="longitude"
-                                   name="longitude"
-                                   required="true"
-                                   dojoType="dijit.form.NumberTextBox"
-                                   constraints="{places:6,min:-180,max:360}"
-                                   trim="true"
-                                   onBlur="updateLonFromDecimal()"
-                                   onChange="updateLonFromDecimal()"
-                                   invalidMessage="Enter a valid longitude value."
-                                   value="<%=cmd.equals(Constants.EDIT) ? survey.getLongitude() : ""%>"/>
-                            <input id="isGpsDevice" name="isGpsDevice"
-                                   <%if(isGpsDevice) {%>checked="checked"<%}%> dojoType="dijit.form.CheckBox"
-                                   value="">
-                            <label for="isGpsDevice">I used a GPS Device</label>
-                        </td>
-                    </tr>
-                </table>
-
-            </div>
-            <div id="tabDegrees" dojoType="dijit.layout.ContentPane" title="Degrees" style="width:40em;height:20ex;">
-                <table>
-                    <tr>
-                        <th>
-                            <label for="latitudeDeg">Latitude:</label>
-                        </th>
-                        <td>
-                            <input type="text"
-                                   id="latitudeDeg"
-                                   name="latitudeDeg"
-                                   required="true"
-                                   dojoType="dijit.form.NumberTextBox"
-                                   constraints="{places:0,min:0,max:90}"
-                                   trim="true"
-                                   style="width:6em;"
-                                   onBlur="updateLatFromDegrees()"
-                                   invalidMessage="Enter a valid degree value."/>
-                            &deg;
-                            <input type="text"
-                                   id="latitudeMin"
-                                   name="latitudeMin"
-                                   required="true"
-                                   dojoType="dijit.form.NumberTextBox"
-                                   constraints="{places:0,min:0,max:59}"
-                                   trim="true"
-                                   style="width:6em;"
-                                   onBlur="updateLatFromDegrees()"
-                                   invalidMessage="Enter a valid minute value."/>
-                            &apos;
-                            <input type="text"
-                                   id="latitudeSec"
-                                   name="latitudeSec"
-                                   required="true"
-                                   dojoType="dijit.form.NumberTextBox"
-                                   constraints="{places:0,min:0,max:59}"
-                                   trim="true"
-                                   style="width:6em;"
-                                   onBlur="updateLatFromDegrees()"
-                                   invalidMessage="Enter a valid second value."/>
-                            &quot;
-                            <select name="latitudeDir"
-                                    id="latitudeDir"
-                                    required="true"
-                                    dojoType="dijit.form.ComboBox"
-                                    hasDownArrow="true"
-                                    onBlur="updateLatFromDegrees()"
-                                    style="width:4.5em;">
-                                <option value="north">N</option>
-                                <option value="south">S</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <label for="longitudeDeg">Longitude:</label>
-                        </th>
-                        <td>
-                            <input type="text"
-                                   id="longitudeDeg"
-                                   name="longitudeDeg"
-                                   required="true"
-                                   dojoType="dijit.form.NumberTextBox"
-                                   constraints="{places:0,min:0,max:180}"
-                                   trim="true"
-                                   style="width:6em;"
-                                   onBlur="updateLonFromDegrees()"
-                                   invalidMessage="Enter a valid degree value."/>
-                            &deg;
-                            <input type="text"
-                                   id="longitudeMin"
-                                   name="longitudeMin"
-                                   required="true"
-                                   dojoType="dijit.form.NumberTextBox"
-                                   constraints="{places:0,min:0,max:59}"
-                                   trim="true"
-                                   style="width:6em;"
-                                   onBlur="updateLonFromDegrees()"
-                                   invalidMessage="Enter a valid minute value."/>
-                            &apos;
-                            <input type="text"
-                                   id="longitudeSec"
-                                   name="longitudeSec"
-                                   required="true"
-                                   dojoType="dijit.form.NumberTextBox"
-                                   constraints="{places:0,min:0,max:59}"
-                                   trim="true"
-                                   style="width:6em;"
-                                   onBlur="updateLonFromDegrees()"
-                                   invalidMessage="Enter a valid second value."/>
-                            &quot;
-                            <select name="longitudeDir"
-                                    id="longitudeDir"
-                                    required="true"
-                                    dojoType="dijit.form.ComboBox"
-                                    hasDownArrow="true"
-                                    onBlur="updateLonFromDegrees()"
-                                    style="width:4.5em;">
-                                <option value="east">E</option>
-                                <option value="west">W</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </td>
+</div>
+<div id="tabDegrees" dojoType="dijit.layout.ContentPane" title="Degrees" style="width:40em;height:20ex;">
+    <table>
+        <tr>
+            <th>
+                <label for="latitudeDeg">Latitude:</label>
+            </th>
+            <td>
+                <input type="text"
+                       id="latitudeDeg"
+                       name="latitudeDeg"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:0,min:0,max:90}"
+                       trim="true"
+                       style="width:6em;"
+                       onBlur="updateLatFromDegrees()"
+                       invalidMessage="Enter a valid degree value."/>
+                &deg;
+                <input type="text"
+                       id="latitudeMin"
+                       name="latitudeMin"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:0,min:0,max:59}"
+                       trim="true"
+                       style="width:6em;"
+                       onBlur="updateLatFromDegrees()"
+                       invalidMessage="Enter a valid minute value."/>
+                &apos;
+                <input type="text"
+                       id="latitudeSec"
+                       name="latitudeSec"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:0,min:0,max:59}"
+                       trim="true"
+                       style="width:6em;"
+                       onBlur="updateLatFromDegrees()"
+                       invalidMessage="Enter a valid second value."/>
+                &quot;
+                <select name="latitudeDir"
+                        id="latitudeDir"
+                        required="true"
+                        dojoType="dijit.form.ComboBox"
+                        hasDownArrow="true"
+                        onBlur="updateLatFromDegrees()"
+                        style="width:4.5em;">
+                    <option value="north">N</option>
+                    <option value="south">S</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="longitudeDeg">Longitude:</label>
+            </th>
+            <td>
+                <input type="text"
+                       id="longitudeDeg"
+                       name="longitudeDeg"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:0,min:0,max:180}"
+                       trim="true"
+                       style="width:6em;"
+                       onBlur="updateLonFromDegrees()"
+                       invalidMessage="Enter a valid degree value."/>
+                &deg;
+                <input type="text"
+                       id="longitudeMin"
+                       name="longitudeMin"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:0,min:0,max:59}"
+                       trim="true"
+                       style="width:6em;"
+                       onBlur="updateLonFromDegrees()"
+                       invalidMessage="Enter a valid minute value."/>
+                &apos;
+                <input type="text"
+                       id="longitudeSec"
+                       name="longitudeSec"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:0,min:0,max:59}"
+                       trim="true"
+                       style="width:6em;"
+                       onBlur="updateLonFromDegrees()"
+                       invalidMessage="Enter a valid second value."/>
+                &quot;
+                <select name="longitudeDir"
+                        id="longitudeDir"
+                        required="true"
+                        dojoType="dijit.form.ComboBox"
+                        hasDownArrow="true"
+                        onBlur="updateLonFromDegrees()"
+                        style="width:4.5em;">
+                    <option value="east">E</option>
+                    <option value="west">W</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
+</td>
 </tr>
 <tr>
     <th><label for="date">Observation Date:</label></th>
@@ -557,14 +596,14 @@
         <tr>
             <th>Latitude:</th>
             <td><%if (survey.getLatitude() != null) {%>
-                <%=GpsUtil.formatGpsValue(survey.getLatitude(), GpsUtil.LAT)%>
+                <%=GpsUtil.formatGpsValue(survey.getLatitude(), GpsUtil.LAT) + " (" + survey.getLatitude() + ")"%>
                 <%}%>
             </td>
         </tr>
         <tr>
             <th>Longitude:</th>
             <td><%if (survey.getLongitude() != null) {%>
-                <%=GpsUtil.formatGpsValue(survey.getLongitude(), GpsUtil.LONG)%>
+                <%=GpsUtil.formatGpsValue(survey.getLongitude(), GpsUtil.LONG) + " (" + survey.getLongitude() + ")"%>
                 <%}%>
             </td>
         </tr>
@@ -587,7 +626,7 @@
             <th>Temperature:</th>
             <td>
                 <%if (survey.getTemperature() != null) {%>
-                    <%=survey.getTemperature()%> &deg;C (<%=((survey.getTemperature() * 9/5) + 32)%> &deg;F)
+                <%=survey.getTemperature()%> &deg;C (<%=((survey.getTemperature() * 9 / 5) + 32)%> &deg;F)
                 <%}%>
             </td>
         </tr>
@@ -713,8 +752,9 @@
             });
         }
     </script>
-        <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
+    <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
     <span>Add Survey Records:</span><br/>
+
     <form dojoType="dijit.form.Form" jsId="recordForm" id="recordForm">
 
         <script type="text/javascript">
@@ -832,6 +872,7 @@
             String barChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=coralCount&width=256&height=256&legend=false&titleSize=12";
     %>
     <br/>
+
     <div align="right">
         <a href="#" onclick="reloadImage();">Refresh</a>
     </div>
@@ -844,8 +885,8 @@
     } else {
     %>
     <div align="center">
-    <span style="text-align:center;">No graphs yet.</span>
-        </div>
+        <span style="text-align:center;">No graphs yet.</span>
+    </div>
     <%
         }
     %>
@@ -937,7 +978,7 @@
             <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">Edit</a>
         </td>
         <%--<td>--%>
-            <%--<a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">Delete</a>--%>
+        <%--<a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">Delete</a>--%>
         <%--</td>--%>
         <%
             }
@@ -969,3 +1010,6 @@
         }
     }
 %>
+<div id="mapDialog" dojoType="dijit.Dialog" title="Locate On Map" style="width: 470px; height: 320px; display:none;">
+    <div id="ieMap"style="height: 275px;"></div>
+</div>
