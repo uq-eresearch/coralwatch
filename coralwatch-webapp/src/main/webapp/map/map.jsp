@@ -88,7 +88,7 @@
             markerClusterer.clearMarkers();
         }
         var zoom = 5;
-        var size = null;
+        var size = 50;
         var style = null;
         markerClusterer = new MarkerClusterer(map, markers, {maxZoom: zoom, gridSize: size, styles:styles[style]});
     }
