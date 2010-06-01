@@ -7,6 +7,7 @@ import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
+import org.coralwatch.util.AppUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,6 +30,7 @@ public class SurveyRecordServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        AppUtil.clearCache();
         resp.setContentType("text/plain");
         PrintWriter out = resp.getWriter();
         try {

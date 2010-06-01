@@ -299,6 +299,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
     }
 
     @Override
+    public JpaConnectorService getJpaConnectorService() {
+        return connectorService;
+    }
+
+    @Override
     public Properties getSubmissionEmailConfig() {
         return submissionEmailConfig;
     }

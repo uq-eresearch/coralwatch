@@ -8,6 +8,7 @@ import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.portlets.error.SubmissionError;
+import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class ReefPortlet extends GenericPortlet {
 
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
+        AppUtil.clearCache();
         renderRequest.setAttribute("reefDao", reefDao);
         renderRequest.setAttribute("surveyDao", surveyDao);
         renderRequest.setAttribute("errors", errors);

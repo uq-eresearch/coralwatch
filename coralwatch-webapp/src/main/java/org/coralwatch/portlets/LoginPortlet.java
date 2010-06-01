@@ -9,6 +9,7 @@ import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.portlets.error.SubmissionError;
+import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class LoginPortlet extends GenericPortlet {
     }
 
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
+        AppUtil.clearCache();
         renderRequest.setAttribute("errors", errors);
         PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("userPageUrl", prefs.getValue("userPageUrl", "user"));

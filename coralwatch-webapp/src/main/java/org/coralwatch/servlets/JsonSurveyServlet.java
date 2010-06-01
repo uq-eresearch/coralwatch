@@ -5,6 +5,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.model.Survey;
+import org.coralwatch.util.AppUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +24,7 @@ public class JsonSurveyServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        AppUtil.clearCache();
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
         SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();

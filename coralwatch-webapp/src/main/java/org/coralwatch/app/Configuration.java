@@ -1,12 +1,7 @@
 package org.coralwatch.app;
 
-import org.coralwatch.dataaccess.KitRequestDao;
-import org.coralwatch.dataaccess.ReefDao;
-import org.coralwatch.dataaccess.SurveyDao;
-import org.coralwatch.dataaccess.SurveyRatingDao;
-import org.coralwatch.dataaccess.SurveyRecordDao;
-import org.coralwatch.dataaccess.UserDao;
-import org.coralwatch.dataaccess.UserTrustDao;
+import org.coralwatch.dataaccess.*;
+import org.coralwatch.dataaccess.jpa.JpaConnectorService;
 import org.restlet.service.ConnectorService;
 
 import java.util.Properties;
@@ -32,6 +27,7 @@ public interface Configuration {
 
     ReefDao getReefDao();
 
+    JpaConnectorService getJpaConnectorService();
     /**
      * An explicitly configured base URL.
      * <p/>

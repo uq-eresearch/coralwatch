@@ -5,6 +5,7 @@ import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.KitRequest;
 import org.coralwatch.model.UserImpl;
+import org.coralwatch.util.AppUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +18,7 @@ import java.util.Date;
 public class KitRequestDispatchServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        AppUtil.clearCache();
         resp.setContentType("text/plain");
         PrintWriter out = resp.getWriter();
         KitRequestDao kitRequestDao = CoralwatchApplication.getConfiguration().getKitRequestDao();

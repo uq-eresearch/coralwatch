@@ -6,6 +6,7 @@ import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
+import org.coralwatch.util.AppUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -26,6 +27,7 @@ public class DataDownloadServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        AppUtil.clearCache();
         response.setContentType("application/vnd.ms-excel");
         ReefDao reefDao = CoralwatchApplication.getConfiguration().getReefDao();
         long id = Long.valueOf(request.getParameter("id"));

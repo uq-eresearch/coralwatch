@@ -9,6 +9,7 @@ import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
+import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class StatsUpdatePortlet extends GenericPortlet {
 
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
+        AppUtil.clearCache();
         PortletPreferences prefs = renderRequest.getPreferences();
         List<UserImpl> users = userDao.getAll();
         List<Reef> reefs = reefDao.getAll();

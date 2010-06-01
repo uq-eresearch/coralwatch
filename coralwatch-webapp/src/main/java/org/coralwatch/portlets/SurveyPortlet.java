@@ -13,6 +13,7 @@ import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.portlets.error.SubmissionError;
+import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -42,10 +43,10 @@ public class SurveyPortlet extends GenericPortlet {
 
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
+        AppUtil.clearCache();
         renderRequest.setAttribute("surveyDao", surveyDao);
         renderRequest.setAttribute("userDao", userDao);
-        renderRequest.setAttribute("surveyRecordDao", surveyRecordDao);
-        renderRequest.setAttribute("reefDao", reefDao);
+        renderRequest.setAttribute("reefs", reefDao.getAll());
         renderRequest.setAttribute("errors", errors);
         include(viewJSP, renderRequest, renderResponse);
     }

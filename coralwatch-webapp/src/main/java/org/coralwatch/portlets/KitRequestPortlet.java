@@ -8,6 +8,7 @@ import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.KitRequest;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.portlets.error.SubmissionError;
+import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class KitRequestPortlet extends GenericPortlet {
     }
 
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
+        AppUtil.clearCache();
         PortletSession session = renderRequest.getPortletSession();
         session.setAttribute("kitrequestdao", kitRequestDao, PortletSession.PORTLET_SCOPE);
         session.setAttribute("errors", errors, PortletSession.PORTLET_SCOPE);

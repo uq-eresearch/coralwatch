@@ -8,6 +8,7 @@ import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.portlets.error.SubmissionError;
+import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class MembersPortlet extends GenericPortlet {
 
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
-
+        AppUtil.clearCache();
         String cmd = ParamUtil.getString(renderRequest, Constants.CMD);
         String userId = ParamUtil.getString(renderRequest, "userId");
         if (cmd.equals(Constants.VIEW)) {

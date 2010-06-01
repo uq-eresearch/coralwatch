@@ -6,6 +6,7 @@ import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.services.PlotService;
+import org.coralwatch.util.AppUtil;
 import org.jfree.chart.JFreeChart;
 
 import javax.imageio.ImageIO;
@@ -28,6 +29,7 @@ public class GraphsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        AppUtil.clearCache();
         response.setContentType("image/png");
 
         SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
