@@ -22,7 +22,7 @@
     dojo.require("dojo.parser");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.Button");
-    dojo.require("dijit.form.RadioButton");
+    //    dojo.require("dijit.form.RadioButton");
     dojo.require("dijit.form.ComboBox");
     dojo.require("dijit.form.CheckBox");
     dojo.require("dijit.form.DateTextBox");
@@ -675,10 +675,10 @@
                 return false;
             }
             var selectedLightColor = dojo.query('INPUT[name=light_color_input]', 'recordForm').filter(function(n) {
-                return n.getAttribute('value') != "";
+                return n.getAttribute('value') != '';
             }).length > 0;
             var selectedDarkColor = dojo.query('INPUT[name=dark_color_input]', 'recordForm').filter(function(n) {
-                return n.getAttribute('value') != "";
+                return n.getAttribute('value') != '';
             }).length > 0;
             if (!selectedLightColor) {
                 alert('You must select lightest colour.');
@@ -697,12 +697,18 @@
 
         function saveRecord(coralType, lightColor, darkColor) {
             dojo.xhrPost({
-                url:"<%=renderResponse.encodeURL(renderRequest.getContextPath())%>" + "/record?cmd=add&surveyId=<%=survey.getId()%>&coralType=" + coralType + "&light_color=" + lightColor + "&dark_color=" + darkColor,
+                url:'<%=renderResponse.encodeURL(renderRequest.getContextPath())%>' + '/record?cmd=add&surveyId=<%=survey.getId()%>&coralType=' + coralType + '&light_color=' + lightColor + '&dark_color=' + darkColor,
                 timeout: 5000,
                 load: function(response, ioArgs) {
-                    var table = dojo.byId("survey_records");
+                    var table = dojo.byId('survey_records');
                     if (table == null) {
-                        var table = dojo.create('table', { id : 'survey_records', class : 'coralwatch_list_table' });
+                        var table = dojo.create('table');
+                        table.setAttribute('id', 'survey_records');
+                        if (dojo.isIE) {
+                            table.setAttribute('className', 'coralwatch_list_table');
+                        } else {
+                            table.setAttribute('class', 'coralwatch_list_table');
+                        }
                         var tbody = dojo.create('tbody');
                         var row = dojo.create('tr');
                         row.appendChild(dojo.create('th', { innerHTML: 'No', nowrap:'nowrap' }));
@@ -712,13 +718,14 @@
                         row.appendChild(dojo.create('th', { innerHTML: 'Delete', nowrap:'nowrap' }));
                         tbody.appendChild(row);
                         table.appendChild(tbody);
-                        dojo.destroy("nodata");
-                        dojo.byId("dataTab").appendChild(table);
+                        dojo.destroy('nodata');
+                        dojo.byId('dataTab').appendChild(table);
 
                     }
-                    var tbody = table.getElementsByTagName("tbody")[0];
+                    var tbody = table.getElementsByTagName('tbody')[0];
                     var numberOfRaws = tbody.children.length;
-                    var row = dojo.create('tr', { id : 'record' + numberOfRaws });
+                    var row = dojo.create('tr');
+                    row.setAttribute('id', 'record' + numberOfRaws);
                     row.appendChild(dojo.create('td', { innerHTML: numberOfRaws }));
                     row.appendChild(dojo.create('td', { innerHTML: coralType }));
                     row.appendChild(dojo.create('td', { innerHTML: lightColor }));
@@ -729,28 +736,28 @@
                     return response;
                 },
                 error: function(response, ioArgs) {
-                    alert("Cannot add record: " + response);
+                    alert('Cannot add record: ' + response);
                     return response;
                 }
             });
         }
-        function deleteRecord(id, pos) {
+        function deleteRecord(recordId, pos) {
             dojo.xhrPost({
-                url:"<%=renderResponse.encodeURL(renderRequest.getContextPath())%>" + "/record?cmd=delete&recordId=" + id,
+                url:'<%=renderResponse.encodeURL(renderRequest.getContextPath())%>' + '/record?cmd=delete&recordId=' + recordId,
                 timeout: 5000,
                 load: function(response, ioArgs) {
                     dojo.destroy('record' + pos)
                     return response;
                 },
                 error: function(response, ioArgs) {
-                    alert("Cannot delete record: " + response);
+                    alert('Cannot delete record: ' + response);
                     return response;
                 }
             });
         }
     </script>
     <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
-    <span>Add Survey Records:</span><br/>
+    <span>Add Records:</span><br/>
 
     <form dojoType="dijit.form.Form" jsId="recordForm" id="recordForm">
 
@@ -760,12 +767,12 @@
                 dojo.byId(inputField).setAttribute('value', colorCode);
             }
         </script>
-        <table width="100%">
+        <table width="100%" class="coralwatch_list_table">
             <tr>
                 <th nowrap="nowrap">Coral Type</th>
                 <th nowrap="nowrap">Lightest</th>
                 <th nowrap="nowrap">Darkest</th>
-                <th nowrap="nowrap"></th>
+                <th nowrap="nowrap">Action</th>
             </tr>
 
             <tr>
@@ -803,7 +810,7 @@
                     </div>
                 </td>
                 <td>
-                    <button dojoType="dijit.form.Button" name="record" onClick="validate(); return false;">Add</button>
+                    <input type="button" onclick="validate();" value="Add"/>
                 </td>
             </tr>
         </table>
@@ -813,7 +820,6 @@
         List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
         if (!surveyRecords.isEmpty()) {
     %>
-    <br/>
     <table id="survey_records" class="coralwatch_list_table">
         <tr>
             <th nowrap="nowrap">No</th>
@@ -821,7 +827,7 @@
             <th nowrap="nowrap">Lightest</th>
             <th nowrap="nowrap">Darkest</th>
             <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
-            <th nowrap="nowrap">Delete</th>
+            <th nowrap="nowrap">Action</th>
             <%}%>
         </tr>
         <%
@@ -851,7 +857,10 @@
     <%
     } else {
     %>
-    <span id="nodata" style="text-align:center;">No Data Recorded</span>
+    <div id="nodata" align="center">
+        <br/>
+        <span style="text-align:center;">No Data Recorded</span>
+    </div>
     <%
         }
     %>
