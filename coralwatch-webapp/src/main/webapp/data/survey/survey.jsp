@@ -1,7 +1,6 @@
 <%@ page import="com.liferay.portal.kernel.util.Constants" %>
 <%@ page import="com.liferay.portal.kernel.util.HtmlUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
-<%@ page import="org.coralwatch.dataaccess.ReefDao" %>
 <%@ page import="org.coralwatch.dataaccess.SurveyDao" %>
 <%@ page import="org.coralwatch.dataaccess.UserDao" %>
 <%@ page import="org.coralwatch.model.Reef" %>
@@ -58,8 +57,8 @@
 <%
 } else {
     List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getAttribute("errors");
-    ReefDao reefDao = (ReefDao) renderRequest.getAttribute("reefDao");
-
+//    ReefDao reefDao = (ReefDao) renderRequest.getAttribute("reefDao");
+    List<Reef> reefs = (List<Reef>) renderRequest.getAttribute("reefs");
     String groupName = "";
     String organisationType = "";
     String country = "";
@@ -190,7 +189,7 @@
                 value="<%=reefName == null ? "" : reefName%>">
         <option selected="selected" value=""></option>
             <%
-                    List<Reef> reefs = reefDao.getAll();
+//                    List<Reef> reefs = (List<Reef>) renderRequest.getAttribute("reefs");
                     for (Reef reef : reefs) {
                 %>
         <option value="<%=reef.getName()%>"><%=reef.getName()%>
@@ -1009,5 +1008,5 @@
     }
 %>
 <div id="mapDialog" dojoType="dijit.Dialog" title="Locate On Map" style="width: 470px; height: 320px; display:none;">
-    <div id="ieMap"style="height: 275px;"></div>
+    <div id="ieMap" style="height: 275px;"></div>
 </div>
