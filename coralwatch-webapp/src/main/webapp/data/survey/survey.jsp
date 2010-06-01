@@ -657,8 +657,12 @@
         %>
         <tr>
             <td colspan="2"><input type="button" value="Edit"
-                                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:renderURL>';">
+                                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:renderURL>';"/>
+                <input type="button" value="Delete"
+                                   onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:actionURL>';"/>
             </td>
+
+
         </tr>
         <%
             }
@@ -954,7 +958,7 @@
             if (currentUser != null) {
         %>
         <th>Edit</th>
-        <%--<th>Delete</th>--%>
+        <th>Delete</th>
         <%
             }
         %>
@@ -983,9 +987,9 @@
         <td>
             <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">Edit</a>
         </td>
-        <%--<td>--%>
-        <%--<a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">Delete</a>--%>
-        <%--</td>--%>
+        <td>
+        <a href="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:actionURL>">Delete</a>
+        </td>
         <%
             }
         %>

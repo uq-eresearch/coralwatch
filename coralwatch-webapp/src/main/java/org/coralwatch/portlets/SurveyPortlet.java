@@ -61,9 +61,9 @@ public class SurveyPortlet extends GenericPortlet {
         String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
         _log.info("Command: " + cmd);
         try {
-            if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
-                UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
-                if (currentUser != null) {
+            UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
+            if (currentUser != null) {
+                if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
                     String organisation = actionRequest.getParameter("organisation");
                     String organisationType = actionRequest.getParameter("organisationType");
                     String country = actionRequest.getParameter("country");
@@ -138,10 +138,15 @@ public class SurveyPortlet extends GenericPortlet {
                             actionResponse.setRenderParameter("surveyId", String.valueOf(ParamUtil.getLong(actionRequest, "surveyId")));
                         }
                     }
-                } else {
-                    errors.add(new SubmissionError("You must be signed in to submit a survey."));
+                } else if (cmd.equals(Constants.DELETE)) {
+                    long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
+                    Survey survey = surveyDao.getById(suveyId);
+                    surveyDao.delete(survey);
                 }
+            } else {
+                errors.add(new SubmissionError("You must be signed in to submit a survey."));
             }
+
         } catch (Exception ex) {
             errors.add(new SubmissionError("Your submission contains invalid data. Check all fields."));
             _log.error("Submission error ", ex);
