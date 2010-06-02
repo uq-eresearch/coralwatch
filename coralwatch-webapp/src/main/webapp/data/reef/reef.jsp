@@ -68,7 +68,7 @@
             String downloadUrl = "/data-download?id=" + reefId;
         %>
         <div align="right">
-        <a href="<%=renderResponse.encodeURL(renderRequest.getContextPath() + downloadUrl)%>">Dowload Data</a>
+        <a href="<%=renderResponse.encodeURL(renderRequest.getContextPath() + downloadUrl)%>">Download Data</a>
         </div>
         <%
 

@@ -29,6 +29,24 @@ public class SurveyRecordServlet extends HttpServlet {
     }
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        AppUtil.clearCache();
+        resp.setContentType("text/plain");
+        PrintWriter out = resp.getWriter();
+        try {
+            String cmd = req.getParameter("cmd");
+            if (cmd.equals("count")) {
+                long suveyId = Long.valueOf(req.getParameter("surveyId"));
+                Survey survey = surveyDao.getById(suveyId);
+                out.println(surveyDao.getSurveyRecords(survey).size());
+            }
+        } catch (Exception ex) {
+            out.println("System error." + ex.getMessage());
+            _log.fatal("Error in record servlet ", ex);
+        }
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AppUtil.clearCache();
         resp.setContentType("text/plain");

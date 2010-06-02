@@ -230,7 +230,6 @@
                 <script type="text/javascript">
                     function showMap() {
                         var dialog = dijit.byId("mapDialog");
-                        dialog.setAttribute('modal', false);
                         dialog.show();
                         if (GBrowserIsCompatible()) {
                             var mapDiv = dojo.byId("ieMap");
@@ -257,7 +256,7 @@
                         }
                     }
                 </script>
-                <a href="#" onclick="showMap(); return false;">Locat On Map</a>
+                <a href="#" onclick="showMap(); return false;">Locate On Map</a>
                 <%
                 } else {
                 %>
@@ -659,7 +658,7 @@
             <td colspan="2"><input type="button" value="Edit"
                                    onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:renderURL>';"/>
                 <input type="button" value="Delete"
-                                   onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:actionURL>';"/>
+                       onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:actionURL>';"/>
             </td>
 
 
@@ -736,7 +735,7 @@
                     row.appendChild(dojo.create('td', { innerHTML: darkColor }));
                     row.appendChild(dojo.create('td', { innerHTML: '<a href="#" onClick="deleteRecord(' + Number(response) + ', ' + Number(numberOfRaws) + '); return false;">Delete</a>' }));
                     tbody.appendChild(row);
-
+                    reloadImage();
                     return response;
                 },
                 error: function(response, ioArgs) {
@@ -751,6 +750,7 @@
                 timeout: 5000,
                 load: function(response, ioArgs) {
                     dojo.destroy('record' + pos)
+                    reloadImage();
                     return response;
                 },
                 error: function(response, ioArgs) {
@@ -870,36 +870,57 @@
     %>
 </div>
 <div id="graphTab" dojoType="dijit.layout.ContentPane" title="Graphs" style="width:650px; height:60ex">
-    <script type="text/javascript">
-        function reloadImage() {
-            dojo.byId("pie").src = dojo.byId("pie").src + '&time=' + (new Date()).getTime();
-            dojo.byId("bar").src = dojo.byId("bar").src + '&time=' + (new Date()).getTime();
-        }
-    </script>
     <%
-        if (surveyDao.getSurveyRecords(survey).size() > 0) {
-            String pieChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=shapePie&width=256&height=256&labels=true&legend=true&titleSize=12";
-            String barChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=coralCount&width=256&height=256&legend=false&titleSize=12";
+        String pieChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=shapePie&width=256&height=256&labels=true&legend=true&titleSize=12";
+        String barChartUrl = "/graph?type=survey&id=" + survey.getId() + "&chart=coralCount&width=256&height=256&legend=false&titleSize=12";
     %>
     <br/>
-
+    <script type="text/javascript">
+        function reloadImage() {
+            var pieChart = dojo.byId('pie');
+            var barChart = dojo.byId('bar');
+            if (pieChart != null && barChart != null) {
+                var graphDiv = dojo.byId('graphDiv');
+                var noGraphDiv = dojo.byId('noGraphDiv');
+                dojo.xhrGet({
+                    url:'<%=renderResponse.encodeURL(renderRequest.getContextPath())%>' + '/record?cmd=count&surveyId=<%=survey.getId()%>',
+                    timeout: 5000,
+                    load: function(response, ioArgs) {
+                        //Do the query and update
+                        if (Number(response) > 0) {
+                            graphDiv.style.display = 'inline';
+                            noGraphDiv.style.display = 'none';
+                            pieChart.src = pieChart.src + '&time=' + (new Date()).getTime();
+                            barChart.src = barChart.src + '&time=' + (new Date()).getTime();
+                        } else {
+                            graphDiv.style.display = 'none';
+                            noGraphDiv.style.display = 'inline';
+                        }
+                        return response;
+                    },
+                    error: function(response, ioArgs) {
+                        graphDiv.style.display = 'none';
+                        noGraphDiv.style.display = 'inline';
+                        //                    alert('Cannot get number of records: ' + response);
+                        return response;
+                    }
+                });
+            }
+        }
+    </script>
     <div align="right">
         <a href="#" onclick="reloadImage();">Refresh</a>
     </div>
-    <div><img id="pie" src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
-              alt="Shape Distribution" width="256" height="256"/>
+    <div id="graphDiv" <%if (surveyDao.getSurveyRecords(survey).size() < 1) {%>style="display:none;"<%}%>>
+        <img id="pie" src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
+             alt="Shape Distribution" width="256" height="256"/>
         <img id="bar" src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
              alt="Colour Distribution" width="256" height="256"/>
     </div>
-    <%
-    } else {
-    %>
-    <div align="center">
-        <span style="text-align:center;">No graphs yet.</span>
+    <div id="noGraphDiv" align="center" <%if (surveyDao.getSurveyRecords(survey).size() > 0) {%>
+         style="display:none;"<%}%>>
+        <span style="text-align:center;">No graphs available.</span>
     </div>
-    <%
-        }
-    %>
 </div>
 </div>
 <%
@@ -988,7 +1009,7 @@
             <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">Edit</a>
         </td>
         <td>
-        <a href="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:actionURL>">Delete</a>
+            <a href="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:actionURL>">Delete</a>
         </td>
         <%
             }
