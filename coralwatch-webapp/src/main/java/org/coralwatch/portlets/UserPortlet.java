@@ -101,6 +101,7 @@ public class UserPortlet extends GenericPortlet {
                                 UserImpl userImpl = new UserImpl(displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
                                 userImpl.setCountry(country);
                                 userDao.save(userImpl);
+                                params.clear();
                                 actionResponse.setRenderParameter("userId", String.valueOf(userImpl.getId()));
                                 actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
                                 session.setAttribute("currentUser", userImpl, PortletSession.APPLICATION_SCOPE);
@@ -134,6 +135,7 @@ public class UserPortlet extends GenericPortlet {
                             user.setOccupation(occupation);
                             user.setAddress(address);
                             userDao.update(user);
+                            params.clear();
                             actionResponse.setRenderParameter("userId", String.valueOf(user.getId()));
                             actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
                         }

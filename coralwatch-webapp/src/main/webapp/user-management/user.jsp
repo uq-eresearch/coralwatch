@@ -201,7 +201,7 @@
 <% } else {
     UserImpl user;
     if (userId <= 0) {
-        user = currentUser;
+        user = userDao.getById(currentUser.getId());
     } else {
         user = userDao.getById(userId);
     }

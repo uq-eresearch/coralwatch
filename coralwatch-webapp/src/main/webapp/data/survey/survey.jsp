@@ -709,9 +709,9 @@
                         table.setAttribute('id', 'survey_records');
                         if (dojo.isIE) {
                             table.setAttribute('className', 'coralwatch_list_table');
-                        } else {
-                            table.setAttribute('class', 'coralwatch_list_table');
                         }
+                        table.setAttribute('class', 'coralwatch_list_table');
+
                         var tbody = dojo.create('tbody');
                         var row = dojo.create('tr');
                         row.appendChild(dojo.create('th', { innerHTML: 'No', nowrap:'nowrap' }));
