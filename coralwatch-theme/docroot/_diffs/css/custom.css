@@ -103,7 +103,9 @@ li ul {
 }
 
 .twintyfivefiftytwintyfive {
-    background-color:#68D7FD;
+    background-color:#ffffff;
+    border:2px solid #F9911F;
+    margin-bottom:5px;
 }
 /* ---------- Banner ---------- */
 
@@ -211,10 +213,11 @@ li ul {
 }
 
 #navigation .child-menu li {
-    border-bottom: 1px dotted #ffffff;
+    /*border-bottom: 1px dotted #ffffff;*/
     display: block;
     float: none;
     margin: 0;
+    z-index:400;
 }
 
 #navigation .child-menu li a {
