@@ -221,7 +221,7 @@
                        trim="true"
                        onBlur="updateLatFromDecimal()"
                        onChange="updateLatFromDecimal"
-                       invalidMessage="Enter a valid latitude value."
+                       invalidMessage="Enter a valid latitude value rounded to six decimal places. Append 0s if required."
                        value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
                 <%
                     String userAgent = request.getHeader("user-agent");
@@ -308,7 +308,7 @@
                        trim="true"
                        onBlur="updateLonFromDecimal()"
                        onChange="updateLonFromDecimal()"
-                       invalidMessage="Enter a valid longitude value."
+                       invalidMessage="Enter a valid longitude value rounded to six decimal places. Append 0s if required."
                        value="<%=cmd.equals(Constants.EDIT) ? survey.getLongitude() : ""%>"/>
                 <input id="isGpsDevice" name="isGpsDevice"
                        <%if(isGpsDevice) {%>checked="checked"<%}%> dojoType="dijit.form.CheckBox"
