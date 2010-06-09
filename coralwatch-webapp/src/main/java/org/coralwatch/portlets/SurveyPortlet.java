@@ -11,6 +11,7 @@ import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
+import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.portlets.error.SubmissionError;
 import org.coralwatch.util.AppUtil;
@@ -141,7 +142,13 @@ public class SurveyPortlet extends GenericPortlet {
                 } else if (cmd.equals(Constants.DELETE)) {
                     long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
                     Survey survey = surveyDao.getById(suveyId);
+                    List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
+                    for (SurveyRecord record : surveyRecords) {
+                        record.getSurvey().getDataset().remove(record);
+                        surveyRecordDao.delete(record);
+                    }
                     surveyDao.delete(survey);
+                    AppUtil.clearCache();
                 }
             } else {
                 errors.add(new SubmissionError("You must be signed in to submit a survey."));
