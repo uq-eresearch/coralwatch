@@ -547,13 +547,13 @@
 <div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:650px;height:60ex">
 <div id="metadataTab" dojoType="dijit.layout.ContentPane" title="Metadata" style="width:650px; height:60ex">
     <table>
-        <%
-            if (survey.getCreator().equals(currentUser)) {
-        %>
+        <%--<%--%>
+        <%--if (survey.getCreator().equals(currentUser)) {--%>
+        <%--%>--%>
 
-        <%
-            }
-        %>
+        <%--<%--%>
+        <%--}--%>
+        <%--%>--%>
         <tr>
             <th>Creator</th>
             <td><%= survey.getCreator().getDisplayName() == null ? "" : survey.getCreator().getDisplayName()%>
