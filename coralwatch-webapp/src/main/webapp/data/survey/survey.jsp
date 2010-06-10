@@ -670,6 +670,7 @@
 </div>
 
 <div id="dataTab" dojoType="dijit.layout.ContentPane" title="Data" style="width:650px; height:60ex">
+    <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
     <script type="text/javascript">
         function validate() {
             var form = dijit.byId("recordForm");
@@ -760,7 +761,7 @@
             });
         }
     </script>
-    <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
+
     <span>Add Records:</span><br/>
 
     <form dojoType="dijit.form.Form" jsId="recordForm" id="recordForm">
