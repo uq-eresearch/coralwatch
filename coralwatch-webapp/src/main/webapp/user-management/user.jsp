@@ -3,12 +3,10 @@
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="org.coralwatch.dataaccess.UserDao" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
-<%@ page import="org.coralwatch.portlets.error.SubmissionError" %>
 <%@ page import="javax.portlet.PortletSession" %>
 <%@ page import="javax.portlet.WindowState" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
@@ -16,23 +14,21 @@
 
 <%
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
-    List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getAttribute("errors");
+    List<String> errors = (List<String>) renderRequest.getAttribute("errors");
     UserDao userDao = (UserDao) renderRequest.getAttribute("userDao");
-    HashMap<String, String> params = (HashMap<String, String>) renderRequest.getAttribute("params");
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     String cmd = ParamUtil.getString(request, Constants.CMD);
     if (currentUser == null) {
         cmd = Constants.ADD;
     }
     long userId = ParamUtil.getLong(request, "userId");
-    String email = params.get("email");
-    String displayName = params.get("displayName");
-    String occupation = params.get("occupation");
-    String country = params.get("country");
-    String address = params.get("address");
+    String email = "";
+    String displayName = "";
+    String occupation = "";
+    String country = "";
+    String address = "";
     if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
 %>
-<%--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.3.2/dojo/dojo.xd.js"></script>--%>
 <script type="text/javascript">
     dojo.locale = "en";
     dojo.require("dojo.fx");
@@ -58,6 +54,9 @@
             UserImpl user = userDao.getById(userId);
             email = user.getEmail();
             displayName = user.getDisplayName();
+            occupation = user.getOccupation();
+            country = user.getCountry();
+            address = user.getAddress();
     %>
     <h2 style="margin-top:0;">Edit User Profile</h2>
     <br/>
@@ -76,10 +75,10 @@
     <%
         }
 
-        if (!errors.isEmpty()) {
-            for (SubmissionError error : errors) {
+        if (errors != null && errors.size() > 0) {
+            for (String error : errors) {
     %>
-    <div><span class="portlet-msg-error"><%=error.getErrorMessage()%></span></div>
+    <div><span class="portlet-msg-error"><%=error%></span></div>
     <%
             }
         }
