@@ -1,12 +1,11 @@
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <%@ page import="com.liferay.portal.kernel.util.Constants" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
-<%@ page import="org.coralwatch.portlets.error.SubmissionError" %>
 <%@ page import="javax.portlet.PortletSession" %>
 <%@ page import="java.util.List" %>
 <portlet:defineObjects/>
 <%
-    List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getAttribute("errors");
+    List<String> errors = (List<String>) renderRequest.getAttribute("errors");
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
 %>
 <script type="text/javascript">
@@ -34,10 +33,10 @@
     %>
     <h2>Member's Sign In</h2>
     <%
-        if (!errors.isEmpty()) {
-            for (SubmissionError error : errors) {
+        if (errors != null && errors.size() > 0) {
+            for (String error : errors) {
     %>
-    <div><span class="portlet-msg-error"><%=error.getErrorMessage()%></span></div>
+    <div><span class="portlet-msg-error"><%=error%></span></div>
     <%
             }
         }
@@ -71,7 +70,10 @@
     } else {
     %>
     <h2>Current User</h2>
-    <span>You are logged in as <a href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch"><%= currentUser.getDisplayName()%></a> | <a href="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DEACTIVATE %>" /></portlet:actionURL>">Logout</a></span>
+    <span>You are logged in as <a
+            href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch"><%= currentUser.getDisplayName()%>
+    </a> | <a
+            href="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DEACTIVATE %>" /></portlet:actionURL>">Logout</a></span>
     <%
         }
     %>

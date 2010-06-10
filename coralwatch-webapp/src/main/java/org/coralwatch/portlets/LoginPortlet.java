@@ -8,7 +8,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.UserImpl;
-import org.coralwatch.portlets.error.SubmissionError;
 import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
@@ -22,17 +21,15 @@ public class LoginPortlet extends GenericPortlet {
     private static Log _log = LogFactoryUtil.getLog(LoginPortlet.class);
     protected String viewJSP;
     protected UserDao userdao;
-    protected List<SubmissionError> errors;
 
     public void init() throws PortletException {
         viewJSP = getInitParameter("login-jsp");
         userdao = CoralwatchApplication.getConfiguration().getUserDao();
-        errors = new ArrayList<SubmissionError>();
+
     }
 
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         AppUtil.clearCache();
-        renderRequest.setAttribute("errors", errors);
         PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("userPageUrl", prefs.getValue("userPageUrl", "user"));
         include(viewJSP, renderRequest, renderResponse);
@@ -40,9 +37,7 @@ public class LoginPortlet extends GenericPortlet {
 
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
         PortletSession session = actionRequest.getPortletSession(true);
-        if (!errors.isEmpty()) {
-            errors.clear();
-        }
+        List<String> errors = new ArrayList<String>();
         String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
         if (cmd.equals(Constants.DEACTIVATE)) {
             session.removeAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
@@ -51,20 +46,21 @@ public class LoginPortlet extends GenericPortlet {
             //TODO validate the email here
             UserImpl currentUser;
             if (email == null || email.isEmpty()) {
-                errors.add(new SubmissionError("Enter a valid email address."));
+                errors.add("Enter a valid email address.");
             } else {
                 currentUser = userdao.getByEmail(email);
                 if (currentUser == null) {
-                    errors.add(new SubmissionError("Enter valid sign in details."));
+                    errors.add("Enter valid sign in details.");
                 } else {
                     String password = actionRequest.getParameter("signinPassword");
                     if (password == null || password.isEmpty() || !BCrypt.checkpw(password, currentUser.getPasswordHash())) {
-                        errors.add(new SubmissionError("Enter a valid password."));
+                        errors.add("Enter a valid password.");
                     } else {
                         session.setAttribute("currentUser", currentUser, PortletSession.APPLICATION_SCOPE);
                     }
                 }
             }
+            actionRequest.setAttribute("errors", errors);
         }
     }
 
