@@ -637,6 +637,12 @@
             </td>
         </tr>
         <tr>
+            <th>QA Status:</th>
+            <td><span
+                    style="color:#ff0000;"><%=survey.getQaState().equalsIgnoreCase("Post Migration") ? "New" : "Migrated"%></span>
+            </td>
+        </tr>
+        <tr>
             <th>Submitted:</th>
             <td><%=survey.getDateSubmitted() == null ? "" : survey.getDateSubmitted()%>
             </td>
