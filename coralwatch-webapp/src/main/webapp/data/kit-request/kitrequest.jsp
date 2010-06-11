@@ -1,7 +1,6 @@
 <%@ page import="org.coralwatch.dataaccess.KitRequestDao" %>
 <%@ page import="org.coralwatch.model.KitRequest" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
-<%@ page import="org.coralwatch.portlets.error.SubmissionError" %>
 <%@ page import="javax.portlet.PortletSession" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
@@ -18,17 +17,17 @@
     dojo.require("dijit.layout.TabContainer");
 </script>
 <%
-    List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getPortletSession().getAttribute("errors");
-    KitRequestDao kitRequestDao = (KitRequestDao) renderRequest.getPortletSession().getAttribute("kitrequestdao");
+    List<String> errors = (List<String>) renderRequest.getAttribute("errors");
+    KitRequestDao kitRequestDao = (KitRequestDao) renderRequest.getAttribute("kitrequestdao");
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 %>
 <h2>Kit Request</h2>
 <%
-    if (!errors.isEmpty()) {
-        for (SubmissionError error : errors) {
+    if (errors != null && errors.size() > 0) {
+        for (String error : errors) {
 %>
-<div><span class="portlet-msg-error"><%=error.getErrorMessage()%></span></div>
+<div><span class="portlet-msg-error"><%=error%></span></div>
 <%
         }
     }
@@ -170,19 +169,19 @@
                 </td>
             </tr>
             <%--<tr>--%>
-                <%--<td colspan="2"><textarea name="conditions"--%>
-                                          <%--id="conditions"--%>
-                                          <%--dojoType="dijit.form.SimpleTextarea"--%>
-                                          <%--style="width: 100%;"--%>
-                                          <%--readonly="readonly">--%>
-                    <%--<jsp:include page="terms_conditions.txt"/>--%>
-                <%--</textarea>--%>
-                <%--</td>--%>
+            <%--<td colspan="2"><textarea name="conditions"--%>
+            <%--id="conditions"--%>
+            <%--dojoType="dijit.form.SimpleTextarea"--%>
+            <%--style="width: 100%;"--%>
+            <%--readonly="readonly">--%>
+            <%--<jsp:include page="terms_conditions.txt"/>--%>
+            <%--</textarea>--%>
+            <%--</td>--%>
             <%--</tr>--%>
             <%--<tr>--%>
-                <%--<td colspan="2"><input type="checkbox" name="agreement" id="agreement" required="true"--%>
-                                       <%--dojoType="dijit.form.CheckBox"/><label> I agree to the terms and--%>
-                    <%--conditions.</label></td>--%>
+            <%--<td colspan="2"><input type="checkbox" name="agreement" id="agreement" required="true"--%>
+            <%--dojoType="dijit.form.CheckBox"/><label> I agree to the terms and--%>
+            <%--conditions.</label></td>--%>
             <%--</tr>--%>
             <tr>
                 <td colspan="2"><input type="submit" name="submit" value="Submit"/></td>

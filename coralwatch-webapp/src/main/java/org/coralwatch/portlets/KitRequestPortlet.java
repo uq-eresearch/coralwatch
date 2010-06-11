@@ -7,7 +7,6 @@ import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.KitRequest;
 import org.coralwatch.model.UserImpl;
-import org.coralwatch.portlets.error.SubmissionError;
 import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
@@ -21,29 +20,23 @@ public class KitRequestPortlet extends GenericPortlet {
     protected String viewJSP;
     protected UserDao userdao;
     protected KitRequestDao kitRequestDao;
-    protected List<SubmissionError> errors;
 
     public void init() throws PortletException {
         viewJSP = getInitParameter("kitrequest-jsp");
         userdao = CoralwatchApplication.getConfiguration().getUserDao();
         kitRequestDao = CoralwatchApplication.getConfiguration().getKitRequestDao();
-        errors = new ArrayList<SubmissionError>();
     }
 
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         AppUtil.clearCache();
-        PortletSession session = renderRequest.getPortletSession();
-        session.setAttribute("kitrequestdao", kitRequestDao, PortletSession.PORTLET_SCOPE);
-        session.setAttribute("errors", errors, PortletSession.PORTLET_SCOPE);
+        renderRequest.setAttribute("kitrequestdao", kitRequestDao);
         include(viewJSP, renderRequest, renderResponse);
     }
 
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
 
         PortletSession session = actionRequest.getPortletSession();
-        if (!errors.isEmpty()) {
-            errors.clear();
-        }
+        List<String> errors = new ArrayList<String>();
 
         String address = actionRequest.getParameter("address");
         String country = actionRequest.getParameter("country");
@@ -55,26 +48,26 @@ public class KitRequestPortlet extends GenericPortlet {
         UserImpl user = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
 
         if (user == null) {
-            errors.add(new SubmissionError("You must be logged in to submit a kit request."));
+            errors.add("You must be logged in to submit a kit request.");
         }
         if (kitType == null || kitType.isEmpty()) {
-            errors.add(new SubmissionError("Kit type must be supplied for kit request."));
+            errors.add("Kit type must be supplied for kit request.");
         }
         if (language == null || language.isEmpty()) {
-            errors.add(new SubmissionError("Preferred language must be supplied for kit request."));
+            errors.add("Preferred language must be supplied for kit request.");
         }
 //        if (!agreement) {
 //            errors.add(new SubmissionError("You must agree to the terms and conditions to submit a kit request."));
 //        }
 
         if (address == null || address.isEmpty()) {
-            errors.add(new SubmissionError("No address was provided. Postal address must be supplied for kit request."));
+            errors.add("No address was provided. Postal address must be supplied for kit request.");
         }
 
         if (country == null || country.isEmpty()) {
-            errors.add(new SubmissionError("Country name must be supplied for kit request."));
+            errors.add("Country name must be supplied for kit request.");
         }
-        if (errors.isEmpty()) {
+        if (errors.size() < 1) {
             KitRequest kitRequest = new KitRequest(user);
             kitRequest.setKitType(kitType);
             kitRequest.setLanguage(language);
@@ -82,7 +75,11 @@ public class KitRequestPortlet extends GenericPortlet {
             kitRequest.setCountry(country);
             kitRequest.setNotes(notes);
             kitRequestDao.save(kitRequest);
+            AppUtil.clearCache();
+        } else {
+            actionRequest.setAttribute("errors", errors);
         }
+        actionRequest.setAttribute("kitrequestdao", kitRequestDao);
 
     }
 
