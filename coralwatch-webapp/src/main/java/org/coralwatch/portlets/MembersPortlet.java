@@ -7,12 +7,10 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.UserDao;
-import org.coralwatch.portlets.error.SubmissionError;
 import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
-import java.util.List;
 
 public class MembersPortlet extends GenericPortlet {
     private static Log _log = LogFactoryUtil.getLog(MembersPortlet.class);
@@ -35,16 +33,15 @@ public class MembersPortlet extends GenericPortlet {
         if (cmd.equals(Constants.VIEW)) {
             include(getInitParameter("registration-jsp"), renderRequest, renderResponse);
         }
-        PortletSession session = renderRequest.getPortletSession();
-        session.setAttribute("surveyDao", surveyDao, PortletSession.PORTLET_SCOPE);
-        session.setAttribute("userDao", userDao, PortletSession.PORTLET_SCOPE);
+        renderRequest.setAttribute("surveyDao", surveyDao);
+        renderRequest.setAttribute("userDao", userDao);
         include(viewJSP, renderRequest, renderResponse);
     }
 
     @Override
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
-        PortletSession session = actionRequest.getPortletSession();
-        ((List<SubmissionError>) session.getAttribute("errors")).clear();
+//        PortletSession session = actionRequest.getPortletSession();
+//        ((List<SubmissionError>) session.getAttribute("errors")).clear();
     }
 
     protected void include(String path, RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {

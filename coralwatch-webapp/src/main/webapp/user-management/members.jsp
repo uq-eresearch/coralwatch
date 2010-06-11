@@ -13,8 +13,8 @@
 <portlet:defineObjects/>
 <%
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
-    SurveyDao surveyDao = (SurveyDao) renderRequest.getPortletSession().getAttribute("surveyDao");
-    UserDao userDao = (UserDao) renderRequest.getPortletSession().getAttribute("userDao");
+    SurveyDao surveyDao = (SurveyDao) renderRequest.getAttribute("surveyDao");
+    UserDao userDao = (UserDao) renderRequest.getAttribute("userDao");
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     List<UserImpl> users = userDao.getAll();
