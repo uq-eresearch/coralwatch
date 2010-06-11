@@ -7,7 +7,6 @@
 <%@ page import="org.coralwatch.model.Survey" %>
 <%@ page import="org.coralwatch.model.SurveyRecord" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
-<%@ page import="org.coralwatch.portlets.error.SubmissionError" %>
 <%@ page import="org.coralwatch.util.GpsUtil" %>
 <%@ page import="javax.portlet.PortletSession" %>
 <%@ page import="java.text.DateFormat" %>
@@ -56,7 +55,7 @@
 <div><span class="portlet-msg-error">You need to sign in to <%=cmd%> a survey.</span></div>
 <%
 } else {
-    List<SubmissionError> errors = (List<SubmissionError>) renderRequest.getAttribute("errors");
+    List<String> errors = (List<String>) renderRequest.getAttribute("errors");
 //    ReefDao reefDao = (ReefDao) renderRequest.getAttribute("reefDao");
     List<Reef> reefs = (List<Reef>) renderRequest.getAttribute("reefs");
     String groupName = "";
@@ -89,10 +88,10 @@
 <br/>
 <%
     }
-    if (!errors.isEmpty()) {
-        for (SubmissionError error : errors) {
+    if (errors != null && errors.size() > 0) {
+        for (String error : errors) {
 %>
-<div><span class="portlet-msg-error"><%=error.getErrorMessage()%></span></div>
+<div><span class="portlet-msg-error"><%=error%></span></div>
 <%
         }
     }

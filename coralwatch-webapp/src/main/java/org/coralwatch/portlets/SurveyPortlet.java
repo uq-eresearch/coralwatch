@@ -13,7 +13,6 @@ import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
-import org.coralwatch.portlets.error.SubmissionError;
 import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
@@ -30,7 +29,7 @@ public class SurveyPortlet extends GenericPortlet {
     protected SurveyDao surveyDao;
     protected SurveyRecordDao surveyRecordDao;
     protected ReefDao reefDao;
-    protected List<SubmissionError> errors;
+//    protected List<SubmissionError> errors;
 
     @Override
     public void init() throws PortletException {
@@ -39,7 +38,7 @@ public class SurveyPortlet extends GenericPortlet {
         surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
         surveyRecordDao = CoralwatchApplication.getConfiguration().getSurveyRecordDao();
         reefDao = CoralwatchApplication.getConfiguration().getReefDao();
-        errors = new ArrayList<SubmissionError>();
+//        errors = new ArrayList<SubmissionError>();
     }
 
     @Override
@@ -48,16 +47,15 @@ public class SurveyPortlet extends GenericPortlet {
         renderRequest.setAttribute("surveyDao", surveyDao);
         renderRequest.setAttribute("userDao", userDao);
         renderRequest.setAttribute("reefs", reefDao.getAll());
-        renderRequest.setAttribute("errors", errors);
+//        renderRequest.setAttribute("errors", errors);
         include(viewJSP, renderRequest, renderResponse);
     }
 
     @Override
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
         PortletSession session = actionRequest.getPortletSession();
-        if (!errors.isEmpty()) {
-            errors.clear();
-        }
+
+        List<String> errors = new ArrayList<String>();
 
         String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
         _log.info("Command: " + cmd);
@@ -82,7 +80,7 @@ public class SurveyPortlet extends GenericPortlet {
                     String activity = actionRequest.getParameter("activity");
                     String comments = actionRequest.getParameter("comments");
 
-                    validateEmptyFields(organisation, organisationType, country, reefName, latitudeStr, longitudeStr, date, time, weather, temperatureStr, activity);
+                    validateEmptyFields(errors, organisation, organisationType, country, reefName, latitudeStr, longitudeStr, date, time, weather, temperatureStr, activity);
 
                     if (errors.isEmpty()) {
                         Reef reef = reefDao.getReefByName(reefName);
@@ -107,10 +105,9 @@ public class SurveyPortlet extends GenericPortlet {
                             survey.setActivity(activity);
                             survey.setComments(comments);
                             surveyDao.save(survey);
+                            _log.info("Added survey");
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                             actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
-//                            actionResponse.setRenderParameter("selectedTab", "metadataTab");
-                            _log.info("Added survey");
                         } else if (cmd.equals(Constants.EDIT)) {
                             long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
                             Survey survey = surveyDao.getById(suveyId);
@@ -128,13 +125,13 @@ public class SurveyPortlet extends GenericPortlet {
                             survey.setActivity(activity);
                             survey.setComments(comments);
                             surveyDao.update(survey);
+                            _log.info("Edited survey");
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                             actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
-//                            actionResponse.setRenderParameter("selectedTab", "metadataTab");
-                            _log.info("Edited survey");
                         }
                     } else {
                         actionResponse.setRenderParameter(Constants.CMD, cmd);
+                        actionRequest.setAttribute("errors", errors);
                         if (cmd.equals(Constants.EDIT)) {
                             actionResponse.setRenderParameter("surveyId", String.valueOf(ParamUtil.getLong(actionRequest, "surveyId")));
                         }
@@ -151,18 +148,22 @@ public class SurveyPortlet extends GenericPortlet {
                     AppUtil.clearCache();
                 }
             } else {
-                errors.add(new SubmissionError("You must be signed in to submit a survey."));
+                errors.add("You must be signed in to submit a survey.");
+                actionRequest.setAttribute("errors", errors);
+                actionResponse.setRenderParameter(Constants.CMD, cmd);
             }
 
         } catch (Exception ex) {
-            errors.add(new SubmissionError("Your submission contains invalid data. Check all fields."));
+            errors.add("Your submission contains invalid data. Check all fields.");
+            actionRequest.setAttribute("errors", errors);
+            actionResponse.setRenderParameter(Constants.CMD, cmd);
             _log.error("Submission error ", ex);
         }
 
 
     }
 
-    private void validateEmptyFields(String organisation, String organisationType, String country, String reefName, String latitudeStr, String longitudeStr, Date date, Date time, String weather, String temperatureStr, String activity) {
+    private void validateEmptyFields(List<String> errors, String organisation, String organisationType, String country, String reefName, String latitudeStr, String longitudeStr, Date date, Date time, String weather, String temperatureStr, String activity) {
         List<String> emptyFields = new ArrayList<String>();
         if (organisation == null || organisation.trim().isEmpty()) {
             emptyFields.add("Organisation");
@@ -203,7 +204,7 @@ public class SurveyPortlet extends GenericPortlet {
             for (String field : emptyFields) {
                 fields = fields + " " + field;
             }
-            errors.add(new SubmissionError("Required field(s):" + fields));
+            errors.add("Required field(s):" + fields);
         }
     }
 
