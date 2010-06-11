@@ -2,18 +2,13 @@ package org.coralwatch.portlets;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.ParamUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
-import org.coralwatch.portlets.error.SubmissionError;
 import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ReefPortlet extends GenericPortlet {
 
@@ -21,14 +16,12 @@ public class ReefPortlet extends GenericPortlet {
     protected String viewJSP;
     protected ReefDao reefDao;
     protected SurveyDao surveyDao;
-    protected List<SubmissionError> errors;
 
     @Override
     public void init() throws PortletException {
         viewJSP = getInitParameter("reef-jsp");
         reefDao = CoralwatchApplication.getConfiguration().getReefDao();
         surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
-        errors = new ArrayList<SubmissionError>();
     }
 
     @Override
@@ -36,7 +29,6 @@ public class ReefPortlet extends GenericPortlet {
         AppUtil.clearCache();
         renderRequest.setAttribute("reefDao", reefDao);
         renderRequest.setAttribute("surveyDao", surveyDao);
-        renderRequest.setAttribute("errors", errors);
         PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
         include(viewJSP, renderRequest, renderResponse);
@@ -44,12 +36,8 @@ public class ReefPortlet extends GenericPortlet {
 
     @Override
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
-        if (!errors.isEmpty()) {
-            errors.clear();
-        }
-
-        String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
-        _log.info("Command: " + cmd);
+//        String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+//        _log.info("Command: " + cmd);
     }
 
     protected void include(String path, RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
