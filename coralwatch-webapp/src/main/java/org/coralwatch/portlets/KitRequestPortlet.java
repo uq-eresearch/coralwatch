@@ -57,7 +57,7 @@ public class KitRequestPortlet extends GenericPortlet {
             errors.add("Preferred language must be supplied for kit request.");
         }
 //        if (!agreement) {
-//            errors.add(new SubmissionError("You must agree to the terms and conditions to submit a kit request."));
+//            errors.add("You must agree to the terms and conditions to submit a kit request.");
 //        }
 
         if (address == null || address.isEmpty()) {

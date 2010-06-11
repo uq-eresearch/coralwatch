@@ -40,8 +40,6 @@ public class MembersPortlet extends GenericPortlet {
 
     @Override
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
-//        PortletSession session = actionRequest.getPortletSession();
-//        ((List<SubmissionError>) session.getAttribute("errors")).clear();
     }
 
     protected void include(String path, RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {

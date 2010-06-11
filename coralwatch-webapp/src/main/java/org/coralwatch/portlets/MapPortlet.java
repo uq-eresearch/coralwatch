@@ -3,23 +3,18 @@ package org.coralwatch.portlets;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.coralwatch.app.CoralwatchApplication;
-import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.UserDao;
-import org.coralwatch.portlets.error.SubmissionError;
 import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
-import java.util.List;
 
 public class MapPortlet extends GenericPortlet {
     private static Log _log = LogFactoryUtil.getLog(SurveyPortlet.class);
     protected String viewJSP;
     protected UserDao userdao;
     protected SurveyDao surveyDao;
-    protected ReefDao reefDao;
-    protected List<SubmissionError> errors;
 
     @Override
     public void init() throws PortletException {

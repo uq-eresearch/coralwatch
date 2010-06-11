@@ -29,7 +29,6 @@ public class SurveyPortlet extends GenericPortlet {
     protected SurveyDao surveyDao;
     protected SurveyRecordDao surveyRecordDao;
     protected ReefDao reefDao;
-//    protected List<SubmissionError> errors;
 
     @Override
     public void init() throws PortletException {
@@ -38,7 +37,6 @@ public class SurveyPortlet extends GenericPortlet {
         surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
         surveyRecordDao = CoralwatchApplication.getConfiguration().getSurveyRecordDao();
         reefDao = CoralwatchApplication.getConfiguration().getReefDao();
-//        errors = new ArrayList<SubmissionError>();
     }
 
     @Override
