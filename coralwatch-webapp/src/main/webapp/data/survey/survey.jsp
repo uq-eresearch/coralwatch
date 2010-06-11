@@ -547,15 +547,8 @@
 <div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:650px;height:60ex">
 <div id="metadataTab" dojoType="dijit.layout.ContentPane" title="Metadata" style="width:650px; height:60ex">
     <table>
-        <%--<%--%>
-        <%--if (survey.getCreator().equals(currentUser)) {--%>
-        <%--%>--%>
-
-        <%--<%--%>
-        <%--}--%>
-        <%--%>--%>
         <tr>
-            <th>Creator</th>
+            <th>Surveyor</th>
             <td><%= survey.getCreator().getDisplayName() == null ? "" : survey.getCreator().getDisplayName()%>
             </td>
             <td rowspan="4">
@@ -976,7 +969,7 @@
 <h2 style="margin-top:0;">All Surveys</h2>
 <table class="coralwatch_list_table">
     <tr>
-        <th>Creator</th>
+        <th>Surveyor</th>
         <th>Date</th>
         <th>Reef</th>
         <th>Country</th>

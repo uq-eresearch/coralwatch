@@ -65,10 +65,10 @@
         <% List<Survey> surveysOnReef = reefDao.getSurveysByReef(reef);
             int numberOfSurveys = surveysOnReef.size();
             if (numberOfSurveys > 0) {
-            String downloadUrl = "/data-download?id=" + reefId;
+                String downloadUrl = "/data-download?id=" + reefId;
         %>
         <div align="right">
-        <a href="<%=renderResponse.encodeURL(renderRequest.getContextPath() + downloadUrl)%>">Download Data</a>
+            <a href="<%=renderResponse.encodeURL(renderRequest.getContextPath() + downloadUrl)%>">Download Data</a>
         </div>
         <%
 
@@ -89,7 +89,7 @@
         %>
         <table class="coralwatch_list_table">
             <tr>
-                <th>Creator</th>
+                <th>Surveyor</th>
                 <th>Date</th>
                 <th>Reef</th>
                 <th>Country</th>
@@ -119,14 +119,17 @@
                 </td>
                 <td><%=surveyDao.getSurveyRecords(aSurvey).size()%>
                 </td>
-                <td><a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=<%= String.valueOf(aSurvey.getId()) %>">View</a>
+                <td>
+                    <a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=<%= String.valueOf(aSurvey.getId()) %>">View</a>
                 </td>
                 <%
                     if (currentUser != null && currentUser.equals(aSurvey.getCreator()) || (currentUser != null && currentUser.isSuperUser())) {
                 %>
-                <td><a href="#" onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';">Edit</a>
+                <td><a href="#"
+                       onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';">Edit</a>
                 </td>
-                <td><a href="#" onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';">Delete</a>
+                <td><a href="#"
+                       onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>';">Delete</a>
                 </td>
                 <%
                     }
@@ -169,10 +172,10 @@
     List<Reef> reefs = reefDao.getAll();
     int numberOfSurveys = reefs.size();
     if (numberOfSurveys < 1) {
-        %>
-        <span style="text-align:center;">No reefs recorded yet.</span>
-        <%
-    } else {
+%>
+<span style="text-align:center;">No reefs recorded yet.</span>
+<%
+} else {
     int pageSize = 40;
     int pageNumber = ParamUtil.getInteger(request, "page");
     if (pageNumber <= 0) {
@@ -196,12 +199,12 @@
         <th>Surveys</th>
         <th>View</th>
         <%--<%--%>
-            <%--if (currentUser != null && currentUser.isSuperUser()) {--%>
+        <%--if (currentUser != null && currentUser.isSuperUser()) {--%>
         <%--%>--%>
         <%--<th>Edit</th>--%>
         <%--<th>Delete</th>--%>
         <%--<%--%>
-            <%--}--%>
+        <%--}--%>
         <%--%>--%>
     </tr>
     <%
@@ -215,17 +218,18 @@
         </td>
         <td><%=reefDao.getSurveysByReef(aReef).size()%>
         </td>
-        <td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">View</a>
+        <td>
+            <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">View</a>
         </td>
         <%--<%--%>
-            <%--if (currentUser != null && currentUser.isSuperUser()) {--%>
+        <%--if (currentUser != null && currentUser.isSuperUser()) {--%>
         <%--%>--%>
         <%--<td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">Edit</a>--%>
         <%--</td>--%>
         <%--<td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">Delete</a>--%>
         <%--</td>--%>
         <%--<%--%>
-            <%--}--%>
+        <%--}--%>
         <%--%>--%>
     </tr>
     <%
