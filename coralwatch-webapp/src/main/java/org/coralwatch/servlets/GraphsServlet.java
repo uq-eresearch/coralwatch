@@ -24,9 +24,6 @@ import java.util.List;
 
 public class GraphsServlet extends HttpServlet {
 
-    private static int IMAGE_WIDTH = 300;
-    private static int IMAGE_HEIGHT = 200;
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AppUtil.clearCache();
@@ -42,12 +39,6 @@ public class GraphsServlet extends HttpServlet {
         boolean labels = Boolean.valueOf(request.getParameter("labels"));
         boolean legend = Boolean.valueOf(request.getParameter("legend"));
         int titleSize = Integer.valueOf(request.getParameter("titleSize"));
-        if (imageWidth > 5) {
-            IMAGE_WIDTH = imageWidth;
-        }
-        if (imageHeight > 5) {
-            IMAGE_HEIGHT = imageHeight;
-        }
         List<Survey> surveys;
         if (type.equalsIgnoreCase("survey")) {
             final Survey survey = surveyDao.getById(id);
@@ -62,9 +53,9 @@ public class GraphsServlet extends HttpServlet {
         } else if ("coralCount".equals(chart)) {
             newChart = PlotService.createCoralCountPlot(surveys, legend, titleSize);
         } else {
-           newChart = PlotService.createTimelinePlot(surveys, legend, titleSize);
+            newChart = PlotService.createTimelinePlot(surveys, legend, titleSize);
         }
-        BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = image.createGraphics();
         newChart.draw(g2d, new Rectangle2D.Double(0, 0, image.getWidth(), image.getHeight()));
         ServletOutputStream stream = response.getOutputStream();
