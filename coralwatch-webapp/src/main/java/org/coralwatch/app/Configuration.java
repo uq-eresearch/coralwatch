@@ -21,13 +21,14 @@ public interface Configuration {
 
     SurveyRecordDao getSurveyRecordDao();
 
-    UserTrustDao getTrustDao();
+    UserRatingDao getRatingDao();
 
     SurveyRatingDao getSurveyRatingDao();
 
     ReefDao getReefDao();
 
     JpaConnectorService getJpaConnectorService();
+
     /**
      * An explicitly configured base URL.
      * <p/>

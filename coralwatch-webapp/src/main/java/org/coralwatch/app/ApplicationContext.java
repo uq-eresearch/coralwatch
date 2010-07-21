@@ -30,7 +30,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private final SurveyDao surveyDao;
     private final KitRequestDao kitRequestDao;
     private final SurveyRecordDao surveyRecordDao;
-    private final UserTrustDao userTrustDao;
+    private final UserRatingDao userRatingDao;
     private final SurveyRatingDao surveyRatingDao;
     private final boolean isTestSetup;
     private final Properties submissionEmailConfig;
@@ -92,7 +92,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.kitRequestDao = new JpaKitRequestDao(this.connectorService);
         this.reefDao = new JpaReefDao(this.connectorService);
         this.surveyRecordDao = new JpaSurveyRecordDao(this.connectorService);
-        this.userTrustDao = new JpaUserTrustDao(this.connectorService);
+        this.userRatingDao = new JpaUserRatingDao(this.connectorService);
         this.surveyRatingDao = new JpaSurveyRatingDao(this.connectorService);
         this.userDao = new JpaUserDao(this.connectorService);
         if (userDao.getAll().isEmpty()) {
@@ -119,7 +119,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         if (!isTestSetup) {
             throw new IllegalStateException("Database reset is only allowed in test mode");
         }
-        deleteAll(getTrustDao());
+        deleteAll(getRatingDao());
         deleteAll(getSurveyRatingDao());
         deleteAll(getKitRequestDao());
         deleteAll(getSurveyRecordDao());
@@ -148,11 +148,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private void createTestUsers(UserImpl admin) {
         UserImpl charlie = new UserImpl("Charlie", "brooking@itee.uq.edu.au", BCrypt.hashpw("charlie", BCrypt.gensalt()), false);
         userDao.save(charlie);
-        userTrustDao.save(new UserTrust(admin, charlie, 5.0));
-        userTrustDao.save(new UserTrust(charlie, admin, 5.0));
+        userRatingDao.save(new UserRating(admin, charlie, 5.0));
+        userRatingDao.save(new UserRating(charlie, admin, 5.0));
         UserImpl peter = new UserImpl("Peter", "pbecker@itee.uq.edu.au", BCrypt.hashpw("peter", BCrypt.gensalt()), false);
         userDao.save(peter);
-        userTrustDao.save(new UserTrust(charlie, peter, 3));
+        userRatingDao.save(new UserRating(charlie, peter, 3));
 
         //Add dummy reefs
         Random rand = new Random();
@@ -189,25 +189,25 @@ public class ApplicationContext implements Configuration, ServletContextListener
             addTestSurveyRecord(testSurvey);
             if (i % 4 == 0) {
                 double randomNumber = rand.nextDouble() * 5;
-                userTrustDao.save(new UserTrust(admin, newUser, randomNumber));
+                userRatingDao.save(new UserRating(admin, newUser, randomNumber));
                 Survey testSurvey5 = getTestSurvey(newUser);
                 surveyDao.save(testSurvey5);
                 addTestSurveyRecord(testSurvey5);
             }
             if (i % 9 == 0) {
                 double randomNumber = rand.nextDouble() * 5;
-                userTrustDao.save(new UserTrust(charlie, newUser, randomNumber));
+                userRatingDao.save(new UserRating(charlie, newUser, randomNumber));
                 Survey testSurvey6 = getTestSurvey(newUser);
                 surveyDao.save(testSurvey6);
                 addTestSurveyRecord(testSurvey6);
             }
             if (i % 31 == 0) {
                 double randomNumber = rand.nextDouble() * 5;
-                userTrustDao.save(new UserTrust(newUser, admin, randomNumber));
+                userRatingDao.save(new UserRating(newUser, admin, randomNumber));
             }
             if (i % 35 == 0) {
                 double randomNumber = rand.nextDouble() * 5;
-                userTrustDao.save(new UserTrust(newUser, charlie, randomNumber));
+                userRatingDao.save(new UserRating(newUser, charlie, randomNumber));
             }
         }
     }
@@ -285,8 +285,8 @@ public class ApplicationContext implements Configuration, ServletContextListener
     }
 
     @Override
-    public UserTrustDao getTrustDao() {
-        return userTrustDao;
+    public UserRatingDao getRatingDao() {
+        return userRatingDao;
     }
 
     @Override
