@@ -5,10 +5,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import org.coralwatch.app.CoralwatchApplication;
-import org.coralwatch.dataaccess.ReefDao;
-import org.coralwatch.dataaccess.SurveyDao;
-import org.coralwatch.dataaccess.SurveyRecordDao;
-import org.coralwatch.dataaccess.UserDao;
+import org.coralwatch.dataaccess.*;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
@@ -29,6 +26,7 @@ public class SurveyPortlet extends GenericPortlet {
     protected SurveyDao surveyDao;
     protected SurveyRecordDao surveyRecordDao;
     protected ReefDao reefDao;
+    protected SurveyRatingDao surveyRatingDao;
 
     @Override
     public void init() throws PortletException {
@@ -37,6 +35,7 @@ public class SurveyPortlet extends GenericPortlet {
         surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
         surveyRecordDao = CoralwatchApplication.getConfiguration().getSurveyRecordDao();
         reefDao = CoralwatchApplication.getConfiguration().getReefDao();
+        surveyRatingDao = CoralwatchApplication.getConfiguration().getSurveyRatingDao();
     }
 
     @Override
@@ -44,8 +43,8 @@ public class SurveyPortlet extends GenericPortlet {
         AppUtil.clearCache();
         renderRequest.setAttribute("surveyDao", surveyDao);
         renderRequest.setAttribute("userDao", userDao);
+        renderRequest.setAttribute("surveyRatingDao", surveyRatingDao);
         renderRequest.setAttribute("reefs", reefDao.getAll());
-//        renderRequest.setAttribute("errors", errors);
         include(viewJSP, renderRequest, renderResponse);
     }
 

@@ -70,6 +70,7 @@ public class RatingServlet extends HttpServlet {
 
                 if (surveyRating == null) {
                     surveyRating = new SurveyRating(rater, survey, ratingValue);
+                    _log.info("Saving survey rating " + survey.getId());
                     surveyRatingDao.save(surveyRating);
                 } else {
                     surveyRating.setRatingValue(ratingValue);

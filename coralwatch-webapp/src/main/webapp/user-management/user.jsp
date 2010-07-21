@@ -217,7 +217,7 @@
 
     dojo.addOnLoad(function() {
         var widget = dijit.byId("connectRating");
-        dojo.connect(widget, "onChange", function() {
+        dojo.connect(widget, "onClick", function() {
             dojo.xhrPost({
                 url:'<%=renderResponse.encodeURL(renderRequest.getContextPath())%>' + '/rating?cmd=rateuser&raterId=<%=currentUser.getId()%>&ratedId=<%=user.getId()%>&value=' + widget.value,
                 timeout: 5000,

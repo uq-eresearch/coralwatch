@@ -2,11 +2,9 @@
 <%@ page import="com.liferay.portal.kernel.util.HtmlUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="org.coralwatch.dataaccess.SurveyDao" %>
+<%@ page import="org.coralwatch.dataaccess.SurveyRatingDao" %>
 <%@ page import="org.coralwatch.dataaccess.UserDao" %>
-<%@ page import="org.coralwatch.model.Reef" %>
-<%@ page import="org.coralwatch.model.Survey" %>
-<%@ page import="org.coralwatch.model.SurveyRecord" %>
-<%@ page import="org.coralwatch.model.UserImpl" %>
+<%@ page import="org.coralwatch.model.*" %>
 <%@ page import="org.coralwatch.util.GpsUtil" %>
 <%@ page import="javax.portlet.PortletSession" %>
 <%@ page import="java.text.DateFormat" %>
@@ -537,8 +535,38 @@
 <%
     }
 } else if (cmd.equals(Constants.VIEW)) {
+    SurveyRatingDao surveyRatingDao = (SurveyRatingDao) renderRequest.getAttribute("surveyRatingDao");
     surveyId = ParamUtil.getLong(request, "surveyId");
     survey = surveyDao.getById(surveyId);
+%>
+<script type="text/javascript">
+    dojo.require("dojox.form.Rating");
+</script>
+<%
+    if (currentUser != null) {
+%>
+<script type="text/javascript">
+    dojo.addOnLoad(function() {
+        var widget = dijit.byId("connectRating");
+        dojo.connect(widget, "onClick", function() {
+            dojo.xhrPost({
+                url:'<%=renderResponse.encodeURL(renderRequest.getContextPath())%>' + '/rating?cmd=ratesurvey&raterId=<%=currentUser.getId()%>&surveyId=<%=survey.getId()%>&value=' + widget.value,
+                timeout: 5000,
+                load: function(response, ioArgs) {
+                    //                    alert("Response: " + response)
+                    return response;
+                },
+                error: function(response, ioArgs) {
+                    alert('Cannot add rating: ' + response);
+                    return response;
+                }
+            });
+        });
+    });
+
+</script>
+<%
+    }
 %>
 <h2 style="margin-top:0;">Survey Details</h2>
 <br/>
@@ -632,6 +660,38 @@
             <th>QA Status:</th>
             <td><span
                     style="color:#ff0000;"><%=survey.getQaState().equalsIgnoreCase("Post Migration") ? "New" : "Migrated"%></span>
+            </td>
+        </tr>
+        <%
+            if (currentUser != null) {
+                SurveyRating userSurveyRating = surveyRatingDao.getSurveyRating(currentUser, survey);
+                double userSurveyRatingValue = 0;
+                if (userSurveyRating != null) {
+                    userSurveyRatingValue = userSurveyRating.getRatingValue();
+                }
+        %>
+        <tr>
+            <th>Your Rating:</th>
+            <td>
+                <%--<%--%>
+                <%--UserRating userRating = userRatingDao.getRating(currentUser, user);--%>
+                <%--double userRatingValue = 0;--%>
+                <%--if (userRating != null) {--%>
+                <%--userRatingValue = userRating.getRatingValue();--%>
+                <%--}--%>
+                <%--%>--%>
+                <span id="connectRating" dojoType="dojox.form.Rating" numStars="5"
+                      value="<%=userSurveyRatingValue%>"></span>
+            </td>
+        </tr>
+        <%
+            }
+        %>
+        <tr>
+            <th>Overall Rating:</th>
+            <td>
+            <span id="overAllRating" dojoType="dojox.form.Rating" numStars="5" disabled="disabled"
+                  value="<%=surveyRatingDao.getCommunityRatingValue(survey)%>"></span>
             </td>
         </tr>
         <tr>
