@@ -2,13 +2,7 @@ package org.coralwatch.model;
 
 import org.hibernate.validator.NotNull;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -85,6 +79,7 @@ public class SurveyRating implements Serializable {
     }
 
     public void setRatingValue(double ratingValue) {
+        setRatingDate(new Date());
         this.ratingValue = ratingValue;
     }
 }

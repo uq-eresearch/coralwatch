@@ -78,6 +78,7 @@ public class UserRating implements Serializable {
     }
 
     public void setRatingValue(double ratingValue) {
+        setRatingDate(new Date());
         this.ratingValue = ratingValue;
     }
 }
