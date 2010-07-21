@@ -2,7 +2,9 @@
 <%@ page import="com.liferay.portal.kernel.util.HtmlUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="org.coralwatch.dataaccess.UserDao" %>
+<%@ page import="org.coralwatch.dataaccess.UserRatingDao" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
+<%@ page import="org.coralwatch.model.UserRating" %>
 <%@ page import="javax.portlet.PortletSession" %>
 <%@ page import="javax.portlet.WindowState" %>
 <%@ page import="java.text.DateFormat" %>
@@ -16,6 +18,7 @@
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
     List<String> errors = (List<String>) renderRequest.getAttribute("errors");
     UserDao userDao = (UserDao) renderRequest.getAttribute("userDao");
+    UserRatingDao userRatingDao = (UserRatingDao) renderRequest.getAttribute("userRatingDao");
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     String cmd = ParamUtil.getString(request, Constants.CMD);
     if (currentUser == null) {
@@ -215,10 +218,18 @@
     dojo.addOnLoad(function() {
         var widget = dijit.byId("connectRating");
         dojo.connect(widget, "onChange", function() {
-            dojo.query('#defaultConnect .value')[0].innerHTML = widget.value;
-        });
-        dojo.connect(widget, "onMouseOver", function(evt, value) {
-            dojo.query('#defaultConnect .hoverValue')[0].innerHTML = value;
+            dojo.xhrPost({
+                url:'<%=renderResponse.encodeURL(renderRequest.getContextPath())%>' + '/rating?cmd=rateuser&raterId=<%=currentUser.getId()%>&ratedId=<%=user.getId()%>&value=' + widget.value,
+                timeout: 5000,
+                load: function(response, ioArgs) {
+                    //                    alert("Response: " + response)
+                    return response;
+                },
+                error: function(response, ioArgs) {
+                    alert('Cannot add rating: ' + response);
+                    return response;
+                }
+            });
         });
     });
 
@@ -284,12 +295,26 @@
                 survey(s)</a></td>
     </tr>
     <tr>
-        <th>Rating:</th>
+        <th>Your Rating:</th>
         <td>
-            <span id="connectRating" dojoType="dojox.form.Rating" numStars="5"></span>
+            <%
+                UserRating userRating = userRatingDao.getRating(currentUser, user);
+                double userRatingValue = 0;
+                if (userRating != null) {
+                    userRatingValue = userRating.getRatingValue();
+                }
+            %>
+            <span id="connectRating" dojoType="dojox.form.Rating" numStars="5" value="<%=userRatingValue%>"></span>
         </td>
     </tr>
 
+    <tr>
+        <th>Overall Rating:</th>
+        <td>
+            <span id="overAllRating" dojoType="dojox.form.Rating" numStars="5" disabled="disabled"
+                  value="<%=userRatingDao.getCommunityRatingValue(user)%>"></span>
+        </td>
+    </tr>
 
     <%--<tr>--%>
     <%--<th>Photos:</th>--%>

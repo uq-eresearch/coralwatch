@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
+import org.coralwatch.dataaccess.UserRatingDao;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.util.AppUtil;
 
@@ -20,16 +21,19 @@ public class UserPortlet extends GenericPortlet {
     private static Log _log = LogFactoryUtil.getLog(UserPortlet.class);
     protected String viewJSP;
     protected UserDao userDao;
+    protected UserRatingDao userRatingDao;
 
     public void init() throws PortletException {
         viewJSP = getInitParameter("user-jsp");
         userDao = CoralwatchApplication.getConfiguration().getUserDao();
+        userRatingDao = CoralwatchApplication.getConfiguration().getRatingDao();
     }
 
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         AppUtil.clearCache();
         userDao = CoralwatchApplication.getConfiguration().getUserDao();
         renderRequest.setAttribute("userDao", userDao);
+        renderRequest.setAttribute("userRatingDao", userRatingDao);
 
         PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));

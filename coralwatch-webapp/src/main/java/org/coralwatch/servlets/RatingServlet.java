@@ -58,7 +58,7 @@ public class RatingServlet extends HttpServlet {
                     ratingDao.update(rating);
                 }
                 AppUtil.clearCache();
-//                out.println(record.getId());
+                out.println("Rated user: " + rated.getDisplayName() + " " + ratingValue + " stars by user: " + rater.getDisplayName());
             } else if (cmd.equals("ratesurvey")) {
                 double ratingValue = Double.valueOf(req.getParameter("value"));
                 long raterId = Long.valueOf(req.getParameter("raterId"));
@@ -80,7 +80,7 @@ public class RatingServlet extends HttpServlet {
             }
         } catch (Exception ex) {
             out.println("System error." + ex.getMessage());
-            _log.fatal("Error in record servlet ", ex);
+            _log.fatal("Error in rating servlet ", ex);
         }
     }
 }
