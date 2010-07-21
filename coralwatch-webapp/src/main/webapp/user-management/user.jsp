@@ -40,7 +40,10 @@
     dojo.require("dijit.form.Textarea");
     dojo.require("dijit.form.ValidationTextBox");
     dojo.require("dijit.Tooltip");
+    dojo.require("dojox.form.Rating");
+
 </script>
+
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
     <script type="dojo/method" event="onSubmit">
         if(!this.validate()){
@@ -206,6 +209,20 @@
     }
 
 %>
+<script type="text/javascript">
+    dojo.require("dojox.form.Rating");
+
+    dojo.addOnLoad(function() {
+        var widget = dijit.byId("connectRating");
+        dojo.connect(widget, "onChange", function() {
+            dojo.query('#defaultConnect .value')[0].innerHTML = widget.value;
+        });
+        dojo.connect(widget, "onMouseOver", function(evt, value) {
+            dojo.query('#defaultConnect .hoverValue')[0].innerHTML = value;
+        });
+    });
+
+</script>
 <h2 style="margin-top:0;">User Profile</h2>
 <table>
     <tr>
@@ -224,10 +241,17 @@
             %>
         </td>
     </tr>
+    <%
+        if (user.equals(currentUser) || currentUser.isSuperUser()) {
+    %>
     <tr>
         <th>Email:</th>
-        <td><a href="mailto:<%= user.getEmail()%>">Send Email</a></td>
+        <td><a href="mailto:<%= user.getEmail()%>"><%= user.getEmail()%>
+        </a></td>
     </tr>
+    <%
+        }
+    %>
     <tr>
         <th>Member since (d/m/y):</th>
         <td><%= dateFormat.format(user.getRegistrationDate())%>
@@ -259,6 +283,14 @@
             <a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_userId=<%=String.valueOf(user.getId())%>"><%=userDao.getSurveyEntriesCreated(user).size()%>
                 survey(s)</a></td>
     </tr>
+    <tr>
+        <th>Rating:</th>
+        <td>
+            <span id="connectRating" dojoType="dojox.form.Rating" numStars="5"></span>
+        </td>
+    </tr>
+
+
     <%--<tr>--%>
     <%--<th>Photos:</th>--%>
     <%--<td>No Photos Yet</td>--%>
@@ -272,7 +304,7 @@
 
             <%
                 }
-                if (currentUser.isSuperUser()) {
+                if (currentUser.isSuperUser() && !currentUser.equals(user)) {
             %>
             <input type="button" value="Delete"
                    onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
