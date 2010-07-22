@@ -86,7 +86,7 @@ public class SurveyServlet extends HttpServlet {
                 //adding a node after the last child node of the specified node.
                 doc.appendChild(root);
 
-                List<Survey> listOfSurveys = listOfSurveys = surveyDao.getAll();
+                List<Survey> listOfSurveys = surveyDao.getAll();
 
                 long createdByUserId = Long.valueOf(req.getParameter("createdByUserId"));
                 UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();

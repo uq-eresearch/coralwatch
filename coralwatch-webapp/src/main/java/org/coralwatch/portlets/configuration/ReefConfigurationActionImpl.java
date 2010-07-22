@@ -16,6 +16,9 @@ public class ReefConfigurationActionImpl implements ConfigurationAction {
         PortletPreferences prefs = PortletPreferencesFactoryUtil.getPortletSetup(actionRequest, portletResource);
         String surveyUrl = ParamUtil.getString(actionRequest, "surveyUrl");
         prefs.setValue("surveyUrl", surveyUrl);
+
+        String reefUrl = ParamUtil.getString(actionRequest, "reefUrl");
+        prefs.setValue("reefUrl", reefUrl);
         prefs.store();
 
         SessionMessages.add(actionRequest, portletConfig.getPortletName() + ".doConfigure");
@@ -25,6 +28,7 @@ public class ReefConfigurationActionImpl implements ConfigurationAction {
     public String render(PortletConfig portletConfig, RenderRequest renderRequest, RenderResponse renderResponse) throws Exception {
         PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
+        renderRequest.setAttribute("reefUrl", prefs.getValue("reefUrl", "reef"));
         return "/data/reef/configuration.jsp";
     }
 }

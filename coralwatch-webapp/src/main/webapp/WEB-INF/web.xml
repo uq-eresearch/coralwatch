@@ -40,6 +40,16 @@
         <url-pattern>/surveys/*</url-pattern>
     </servlet-mapping>
 
+    <servlet id="reefServlet">
+        <servlet-name>reefs</servlet-name>
+        <servlet-class>org.coralwatch.servlets.ReefServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>reefs</servlet-name>
+        <url-pattern>/reefs/*</url-pattern>
+    </servlet-mapping>
+
     <servlet id="kitRequestDispatchServlet">
         <servlet-name>dispatch</servlet-name>
         <servlet-class>org.coralwatch.servlets.KitRequestDispatchServlet</servlet-class>

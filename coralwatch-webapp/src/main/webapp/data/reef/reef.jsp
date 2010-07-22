@@ -170,91 +170,66 @@
 <%
 
 } else {
-    List<Reef> reefs = reefDao.getAll();
-    int numberOfSurveys = reefs.size();
-    if (numberOfSurveys < 1) {
-%>
-<span style="text-align:center;">No reefs recorded yet.</span>
-<%
-} else {
-    int pageSize = 40;
-    int pageNumber = ParamUtil.getInteger(request, "page");
-    if (pageNumber <= 0) {
-        pageNumber = 1;
-    }
-    int lowerLimit = (pageNumber - 1) * pageSize;
-    int upperLimit = lowerLimit + pageSize;
-    int numberOfPages = numberOfSurveys / pageSize;
-    if (numberOfSurveys % pageSize > 0) {
-        numberOfPages++;
-        if (pageNumber == numberOfPages) {
-            upperLimit = lowerLimit + (numberOfSurveys % pageSize);
-        }
-    }
 %>
 <h2 style="margin-top:0;">All Reefs</h2>
-<table class="coralwatch_list_table">
-    <tr>
-        <th>Name</th>
-        <th>Country</th>
-        <th>Surveys</th>
-        <th>View</th>
-        <%--<%--%>
-        <%--if (currentUser != null && currentUser.isSuperUser()) {--%>
-        <%--%>--%>
-        <%--<th>Edit</th>--%>
-        <%--<th>Delete</th>--%>
-        <%--<%--%>
-        <%--}--%>
-        <%--%>--%>
-    </tr>
-    <%
-        for (int i = lowerLimit; i < upperLimit; i++) {
-            Reef aReef = reefs.get(i);
-    %>
-    <tr>
-        <td><%=aReef.getName()%>
-        </td>
-        <td><%=aReef.getCountry()%>
-        </td>
-        <td><%=reefDao.getSurveysByReef(aReef).size()%>
-        </td>
-        <td>
-            <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">View</a>
-        </td>
-        <%--<%--%>
-        <%--if (currentUser != null && currentUser.isSuperUser()) {--%>
-        <%--%>--%>
-        <%--<td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">Edit</a>--%>
-        <%--</td>--%>
-        <%--<td><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="reefId" value="<%= String.valueOf(aReef.getId()) %>" /></portlet:renderURL>">Delete</a>--%>
-        <%--</td>--%>
-        <%--<%--%>
-        <%--}--%>
-        <%--%>--%>
-    </tr>
-    <%
-        }
-    %>
-</table>
-<div style="text-align:center;"><span>Page:</span>
-    <%
-        for (int i = 0; i < numberOfPages; i++) {
-            if (i == pageNumber - 1) {
-    %>
-    <span style="text-decoration:underline;"><%=i + 1%></span>
-    <%
-    } else {
-    %>
-
-    <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.PREVIEW %>" /><portlet:param name="page" value="<%= String.valueOf(i + 1) %>" /></portlet:renderURL>"><%=i + 1%>
-    </a>
-    <%
+<script>
+    dojo.require("dojox.grid.DataGrid");
+    dojo.require("dojox.data.XmlStore");
+    dojo.require("dojo.date.locale");
+    var layoutReefs = [
+        [
+            {
+                field: "name",
+                name: "Reef Name",
+                width: 15,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
+            {
+                field: "country",
+                name: "Country",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
+            {
+                field: "surveys",
+                name: "Surveys",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
+            {
+                field: "view",
+                name: "View",
+                width: 10,
+                formatter: function(item) {
+                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("reefUrl")%>?p_p_id=reefportlet_WAR_coralwatch&_reefportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_reefportlet_WAR_coralwatch_reefId=" + item.toString() + "\">More info</a>";
+                    return viewURL;
+                }
+            },
+            {
+                field: "download",
+                name: "Download",
+                width: 10,
+                formatter: function(item) {
+                    var downloadUrl = "<a href=\"<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/data-download?id=" + item.toString() + "\">Download Data</a>";
+                    return downloadUrl;
+                }
             }
-        }
-    %>
+        ]
+    ];
+</script>
+<div dojoType="dojox.data.XmlStore"
+     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=xml"
+     jsId="reefStore" label="title">
+</div>
+<div id="grid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
+     store="reefStore" structure="layoutReefs" query="{}" rowsPerPage="40">
 </div>
 <%
-        }
     }
 %>
