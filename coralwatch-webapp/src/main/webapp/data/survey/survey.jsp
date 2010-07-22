@@ -1016,7 +1016,9 @@
 %>
 
 <%
+    long currentUserId = -1;
     if (currentUser != null) {
+        currentUserId = currentUser.getId();
 %>
 <div align="right">
     <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">New
@@ -1029,6 +1031,16 @@
 <script>
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.data.XmlStore");
+    dojo.require("dojo.date.locale");
+
+    var dateFormatter = function(data, rowIndex) {
+        return dojo.date.locale.format(new Date(data), {
+            datePattern: "dd/mm/yyyy",
+            selector: "date",
+            locale: "en"
+        });
+    };
+
 
     var layoutSurveys = [
         [
@@ -1044,24 +1056,54 @@
                 field: "date",
                 name: "Date",
                 width: 10,
+                formatter: dateFormatter
+
+            },
+            {
+                field: "reef",
+                name: "Reef",
+                width: 10,
                 formatter: function(item) {
                     return item.toString();
+                }
+            },
+            {
+                field: "country",
+                name: "Country",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
+            {
+                field: "records",
+                name: "Records",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
+            {
+                field: "action",
+                name: "Action",
+                width: 10,
+                formatter: function(item) {
+                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + item.toString() + "\">More info</a>";
+                    return viewURL;
                 }
             }
         ]
     ];
 </script>
 <div dojoType="dojox.data.XmlStore"
-     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/surveys?format=xml"
+     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/surveys?format=xml&userId=<%=currentUserId%>"
      jsId="surveyStore" label="title">
 </div>
-<div id="grid" style="width: 400px; height: 300px;" dojoType="dojox.grid.DataGrid"
+<div id="grid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
      store="surveyStore" structure="layoutSurveys" query="{}" rowsPerPage="40">
 </div>
 
-<br/>
-<br/>
-<br/>
+
 <table class="coralwatch_list_table">
     <tr>
         <th>Surveyor</th>

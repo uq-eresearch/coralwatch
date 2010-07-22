@@ -48,6 +48,8 @@
     <portlet>
         <portlet-name>survey-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
+        <configuration-action-class>org.coralwatch.portlets.configuration.SurveyConfigurationActionImpl
+        </configuration-action-class>
         <instanceable>false</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
         <footer-portlet-javascript>/js/coralwatch/survey.js</footer-portlet-javascript>

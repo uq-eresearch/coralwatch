@@ -27,6 +27,8 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class JsonSurveyServlet extends HttpServlet {
@@ -74,6 +76,12 @@ public class JsonSurveyServlet extends HttpServlet {
             out.println(data);
         } else if (format.equals("xml")) {
             res.setContentType("text/xml");
+//            long userId = Long.valueOf(req.getParameter("userId"));
+//            UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
+//            UserImpl currentUser = null;
+//            if (userId >= 0) {
+//                currentUser = userDao.getById(userId);
+//            }
             try {
                 DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = builderFactory.newDocumentBuilder();
@@ -85,19 +93,50 @@ public class JsonSurveyServlet extends HttpServlet {
                 doc.appendChild(root);
 
                 List<Survey> listOfSurveys = surveyDao.getAll();
+                DateFormat dateFormatDisplay = new SimpleDateFormat("dd/MM/yyyy");
                 for (Survey srv : listOfSurveys) {
                     Element survey = doc.createElement("survey");
                     root.appendChild(survey);
 
                     Element surveyorNode = doc.createElement("surveyor");
                     survey.appendChild(surveyorNode);
-                    Text surveyorName = doc.createTextNode("SomeOne");
+                    Text surveyorName = doc.createTextNode(srv.getCreator().getDisplayName());
                     surveyorNode.appendChild(surveyorName);
 
                     Element dateNode = doc.createElement("date");
                     survey.appendChild(dateNode);
-                    Text surveyDate = doc.createTextNode("01/01/1960");
+                    Text surveyDate = doc.createTextNode(srv.getDate().getTime() + "");
                     dateNode.appendChild(surveyDate);
+
+                    Element reefNode = doc.createElement("reef");
+                    survey.appendChild(reefNode);
+                    Text reefName = doc.createTextNode(srv.getReef().getName());
+                    reefNode.appendChild(reefName);
+
+                    Element countryNode = doc.createElement("country");
+                    survey.appendChild(countryNode);
+                    Text countryName = doc.createTextNode(srv.getReef().getCountry());
+                    countryNode.appendChild(countryName);
+
+                    Element numberOfRecordsNode = doc.createElement("records");
+                    survey.appendChild(numberOfRecordsNode);
+                    Text numberOfRecords = doc.createTextNode(surveyDao.getSurveyRecords(srv).size() + "");
+                    numberOfRecordsNode.appendChild(numberOfRecords);
+
+
+                    Element actionNode = doc.createElement("action");
+                    survey.appendChild(actionNode);
+
+//                    String viewString = "<a href=\"#\">View</a>";
+//                    String editString = "<a href=\"#\">Edit</a>";
+//                    String deleteString = "<a href=\"#\">Delete</a>";
+//                    String actionString = viewString;
+//                    if (currentUser != null && (currentUser.isSuperUser() || currentUser.equals(srv.getCreator()))) {
+//                        actionString = actionString + " " + editString + " " + deleteString;
+//                    }
+                    Text action = doc.createTextNode(srv.getId() + "");
+                    actionNode.appendChild(action);
+
                 }
 
                 //TransformerFactory instance is used to create Transformer objects.

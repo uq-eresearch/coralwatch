@@ -45,6 +45,8 @@ public class SurveyPortlet extends GenericPortlet {
         renderRequest.setAttribute("userDao", userDao);
         renderRequest.setAttribute("surveyRatingDao", surveyRatingDao);
         renderRequest.setAttribute("reefs", reefDao.getAll());
+        PortletPreferences prefs = renderRequest.getPreferences();
+        renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
         include(viewJSP, renderRequest, renderResponse);
     }
 
