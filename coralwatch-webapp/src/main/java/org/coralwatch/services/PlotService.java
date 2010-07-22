@@ -74,7 +74,7 @@ public class PlotService {
 
     @SuppressWarnings("deprecation")
     // we don't want to use Calendar
-    public static JFreeChart createTimelinePlot(final List<Survey> surveys,boolean legend, int titleSize) {
+    public static JFreeChart createTimelinePlot(final List<Survey> surveys, boolean legend, int titleSize) {
         class DataPoint {
             long numRecords = 0;
             long sumLight = 0;
@@ -168,6 +168,7 @@ public class PlotService {
                 return CORAL_COLORS.get('D').get(column + 1);
             }
         };
+        renderer.setShadowVisible(false);
         plot.setRenderer(renderer);
         return chart;
     }

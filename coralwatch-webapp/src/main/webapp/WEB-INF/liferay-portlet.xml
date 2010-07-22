@@ -12,15 +12,18 @@
     <portlet>
         <portlet-name>login-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
-        <configuration-action-class>org.coralwatch.portlets.configuration.LoginConfigurationActionImpl</configuration-action-class>
+        <configuration-action-class>org.coralwatch.portlets.configuration.LoginConfigurationActionImpl
+        </configuration-action-class>
         <instanceable>true</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>
     <portlet>
         <portlet-name>map-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
-        <configuration-action-class>org.coralwatch.portlets.configuration.MapConfigurationActionImpl</configuration-action-class>
+        <configuration-action-class>org.coralwatch.portlets.configuration.MapConfigurationActionImpl
+        </configuration-action-class>
         <instanceable>false</instanceable>
+        <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>
     <portlet>
         <portlet-name>members-portlet</portlet-name>
@@ -31,7 +34,8 @@
     <portlet>
         <portlet-name>stats-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
-        <configuration-action-class>org.coralwatch.portlets.configuration.StatsUpdateConfigurationActionImpl</configuration-action-class>
+        <configuration-action-class>org.coralwatch.portlets.configuration.StatsUpdateConfigurationActionImpl
+        </configuration-action-class>
         <instanceable>false</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>
@@ -51,7 +55,8 @@
     <portlet>
         <portlet-name>reef-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
-        <configuration-action-class>org.coralwatch.portlets.configuration.ReefConfigurationActionImpl</configuration-action-class>
+        <configuration-action-class>org.coralwatch.portlets.configuration.ReefConfigurationActionImpl
+        </configuration-action-class>
         <instanceable>false</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>

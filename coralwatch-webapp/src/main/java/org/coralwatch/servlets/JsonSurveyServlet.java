@@ -9,13 +9,24 @@ import org.coralwatch.util.AppUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 
 public class JsonSurveyServlet extends HttpServlet {
@@ -25,38 +36,89 @@ public class JsonSurveyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         AppUtil.clearCache();
-        res.setContentType("application/json");
         PrintWriter out = res.getWriter();
         SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
-        JSONArray surveys = new JSONArray();
-        List<Survey> listOfSurveys = surveyDao.getAll();
-        int count = 0;
-        for (Survey srv : listOfSurveys) {
-            try {
-                if (srv.getLatitude() != null && srv.getLongitude() != null) {
-                    JSONObject survey = new JSONObject();
-                    survey.putOpt("id", srv.getId());
-                    survey.putOpt("reef", srv.getReef().getName());
-                    survey.putOpt("country", srv.getReef().getCountry());
-                    survey.putOpt("latitude", srv.getLatitude());
-                    survey.putOpt("longitude", srv.getLongitude());
-                    survey.putOpt("records", surveyDao.getSurveyRecords(srv).size());
-                    survey.putOpt("date", srv.getDate().toLocaleString());
-                    surveys.put(survey);
-                    count++;
+
+        String format = req.getParameter("format");
+        if (format.equals("json")) {
+            res.setContentType("application/json");
+            JSONArray surveys = new JSONArray();
+            List<Survey> listOfSurveys = surveyDao.getAll();
+            int count = 0;
+            for (Survey srv : listOfSurveys) {
+                try {
+                    if (srv.getLatitude() != null && srv.getLongitude() != null) {
+                        JSONObject survey = new JSONObject();
+                        survey.putOpt("id", srv.getId());
+                        survey.putOpt("reef", srv.getReef().getName());
+                        survey.putOpt("country", srv.getReef().getCountry());
+                        survey.putOpt("latitude", srv.getLatitude());
+                        survey.putOpt("longitude", srv.getLongitude());
+                        survey.putOpt("records", surveyDao.getSurveyRecords(srv).size());
+                        survey.putOpt("date", srv.getDate().toLocaleString());
+                        surveys.put(survey);
+                        count++;
+                    }
+                } catch (JSONException e) {
+                    LOGGER.fatal("Cannot create survey json object." + e.toString());
                 }
-            } catch (JSONException e) {
+            }
+            JSONObject data = new JSONObject();
+
+            try {
+                data.putOpt("count", count);
+                data.putOpt("surveys", surveys);
+            } catch (JSONException ex) {
+                LOGGER.fatal("Cannot create data json object." + ex.toString());
+            }
+            out.println(data);
+        } else if (format.equals("xml")) {
+            res.setContentType("text/xml");
+            try {
+                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = builderFactory.newDocumentBuilder();
+                //creating a new instance of a DOM to build a DOM tree.
+                Document doc = docBuilder.newDocument();
+
+                Element root = doc.createElement("surveys");
+                //adding a node after the last child node of the specified node.
+                doc.appendChild(root);
+
+                List<Survey> listOfSurveys = surveyDao.getAll();
+                for (Survey srv : listOfSurveys) {
+                    Element survey = doc.createElement("survey");
+                    root.appendChild(survey);
+
+                    Element surveyorNode = doc.createElement("surveyor");
+                    survey.appendChild(surveyorNode);
+                    Text surveyorName = doc.createTextNode("SomeOne");
+                    surveyorNode.appendChild(surveyorName);
+
+                    Element dateNode = doc.createElement("date");
+                    survey.appendChild(dateNode);
+                    Text surveyDate = doc.createTextNode("01/01/1960");
+                    dateNode.appendChild(surveyDate);
+                }
+
+                //TransformerFactory instance is used to create Transformer objects.
+                TransformerFactory factory = TransformerFactory.newInstance();
+                Transformer transformer = factory.newTransformer();
+
+                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+                // create string from xml tree
+                StringWriter sw = new StringWriter();
+                StreamResult result = new StreamResult(sw);
+                DOMSource source = new DOMSource(doc);
+                transformer.transform(source, result);
+                String xmlString = sw.toString();
+                out.print(xmlString);
+            }
+            catch (Exception e) {
                 LOGGER.fatal("Cannot create survey json object." + e.toString());
             }
+
         }
-        JSONObject data = new JSONObject();
-        try {
-            data.putOpt("count", count);
-            data.putOpt("surveys", surveys);
-        } catch (JSONException ex) {
-            LOGGER.fatal("Cannot create data json object." + ex.toString());
-        }
-        out.println(data);
     }
 
 }

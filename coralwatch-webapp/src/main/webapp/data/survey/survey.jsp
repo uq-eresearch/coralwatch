@@ -1026,6 +1026,42 @@
     }
 %>
 <h2 style="margin-top:0;">All Surveys</h2>
+<script>
+    dojo.require("dojox.grid.DataGrid");
+    dojo.require("dojox.data.XmlStore");
+
+    var layoutSurveys = [
+        [
+            {
+                field: "surveyor",
+                name: "Surveyor",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
+            {
+                field: "date",
+                name: "Date",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            }
+        ]
+    ];
+</script>
+<div dojoType="dojox.data.XmlStore"
+     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/surveys?format=xml"
+     jsId="surveyStore" label="title">
+</div>
+<div id="grid" style="width: 400px; height: 300px;" dojoType="dojox.grid.DataGrid"
+     store="surveyStore" structure="layoutSurveys" query="{}" rowsPerPage="40">
+</div>
+
+<br/>
+<br/>
+<br/>
 <table class="coralwatch_list_table">
     <tr>
         <th>Surveyor</th>

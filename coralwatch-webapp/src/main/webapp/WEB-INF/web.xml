@@ -30,14 +30,14 @@
         <url-pattern>/data-download/*</url-pattern>
     </servlet-mapping>
 
-    <servlet id="xmlSurveyServlet">
-        <servlet-name>json-surveys</servlet-name>
+    <servlet id="surveyServlet">
+        <servlet-name>surveys</servlet-name>
         <servlet-class>org.coralwatch.servlets.JsonSurveyServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>json-surveys</servlet-name>
-        <url-pattern>/json-surveys/*</url-pattern>
+        <servlet-name>surveys</servlet-name>
+        <url-pattern>/surveys/*</url-pattern>
     </servlet-mapping>
 
     <servlet id="kitRequestDispatchServlet">

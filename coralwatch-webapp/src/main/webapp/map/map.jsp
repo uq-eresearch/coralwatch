@@ -1,8 +1,12 @@
 <%@ page import="com.liferay.portal.kernel.util.Constants" %>
+<%@ page import="org.coralwatch.model.Reef" %>
+<%@ page import="java.util.List" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 
 <portlet:defineObjects/>
-
+<%
+    List<Reef> reefs = (List<Reef>) renderRequest.getAttribute("reefs");
+%>
 <jsp:include page="map-head.jsp"/>
 <script type="text/javascript">
     var styles = [
@@ -46,7 +50,7 @@
                     map.setUIToDefault();
                     map.addControl(new GOverviewMapControl());
                     var xhrArgs = {
-                        url: "<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/json-surveys")%>",
+                        url: "<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/surveys?format=json")%>",
                         handleAs: "json",
                         load: function(data) {
                             surveyList = data;
@@ -94,7 +98,38 @@
     }
 
 </script>
+<div style="border: 1px solid #333333; padding: 5px;">
+    Filter by <label for="reefName">Reef</label> <select name="reefName"
+                                                         id="reefName"
+                                                         dojoType="dijit.form.ComboBox"
+                                                         required="true"
+                                                         hasDownArrow="true">
+    <option selected="selected" value="All">All</option>
+    <%
+        for (Reef reef : reefs) {
+    %>
+    <option value="<%=reef.getName()%>"><%=reef.getName()%>
+    </option>
+    <%
+        }
+    %>
+</select>
+    <label for="rating">Rating</label> <select name="rating"
+                                               id="rating"
+                                               dojoType="dijit.form.ComboBox"
+                                               required="true"
+                                               hasDownArrow="true">
+    <option selected="selected" value="All">All</option>
+    <option value="1">1 Star</option>
+    <option value="2">2 Stars</option>
+    <option value="3">3 Stars</option>
+    <option value="4">4 Stars</option>
+    <option value="5">5 Stars</option>
+</select>
+</div>
+<br/>
+
 <div id="dialog" dojoType="dijit.Dialog" title="loading..." style="display:none;" align="center">
     <h3 style="text-align:center;">Loading surveys...</h3>
 </div>
-<div id="map_canvas" style="height: 650px;"></div>
+<div id="map_canvas" style="height: 650px; border: 2px solid #333333"></div>
