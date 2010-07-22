@@ -982,9 +982,8 @@
 </div>
 </div>
 <%
-
+    //If no cmd is given then display list of surveys
 } else {
-
     //If a user is given then display only surveys created by this user and pass it is id to servlet
     long userId = ParamUtil.getLong(request, "userId");
     long createdByUserId = -1;
@@ -1008,7 +1007,7 @@
 
     var dateFormatter = function(data, rowIndex) {
         return dojo.date.locale.format(new Date(data), {
-            datePattern: "dd/mm/yyyy",
+            datePattern: "dd MMM yyyy",
             selector: "date",
             locale: "en"
         });
@@ -1075,7 +1074,6 @@
 <div id="grid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
      store="surveyStore" structure="layoutSurveys" query="{}" rowsPerPage="40">
 </div>
-
 <%
     }
 %>
