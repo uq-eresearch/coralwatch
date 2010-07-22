@@ -3,7 +3,6 @@
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="org.coralwatch.dataaccess.SurveyDao" %>
 <%@ page import="org.coralwatch.dataaccess.SurveyRatingDao" %>
-<%@ page import="org.coralwatch.dataaccess.UserDao" %>
 <%@ page import="org.coralwatch.model.*" %>
 <%@ page import="org.coralwatch.util.GpsUtil" %>
 <%@ page import="javax.portlet.PortletSession" %>
@@ -985,40 +984,14 @@
 <%
 
 } else {
-    List<Survey> surveys = surveyDao.getAll();
-    long userId = ParamUtil.getLong(request, "userId");
-//    Long userId = Long.getLong(renderRequest.getAttribute("userId").toString());
-    if (userId > 0) {
-        UserDao userDao = (UserDao) renderRequest.getAttribute("userDao");
-        UserImpl user = userDao.getById(userId);
-        surveys = userDao.getSurveyEntriesCreated(user);
-    }
-    if (surveys.size() < 1) {
-%>
-<span style="text-align:center;">No surveys yet</span>
-<%
-} else {
-    int numberOfSurveys = surveys.size();
-    int pageSize = 40;
-    int pageNumber = ParamUtil.getInteger(request, "page");
-    if (pageNumber <= 0) {
-        pageNumber = 1;
-    }
-    int lowerLimit = (pageNumber - 1) * pageSize;
-    int upperLimit = lowerLimit + pageSize;
-    int numberOfPages = numberOfSurveys / pageSize;
-    if (numberOfSurveys % pageSize > 0) {
-        numberOfPages++;
-        if (pageNumber == numberOfPages) {
-            upperLimit = lowerLimit + (numberOfSurveys % pageSize);
-        }
-    }
-%>
 
-<%
-    long currentUserId = -1;
+    //If a user is given then display only surveys created by this user and pass it is id to servlet
+    long userId = ParamUtil.getLong(request, "userId");
+    long createdByUserId = -1;
+    if (userId > 0) {
+        createdByUserId = userId;
+    }
     if (currentUser != null) {
-        currentUserId = currentUser.getId();
 %>
 <div align="right">
     <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">New
@@ -1084,8 +1057,8 @@
                 }
             },
             {
-                field: "action",
-                name: "Action",
+                field: "view",
+                name: "View",
                 width: 10,
                 formatter: function(item) {
                     var viewURL = "<a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + item.toString() + "\">More info</a>";
@@ -1096,86 +1069,14 @@
     ];
 </script>
 <div dojoType="dojox.data.XmlStore"
-     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/surveys?format=xml&userId=<%=currentUserId%>"
+     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/surveys?format=xml&createdByUserId=<%=createdByUserId%>"
      jsId="surveyStore" label="title">
 </div>
 <div id="grid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
      store="surveyStore" structure="layoutSurveys" query="{}" rowsPerPage="40">
 </div>
 
-
-<table class="coralwatch_list_table">
-    <tr>
-        <th>Surveyor</th>
-        <th>Date</th>
-        <th>Reef</th>
-        <th>Country</th>
-        <th>Records</th>
-        <th>View</th>
-        <%
-            if (currentUser != null) {
-        %>
-        <th>Edit</th>
-        <th>Delete</th>
-        <%
-            }
-        %>
-    </tr>
-    <%
-        for (int i = lowerLimit; i < upperLimit; i++) {
-            Survey aSurvey = surveys.get(i);
-    %>
-    <tr>
-        <td><%=aSurvey.getCreator().getDisplayName()%>
-        </td>
-        <td><%=dateFormatDisplay.format(aSurvey.getDate())%>
-        </td>
-        <td><%=aSurvey.getReef().getName()%>
-        </td>
-        <td><%=aSurvey.getReef().getCountry()%>
-        </td>
-        <td><%=surveyDao.getSurveyRecords(aSurvey).size()%>
-        </td>
-        <td>
-            <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">View</a>
-        </td>
-        <%
-            if (currentUser != null && currentUser.equals(aSurvey.getCreator()) || (currentUser != null && currentUser.isSuperUser())) {
-        %>
-        <td>
-            <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:renderURL>">Edit</a>
-        </td>
-        <td>
-            <a href="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(aSurvey.getId()) %>" /></portlet:actionURL>">Delete</a>
-        </td>
-        <%
-            }
-        %>
-    </tr>
-    <%
-        }
-    %>
-</table>
-<div style="text-align:center;"><span>Page:</span>
-    <%
-        for (int i = 0; i < numberOfPages; i++) {
-            if (i == pageNumber - 1) {
-    %>
-    <span style="text-decoration:underline;"><%=i + 1%></span>
-    <%
-    } else {
-    %>
-
-    <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.PREVIEW %>" /><portlet:param name="page" value="<%= String.valueOf(i + 1) %>" /></portlet:renderURL>"><%=i + 1%>
-    </a>
-    <%
-            }
-        }
-    %>
-</div>
-
 <%
-        }
     }
 %>
 <div id="mapDialog" dojoType="dijit.Dialog" title="Locate On Map" style="width: 470px; height: 320px; display:none;">

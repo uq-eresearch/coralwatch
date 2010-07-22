@@ -4,7 +4,9 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.Survey;
+import org.coralwatch.model.UserImpl;
 import org.coralwatch.util.AppUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,8 +29,6 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class JsonSurveyServlet extends HttpServlet {
@@ -76,12 +76,6 @@ public class JsonSurveyServlet extends HttpServlet {
             out.println(data);
         } else if (format.equals("xml")) {
             res.setContentType("text/xml");
-//            long userId = Long.valueOf(req.getParameter("userId"));
-//            UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
-//            UserImpl currentUser = null;
-//            if (userId >= 0) {
-//                currentUser = userDao.getById(userId);
-//            }
             try {
                 DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = builderFactory.newDocumentBuilder();
@@ -92,8 +86,15 @@ public class JsonSurveyServlet extends HttpServlet {
                 //adding a node after the last child node of the specified node.
                 doc.appendChild(root);
 
-                List<Survey> listOfSurveys = surveyDao.getAll();
-                DateFormat dateFormatDisplay = new SimpleDateFormat("dd/MM/yyyy");
+                List<Survey> listOfSurveys = listOfSurveys = surveyDao.getAll();
+
+                long createdByUserId = Long.valueOf(req.getParameter("createdByUserId"));
+                UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
+                UserImpl surveyCreator = userDao.getById(createdByUserId);
+                if (surveyCreator != null) {
+                    listOfSurveys = userDao.getSurveyEntriesCreated(surveyCreator);
+                }
+
                 for (Survey srv : listOfSurveys) {
                     Element survey = doc.createElement("survey");
                     root.appendChild(survey);
@@ -124,16 +125,8 @@ public class JsonSurveyServlet extends HttpServlet {
                     numberOfRecordsNode.appendChild(numberOfRecords);
 
 
-                    Element actionNode = doc.createElement("action");
+                    Element actionNode = doc.createElement("view");
                     survey.appendChild(actionNode);
-
-//                    String viewString = "<a href=\"#\">View</a>";
-//                    String editString = "<a href=\"#\">Edit</a>";
-//                    String deleteString = "<a href=\"#\">Delete</a>";
-//                    String actionString = viewString;
-//                    if (currentUser != null && (currentUser.isSuperUser() || currentUser.equals(srv.getCreator()))) {
-//                        actionString = actionString + " " + editString + " " + deleteString;
-//                    }
                     Text action = doc.createTextNode(srv.getId() + "");
                     actionNode.appendChild(action);
 
