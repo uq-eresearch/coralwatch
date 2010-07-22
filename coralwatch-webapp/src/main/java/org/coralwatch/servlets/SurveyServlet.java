@@ -3,8 +3,10 @@ package org.coralwatch.servlets;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.coralwatch.app.CoralwatchApplication;
+import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.UserDao;
+import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.util.AppUtil;
@@ -77,6 +79,16 @@ public class SurveyServlet extends HttpServlet {
         } else if (format.equals("xml")) {
             res.setContentType("text/xml");
             try {
+                String userIdStr = req.getParameter("createdByUserId");
+                long createdByUserId = Long.valueOf(userIdStr == null ? "-1" : userIdStr);
+                UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
+                UserImpl surveyCreator = userDao.getById(createdByUserId);
+
+                String reefIdStr = req.getParameter("reefId");
+                long reefId = Long.valueOf(reefIdStr == null ? "-1" : reefIdStr);
+                ReefDao reefDao = CoralwatchApplication.getConfiguration().getReefDao();
+                Reef reef = reefDao.getById(reefId);
+
                 DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = builderFactory.newDocumentBuilder();
                 //creating a new instance of a DOM to build a DOM tree.
@@ -87,12 +99,12 @@ public class SurveyServlet extends HttpServlet {
                 doc.appendChild(root);
 
                 List<Survey> listOfSurveys = surveyDao.getAll();
-
-                long createdByUserId = Long.valueOf(req.getParameter("createdByUserId"));
-                UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
-                UserImpl surveyCreator = userDao.getById(createdByUserId);
                 if (surveyCreator != null) {
                     listOfSurveys = userDao.getSurveyEntriesCreated(surveyCreator);
+                }
+
+                if (reef != null) {
+                    listOfSurveys = reefDao.getSurveysByReef(reef);
                 }
 
                 for (Survey srv : listOfSurveys) {
