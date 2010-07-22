@@ -32,7 +32,7 @@
 
     <servlet id="surveyServlet">
         <servlet-name>surveys</servlet-name>
-        <servlet-class>org.coralwatch.servlets.JsonSurveyServlet</servlet-class>
+        <servlet-class>org.coralwatch.servlets.SurveyServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>

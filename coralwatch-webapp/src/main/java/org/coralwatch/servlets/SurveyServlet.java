@@ -31,9 +31,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
-public class JsonSurveyServlet extends HttpServlet {
+public class SurveyServlet extends HttpServlet {
 
-    private static Log LOGGER = LogFactoryUtil.getLog(JsonSurveyServlet.class);
+    private static Log LOGGER = LogFactoryUtil.getLog(SurveyServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
