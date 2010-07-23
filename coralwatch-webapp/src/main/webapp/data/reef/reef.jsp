@@ -63,8 +63,8 @@
             dojo.require("dojox.data.XmlStore");
             dojo.require("dojo.date.locale");
 
-            var dateFormatter = function(data, rowIndex) {
-                return dojo.date.locale.format(new Date(data), {
+            var dateFormatter = function(data) {
+                return dojo.date.locale.format(new Date(Number(data)), {
                     datePattern: "dd MMM yyyy",
                     selector: "date",
                     locale: "en"

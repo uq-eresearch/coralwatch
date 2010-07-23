@@ -1003,16 +1003,18 @@
 <script>
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.data.XmlStore");
+    dojo.require("dojox.form.Rating");
     dojo.require("dojo.date.locale");
-
-    var dateFormatter = function(data, rowIndex) {
-        return dojo.date.locale.format(new Date(data), {
+    //    dojo.addOnLoad(function() {
+    //        dijit.byId("grid").setSortIndex(1);
+    //    });
+    var dateFormatter = function(data) {
+        return dojo.date.locale.format(new Date(Number(data)), {
             datePattern: "dd MMM yyyy",
             selector: "date",
             locale: "en"
         });
     };
-
 
     var layoutSurveys = [
         [
@@ -1050,9 +1052,17 @@
             {
                 field: "records",
                 name: "Records",
-                width: 10,
+                width: "auto",
                 formatter: function(item) {
                     return item.toString();
+                }
+            },
+            {
+                field: "rating",
+                name: "Rating",
+                width: 10,
+                formatter: function(item) {
+                    return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});
                 }
             },
             {

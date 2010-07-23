@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Random;
 
 public class SurveyServlet extends HttpServlet {
 
@@ -136,6 +137,11 @@ public class SurveyServlet extends HttpServlet {
                     Text numberOfRecords = doc.createTextNode(surveyDao.getSurveyRecords(srv).size() + "");
                     numberOfRecordsNode.appendChild(numberOfRecords);
 
+                    Random rand = new Random();
+                    Element ratingNode = doc.createElement("rating");
+                    survey.appendChild(ratingNode);
+                    Text rating = doc.createTextNode(rand.nextInt(5) + "");
+                    ratingNode.appendChild(rating);
 
                     Element actionNode = doc.createElement("view");
                     survey.appendChild(actionNode);
