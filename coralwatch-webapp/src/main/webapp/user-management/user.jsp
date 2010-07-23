@@ -21,9 +21,9 @@
     UserRatingDao userRatingDao = (UserRatingDao) renderRequest.getAttribute("userRatingDao");
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     String cmd = ParamUtil.getString(request, Constants.CMD);
-    if (currentUser == null) {
-        cmd = Constants.ADD;
-    }
+//    if (currentUser == null) {
+//        cmd = Constants.ADD;
+//    }
     long userId = ParamUtil.getLong(request, "userId");
     String email = "";
     String displayName = "";
@@ -342,7 +342,7 @@
 <%
 } else {
 %>
-<h2 style="margin-top:0;">All Surveys</h2>
+<h2 style="margin-top:0;">All Users</h2>
 <script>
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.data.XmlStore");
@@ -357,7 +357,7 @@
         });
     };
 
-    var layoutSurveys = [
+    var layoutMembers = [
         [
             {
                 field: "name",
@@ -375,16 +375,16 @@
 
             },
             {
-                field: "surveys",
-                name: "Surveys",
+                field: "country",
+                name: "Country",
                 width: 10,
                 formatter: function(item) {
                     return item.toString();
                 }
             },
             {
-                field: "country",
-                name: "Country",
+                field: "surveys",
+                name: "Surveys",
                 width: 10,
                 formatter: function(item) {
                     return item.toString();
@@ -403,7 +403,7 @@
                 name: "View",
                 width: 10,
                 formatter: function(item) {
-                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + item.toString() + "\">More info</a>";
+                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("userUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=" + item.toString() + "\">Profile</a>";
                     return viewURL;
                 }
             }
@@ -411,11 +411,11 @@
     ];
 </script>
 <div dojoType="dojox.data.XmlStore"
-     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/users?format=xml"
-     jsId="userStore" label="title">
+     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/users?format=xml" jsId="userStore"
+     label="title">
 </div>
 <div id="grid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
-     store="userStore" structure="layoutUsers" query="{}" rowsPerPage="40">
+     store="userStore" structure="layoutMembers" query="{}" rowsPerPage="40">
 </div>
 <%
     }

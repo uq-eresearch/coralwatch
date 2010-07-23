@@ -76,7 +76,7 @@ public class SurveyServlet extends HttpServlet {
             } catch (JSONException ex) {
                 LOGGER.fatal("Cannot create data json object." + ex.toString());
             }
-            out.println(data);
+            out.print(data);
         } else if (format.equals("xml")) {
             res.setContentType("text/xml");
             try {
@@ -143,17 +143,15 @@ public class SurveyServlet extends HttpServlet {
                     Text rating = doc.createTextNode(rand.nextInt(5) + "");
                     ratingNode.appendChild(rating);
 
-                    Element actionNode = doc.createElement("view");
-                    survey.appendChild(actionNode);
-                    Text action = doc.createTextNode(srv.getId() + "");
-                    actionNode.appendChild(action);
-
+                    Element viewNode = doc.createElement("view");
+                    survey.appendChild(viewNode);
+                    Text viewLink = doc.createTextNode(srv.getId() + "");
+                    viewNode.appendChild(viewLink);
                 }
 
                 //TransformerFactory instance is used to create Transformer objects.
                 TransformerFactory factory = TransformerFactory.newInstance();
                 Transformer transformer = factory.newTransformer();
-
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
                 // create string from xml tree
@@ -161,11 +159,12 @@ public class SurveyServlet extends HttpServlet {
                 StreamResult result = new StreamResult(sw);
                 DOMSource source = new DOMSource(doc);
                 transformer.transform(source, result);
+
                 String xmlString = sw.toString();
                 out.print(xmlString);
             }
             catch (Exception e) {
-                LOGGER.fatal("Cannot create survey json object." + e.toString());
+                LOGGER.fatal("Cannot create survey xml list." + e.toString());
             }
 
         }

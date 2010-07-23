@@ -70,6 +70,16 @@
         <url-pattern>/record/*</url-pattern>
     </servlet-mapping>
 
+    <servlet id="userServlet">
+        <servlet-name>users</servlet-name>
+        <servlet-class>org.coralwatch.servlets.UserServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>users</servlet-name>
+        <url-pattern>/users/*</url-pattern>
+    </servlet-mapping>
+
     <servlet id="ratingServlet">
         <servlet-name>rating</servlet-name>
         <servlet-class>org.coralwatch.servlets.RatingServlet</servlet-class>
