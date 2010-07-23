@@ -403,7 +403,7 @@
                 name: "View",
                 width: 10,
                 formatter: function(item) {
-                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("userUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=" + item.toString() + "\">Profile</a>";
+                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=" + item.toString() + "\">Profile</a>";
                     return viewURL;
                 }
             }

@@ -16,6 +16,8 @@ public class UserConfigurationActionImpl implements ConfigurationAction {
         PortletPreferences prefs = PortletPreferencesFactoryUtil.getPortletSetup(actionRequest, portletResource);
         String surveyUrl = ParamUtil.getString(actionRequest, "surveyUrl");
         prefs.setValue("surveyUrl", surveyUrl);
+        String userPageUrl = ParamUtil.getString(actionRequest, "userPageUrl");
+        prefs.setValue("userPageUrl", userPageUrl);
         prefs.store();
 
         SessionMessages.add(actionRequest, portletConfig.getPortletName() + ".doConfigure");
@@ -25,6 +27,7 @@ public class UserConfigurationActionImpl implements ConfigurationAction {
     public String render(PortletConfig portletConfig, RenderRequest renderRequest, RenderResponse renderResponse) throws Exception {
         PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
+        renderRequest.setAttribute("userPageUrl", prefs.getValue("userPageUrl", "user"));
         return "/user-management/user-configuration.jsp";
     }
 }

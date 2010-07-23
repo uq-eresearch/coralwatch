@@ -37,6 +37,7 @@ public class UserPortlet extends GenericPortlet {
 
         PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
+        renderRequest.setAttribute("userPageUrl", prefs.getValue("userPageUrl", "user"));
         include(viewJSP, renderRequest, renderResponse);
     }
 

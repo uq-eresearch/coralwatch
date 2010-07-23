@@ -42,6 +42,8 @@
     <portlet>
         <portlet-name>user-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
+        <configuration-action-class>org.coralwatch.portlets.configuration.UserConfigurationActionImpl
+        </configuration-action-class>
         <instanceable>false</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>
