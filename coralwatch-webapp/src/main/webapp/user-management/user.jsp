@@ -203,7 +203,7 @@
         }
     %>
 </form>
-<% } else {
+<% } else if (cmd.equals(Constants.VIEW)) {
     UserImpl user;
     if (userId <= 0) {
         user = userDao.getById(currentUser.getId());
@@ -339,6 +339,84 @@
         </td>
     </tr>
 </table>
+<%
+} else {
+%>
+<h2 style="margin-top:0;">All Surveys</h2>
+<script>
+    dojo.require("dojox.grid.DataGrid");
+    dojo.require("dojox.data.XmlStore");
+    dojo.require("dojox.form.Rating");
+    dojo.require("dojo.date.locale");
+
+    var dateFormatter = function(data) {
+        return dojo.date.locale.format(new Date(Number(data)), {
+            datePattern: "dd MMM yyyy",
+            selector: "date",
+            locale: "en"
+        });
+    };
+
+    var layoutSurveys = [
+        [
+            {
+                field: "name",
+                name: "Name",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
+            {
+                field: "joined",
+                name: "Member Since",
+                width: 10,
+                formatter: dateFormatter
+
+            },
+            {
+                field: "surveys",
+                name: "Surveys",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
+            {
+                field: "country",
+                name: "Country",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
+            {
+                field: "rating",
+                name: "Rating",
+                width: 10,
+                formatter: function(item) {
+                    return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});
+                }
+            },
+            {
+                field: "view",
+                name: "View",
+                width: 10,
+                formatter: function(item) {
+                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + item.toString() + "\">More info</a>";
+                    return viewURL;
+                }
+            }
+        ]
+    ];
+</script>
+<div dojoType="dojox.data.XmlStore"
+     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/users?format=xml"
+     jsId="userStore" label="title">
+</div>
+<div id="grid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
+     store="userStore" structure="layoutUsers" query="{}" rowsPerPage="40">
+</div>
 <%
     }
 %>
