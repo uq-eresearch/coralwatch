@@ -43,7 +43,7 @@ public class SurveyServlet extends HttpServlet {
         AppUtil.clearCache();
         PrintWriter out = res.getWriter();
         SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
-
+        Random rand = new Random();
         String format = req.getParameter("format");
         if (format.equals("json")) {
             res.setContentType("application/json");
@@ -60,6 +60,7 @@ public class SurveyServlet extends HttpServlet {
                         survey.putOpt("latitude", srv.getLatitude());
                         survey.putOpt("longitude", srv.getLongitude());
                         survey.putOpt("records", surveyDao.getSurveyRecords(srv).size());
+                        survey.putOpt("rating", rand.nextInt(6));
                         survey.putOpt("date", srv.getDate().toLocaleString());
                         surveys.put(survey);
                         count++;
@@ -137,10 +138,10 @@ public class SurveyServlet extends HttpServlet {
                     Text numberOfRecords = doc.createTextNode(surveyDao.getSurveyRecords(srv).size() + "");
                     numberOfRecordsNode.appendChild(numberOfRecords);
 
-                    Random rand = new Random();
+
                     Element ratingNode = doc.createElement("rating");
                     survey.appendChild(ratingNode);
-                    Text rating = doc.createTextNode(rand.nextInt(5) + "");
+                    Text rating = doc.createTextNode(rand.nextInt(6) + "");
                     ratingNode.appendChild(rating);
 
                     Element viewNode = doc.createElement("view");
