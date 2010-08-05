@@ -56,7 +56,7 @@ public class Survey implements Serializable {
     private Date dateModified;
 
     @NotNull
-    private String weather;
+    private String lightCondition;
 
     @NotNull
     private String activity;
@@ -185,12 +185,12 @@ public class Survey implements Serializable {
         this.dateModified = dateModified;
     }
 
-    public String getWeather() {
-        return weather;
+    public String getLightCondition() {
+        return lightCondition;
     }
 
-    public void setWeather(String weather) {
-        this.weather = weather;
+    public void setLightCondition(String lightCondition) {
+        this.lightCondition = lightCondition;
     }
 
     public String getActivity() {

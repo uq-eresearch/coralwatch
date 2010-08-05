@@ -33,7 +33,7 @@ public class DataDownloadServlet extends HttpServlet {
         long id = Long.valueOf(request.getParameter("id"));
         Reef reef = reefDao.getById(id);
         response.setHeader("Content-Disposition", "attachment; filename=" + reef.getName() + "-"
-					+ new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".xls");
+                + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".xls");
 
         final List<Survey> surveys = reefDao.getSurveysByReef(reef);
 
@@ -66,7 +66,7 @@ public class DataDownloadServlet extends HttpServlet {
         setCell(row.createCell(c++), "Latitude");
         setCell(row.createCell(c++), "Date");
         setCell(row.createCell(c++), "Time");
-        setCell(row.createCell(c++), "Weather");
+        setCell(row.createCell(c++), "Light Condition");
         setCell(row.createCell(c++), "Activity");
         setCell(row.createCell(c++), "Temperature");
         setCell(row.createCell(c++), "Comments");
@@ -104,7 +104,7 @@ public class DataDownloadServlet extends HttpServlet {
             setCell(row.createCell(c++), survey.getLatitude());
             setCell(row.createCell(c++), survey.getDate());
             setTimeCell(row.createCell(c++), survey.getTime());
-            setCell(row.createCell(c++), survey.getWeather());
+            setCell(row.createCell(c++), survey.getLightCondition());
             setCell(row.createCell(c++), survey.getActivity());
             setCell(row.createCell(c++), survey.getTemperature());
             setCell(row.createCell(c++), survey.getComments());

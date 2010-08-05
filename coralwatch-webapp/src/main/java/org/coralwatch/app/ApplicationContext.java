@@ -231,7 +231,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         survey.setTime(date);
         survey.setDateSubmitted(new Date());
         survey.setDateModified(new Date());
-        survey.setWeather("Full Sunshine");
+        survey.setLightCondition("Full Sunshine");
         survey.setActivity("Reef Walking");
         survey.setTemperature(rand.nextInt(25) + 1 + 1.0);
         survey.setTotalRatingValue(rand.nextInt(5) + 1);

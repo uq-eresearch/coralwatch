@@ -59,7 +59,7 @@
     String organisationType = "";
     String country = "";
     String reefName = "";
-    String weatherCondition = "";
+    String lightCondition = "";
     String activity = "";
     String comments = "";
     boolean isGpsDevice = false;
@@ -70,7 +70,7 @@
         organisationType = survey.getOrganisationType();
         country = survey.getReef().getCountry();
         reefName = survey.getReef().getName();
-        weatherCondition = survey.getWeather();
+        lightCondition = survey.getLightCondition();
         isGpsDevice = survey.isGPSDevice();
         activity = survey.getActivity();
         comments = survey.getComments();
@@ -451,13 +451,13 @@
     </td>
 </tr>
 <tr>
-    <th><label for="weather">Light Condition:</label></th>
-    <td><select name="weather"
-                id="weather"
+    <th><label for="lightCondition">Light Condition:</label></th>
+    <td><select name="lightCondition"
+                id="lightCondition"
                 required="true"
                 dojoType="dijit.form.ComboBox"
                 hasDownArrow="true"
-                value="<%=weatherCondition == null ? "" : weatherCondition%>">
+                value="<%=lightCondition == null ? "" : lightCondition%>">
         <option selected="selected" value=""></option>
         <option value="Full Sunshine">Full Sunshine</option>
         <option value="Broken Cloud">Broken Cloud</option>
@@ -633,8 +633,8 @@
             </td>
         </tr>
         <tr>
-            <th>Weather Condition:</th>
-            <td><%=survey.getWeather() == null ? "" : survey.getWeather()%>
+            <th>Light Condition:</th>
+            <td><%=survey.getLightCondition() == null ? "" : survey.getLightCondition()%>
             </td>
         </tr>
         <tr>
