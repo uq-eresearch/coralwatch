@@ -149,7 +149,6 @@ public class SurveyServlet extends HttpServlet {
                     Text viewLink = doc.createTextNode(srv.getId() + "");
                     viewNode.appendChild(viewLink);
                 }
-
                 //TransformerFactory instance is used to create Transformer objects.
                 TransformerFactory factory = TransformerFactory.newInstance();
                 Transformer transformer = factory.newTransformer();

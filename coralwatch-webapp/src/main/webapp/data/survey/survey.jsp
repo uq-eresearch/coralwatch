@@ -1052,7 +1052,7 @@
             {
                 field: "records",
                 name: "Records",
-                width: "auto",
+                width: 5,
                 formatter: function(item) {
                     return item.toString();
                 }
