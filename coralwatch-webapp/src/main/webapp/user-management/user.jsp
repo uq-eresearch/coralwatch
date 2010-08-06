@@ -331,7 +331,7 @@
     <%--</tr>--%>
     <tr>
         <%
-            if (currentUser != null && currentUser.equals(user) || currentUser.isSuperUser()) {
+            if (currentUser != null && (currentUser.equals(user) || currentUser.isSuperUser())) {
         %>
         <td colspan="2"><input type="button" value="Edit"
                                onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>

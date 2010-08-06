@@ -513,6 +513,7 @@
                style="width:300px"
                dojoType="dijit.form.Textarea"
                trim="true"
+               maxLength="2000"
                value="<%=comments == null ? "" : comments%>"/>
     </td>
 </tr>
