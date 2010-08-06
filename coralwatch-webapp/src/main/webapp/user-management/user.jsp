@@ -214,7 +214,9 @@
 %>
 <script type="text/javascript">
     dojo.require("dojox.form.Rating");
-
+    <%
+        if (currentUser != null && !currentUser.equals(user)) {
+    %>
     dojo.addOnLoad(function() {
         var widget = dijit.byId("connectRating");
         dojo.connect(widget, "onClick", function() {
@@ -232,7 +234,9 @@
             });
         });
     });
-
+    <%
+    }
+    %>
 </script>
 <h2 style="margin-top:0;">User Profile</h2>
 <table>
@@ -253,7 +257,7 @@
         </td>
     </tr>
     <%
-        if (user.equals(currentUser) || currentUser.isSuperUser()) {
+        if (currentUser != null && (user.equals(currentUser) || currentUser.isSuperUser())) {
     %>
     <tr>
         <th>Email:</th>
@@ -294,6 +298,9 @@
             <a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_userId=<%=String.valueOf(user.getId())%>"><%=userDao.getSurveyEntriesCreated(user).size()%>
                 survey(s)</a></td>
     </tr>
+    <%
+        if (currentUser != null && !currentUser.equals(user)) {
+    %>
     <tr>
         <th>Your Rating:</th>
         <td>
@@ -307,7 +314,9 @@
             <span id="connectRating" dojoType="dojox.form.Rating" numStars="5" value="<%=userRatingValue%>"></span>
         </td>
     </tr>
-
+    <%
+        }
+    %>
     <tr>
         <th>Overall Rating:</th>
         <td>
@@ -322,17 +331,11 @@
     <%--</tr>--%>
     <tr>
         <%
-            if (currentUser.equals(user)) {
+            if (currentUser != null && currentUser.equals(user) || currentUser.isSuperUser()) {
         %>
         <td colspan="2"><input type="button" value="Edit"
                                onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
 
-            <%
-                }
-                if (currentUser.isSuperUser() && !currentUser.equals(user)) {
-            %>
-            <input type="button" value="Delete"
-                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
             <%
                 }
             %>
