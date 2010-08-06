@@ -59,8 +59,8 @@ public class DataDownloadServlet extends HttpServlet {
         int c = 0;
         setCell(row.createCell(c++), "ID");
         setCell(row.createCell(c++), "Creator");
-        setCell(row.createCell(c++), "Organisation");
-        setCell(row.createCell(c++), "Organisation Type");
+        setCell(row.createCell(c++), "Group Name");
+        setCell(row.createCell(c++), "Participating As");
         setCell(row.createCell(c++), "Reef");
         setCell(row.createCell(c++), "Longitude");
         setCell(row.createCell(c++), "Latitude");
@@ -97,8 +97,8 @@ public class DataDownloadServlet extends HttpServlet {
             c = 0;
             setCell(row.createCell(c++), survey.getId());
             setCell(row.createCell(c++), survey.getCreator().getUsername());
-            setCell(row.createCell(c++), survey.getOrganisation());
-            setCell(row.createCell(c++), survey.getOrganisationType());
+            setCell(row.createCell(c++), survey.getGroupName());
+            setCell(row.createCell(c++), survey.getParticipatingAs());
             setCell(row.createCell(c++), survey.getReef().getName());
             setCell(row.createCell(c++), survey.getLongitude());
             setCell(row.createCell(c++), survey.getLatitude());

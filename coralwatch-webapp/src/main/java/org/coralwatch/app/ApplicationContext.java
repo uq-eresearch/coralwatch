@@ -216,8 +216,8 @@ public class ApplicationContext implements Configuration, ServletContextListener
         Random rand = new Random(new Date().getTime());
         Survey survey = new Survey();
         survey.setCreator(user);
-        survey.setOrganisation("eResearch");
-        survey.setOrganisationType("School/University");
+        survey.setGroupName("eResearch");
+        survey.setParticipatingAs("School/University");
         survey.setReef(reefDao.getAll().get(rand.nextInt(24)));
         if (survey.getReef().getName().endsWith("Lizard Island")) {
             survey.setLatitude(new Float(-14.672 - rand.nextDouble()));

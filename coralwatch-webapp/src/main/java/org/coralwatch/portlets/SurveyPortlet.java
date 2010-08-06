@@ -62,8 +62,8 @@ public class SurveyPortlet extends GenericPortlet {
             UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
             if (currentUser != null) {
                 if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
-                    String organisation = actionRequest.getParameter("organisation");
-                    String organisationType = actionRequest.getParameter("organisationType");
+                    String groupName = actionRequest.getParameter("groupName");
+                    String participatingAs = actionRequest.getParameter("participatingAs");
                     String country = actionRequest.getParameter("country");
                     String reefName = actionRequest.getParameter("reefName");
                     String latitudeStr = actionRequest.getParameter("latitude");
@@ -79,7 +79,7 @@ public class SurveyPortlet extends GenericPortlet {
                     String activity = actionRequest.getParameter("activity");
                     String comments = actionRequest.getParameter("comments");
 
-                    validateEmptyFields(errors, organisation, organisationType, country, reefName, latitudeStr, longitudeStr, date, time, lightCondition, temperatureStr, activity);
+                    validateEmptyFields(errors, groupName, participatingAs, country, reefName, latitudeStr, longitudeStr, date, time, lightCondition, temperatureStr, activity);
 
                     if (errors.isEmpty()) {
                         Reef reef = reefDao.getReefByName(reefName);
@@ -90,8 +90,8 @@ public class SurveyPortlet extends GenericPortlet {
                         if (cmd.equals(Constants.ADD)) {
                             Survey survey = new Survey();
                             survey.setCreator(currentUser);
-                            survey.setOrganisation(organisation);
-                            survey.setOrganisationType(organisationType);
+                            survey.setGroupName(groupName);
+                            survey.setParticipatingAs(participatingAs);
                             survey.setReef(reef);
                             survey.setQaState("Post Migration");
                             survey.setLatitude(latitude);
@@ -111,8 +111,8 @@ public class SurveyPortlet extends GenericPortlet {
                             long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
                             Survey survey = surveyDao.getById(suveyId);
                             survey.setDateModified(new Date());
-                            survey.setOrganisation(organisation);
-                            survey.setOrganisationType(organisationType);
+                            survey.setGroupName(groupName);
+                            survey.setParticipatingAs(participatingAs);
                             survey.setReef(reef);
                             survey.setLatitude(latitude);
                             survey.setLongitude(longitude);
@@ -162,13 +162,13 @@ public class SurveyPortlet extends GenericPortlet {
 
     }
 
-    private void validateEmptyFields(List<String> errors, String organisation, String organisationType, String country, String reefName, String latitudeStr, String longitudeStr, Date date, Date time, String lightCondition, String temperatureStr, String activity) {
+    private void validateEmptyFields(List<String> errors, String groupName, String participatingAs, String country, String reefName, String latitudeStr, String longitudeStr, Date date, Date time, String lightCondition, String temperatureStr, String activity) {
         List<String> emptyFields = new ArrayList<String>();
-        if (organisation == null || organisation.trim().isEmpty()) {
-            emptyFields.add("Organisation");
+        if (groupName == null || groupName.trim().isEmpty()) {
+            emptyFields.add("Group Name");
         }
-        if (organisationType == null || organisationType.trim().isEmpty()) {
-            emptyFields.add("Organisation Type");
+        if (participatingAs == null || participatingAs.trim().isEmpty()) {
+            emptyFields.add("Participating As");
         }
         if (country == null || country.trim().isEmpty()) {
             emptyFields.add("Country");

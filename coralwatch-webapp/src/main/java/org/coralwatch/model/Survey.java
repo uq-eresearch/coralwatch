@@ -23,10 +23,10 @@ public class Survey implements Serializable {
     private UserImpl creator;
 
     @NotNull
-    private String organisation;
+    private String groupName;
 
     @NotNull
-    private String organisationType;
+    private String participatingAs;
 
     @ManyToOne
     @NotNull
@@ -105,20 +105,20 @@ public class Survey implements Serializable {
         this.creator = creator;
     }
 
-    public String getOrganisation() {
-        return organisation;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setOrganisation(String organisation) {
-        this.organisation = organisation;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
-    public String getOrganisationType() {
-        return organisationType;
+    public String getParticipatingAs() {
+        return participatingAs;
     }
 
-    public void setOrganisationType(String organisationType) {
-        this.organisationType = organisationType;
+    public void setParticipatingAs(String participatingAs) {
+        this.participatingAs = participatingAs;
     }
 
     public Reef getReef() {

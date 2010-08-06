@@ -56,7 +56,7 @@
 //    ReefDao reefDao = (ReefDao) renderRequest.getAttribute("reefDao");
     List<Reef> reefs = (List<Reef>) renderRequest.getAttribute("reefs");
     String groupName = "";
-    String organisationType = "";
+    String participatingAs = "";
     String country = "";
     String reefName = "";
     String lightCondition = "";
@@ -66,8 +66,8 @@
     if (cmd.equals(Constants.EDIT)) {
         surveyId = ParamUtil.getLong(request, "surveyId");
         survey = surveyDao.getById(surveyId);
-        groupName = survey.getOrganisation();
-        organisationType = survey.getOrganisationType();
+        groupName = survey.getGroupName();
+        participatingAs = survey.getParticipatingAs();
         country = survey.getReef().getCountry();
         reefName = survey.getReef().getName();
         lightCondition = survey.getLightCondition();
@@ -101,7 +101,7 @@
 <script type="text/javascript">
     dojo.addOnLoad(
             function() {
-                dojo.byId("organisation").focus();
+                dojo.byId("groupName").focus();
                 dojo.byId("latitude").style.display = 'inline';
                 updateLonFromDecimal();
                 updateLatFromDecimal();
@@ -133,10 +133,10 @@
     }
 %>
 <tr>
-    <th><label for="organisation">Organisation:</label></th>
+    <th><label for="groupName">Group Name:</label></th>
     <td><input type="text"
-               id="organisation"
-               name="organisation"
+               id="groupName"
+               name="groupName"
                required="true"
                dojoType="dijit.form.ValidationTextBox"
                regExp="...*"
@@ -144,13 +144,13 @@
                value="<%=groupName == null ? "" : groupName%>"/></td>
 </tr>
 <tr>
-    <th><label for="organisationType">Organisation Type:</label></th>
-    <td><select name="organisationType"
-                id="organisationType"
+    <th><label for="participatingAs">Participating As:</label></th>
+    <td><select name="participatingAs"
+                id="participatingAs"
                 dojoType="dijit.form.ComboBox"
                 required="true"
                 hasDownArrow="true"
-                value="<%=organisationType == null ? "" : organisationType%>">
+                value="<%=participatingAs == null ? "" : participatingAs%>">
         <option selected="selected" value=""></option>
         <option value="Dive Centre">Dive Centre</option>
         <option value="Scientist">Scientist</option>
@@ -590,12 +590,12 @@
         </tr>
         <tr>
             <th>Group Name:</th>
-            <td><%=survey.getOrganisation() == null ? "" : survey.getOrganisation()%>
+            <td><%=survey.getGroupName() == null ? "" : survey.getGroupName()%>
             </td>
         </tr>
         <tr>
             <th>Participating As:</th>
-            <td><%= survey.getOrganisationType() == null ? "" : survey.getOrganisationType()%>
+            <td><%= survey.getParticipatingAs() == null ? "" : survey.getParticipatingAs()%>
             </td>
         </tr>
         <tr>
