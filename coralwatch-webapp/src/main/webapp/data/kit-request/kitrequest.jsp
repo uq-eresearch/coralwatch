@@ -106,7 +106,7 @@
         </script>
         <table>
             <tr>
-                <td><label for="kitType">Requesting:</label></td>
+                <td><label for="kitType">Requesting <span style="color:#00FF00">*</span>:</label></td>
                 <td><select name="kitType" id="kitType"
                             required="true"
                             dojoType="dijit.form.ComboBox"
@@ -114,7 +114,7 @@
                             value="">
                     <option selected="selected" value=""></option>
                     <option value="Chart Only">Chart Only</option>
-                    <option value="Full Pack">Full Pack</option>
+                    <option value="Do It Yourself Kit">Do It Yourself Kit</option>
                 </select>
                 </td>
             </tr>
@@ -166,6 +166,13 @@
                            style="width:300px"
                            dojoType="dijit.form.SimpleTextarea"
                            trim="true"/>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><span style="color:#00FF00">*</span> You can download the Do It Yourself Kit from <a
+                        href="http://coralwatch.org/web/guest/download-materials1">here</a> and request only the chart
+                    to be mailed to you
                 </td>
             </tr>
             <%--<tr>--%>
