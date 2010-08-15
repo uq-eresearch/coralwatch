@@ -28,6 +28,7 @@
     String email = "";
     String displayName = "";
     String occupation = "";
+    String qualification = "";
     String country = "";
     String address = "";
     if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
@@ -61,6 +62,7 @@
             email = user.getEmail();
             displayName = user.getDisplayName();
             occupation = user.getOccupation();
+            qualification = user.getQualification();
             country = user.getCountry();
             address = user.getAddress();
     %>
@@ -156,6 +158,28 @@
                        value="<%=occupation == null ? "" : occupation%>"/></td>
         </tr>
         <tr>
+            <td><label for="qualification">Qualification:</label></td>
+            <td><select name="qualification" id="qualification"
+                        required="true"
+                        dojoType="dijit.form.ComboBox"
+                        hasDownArrow="true"
+                        value="<%=qualification == null ? "" : qualification%>">
+                <option selected="selected" value=""></option>
+                <option value="Senior Researcher">Senior Researcher</option>
+                <option value="Junior Researcher">Junior Researcher</option>
+                <option value="Post Doc">Post Doc</option>
+                <option value="PhD Student">PhD Student</option>
+                <option value="Undergrad Student">Undergrad Student</option>
+                <option value="Secondary School Student">Secondary School Student</option>
+                <option value="Primary School Student">Primary School Student</option>
+                <option value="Tourist">Tourist</option>
+                <option value="Dive Centre">Dive Centre</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Industry">Industry</option>
+            </select>
+            </td>
+        </tr>
+        <tr>
             <td><label for="address">Address:</label></td>
             <td><input type="text" name="address" id="address"
                        style="width:300px"
@@ -214,6 +238,8 @@
 %>
 <script type="text/javascript">
     dojo.require("dojox.form.Rating");
+    dojo.require("dijit.layout.ContentPane");
+    dojo.require("dijit.layout.TabContainer");
     <%
         if (currentUser != null && !currentUser.equals(user)) {
     %>
@@ -239,109 +265,123 @@
     %>
 </script>
 <h2 style="margin-top:0;">User Profile</h2>
-<table>
-    <tr>
-        <th>Display Name:</th>
-        <td><%= user.getDisplayName()%>
-        </td>
-        <td rowspan="4" style="text-align:right">
-            <img src="<%=user.getGravatarUrl()%>" alt="<%=user.getDisplayName()%>"/>
+
+<div id="userProfileContainer" dojoType="dijit.layout.TabContainer" style="width:650px;height:60ex">
+    <div id="userDetailsTab" dojoType="dijit.layout.ContentPane" title="Details" style="width:650px; height:60ex">
+        <table>
+            <tr>
+                <th>Display Name:</th>
+                <td><%= user.getDisplayName()%>
+                </td>
+                <td rowspan="4" style="text-align:right">
+                    <img src="<%=user.getGravatarUrl()%>" alt="<%=user.getDisplayName()%>"/>
+                    <%
+                        if (user.equals(currentUser)) {
+                    %>
+                    <br/>
+                    <a href="http://www.gravatar.com" target="_blank">Change Image</a>
+                    <%
+                        }
+                    %>
+                </td>
+            </tr>
             <%
-                if (user.equals(currentUser)) {
+                if (currentUser != null && (user.equals(currentUser) || currentUser.isSuperUser())) {
             %>
-            <br/>
-            <a href="http://www.gravatar.com">Change Image</a>
+            <tr>
+                <th>Email:</th>
+                <td><a href="mailto:<%= user.getEmail()%>"><%= user.getEmail()%>
+                </a></td>
+            </tr>
             <%
                 }
             %>
-        </td>
-    </tr>
-    <%
-        if (currentUser != null && (user.equals(currentUser) || currentUser.isSuperUser())) {
-    %>
-    <tr>
-        <th>Email:</th>
-        <td><a href="mailto:<%= user.getEmail()%>"><%= user.getEmail()%>
-        </a></td>
-    </tr>
-    <%
-        }
-    %>
-    <tr>
-        <th>Member since (d/m/y):</th>
-        <td><%= dateFormat.format(user.getRegistrationDate())%>
-        </td>
-    </tr>
-    <tr>
-        <th>Role:</th>
-        <td><%= user.isSuperUser() ? "Administrator" : "Member"%>
-        </td>
-    </tr>
-    <tr>
-        <th>Occupation:</th>
-        <td><%= user.getOccupation() == null ? "Not Set" : user.getOccupation()%>
-        </td>
-    </tr>
-    <tr>
-        <th>Address:</th>
-        <td><%= user.getAddress() == null ? "Not Set" : user.getAddress()%>
-        </td>
-    </tr>
-    <tr>
-        <th>Country:</th>
-        <td><%= user.getCountry() == null ? "Not Set" : user.getCountry()%>
-        </td>
-    </tr>
-    <tr>
-        <th>Surveys:</th>
-        <td>
-            <a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_userId=<%=String.valueOf(user.getId())%>"><%=userDao.getSurveyEntriesCreated(user).size()%>
-                survey(s)</a></td>
-    </tr>
-    <%
-        if (currentUser != null && !currentUser.equals(user)) {
-    %>
-    <tr>
-        <th>Your Rating:</th>
-        <td>
+            <tr>
+                <th>Member since (d/m/y):</th>
+                <td><%= dateFormat.format(user.getRegistrationDate())%>
+                </td>
+            </tr>
+            <tr>
+                <th>Role:</th>
+                <td><%= user.isSuperUser() ? "Administrator" : "Member"%>
+                </td>
+            </tr>
+            <tr>
+                <th>Occupation:</th>
+                <td><%= user.getOccupation() == null ? "Not Set" : user.getOccupation()%>
+                </td>
+            </tr>
+            <tr>
+                <th>Qualification:</th>
+                <td><%= user.getQualification() == null ? "Not Set" : user.getQualification()%>
+                </td>
+            </tr>
+            <tr>
+                <th>Address:</th>
+                <td><%= user.getAddress() == null ? "Not Set" : user.getAddress()%>
+                </td>
+            </tr>
+            <tr>
+                <th>Country:</th>
+                <td><%= user.getCountry() == null ? "Not Set" : user.getCountry()%>
+                </td>
+            </tr>
+            <tr>
+                <th>Surveys:</th>
+                <td>
+                    <a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_userId=<%=String.valueOf(user.getId())%>"><%=userDao.getSurveyEntriesCreated(user).size()%>
+                        survey(s)</a></td>
+            </tr>
             <%
-                UserRating userRating = userRatingDao.getRating(currentUser, user);
-                double userRatingValue = 0;
-                if (userRating != null) {
-                    userRatingValue = userRating.getRatingValue();
+                if (currentUser != null && !currentUser.equals(user)) {
+            %>
+            <tr>
+                <th>Your Rating:</th>
+                <td>
+                    <%
+                        UserRating userRating = userRatingDao.getRating(currentUser, user);
+                        double userRatingValue = 0;
+                        if (userRating != null) {
+                            userRatingValue = userRating.getRatingValue();
+                        }
+                    %>
+                    <span id="connectRating" dojoType="dojox.form.Rating" numStars="5"
+                          value="<%=userRatingValue%>"></span>
+                </td>
+            </tr>
+            <%
                 }
             %>
-            <span id="connectRating" dojoType="dojox.form.Rating" numStars="5" value="<%=userRatingValue%>"></span>
-        </td>
-    </tr>
-    <%
-        }
-    %>
-    <tr>
-        <th>Overall Rating:</th>
-        <td>
+            <tr>
+                <th>Overall Rating:</th>
+                <td>
             <span id="overAllRating" dojoType="dojox.form.Rating" numStars="5" disabled="disabled"
                   value="<%=userRatingDao.getCommunityRatingValue(user)%>"></span>
-        </td>
-    </tr>
+                </td>
+            </tr>
 
-    <%--<tr>--%>
-    <%--<th>Photos:</th>--%>
-    <%--<td>No Photos Yet</td>--%>
-    <%--</tr>--%>
-    <tr>
-        <%
-            if (currentUser != null && (currentUser.equals(user) || currentUser.isSuperUser())) {
-        %>
-        <td colspan="2"><input type="button" value="Edit"
-                               onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
+            <%--<tr>--%>
+            <%--<th>Photos:</th>--%>
+            <%--<td>No Photos Yet</td>--%>
+            <%--</tr>--%>
+            <tr>
+                <%
+                    if (currentUser != null && (currentUser.equals(user) || currentUser.isSuperUser())) {
+                %>
+                <td colspan="2"><input type="button" value="Edit"
+                                       onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
 
-            <%
-                }
-            %>
-        </td>
-    </tr>
-</table>
+                    <%
+                        }
+                    %>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="friendsTab" dojoType="dijit.layout.ContentPane" title="Friends" style="width:650px; height:60ex">
+
+    </div>
+</div>
 <%
 } else {
 %>

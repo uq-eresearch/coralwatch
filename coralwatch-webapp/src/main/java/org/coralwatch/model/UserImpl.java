@@ -3,15 +3,7 @@ package org.coralwatch.model;
 import au.edu.uq.itee.maenad.util.HashGenerator;
 import org.hibernate.validator.NotNull;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.PostLoad;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -44,6 +36,8 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
     private String address;
 
     private String occupation;
+
+    private String qualification;
 
     private String country;
 
@@ -123,6 +117,14 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     public void setOccupation(String occupation) {
         this.occupation = occupation;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
     }
 
     public String getCountry() {
