@@ -48,13 +48,13 @@ function updateLonFromDegrees() {
     dijit.byId("longitude").setValue(dec);
 }
 function updateFTemperature() {
-    if (dijit.byId("temperature").getValue() != null) {
-        dijit.byId("temperatureF").setValue((212 - 32) / 100 * dijit.byId("temperature").getValue() + 32);
+    if (dijit.byId("watertemperature").getValue() != null) {
+        dijit.byId("temperatureF").setValue((212 - 32) / 100 * dijit.byId("watertemperature").getValue() + 32);
     }
 }
 function updateCTemperature() {
     if (dijit.byId("temperatureF").getValue() != null) {
-        dijit.byId("temperature").setValue(100 / (212 - 32) * (dijit.byId("temperatureF").getValue() - 32 ));
+        dijit.byId("watertemperature").setValue(100 / (212 - 32) * (dijit.byId("temperatureF").getValue() - 32 ));
     }
 }
 function updateLatFromDegrees() {

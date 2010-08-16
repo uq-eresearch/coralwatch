@@ -68,7 +68,7 @@ public class DataDownloadServlet extends HttpServlet {
         setCell(row.createCell(c++), "Time");
         setCell(row.createCell(c++), "Light Condition");
         setCell(row.createCell(c++), "Activity");
-        setCell(row.createCell(c++), "Temperature");
+        setCell(row.createCell(c++), "Water Temperature");
         setCell(row.createCell(c++), "Comments");
         setCell(row.createCell(c++), "Number of records");
         setCell(row.createCell(c++), "Branching");
@@ -106,7 +106,7 @@ public class DataDownloadServlet extends HttpServlet {
             setTimeCell(row.createCell(c++), survey.getTime());
             setCell(row.createCell(c++), survey.getLightCondition());
             setCell(row.createCell(c++), survey.getActivity());
-            setCell(row.createCell(c++), survey.getTemperature());
+            setCell(row.createCell(c++), survey.getWaterTemperature());
             setCell(row.createCell(c++), survey.getComments());
             setCell(row.createCell(c++), numRecords);
             setCell(row.createCell(c++), shapeCounts.get("Branching"));

@@ -74,12 +74,12 @@ public class SurveyPortlet extends GenericPortlet {
                     Date date = ParamUtil.getDate(actionRequest, "date", new SimpleDateFormat("yyyy-MM-dd"));
                     Date time = ParamUtil.getDate(actionRequest, "time", new SimpleDateFormat("'T'HH:mm:ss"));
                     String lightCondition = actionRequest.getParameter("lightCondition");
-                    String temperatureStr = actionRequest.getParameter("temperature");
-                    Double temperature = ParamUtil.getDouble(actionRequest, "temperature");
+                    String waterTemperatureStr = actionRequest.getParameter("watertemperature");
+                    Double waterTemperature = ParamUtil.getDouble(actionRequest, "watertemperature");
                     String activity = actionRequest.getParameter("activity");
                     String comments = actionRequest.getParameter("comments");
 
-                    validateEmptyFields(errors, groupName, participatingAs, country, reefName, latitudeStr, longitudeStr, date, time, lightCondition, temperatureStr, activity);
+                    validateEmptyFields(errors, groupName, participatingAs, country, reefName, latitudeStr, longitudeStr, date, time, lightCondition, waterTemperatureStr, activity);
 
                     if (errors.isEmpty()) {
                         Reef reef = reefDao.getReefByName(reefName);
@@ -100,7 +100,7 @@ public class SurveyPortlet extends GenericPortlet {
                             survey.setDate(date);
                             survey.setTime(time);
                             survey.setLightCondition(lightCondition);
-                            survey.setTemperature(temperature);
+                            survey.setWaterTemperature(waterTemperature);
                             survey.setActivity(activity);
                             survey.setComments(comments);
                             surveyDao.save(survey);
@@ -120,7 +120,7 @@ public class SurveyPortlet extends GenericPortlet {
                             survey.setDate(date);
                             survey.setTime(time);
                             survey.setLightCondition(lightCondition);
-                            survey.setTemperature(temperature);
+                            survey.setWaterTemperature(waterTemperature);
                             survey.setActivity(activity);
                             survey.setComments(comments);
                             surveyDao.update(survey);
@@ -162,7 +162,7 @@ public class SurveyPortlet extends GenericPortlet {
 
     }
 
-    private void validateEmptyFields(List<String> errors, String groupName, String participatingAs, String country, String reefName, String latitudeStr, String longitudeStr, Date date, Date time, String lightCondition, String temperatureStr, String activity) {
+    private void validateEmptyFields(List<String> errors, String groupName, String participatingAs, String country, String reefName, String latitudeStr, String longitudeStr, Date date, Date time, String lightCondition, String waterTemperatureStr, String activity) {
         List<String> emptyFields = new ArrayList<String>();
         if (groupName == null || groupName.trim().isEmpty()) {
             emptyFields.add("Group Name");
@@ -188,8 +188,8 @@ public class SurveyPortlet extends GenericPortlet {
         if (time == null || time.toString().trim().isEmpty()) {
             emptyFields.add("Time");
         }
-        if (temperatureStr == null || temperatureStr.trim().isEmpty()) {
-            emptyFields.add("Temperature");
+        if (waterTemperatureStr == null || waterTemperatureStr.trim().isEmpty()) {
+            emptyFields.add("Water Temperature");
         }
         if (lightCondition == null || lightCondition.trim().isEmpty()) {
             emptyFields.add("Light Condition");

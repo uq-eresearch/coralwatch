@@ -162,7 +162,7 @@
     </td>
 </tr>
 <tr>
-    <th><label for="country">Country:</label></th>
+    <th><label for="country">Country of Survey:</label></th>
     <td>
         <select name="country"
                 id="country"
@@ -200,8 +200,8 @@
     <label>Position:</label>
 </th>
 <td>
-<div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:20ex">
-<div id="tabDecimal" dojoType="dijit.layout.ContentPane" title="Decimal" style="width:40em;height:20ex;">
+<div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:25ex">
+<div id="tabDecimal" dojoType="dijit.layout.ContentPane" title="Decimal" style="width:40em;height:25ex;">
     <table>
         <tr>
             <th>
@@ -252,11 +252,11 @@
                         }
                     }
                 </script>
-                <a href="#" onclick="showMap(); return false;">Locate On Map</a>
+                <a href="#" onclick="showMap(); return false;">Without GPS Device</a>
                 <%
                 } else {
                 %>
-                <div id="locator" dojoType="dijit.form.DropDownButton" label="Locate On Map">
+                <div id="locator" dojoType="dijit.form.DropDownButton" label="Without GPS Device">
                     <div dojoType="dijit.TooltipDialog">
                         <div id="locatorMap" style="width: 470px; height: 320px;">
                             <script type="text/javascript">
@@ -310,6 +310,12 @@
                        <%if(isGpsDevice) {%>checked="checked"<%}%> dojoType="dijit.form.CheckBox"
                        value="">
                 <label for="isGpsDevice">I used a GPS Device</label>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>If no GPS device used at the survey location, click on "Without GPS Device" to use a map to estimate
+                your survey location by zooming in and clicking on the survey location. Then close the map.
             </td>
         </tr>
     </table>
@@ -466,18 +472,18 @@
     </td>
 </tr>
 <tr>
-    <th><label for="temperature">Temperature (&deg;C):</label></th>
+    <th><label for="watertemperature">Water Temperature (&deg;C):</label></th>
     <td>
         <input type="text"
-               id="temperature"
-               name="temperature"
+               id="watertemperature"
+               name="watertemperature"
                required="true"
                dojoType="dijit.form.NumberTextBox"
                trim="true"
                onBlur="updateFTemperature()"
                onChange="updateFTemperature()"
                invalidMessage="Enter a valid temperature value."
-               value="<%=cmd.equals(Constants.EDIT) ? survey.getTemperature() : ""%>"/>
+               value="<%=cmd.equals(Constants.EDIT) ? survey.getWaterTemperature() : ""%>"/>
         (&deg;F): <input type="text"
                          id="temperatureF"
                          name="temperatureF"
@@ -568,6 +574,11 @@
 <%
     }
 %>
+<div align="right">
+    <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">Add
+        New
+        Survey</a>
+</div>
 <h2 style="margin-top:0;">Survey Details</h2>
 <br/>
 
@@ -600,7 +611,7 @@
             </td>
         </tr>
         <tr>
-            <th>Country:</th>
+            <th>Country of Survey:</th>
             <td><%= survey.getReef().getCountry() == null ? "" : survey.getReef().getCountry()%>
             </td>
         </tr>
@@ -639,10 +650,10 @@
             </td>
         </tr>
         <tr>
-            <th>Temperature:</th>
+            <th>Water Temperature:</th>
             <td>
-                <%if (survey.getTemperature() != null) {%>
-                <%=survey.getTemperature()%> &deg;C (<%=((survey.getTemperature() * 9 / 5) + 32)%> &deg;F)
+                <%if (survey.getWaterTemperature() != null) {%>
+                <%=survey.getWaterTemperature()%> &deg;C (<%=((survey.getWaterTemperature() * 9 / 5) + 32)%> &deg;F)
                 <%}%>
             </td>
         </tr>
@@ -1088,6 +1099,7 @@
 <%
     }
 %>
-<div id="mapDialog" dojoType="dijit.Dialog" title="Locate On Map" style="width: 470px; height: 320px; display:none;">
+<div id="mapDialog" dojoType="dijit.Dialog" title="Without GPS Dvice"
+     style="width: 470px; height: 320px; display:none;">
     <div id="ieMap" style="height: 275px;"></div>
 </div>

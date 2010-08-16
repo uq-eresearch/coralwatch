@@ -62,7 +62,7 @@ public class Survey implements Serializable {
     private String activity;
 
 //    @NotNull
-    private Double temperature;
+    private Double waterTemperature;
 
     @Column(length = 2000)
     private String comments;
@@ -201,12 +201,12 @@ public class Survey implements Serializable {
         this.activity = activity;
     }
 
-    public Double getTemperature() {
-        return temperature;
+    public Double getWaterTemperature() {
+        return waterTemperature;
     }
 
-    public void setTemperature(Double temperature) {
-        this.temperature = temperature;
+    public void setWaterTemperature(Double waterTemperature) {
+        this.waterTemperature = waterTemperature;
     }
 
     public String getComments() {
