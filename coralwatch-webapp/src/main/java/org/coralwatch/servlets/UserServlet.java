@@ -31,6 +31,13 @@ public class UserServlet extends HttpServlet {
 
     private static Log LOGGER = LogFactoryUtil.getLog(UserServlet.class);
 
+    protected UserDao userDao;
+
+    @Override
+    public void init() throws ServletException {
+        userDao = CoralwatchApplication.getConfiguration().getUserDao();
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         AppUtil.clearCache();
@@ -105,6 +112,29 @@ public class UserServlet extends HttpServlet {
                 LOGGER.fatal("Cannot create user xml list.", ex);
             }
 
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        AppUtil.clearCache();
+        resp.setContentType("text/plain");
+        PrintWriter out = resp.getWriter();
+
+        String cmd = req.getParameter("cmd");
+        String email = req.getParameter("email");
+        String id = req.getParameter("id");
+
+        if (cmd.equalsIgnoreCase("reset")) {
+            UserImpl user = userDao.getByEmail(email);
+            //if user's reset id is
+            if (user.getPasswordResetId().equals(id)) {
+                //generate password
+
+                //reset password
+
+                //send email
+            }
         }
     }
 

@@ -9,11 +9,14 @@ import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.util.AppUtil;
+import org.coralwatch.util.Emailer;
 
+import javax.mail.MessagingException;
 import javax.portlet.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class LoginPortlet extends GenericPortlet {
@@ -39,8 +42,43 @@ public class LoginPortlet extends GenericPortlet {
         PortletSession session = actionRequest.getPortletSession(true);
         List<String> errors = new ArrayList<String>();
         String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+
         if (cmd.equals(Constants.DEACTIVATE)) {
             session.removeAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
+        } else if (cmd.equals(Constants.RESET)) {
+            String email = actionRequest.getParameter("email");
+            //TODO validate the email here
+            UserImpl user;
+            if (email == null || email.isEmpty()) {
+                errors.add("Enter a valid email address.");
+            } else {
+                user = userdao.getByEmail(email);
+                if (user == null) {
+                    errors.add("User with email address " + email + " does not exist in our records.");
+                } else {
+                    //Generate a random UUID for authenticating the user to reset their password
+                    UUID uuid = UUID.randomUUID();
+                    String passwordResetId = uuid.toString();
+                    user.setPasswordResetId(passwordResetId);
+
+                    //construct link
+                    PortletPreferences prefs = actionRequest.getPreferences();
+                    String userPageUrl = prefs.getValue("userPageUrl", "user");
+                    String baseUrl = CoralwatchApplication.getConfiguration().getBaseUrl();
+                    //Send activation link
+                    String line1 = "Dear " + user.getDisplayName() + "\n\n";
+                    String line2 = "A request has been initiated to reset your password at http://coralwatch.org. To proceed with the request click in the link below." + "\n\n";
+                    String line3 = baseUrl + "/" + userPageUrl + "?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_cmd=reset&_userportlet_WAR_coralwatch_userId=" + user.getId() + "&_userportlet_WAR_coralwatch_id=" + passwordResetId;
+                    String line4 = "\n\nRegards,\nCoralWatch\nhttp://coralwatch.org";
+                    String message = line1 + line2 + line3 + line4;
+                    _log.info(message);
+                    try {
+                        Emailer.sendEmail(user.getEmail(), "no-reply@coralwatch.org", "Password Reset Request", message);
+                    } catch (MessagingException e) {
+                        _log.fatal("Cannot send email for Password Reset request.");
+                    }
+                }
+            }
         } else {
             String email = actionRequest.getParameter("signinEmail");
             //TODO validate the email here

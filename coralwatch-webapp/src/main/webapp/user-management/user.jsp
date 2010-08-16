@@ -228,7 +228,49 @@
         }
     %>
 </form>
-<% } else if (cmd.equals(Constants.VIEW)) {
+<% } else if (cmd.equals(Constants.RESET)) {
+    String passwordResetId = ParamUtil.getString(request, "id");
+    if (passwordResetId != null) {
+%>
+<h2 style="margin-top:0;">Reset Password</h2>
+
+<p style="text-align:justify;">Enter a new password twice to reset your lost password.</p>
+
+<form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
+    <input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
+    <input name="userId" type="hidden" value="<%= userId %>"/>
+    <input name="passwordResetId" type="hidden" value="<%= passwordResetId %>"/>
+    <table>
+        <tr>
+            <td><label for="password">New Password:</label></td>
+            <td><input type="password" name="password" id="resetpassword"
+                       required="true"
+                       dojoType="dijit.form.ValidationTextBox"
+                       validator="var pwLen = this.getValue().length; return (pwLen >= 6)"
+                       invalidMessage="Please enter a password with at least 6 characters"
+                       value=""/></td>
+        </tr>
+        <tr>
+            <td><label for="password2">Confirm Password:</label>
+            </td>
+            <td><input type="password"
+                       name="password2"
+                       id="resetpassword2"
+                       required="true"
+                       dojoType="dijit.form.ValidationTextBox"
+                       validator="return this.getValue() == dijit.byId('password').getValue()"
+                       invalidMessage="Re-enter the same password again."/></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" name="submit" value="Reset Password"/>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<%
+    }
+} else if (cmd.equals(Constants.VIEW)) {
     UserImpl user;
     if (userId <= 0) {
         user = userDao.getById(currentUser.getId());

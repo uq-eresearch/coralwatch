@@ -1,5 +1,7 @@
 package org.coralwatch.util;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -16,6 +18,7 @@ import java.util.Date;
 
 public class Emailer {
 
+    private static Log _log = LogFactoryUtil.getLog(Emailer.class);
 
     public static Configuration getEmailTemplateConfiguration() {
         Configuration cfg = new Configuration();
@@ -34,5 +37,6 @@ public class Emailer {
         message.setSentDate(new Date());
         message.setText(text);
         Transport.send(message);
+        _log.info("Email Sent to " + toEmailAddress);
     }
 }

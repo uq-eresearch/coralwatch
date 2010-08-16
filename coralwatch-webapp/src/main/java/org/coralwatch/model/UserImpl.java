@@ -43,6 +43,8 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     private String passwordHash;
 
+    private String passwordResetId;
+
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     private Date registrationDate;
@@ -199,5 +201,13 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     public boolean isMigrated() {
         return migrated;
+    }
+
+    public String getPasswordResetId() {
+        return passwordResetId;
+    }
+
+    public void setPasswordResetId(String passwordResetId) {
+        this.passwordResetId = passwordResetId;
     }
 }
