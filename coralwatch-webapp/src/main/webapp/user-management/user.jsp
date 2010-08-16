@@ -118,7 +118,7 @@
                        value=""/></td>
         </tr>
         <tr>
-            <td><label for="password">Password:</label></td>
+            <td><label for="password">Password <%if (cmd.equals(Constants.EDIT)) {%>(optional)<%}%>:</label></td>
             <td><input type="password" name="password" id="password"
                     <%if (cmd.equals(Constants.ADD)) {%>
                        required="true"
@@ -129,7 +129,8 @@
                        value=""/></td>
         </tr>
         <tr>
-            <td><label for="password2">Confirm Password:</label></td>
+            <td><label for="password2">Confirm Password <%if (cmd.equals(Constants.EDIT)) {%>(optional)<%}%>:</label>
+            </td>
             <td><input type="password"
                        name="password2"
                        id="password2"
