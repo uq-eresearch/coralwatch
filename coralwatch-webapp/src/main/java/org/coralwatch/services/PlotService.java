@@ -197,7 +197,11 @@ public class PlotService {
                 }
             }
         }
-        JFreeChart chart = ChartFactory.createPieChart("Shape Distribution", dataset,
+        String chartTitle = "Coral Shape Distribution";
+        if (surveys.size() > 1) {
+            chartTitle = "Coral Shape Distribution of All Surveys";
+        }
+        JFreeChart chart = ChartFactory.createPieChart(chartTitle, dataset,
                 legend, false, false);
         chart.getTitle().setFont(new Font(null, Font.PLAIN, titleSize));
         chart.getLegend().setItemFont(new Font("SansSerif", Font.PLAIN, titleSize - 2));
