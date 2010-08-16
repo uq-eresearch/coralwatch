@@ -63,7 +63,10 @@
                        invalidMessage="Please enter a password"/></td>
         </tr>
         <tr>
-            <td colspan="2"><input type="submit" name="signin" value="Sign In"/></td>
+            <td><input type="submit" name="signin" value="Sign In"/></td>
+            <td>
+                <a href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.ADD %>">Sign
+                    Up Now!</a></td>
         </tr>
     </table>
     <%
