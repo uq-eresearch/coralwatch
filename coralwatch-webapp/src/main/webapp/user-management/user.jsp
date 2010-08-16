@@ -232,18 +232,30 @@
     String passwordResetId = ParamUtil.getString(request, "id");
     if (passwordResetId != null) {
 %>
+<script type="text/javascript">
+    dojo.locale = "en";
+    dojo.require("dijit.form.Form");
+    dojo.require("dijit.form.ValidationTextBox");
+</script>
 <h2 style="margin-top:0;">Reset Password</h2>
 
 <p style="text-align:justify;">Enter a new password twice to reset your lost password.</p>
 
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
+    <script type="dojo/method" event="onSubmit">
+        if(!this.validate()){
+        alert('Form contains invalid data. Please correct errors first');
+        return false;
+        }
+        return true;
+    </script>
     <input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
     <input name="userId" type="hidden" value="<%= userId %>"/>
     <input name="passwordResetId" type="hidden" value="<%= passwordResetId %>"/>
     <table>
         <tr>
-            <td><label for="password">New Password:</label></td>
-            <td><input type="password" name="password" id="resetpassword"
+            <td><label for="resetpassword">New Password:</label></td>
+            <td><input type="password" name="resetpassword" id="resetpassword"
                        required="true"
                        dojoType="dijit.form.ValidationTextBox"
                        validator="var pwLen = this.getValue().length; return (pwLen >= 6)"
@@ -251,14 +263,14 @@
                        value=""/></td>
         </tr>
         <tr>
-            <td><label for="password2">Confirm Password:</label>
+            <td><label for="resetpassword2">Confirm Password:</label>
             </td>
             <td><input type="password"
-                       name="password2"
+                       name="resetpassword2"
                        id="resetpassword2"
                        required="true"
                        dojoType="dijit.form.ValidationTextBox"
-                       validator="return this.getValue() == dijit.byId('password').getValue()"
+                       validator="return this.getValue() == dijit.byId('resetpassword').getValue()"
                        invalidMessage="Re-enter the same password again."/></td>
         </tr>
         <tr>
