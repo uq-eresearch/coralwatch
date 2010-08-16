@@ -109,7 +109,7 @@ public class PlotService {
         }
         dataset.addSeries(series);
         final JFreeChart newChart = ChartFactory.createTimeSeriesChart(
-                "Average Color Over Time", "Time", "Average Color", dataset, legend, false,
+                "Average Colour Over Time", "Time", "Average Colour Score", dataset, legend, false,
                 false);
         newChart.getTitle().setFont(new Font(null, Font.PLAIN, titleSize));
         Color transparent = new Color(0, 0, 0, 0);
@@ -127,6 +127,9 @@ public class PlotService {
         numberAxis.setAutoRange(false);
         numberAxis.setRange(1, 6);
         plot.setRangeAxis(numberAxis);
+        plot.getRangeAxis().setLabel("Average Colour Score");
+        plot.getRangeAxis().setLabelFont(new Font(null, Font.PLAIN, titleSize));
+        plot.getDomainAxis().setLabelFont(new Font(null, Font.PLAIN, titleSize));
         XYShapeRenderer itemRenderer = new XYShapeRenderer();
         itemRenderer.setSeriesPaint(0, CORAL_COLORS.get('D').get(6));
         plot.setRenderer(itemRenderer);
@@ -149,12 +152,20 @@ public class PlotService {
                         rowKey, columnKey);
             }
         }
-        JFreeChart chart = ChartFactory.createBarChart("Colour Distribution", null, null,
+        String chartTitle = "Colour Distribution";
+        if (surveys.size() > 1) {
+            chartTitle = "Colour Distribution of All Surveys";
+        }
+        JFreeChart chart = ChartFactory.createBarChart(chartTitle, null, null,
                 dataset, PlotOrientation.VERTICAL, legend, false, false);
         chart.getTitle().setFont(new Font(null, Font.PLAIN, titleSize));
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundAlpha(0);
         plot.setRangeGridlinePaint(Color.GRAY);
+        plot.getRangeAxis().setLabel("Number of Coral Sampled");
+        plot.getRangeAxis().setLabelFont(new Font(null, Font.PLAIN, titleSize));
+        plot.getDomainAxis().setLabel("Colour Score");
+        plot.getDomainAxis().setLabelFont(new Font(null, Font.PLAIN, titleSize));
 
         TickUnits tickUnits = new TickUnits();
         double[] ticks = new double[]{1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 1000000, 500000};
