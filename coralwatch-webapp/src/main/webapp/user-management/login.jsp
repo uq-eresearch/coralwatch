@@ -69,6 +69,16 @@
         </tr>
     </table>
     <%
+    } else if (cmd.equals(Constants.PRINT)) {
+        String successMsg = ParamUtil.getString(request, "successMsg");
+    %>
+    <div class="portlet-msg-success"><%=successMsg%>
+    </div>
+    <br/>
+    <a style="color:#F9911F;"
+       href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.ADD %>">Sign
+        Up Now!</a> | <a style="color:#F9911F;" href="<portlet:renderURL></portlet:renderURL>">Sign In</a>
+    <%
     } else {
     %>
     <h2>Member's Sign In</h2>

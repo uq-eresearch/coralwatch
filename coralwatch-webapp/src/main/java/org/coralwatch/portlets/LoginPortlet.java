@@ -72,9 +72,10 @@ public class LoginPortlet extends GenericPortlet {
                     String line3 = baseUrl + "/" + userPageUrl + "?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_cmd=reset&_userportlet_WAR_coralwatch_userId=" + user.getId() + "&_userportlet_WAR_coralwatch_resetid=" + passwordResetId;
                     String line4 = "\n\nRegards,\nCoralWatch\nhttp://coralwatch.org";
                     String message = line1 + line2 + line3 + line4;
-                    _log.info(message);
                     try {
                         Emailer.sendEmail(user.getEmail(), "no-reply@coralwatch.org", "Password Reset Request", message);
+                        actionResponse.setRenderParameter("successMsg", "We have emailed you a password reset link. Check your email in few minutes.");
+                        actionResponse.setRenderParameter(Constants.CMD, Constants.PRINT);
                     } catch (MessagingException e) {
                         _log.fatal("Cannot send email for Password Reset request.");
                     }

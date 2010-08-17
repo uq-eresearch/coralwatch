@@ -150,8 +150,11 @@ public class UserPortlet extends GenericPortlet {
                     user.setPasswordResetId(passwordResetId);
                     userDao.update(user);
                     AppUtil.clearCache();
-                    actionResponse.setRenderParameter("userId", String.valueOf(user.getId()));
-                    actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
+//                    actionResponse.setRenderParameter("userId", String.valueOf(user.getId()));
+                    actionResponse.setRenderParameter("successMsg", "Your password has been updated successfully.");
+                    actionResponse.setRenderParameter(Constants.CMD, Constants.PRINT);
+                } else {
+                    errors.add("Invalid password reset request.");
                 }
             }
             if (errors.size() > 0) {

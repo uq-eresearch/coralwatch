@@ -9,7 +9,6 @@
 <%@ page import="javax.portlet.WindowState" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
@@ -231,13 +230,13 @@
 </form>
 <% } else if (cmd.equals(Constants.RESET)) {
     String resetid = ParamUtil.getString(request, "resetid");
-    if (!resetid.equals(userDao.getById(userId).getPasswordResetId())) {
-        if (errors == null) {
-            errors = new ArrayList<String>();
-        }
-        errors.add("Your password reset link has expired. Request a new password reset link by clicking on Forgot Password link.");
-    }
     if (resetid != null) {
+        if (!resetid.equals(userDao.getById(userId).getPasswordResetId())) {
+%>
+<div><span class="portlet-msg-error">Your password reset link has expired. Request a new password reset link by clicking on Forgot Password link.</span>
+</div>
+<%
+} else {
 %>
 <script type="text/javascript">
     dojo.locale = "en";
@@ -295,6 +294,11 @@
     </table>
 </form>
 
+<%
+    }
+} else {
+%>
+<div><span class="portlet-msg-error">Invalid request.</span></div>
 <%
     }
 } else if (cmd.equals(Constants.VIEW)) {
@@ -451,6 +455,12 @@
     <div id="friendsTab" dojoType="dijit.layout.ContentPane" title="Friends" style="width:650px; height:60ex">
 
     </div>
+</div>
+<%
+} else if (cmd.equals(Constants.PRINT)) {
+    String successMsg = ParamUtil.getString(request, "successMsg");
+%>
+<div class="portlet-msg-success"><%=successMsg%>
 </div>
 <%
 } else {
