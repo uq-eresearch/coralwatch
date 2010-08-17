@@ -9,6 +9,7 @@
 <%@ page import="javax.portlet.WindowState" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
@@ -229,8 +230,14 @@
     %>
 </form>
 <% } else if (cmd.equals(Constants.RESET)) {
-    String passwordResetId = ParamUtil.getString(request, "id");
-    if (passwordResetId != null) {
+    String resetid = ParamUtil.getString(request, "resetid");
+    if (!resetid.equals(userDao.getById(userId).getPasswordResetId())) {
+        if (errors == null) {
+            errors = new ArrayList<String>();
+        }
+        errors.add("Your password reset link has expired. Request a new password reset link by clicking on Forgot Password link.");
+    }
+    if (resetid != null) {
 %>
 <script type="text/javascript">
     dojo.locale = "en";
@@ -240,7 +247,15 @@
 <h2 style="margin-top:0;">Reset Password</h2>
 
 <p style="text-align:justify;">Enter a new password twice to reset your lost password.</p>
-
+<%
+    if (errors != null && errors.size() > 0) {
+        for (String error : errors) {
+%>
+<div><span class="portlet-msg-error"><%=error%></span></div>
+<%
+        }
+    }
+%>
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
     <script type="dojo/method" event="onSubmit">
         if(!this.validate()){
@@ -251,7 +266,7 @@
     </script>
     <input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
     <input name="userId" type="hidden" value="<%= userId %>"/>
-    <input name="passwordResetId" type="hidden" value="<%= passwordResetId %>"/>
+    <input name="resetid" type="hidden" value="<%= resetid %>"/>
     <table>
         <tr>
             <td><label for="resetpassword">New Password:</label></td>

@@ -15,6 +15,7 @@ import javax.portlet.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class UserPortlet extends GenericPortlet {
 
@@ -132,6 +133,31 @@ public class UserPortlet extends GenericPortlet {
             if (errors.size() > 0) {
                 actionResponse.setRenderParameter("userId", String.valueOf(userId));
                 actionResponse.setRenderParameter(Constants.CMD, Constants.EDIT);
+                actionRequest.setAttribute("errors", errors);
+            }
+        } else if (cmd.equals(Constants.RESET)) {
+            String resetPassword = actionRequest.getParameter("resetpassword");
+            String resetPassword2 = actionRequest.getParameter("resetpassword2");
+            String resetid = actionRequest.getParameter("resetid");
+            if (resetPassword.length() < 6) {
+                errors.add("Password must be at least 6 characters.");
+            } else {
+                UserImpl user = userDao.getById(userId);
+                if (resetid.equals(user.getPasswordResetId())) {
+                    user.setPasswordHash(BCrypt.hashpw(resetPassword, BCrypt.gensalt()));
+                    UUID uuid = UUID.randomUUID();
+                    String passwordResetId = uuid.toString();
+                    user.setPasswordResetId(passwordResetId);
+                    userDao.update(user);
+                    AppUtil.clearCache();
+                    actionResponse.setRenderParameter("userId", String.valueOf(user.getId()));
+                    actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
+                }
+            }
+            if (errors.size() > 0) {
+                actionResponse.setRenderParameter("userId", String.valueOf(userId));
+                actionResponse.setRenderParameter("resetid", String.valueOf(resetid));
+                actionResponse.setRenderParameter(Constants.CMD, Constants.RESET);
                 actionRequest.setAttribute("errors", errors);
             }
         }
