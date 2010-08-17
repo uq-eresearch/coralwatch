@@ -65,8 +65,7 @@ public class LoginPortlet extends GenericPortlet {
                     //construct link
                     PortletPreferences prefs = actionRequest.getPreferences();
                     String userPageUrl = prefs.getValue("userPageUrl", "user");
-//                    String baseUrl = CoralwatchApplication.getConfiguration().getBaseUrl();
-                    String baseUrl = "http://localhost:8080/web/guest";
+                    String baseUrl = CoralwatchApplication.getConfiguration().getBaseUrl();
                     //Send activation link
                     String line1 = "Dear " + user.getDisplayName() + "\n\n";
                     String line2 = "A request has been initiated to reset your password at http://coralwatch.org. To proceed with the request click in the link below." + "\n\n";
