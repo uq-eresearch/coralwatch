@@ -32,6 +32,7 @@
     dojo.require("dijit.layout.TabContainer");
     dojo.require("dijit.TooltipDialog");
     dojo.require("dijit.form.DropDownButton");
+    dojo.require("dojo.data.ItemFileReadStore");
 
 </script>
 
@@ -164,6 +165,15 @@
 <tr>
     <th><label for="country">Country of Survey:</label></th>
     <td>
+        <script type="text/javascript">
+            dojo.addOnLoad(function() {
+                dojo.connect(dijit.byId("country"), "onChange", function() {
+                    var country = dijit.byId("country").getValue();
+                    reefStore.url = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=json&country=" + country;
+                    reefStore.close();
+                });
+            });
+        </script>
         <select name="country"
                 id="country"
                 dojoType="dijit.form.ComboBox"
@@ -177,22 +187,32 @@
 </tr>
 <tr>
     <th><label for="reefName">Reef Name:</label></th>
-    <td><select name="reefName"
-                id="reefName"
-                dojoType="dijit.form.ComboBox"
-                required="true"
-                hasDownArrow="true"
-                value="<%=reefName == null ? "" : reefName%>">
-        <option selected="selected" value=""></option>
-            <%
-//                    List<Reef> reefs = (List<Reef>) renderRequest.getAttribute("reefs");
-                    for (Reef reef : reefs) {
-                %>
-        <option value="<%=reef.getName()%>"><%=reef.getName()%>
-        </option>
-            <%
-                    }
-                %>
+    <td>
+        <%
+            String reefServletUrl = "/reefs?format=json&country=all";
+        %>
+        <div dojoType="dojo.data.ItemFileReadStore" id="reefStore" jsId="reefStore" urlPreventCache="true"
+             clearOnClose="true"
+             url="<%=renderResponse.encodeURL(renderRequest.getContextPath() + reefServletUrl)%>">
+        </div>
+        <input dojoType="dijit.form.ComboBox" value="<%=reefName == null ? "" : reefName%>" store="reefStore"
+               searchAttr="name" name="reefName" id="reefName">
+        <%--<select name="reefName"--%>
+        <%--id="reefName"--%>
+        <%--dojoType="dijit.form.ComboBox"--%>
+        <%--required="true"--%>
+        <%--hasDownArrow="true"--%>
+        <%--value="<%=reefName == null ? "" : reefName%>">--%>
+        <%--<option selected="selected" value=""></option>--%>
+        <%--<%--%>
+        <%--//                    List<Reef> reefs = (List<Reef>) renderRequest.getAttribute("reefs");--%>
+        <%--for (Reef reef : reefs) {--%>
+        <%--%>--%>
+        <%--<option value="<%=reef.getName()%>"><%=reef.getName()%>--%>
+        <%--</option>--%>
+        <%--<%--%>
+        <%--}--%>
+        <%--%>--%>
     </td>
 </tr>
 <tr>
@@ -216,7 +236,7 @@
                        constraints="{places:6,min:-90,max:90}"
                        trim="true"
                        onBlur="updateLatFromDecimal()"
-                       onChange="updateLatFromDecimal"
+                       onChange="updateLatFromDecimal()"
                        invalidMessage="Enter a valid latitude value rounded to six decimal places. Append 0s if required."
                        value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
                 <%

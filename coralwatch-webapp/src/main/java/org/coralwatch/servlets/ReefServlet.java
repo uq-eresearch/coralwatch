@@ -6,6 +6,9 @@ import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.util.AppUtil;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -99,6 +102,39 @@ public class ReefServlet extends HttpServlet {
             catch (Exception e) {
                 LOGGER.fatal("Cannot create survey json object." + e.toString());
             }
+
+        } else if (format.equals("json")) {
+            String country = req.getParameter("country");
+            res.setContentType("application/json");
+            JSONArray reefs = new JSONArray();
+            List<Reef> listOfReefs;
+            if (country.equals("all")) {
+                listOfReefs = reefDao.getAll();
+            } else {
+                listOfReefs = reefDao.getReefsByCountry(country);
+            }
+            if (listOfReefs != null && listOfReefs.size() > 0) {
+                for (Reef reef : listOfReefs) {
+                    try {
+                        JSONObject rf = new JSONObject();
+                        rf.putOpt("id", reef.getId());
+                        rf.putOpt("name", reef.getName());
+                        rf.putOpt("country", reef.getCountry());
+                        reefs.put(rf);
+                    } catch (JSONException e) {
+                        LOGGER.fatal("Cannot create reef json object." + e.toString());
+                    }
+                }
+            }
+            JSONObject data = new JSONObject();
+            try {
+                data.putOpt("identifier", "id");
+                data.putOpt("label", "name");
+                data.putOpt("items", reefs);
+            } catch (JSONException ex) {
+                LOGGER.fatal("Cannot create data json object." + ex.toString());
+            }
+            out.print(data);
 
         }
     }

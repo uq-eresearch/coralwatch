@@ -9,7 +9,7 @@ import org.coralwatch.model.Survey;
 import java.io.Serializable;
 import java.util.List;
 
-public class JpaReefDao extends JpaDao<Reef> implements ReefDao , Serializable {
+public class JpaReefDao extends JpaDao<Reef> implements ReefDao, Serializable {
     public JpaReefDao(EntityManagerSource entityManagerSource) {
         super(entityManagerSource);
     }
@@ -28,6 +28,18 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao , Serializable {
         }
         assert resultList.size() == 1 : "The name of a reef should be unique";
         return (Reef) resultList.get(0);
+    }
+
+    @Override
+    public List<Reef> getReefsByCountry(String country) {
+        List<Reef> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM Reef o WHERE o.country = :country ORDER BY name").setParameter(
+                "country", country).getResultList();
+        if (resultList.isEmpty()) {
+            return null;
+        }
+        assert resultList.size() == 1 : "The name of a reef should be unique";
+
+        return resultList;
     }
 
     @Override

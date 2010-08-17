@@ -8,7 +8,11 @@ import java.util.List;
 
 public interface ReefDao extends Dao<Reef> {
     Reef getReefByName(String name);
+
+    List<Reef> getReefsByCountry(String country);
+
     List<Survey> getSurveysByReef(Reef reef);
+
     Reef getById(Long id);
 }
 
