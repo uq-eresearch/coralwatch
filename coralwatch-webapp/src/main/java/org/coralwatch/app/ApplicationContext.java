@@ -35,6 +35,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private final boolean isTestSetup;
     private final Properties submissionEmailConfig;
     private final ReefDao reefDao;
+    private final UserReputationProfileDao userReputationProfileDao;
 
     public ApplicationContext() throws InitializationException {
         Properties properties = new Properties();
@@ -91,6 +92,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.surveyDao = new JpaSurveyDao(this.connectorService);
         this.kitRequestDao = new JpaKitRequestDao(this.connectorService);
         this.reefDao = new JpaReefDao(this.connectorService);
+        this.userReputationProfileDao = new JpaUserReputationProfileDao(this.connectorService);
         this.surveyRecordDao = new JpaSurveyRecordDao(this.connectorService);
         this.userRatingDao = new JpaUserRatingDao(this.connectorService);
         this.surveyRatingDao = new JpaSurveyRatingDao(this.connectorService);
@@ -294,8 +296,14 @@ public class ApplicationContext implements Configuration, ServletContextListener
         return surveyRatingDao;
     }
 
+    @Override
     public ReefDao getReefDao() {
         return reefDao;
+    }
+
+    @Override
+    public UserReputationProfileDao getReputationProfileDao() {
+        return userReputationProfileDao;
     }
 
     @Override

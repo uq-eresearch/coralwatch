@@ -10,7 +10,9 @@ import org.coralwatch.dataaccess.UserRatingDao;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRating;
 import org.coralwatch.model.UserImpl;
-import org.coralwatch.model.UserRating;
+import org.coralwatch.services.ReputationService;
+import org.coralwatch.services.reputation.Criterion;
+import org.coralwatch.services.reputation.impl.DirectUserRatingCriterion;
 import org.coralwatch.util.AppUtil;
 
 import javax.servlet.ServletException;
@@ -49,15 +51,10 @@ public class RatingServlet extends HttpServlet {
                 long ratedId = Long.valueOf(req.getParameter("ratedId"));
                 UserImpl rater = userDao.getById(raterId);
                 UserImpl rated = userDao.getById(ratedId);
-                UserRating rating = ratingDao.getRating(rater, rated);
-                if (rating == null) {
-                    rating = new UserRating(rater, rated, ratingValue);
-                    ratingDao.save(rating);
-                } else {
-                    rating.setRatingValue(ratingValue);
-                    ratingDao.update(rating);
-                }
-                AppUtil.clearCache();
+
+                Criterion criterion = new DirectUserRatingCriterion(ratingValue);
+                ReputationService.calculateUserRating(rater, rated, criterion);
+
                 out.println("Rated user: " + rated.getDisplayName() + " " + ratingValue + " stars by user: " + rater.getDisplayName());
             } else if (cmd.equals("ratesurvey")) {
                 double ratingValue = Double.valueOf(req.getParameter("value"));

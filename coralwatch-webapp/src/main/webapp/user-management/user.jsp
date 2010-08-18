@@ -2,9 +2,8 @@
 <%@ page import="com.liferay.portal.kernel.util.HtmlUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="org.coralwatch.dataaccess.UserDao" %>
-<%@ page import="org.coralwatch.dataaccess.UserRatingDao" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
-<%@ page import="org.coralwatch.model.UserRating" %>
+<%@ page import="org.coralwatch.services.ReputationService" %>
 <%@ page import="javax.portlet.PortletSession" %>
 <%@ page import="javax.portlet.WindowState" %>
 <%@ page import="java.text.DateFormat" %>
@@ -18,7 +17,7 @@
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
     List<String> errors = (List<String>) renderRequest.getAttribute("errors");
     UserDao userDao = (UserDao) renderRequest.getAttribute("userDao");
-    UserRatingDao userRatingDao = (UserRatingDao) renderRequest.getAttribute("userRatingDao");
+//    UserRatingDao userRatingDao = (UserRatingDao) renderRequest.getAttribute("userRatingDao");
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     String cmd = ParamUtil.getString(request, Constants.CMD);
 //    if (currentUser == null) {
@@ -413,14 +412,14 @@
                 <th>Your Rating:</th>
                 <td>
                     <%
-                        UserRating userRating = userRatingDao.getRating(currentUser, user);
-                        double userRatingValue = 0;
-                        if (userRating != null) {
-                            userRatingValue = userRating.getRatingValue();
-                        }
+                        //                        UserRating userRating = userRatingDao.getRating(currentUser, user);
+//                        double userRatingValue = 0;
+//                        if (userRating != null) {
+//                            userRatingValue = userRating.getRatingValue();
+//                        }
                     %>
                     <span id="connectRating" dojoType="dojox.form.Rating" numStars="5"
-                          value="<%=userRatingValue%>"></span>
+                          value="<%=ReputationService.getRaterRating(currentUser, user)%>"></span>
                 </td>
             </tr>
             <%
@@ -430,7 +429,7 @@
                 <th>Overall Rating:</th>
                 <td>
             <span id="overAllRating" dojoType="dojox.form.Rating" numStars="5" disabled="disabled"
-                  value="<%=userRatingDao.getCommunityRatingValue(user)%>"></span>
+                  value="<%=ReputationService.getOverAllRating(user)%>"></span>
                 </td>
             </tr>
 

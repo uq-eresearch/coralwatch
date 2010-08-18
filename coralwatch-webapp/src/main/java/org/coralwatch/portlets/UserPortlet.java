@@ -34,8 +34,6 @@ public class UserPortlet extends GenericPortlet {
         AppUtil.clearCache();
         userDao = CoralwatchApplication.getConfiguration().getUserDao();
         renderRequest.setAttribute("userDao", userDao);
-        renderRequest.setAttribute("userRatingDao", userRatingDao);
-
         PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
         renderRequest.setAttribute("userPageUrl", prefs.getValue("userPageUrl", "user"));

@@ -197,22 +197,6 @@
         </div>
         <input dojoType="dijit.form.ComboBox" value="<%=reefName == null ? "" : reefName%>" store="reefStore"
                searchAttr="name" name="reefName" id="reefName">
-        <%--<select name="reefName"--%>
-        <%--id="reefName"--%>
-        <%--dojoType="dijit.form.ComboBox"--%>
-        <%--required="true"--%>
-        <%--hasDownArrow="true"--%>
-        <%--value="<%=reefName == null ? "" : reefName%>">--%>
-        <%--<option selected="selected" value=""></option>--%>
-        <%--<%--%>
-        <%--//                    List<Reef> reefs = (List<Reef>) renderRequest.getAttribute("reefs");--%>
-        <%--for (Reef reef : reefs) {--%>
-        <%--%>--%>
-        <%--<option value="<%=reef.getName()%>"><%=reef.getName()%>--%>
-        <%--</option>--%>
-        <%--<%--%>
-        <%--}--%>
-        <%--%>--%>
     </td>
 </tr>
 <tr>

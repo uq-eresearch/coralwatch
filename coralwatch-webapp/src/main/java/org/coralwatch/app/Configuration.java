@@ -27,6 +27,8 @@ public interface Configuration {
 
     ReefDao getReefDao();
 
+    UserReputationProfileDao getReputationProfileDao();
+
     JpaConnectorService getJpaConnectorService();
 
     /**
