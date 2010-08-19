@@ -10,7 +10,9 @@ import org.coralwatch.model.UserReputationProfile;
 import org.coralwatch.services.reputation.Criterion;
 import org.coralwatch.util.AppUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ReputationService {
     private static Log LOGGER = LogFactoryUtil.getLog(ReputationService.class);
@@ -113,5 +115,16 @@ public class ReputationService {
         } else {
             return userReputationProfile.getRaters().get(rater);
         }
+    }
+
+    public static List<UserImpl> getRateesFor(UserImpl friendsOfUser) {
+        List<UserReputationProfile> userReputationProfiles = userReputationProfileDao.getAll();
+        List<UserImpl> ratees = new ArrayList<UserImpl>();
+        for (UserReputationProfile reputationProfile : userReputationProfiles) {
+            if (reputationProfile.getRaters().containsKey(friendsOfUser)) {
+                ratees.add(reputationProfile.getRatee());
+            }
+        }
+        return ratees;
     }
 }

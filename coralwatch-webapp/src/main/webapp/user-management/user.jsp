@@ -452,6 +452,83 @@
         </table>
     </div>
     <div id="friendsTab" dojoType="dijit.layout.ContentPane" title="Friends" style="width:650px; height:60ex">
+        <script>
+            dojo.require("dojox.grid.DataGrid");
+            dojo.require("dojox.data.XmlStore");
+            dojo.require("dojox.form.Rating");
+            dojo.require("dojo.date.locale");
+
+            var dateFormatter = function(data) {
+                return dojo.date.locale.format(new Date(Number(data)), {
+                    datePattern: "dd MMM yyyy",
+                    selector: "date",
+                    locale: "en"
+                });
+            };
+
+            var layoutMembers = [
+                [
+                    {
+                        field: "name",
+                        name: "Name",
+                        width: 10,
+                        formatter: function(item) {
+                            return item.toString();
+                        }
+                    },
+                    {
+                        field: "joined",
+                        name: "Member Since",
+                        width: 10,
+                        formatter: dateFormatter
+
+                    },
+                    {
+                        field: "country",
+                        name: "Country",
+                        width: 10,
+                        formatter: function(item) {
+                            return item.toString();
+                        }
+                    },
+                    {
+                        field: "surveys",
+                        name: "Surveys",
+                        width: 10,
+                        formatter: function(item) {
+                            return item.toString();
+                        }
+                    },
+                    {
+                        field: "rating",
+                        name: "Rating",
+                        width: 10,
+                        formatter: function(item) {
+                            return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});
+                        }
+                    },
+                    {
+                        field: "view",
+                        name: "View",
+                        width: 10,
+                        formatter: function(item) {
+                            var viewURL = "<a href=\"<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=" + item.toString() + "\">Profile</a>";
+                            return viewURL;
+                        }
+                    }
+                ]
+            ];
+        </script>
+        <div dojoType="dojox.data.XmlStore"
+             url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/users?format=xml&friendsOf=<%=user.getId()%>"
+             jsId="userStore"
+             label="title">
+        </div>
+        <div id="friendsGrid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
+             store="userStore" structure="layoutMembers" query="{}" rowsPerPage="40">
+        </div>
+    </div>
+    <div id="networkTab" dojoType="dijit.layout.ContentPane" title="Network" style="width:650px; height:60ex">
 
     </div>
 </div>

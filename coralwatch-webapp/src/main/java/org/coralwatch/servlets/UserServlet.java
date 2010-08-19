@@ -5,6 +5,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.UserImpl;
+import org.coralwatch.services.ReputationService;
 import org.coralwatch.util.AppUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -25,7 +26,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
-import java.util.Random;
 
 public class UserServlet extends HttpServlet {
 
@@ -57,7 +57,17 @@ public class UserServlet extends HttpServlet {
                 doc.appendChild(root);
 
                 UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
-                List<UserImpl> listOfUsers = userDao.getAll();
+
+                String friendsOfStr = req.getParameter("friendsOf");
+                List<UserImpl> listOfUsers;
+                if (friendsOfStr != null) {
+                    long friendsOfId = Long.valueOf(friendsOfStr);
+                    UserImpl friendsOfUser = userDao.getById(friendsOfId);
+                    listOfUsers = ReputationService.getRateesFor(friendsOfUser);
+                } else {
+                    listOfUsers = userDao.getAll();
+                }
+
                 for (UserImpl user : listOfUsers) {
                     Element userNode = doc.createElement("member");
                     root.appendChild(userNode);
@@ -83,10 +93,9 @@ public class UserServlet extends HttpServlet {
                     Text numberOfSurveys = doc.createTextNode(userDao.getSurveyEntriesCreated(user).size() + "");
                     surveysNode.appendChild(numberOfSurveys);
 
-                    Random rand = new Random();
                     Element ratingNode = doc.createElement("rating");
                     userNode.appendChild(ratingNode);
-                    Text rating = doc.createTextNode(rand.nextInt(5) + "");
+                    Text rating = doc.createTextNode(ReputationService.getOverAllRating(user) + "");
                     ratingNode.appendChild(rating);
 
                     Element viewNode = doc.createElement("view");
@@ -114,29 +123,5 @@ public class UserServlet extends HttpServlet {
 
         }
     }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AppUtil.clearCache();
-        resp.setContentType("text/plain");
-        PrintWriter out = resp.getWriter();
-
-        String cmd = req.getParameter("cmd");
-        String email = req.getParameter("email");
-        String id = req.getParameter("id");
-
-        if (cmd.equalsIgnoreCase("reset")) {
-            UserImpl user = userDao.getByEmail(email);
-            //if user's reset id is
-            if (user.getPasswordResetId().equals(id)) {
-                //generate password
-
-                //reset password
-
-                //send email
-            }
-        }
-    }
-
 }
 
