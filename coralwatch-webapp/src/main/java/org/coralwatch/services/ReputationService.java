@@ -91,18 +91,9 @@ public class ReputationService {
         } else {
             HashMap<UserImpl, Double> raters = userReputationProfile.getRaters();
             int raterCount = raters.size();
-//            Set<Double> systemRatings = userReputationProfile.getSystemRatings();
-//            int systemRatingCount = systemRatings.size();
-//            int totalCount = raterCount + systemRatingCount;
             for (UserImpl rater : raters.keySet()) {
                 overAllRating = overAllRating + raters.get(rater);
             }
-
-//            for (Double rating : systemRatings) {
-//                overAllRating = overAllRating + rating;
-//            }
-
-//            return (overAllRating / totalCount);
             return (overAllRating / raterCount);
         }
     }

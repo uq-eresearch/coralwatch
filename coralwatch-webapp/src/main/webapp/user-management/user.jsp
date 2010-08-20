@@ -313,6 +313,8 @@
     dojo.require("dojox.form.Rating");
     dojo.require("dijit.layout.ContentPane");
     dojo.require("dijit.layout.TabContainer");
+    dojo.require("dijit.Tooltip");
+    dojo.require("dijit.form.Button");
     <%
         if (currentUser != null && !currentUser.equals(user)) {
     %>
@@ -426,17 +428,28 @@
                 }
             %>
             <tr>
-                <th>Overall Rating:</th>
+                <th>Overall Rating: <img
+                        src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/icon/information.png")%>"
+                        id="overAllRatingHelp"/>
+                <span dojoType="dijit.Tooltip" connectId="overAllRatingHelp" id="overAllRatingHelp_tooltip">
+                        <strong>How is this rating calculated?</strong><br>
+                        <p>This rating is calculated based on the following:</p>
+                        <ul>
+                            <li>Direct ranking from other volunteers</li>
+                            <li>Completeness of the volunteer's profile</li>
+                            <li>Direct rating on the volunteer's data</li>
+                            <li>Amount of data contributed by the volunteer</li>
+                            <li>Frequency of contribution of the volunteer</li>
+                            <li>Cleanness and accuracy of data contributed by the volunteer</li>
+                            <li>Completeness of data contributed by the volunteer</li>
+                        </ul>
+                    </span>
+                </th>
                 <td>
-            <span id="overAllRating" dojoType="dojox.form.Rating" numStars="5" disabled="disabled"
-                  value="<%=ReputationService.getOverAllRating(user)%>"></span>
+                    <span id="overAllRating" dojoType="dojox.form.Rating" numStars="5" disabled="disabled"
+                          value="<%=ReputationService.getOverAllRating(user)%>"></span>
                 </td>
             </tr>
-
-            <%--<tr>--%>
-            <%--<th>Photos:</th>--%>
-            <%--<td>No Photos Yet</td>--%>
-            <%--</tr>--%>
             <tr>
                 <%
                     if (currentUser != null && (currentUser.equals(user) || currentUser.isSuperUser())) {
