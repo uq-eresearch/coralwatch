@@ -24,7 +24,7 @@ public class UserReputationProfile implements Serializable {
 
     private HashMap<UserImpl, Double> raters;
 
-//    private Set<Double> systemRatings;
+    private Double systemRating;
 
     public UserReputationProfile() {
     }
@@ -64,4 +64,12 @@ public class UserReputationProfile implements Serializable {
 //    public void setSystemRatings(Set<Double> systemRatings) {
 //        this.systemRatings = systemRatings;
 //    }
+
+    public Double getSystemRating() {
+        return systemRating;
+    }
+
+    public void setSystemRating(Double systemRating) {
+        this.systemRating = systemRating;
+    }
 }

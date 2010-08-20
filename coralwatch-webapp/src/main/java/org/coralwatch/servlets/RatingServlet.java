@@ -50,12 +50,13 @@ public class RatingServlet extends HttpServlet {
                 long raterId = Long.valueOf(req.getParameter("raterId"));
                 long ratedId = Long.valueOf(req.getParameter("ratedId"));
                 UserImpl rater = userDao.getById(raterId);
-                UserImpl rated = userDao.getById(ratedId);
+                UserImpl ratee = userDao.getById(ratedId);
 
                 Criterion criterion = new DirectUserRatingCriterion(ratingValue);
-                ReputationService.calculateUserRating(rater, rated, criterion);
+                ReputationService.calculateUserRating(rater, ratee, criterion);
+                ReputationService.calculateSystemRating(ratee);
 
-                out.println("Rated user: " + rated.getDisplayName() + " " + ratingValue + " stars by user: " + rater.getDisplayName());
+                out.println("Rated user: " + ratee.getDisplayName() + " " + ratingValue + " stars by user: " + rater.getDisplayName());
             } else if (cmd.equals("ratesurvey")) {
                 double ratingValue = Double.valueOf(req.getParameter("value"));
                 long raterId = Long.valueOf(req.getParameter("raterId"));

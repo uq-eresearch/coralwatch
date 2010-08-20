@@ -2,6 +2,7 @@ package org.coralwatch.services;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.coralwatch.app.Constants;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.*;
 import org.coralwatch.model.Survey;
@@ -18,6 +19,7 @@ public class ReputationService {
     private static Log LOGGER = LogFactoryUtil.getLog(ReputationService.class);
     private static UserReputationProfileDao userReputationProfileDao = CoralwatchApplication.getConfiguration().getReputationProfileDao();
 
+    //    private static UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
     public static double rateSurvey(long surveyId) {
         SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
         UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
@@ -48,9 +50,10 @@ public class ReputationService {
         return 0;
     }
 
-    public static double rateUser(long userId) {
-
-        //Get community rating for this user
+    public static void calculateSystemRating(UserImpl ratee) {
+        Double rating = 0.0;
+        //1. Get rating of user's metadata
+        rating = rating + getProfileCompletenesRating(ratee);
 
         //Get rating of user's data
 
@@ -61,9 +64,17 @@ public class ReputationService {
 
         //Get rating of user's role
 
-        //Get rating of user's metadata
-
-        return 0;
+//        LOGGER.info("Ratee: " + ratee.getDisplayName() + " System Rating " + rating);
+        UserReputationProfile userReputationProfile = userReputationProfileDao.getByRatee(ratee);
+        if (userReputationProfile == null) {
+            userReputationProfile = new UserReputationProfile(ratee);
+            userReputationProfile.setSystemRating(rating);
+            userReputationProfileDao.save(userReputationProfile);
+        } else {
+            userReputationProfile.setSystemRating(rating);
+            userReputationProfileDao.update(userReputationProfile);
+        }
+        AppUtil.clearCache();
     }
 
     public static void calculateUserRating(UserImpl rater, UserImpl ratee, Criterion criterion) {
@@ -76,6 +87,10 @@ public class ReputationService {
             userReputationProfileDao.save(userReputationProfile);
         } else {
             HashMap<UserImpl, Double> map = userReputationProfile.getRaters();
+            if (map == null) {
+                map = new HashMap<UserImpl, Double>();
+                userReputationProfile.setRaters(map);
+            }
             map.put(rater, criterion.getRatingValue());
             userReputationProfileDao.update(userReputationProfile);
         }
@@ -85,17 +100,25 @@ public class ReputationService {
 
     public static Double getOverAllRating(UserImpl ratee) {
         Double overAllRating = 0.0;
+        Double overAllDirectRating = 0.0;
+        calculateSystemRating(ratee);
         UserReputationProfile userReputationProfile = userReputationProfileDao.getByRatee(ratee);
         if (userReputationProfile == null) {
             return 0.0;
         } else {
             HashMap<UserImpl, Double> raters = userReputationProfile.getRaters();
-            int raterCount = raters.size();
-            for (UserImpl rater : raters.keySet()) {
-                overAllRating = overAllRating + raters.get(rater);
+            if (raters != null) {
+                int raterCount = raters.size();
+                for (UserImpl rater : raters.keySet()) {
+                    overAllRating = overAllRating + raters.get(rater);
+                }
+                overAllDirectRating = overAllRating / raterCount;
             }
-            return (overAllRating / raterCount);
         }
+
+        Double systemRating = userReputationProfile.getSystemRating();
+        overAllRating = ((overAllDirectRating + systemRating) / 2.0);
+        return overAllRating;
     }
 
 
@@ -104,7 +127,15 @@ public class ReputationService {
         if (userReputationProfile == null) {
             return 0.0;
         } else {
-            return userReputationProfile.getRaters().get(rater);
+            HashMap<UserImpl, Double> map = userReputationProfile.getRaters();
+            if (map == null) {
+                return 0.0;
+            }
+            Double raterRating = map.get(rater);
+            if (raterRating == null) {
+                return 0.0;
+            }
+            return raterRating;
         }
     }
 
@@ -112,10 +143,51 @@ public class ReputationService {
         List<UserReputationProfile> userReputationProfiles = userReputationProfileDao.getAll();
         List<UserImpl> ratees = new ArrayList<UserImpl>();
         for (UserReputationProfile reputationProfile : userReputationProfiles) {
-            if (reputationProfile.getRaters().containsKey(friendsOfUser)) {
+            HashMap<UserImpl, Double> map = reputationProfile.getRaters();
+            if (map != null && map.containsKey(friendsOfUser)) {
                 ratees.add(reputationProfile.getRatee());
             }
         }
         return ratees;
+    }
+
+    private static Double getProfileCompletenesRating(UserImpl ratee) {
+        Double score = 6.0;
+        String address = ratee.getAddress();
+        String country = ratee.getCountry();
+        String displayName = ratee.getDisplayName();
+        String email = ratee.getEmail();
+        String occupation = ratee.getOccupation();
+        String qualification = ratee.getQualification();
+
+        if (address == null || address.isEmpty()) {
+            score--;
+        }
+        if (country == null || country.isEmpty()) {
+            score--;
+        }
+        if (displayName == null || displayName.isEmpty()) {
+            score--;
+        }
+        if (email == null || email.isEmpty()) {
+            score--;
+        }
+        if (occupation == null || occupation.isEmpty()) {
+            score--;
+        }
+        if (qualification == null || qualification.isEmpty()) {
+            score--;
+        }
+        return ((score / 6) * Constants.STAR_RATING_MAX_VALUE);
+    }
+
+    private static Double getAmountOfDataRating() {
+        Double score = 0.0;
+
+        //Amount of data rating is calculated based on the number surveys contributed by this user compared to
+        //The number of surveys contributed by the highest contributor in the system
+
+
+        return score;
     }
 }

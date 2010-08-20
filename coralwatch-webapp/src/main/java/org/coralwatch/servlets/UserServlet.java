@@ -95,7 +95,9 @@ public class UserServlet extends HttpServlet {
 
                     Element ratingNode = doc.createElement("rating");
                     userNode.appendChild(ratingNode);
-                    Text rating = doc.createTextNode(ReputationService.getOverAllRating(user) + "");
+                    Double overAllRating = ReputationService.getOverAllRating(user);
+                    Text rating = doc.createTextNode(overAllRating + "");
+
                     ratingNode.appendChild(rating);
 
                     Element viewNode = doc.createElement("view");
