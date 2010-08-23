@@ -996,6 +996,33 @@
         <span style="text-align:center;">No graphs available.</span>
     </div>
 </div>
+<div id="mapTab" dojoType="dijit.layout.ContentPane" title="Map" style="width:650px; height:60ex">
+    <%
+        if (survey.getLatitude() != null && survey.getLongitude() != null) {
+    %>
+    <jsp:include page="../../map/google-map-key.jsp"/>
+    <div id="map" style="width: 640px; height: 50ex">
+        <script type="text/javascript">
+            //        dojo.addOnLoad(function() {
+            if (GBrowserIsCompatible()) {
+                var mavDiv = dojo.byId("map");
+                var map = new GMap2(mavDiv);
+                map.setMapType(G_HYBRID_MAP);
+                map.addControl(new GOverviewMapControl());
+                var center = new GLatLng(<%=survey.getLatitude()%>, <%=survey.getLongitude()%>);
+                var marker = new GMarker(center);
+                map.setCenter(center, 5);
+                map.addOverlay(marker);
+            }
+            //        });
+        </script>
+    </div>
+    <%
+    } else {
+    %>
+    <p>No GPS data avaliable</p>
+    <%}%>
+</div>
 </div>
 <%
     //If no cmd is given then display list of surveys

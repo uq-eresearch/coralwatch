@@ -187,7 +187,6 @@ public class UserPortlet extends GenericPortlet {
         }
     }
 
-
     public void destroy() {
         if (_log.isInfoEnabled()) {
             _log.info("Destroying portlet");
