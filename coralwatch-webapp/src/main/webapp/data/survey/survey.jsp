@@ -1001,7 +1001,7 @@
         if (survey.getLatitude() != null && survey.getLongitude() != null) {
     %>
     <jsp:include page="../../map/google-map-key.jsp"/>
-    <div id="map" style="width: 640px; height: 50ex">
+    <div id="map" style="width: 640px; height: 53ex">
         <script type="text/javascript">
             //        dojo.addOnLoad(function() {
             if (GBrowserIsCompatible()) {
