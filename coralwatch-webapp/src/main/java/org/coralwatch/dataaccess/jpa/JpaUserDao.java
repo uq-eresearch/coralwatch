@@ -9,7 +9,7 @@ import org.coralwatch.model.UserImpl;
 import java.io.Serializable;
 import java.util.List;
 
-public class JpaUserDao extends JpaDao<UserImpl> implements UserDao , Serializable {
+public class JpaUserDao extends JpaDao<UserImpl> implements UserDao, Serializable {
 
     public JpaUserDao(EntityManagerSource entityManagerSource) {
         super(entityManagerSource);
@@ -22,6 +22,11 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao , Serializab
         return entityManagerSource.getEntityManager().createQuery("SELECT o FROM Survey o " +
                 "WHERE o.creator = :user " +
                 "ORDER BY o.id").setParameter("user", userImpl).getResultList();
+    }
+
+    @Override
+    public List<UserImpl> getAll() {
+        return entityManagerSource.getEntityManager().createQuery("SELECT o FROM AppUser o ORDER BY o.displayName").getResultList();
     }
 
     @Override
