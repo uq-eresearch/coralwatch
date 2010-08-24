@@ -62,7 +62,7 @@
             email = user.getEmail();
             displayName = user.getDisplayName();
             phone = user.getPhone();
-            occupation = user.getOccupation();
+//            occupation = user.getOccupation();
             positionDescription = user.getPositionDescription();
             country = user.getCountry();
             address = user.getAddress();
