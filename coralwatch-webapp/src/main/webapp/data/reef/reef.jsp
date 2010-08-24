@@ -2,7 +2,9 @@
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="org.coralwatch.dataaccess.ReefDao" %>
 <%@ page import="org.coralwatch.model.Reef" %>
+<%@ page import="org.coralwatch.model.Survey" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="java.util.List" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <%@ taglib prefix="liferay-portlet" uri="http://liferay.com/tld/portlet" %>
 <portlet:defineObjects/>
@@ -130,6 +132,52 @@
         <div id="surveygrid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
              store="surveyStore" structure="layoutSurveys" query="{}" rowsPerPage="40">
         </div>
+    </div>
+    <div id="mapTab" dojoType="dijit.layout.ContentPane" title="Map" style="width:650px; height:60ex">
+        <%
+            List<Survey> surveys = reefDao.getSurveysByReef(reef);
+            if (surveys != null && surveys.size() > 0) {
+//        if (byReef.getLatitude() != null && survey.getLongitude() != null) {
+        %>
+        <jsp:include page="../../map/google-map-key.jsp"/>
+        <div id="map" style="width: 640px; height: 53ex">
+            <script type="text/javascript">
+                if (GBrowserIsCompatible()) {
+                    var mavDiv = dojo.byId("map");
+                    var map = new GMap2(mavDiv);
+                    map.setMapType(G_HYBRID_MAP);
+                    map.addControl(new GSmallMapControl());
+                    map.addControl(new GMapTypeControl());
+                    map.addControl(new GOverviewMapControl());
+                    map.setCenter(new GLatLng(25.799891, 15.468750), 2);
+                <%
+                for (Survey srv : surveys) {
+                    if (srv.getLatitude() != null && srv.getLongitude() != null) {
+                %>
+                    var center = new GLatLng(<%=srv.getLatitude()%>, <%=srv.getLongitude()%>);
+                }
+                <%
+                    break;
+                    }
+                }
+                %>
+                map.setCenter(center, 5);
+                <%
+                for(Survey srv : surveys) {
+                    if (srv.getLatitude() != null && srv.getLongitude() != null){
+                %>
+                map.addOverlay(new GMarker(new GLatLng(<%=srv.getLatitude()%>, <%=srv.getLongitude()%>)));
+                <%
+                    }
+                }
+                %>
+            </script>
+        </div>
+        <%
+        } else {
+        %>
+        <p>No GPS data available for surveys in this reef.</p>
+        <%}%>
     </div>
 </div>
 <%

@@ -1014,7 +1014,6 @@
     <jsp:include page="../../map/google-map-key.jsp"/>
     <div id="map" style="width: 640px; height: 53ex">
         <script type="text/javascript">
-            //        dojo.addOnLoad(function() {
             if (GBrowserIsCompatible()) {
                 var mavDiv = dojo.byId("map");
                 var map = new GMap2(mavDiv);
@@ -1025,13 +1024,12 @@
                 map.setCenter(center, 5);
                 map.addOverlay(marker);
             }
-            //        });
         </script>
     </div>
     <%
     } else {
     %>
-    <p>No GPS data avaliable</p>
+    <p>No GPS data available for this survey.</p>
     <%}%>
 </div>
 </div>
