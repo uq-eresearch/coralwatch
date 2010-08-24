@@ -10,9 +10,14 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao , Serializable {
+public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializable {
     public JpaSurveyDao(EntityManagerSource entityManagerSource) {
         super(entityManagerSource);
+    }
+
+    @Override
+    public List<Survey> getAll() {
+        return entityManagerSource.getEntityManager().createQuery("SELECT o FROM Survey o ORDER BY date DESC").getResultList();
     }
 
     @Override
