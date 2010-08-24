@@ -1129,11 +1129,52 @@
         ]
     ];
 </script>
+
+<div>
+    <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
+        <script type="dojo/method" event="onSubmit">
+            if(!this.validate()){
+            alert('Enter a search key word.');
+            return false;
+            } else {
+            grid.filter({
+            surveyor: "*" + dijit.byId("surveyorFilterField").getValue() + "*",
+            reef: "*" + dijit.byId("reefFilterField").getValue() + "*",
+            country: "*" + dijit.byId("countryFilterField").getValue() + "*"
+            });
+            return false;
+            }
+        </script>
+        Surveyor: <input type="text"
+                         id="surveyorFilterField"
+                         name="surveyorFilterField"
+                         style="width:100px;"
+                         dojoType="dijit.form.TextBox"
+                         trim="true"
+                         value=""/> Reef Name: <input type="text"
+                                                      id="reefFilterField"
+                                                      name="reefFilterField"
+                                                      style="width:100px;"
+                                                      dojoType="dijit.form.TextBox"
+                                                      trim="true"
+                                                      value=""/> Country: <input type="text"
+                                                                                 id="countryFilterField"
+                                                                                 name="countryFilterField"
+                                                                                 style="width:100px;"
+                                                                                 dojoType="dijit.form.TextBox"
+                                                                                 trim="true"
+                                                                                 value=""/><input type="submit"
+                                                                                                  name="submit"
+                                                                                                  value="Filter"/>
+    </form>
+</div>
+<br/>
+
 <div dojoType="dojox.data.XmlStore"
      url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/surveys?format=xml&createdByUserId=<%=createdByUserId%>"
      jsId="surveyStore" label="title">
 </div>
-<div id="grid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
+<div id="grid" jsId="grid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
      store="surveyStore" structure="layoutSurveys" query="{}" rowsPerPage="40">
 </div>
 <%

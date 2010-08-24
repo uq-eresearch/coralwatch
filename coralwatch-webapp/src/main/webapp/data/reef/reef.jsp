@@ -188,6 +188,9 @@
 <script>
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.data.XmlStore");
+    dojo.require("dijit.form.Form");
+    dojo.require("dijit.form.TextBox");
+    dojo.require("dijit.form.Button");
     dojo.require("dojo.date.locale");
     var layoutReefs = [
         [
@@ -236,11 +239,43 @@
         ]
     ];
 </script>
+
+<div>
+    <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
+        <script type="dojo/method" event="onSubmit">
+            if(!this.validate()){
+            alert('Enter a search key word.');
+            return false;
+            } else {
+            reefgrid.filter({
+            name: "*" + dijit.byId("reefFilterField").getValue() + "*",
+            country: "*" + dijit.byId("countryFilterField").getValue() + "*"
+            });
+            return false;
+            }
+        </script>
+        Reef Name: <input type="text"
+                          id="reefFilterField"
+                          name="reefFilterField"
+                          style="width:100px;"
+                          dojoType="dijit.form.TextBox"
+                          trim="true"
+                          value=""/> Country: <input type="text"
+                                                     id="countryFilterField"
+                                                     name="countryFilterField"
+                                                     style="width:100px;"
+                                                     dojoType="dijit.form.TextBox"
+                                                     trim="true"
+                                                     value=""/><input type="submit" name="submit" value="Filter"/>
+    </form>
+</div>
+<br/>
+
 <div dojoType="dojox.data.XmlStore"
      url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=xml"
      jsId="reefStore" label="title">
 </div>
-<div id="reefgrid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
+<div id="reefgrid" jsId="reefgrid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
      store="reefStore" structure="layoutReefs" query="{}" rowsPerPage="40">
 </div>
 <%
