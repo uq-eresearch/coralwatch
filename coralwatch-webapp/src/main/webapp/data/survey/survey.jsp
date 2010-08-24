@@ -104,6 +104,7 @@
             function() {
                 dojo.byId("groupName").focus();
                 dojo.byId("latitude").style.display = 'inline';
+                dijit.byId('date').constraints.max = new Date();
                 updateLonFromDecimal();
                 updateLatFromDecimal();
                 updateFTemperature();
