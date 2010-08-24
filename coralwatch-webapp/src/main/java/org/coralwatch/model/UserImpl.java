@@ -37,7 +37,7 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     private String occupation;
 
-    private String qualification;
+    private String positionDescription;
 
     private String country;
 
@@ -121,12 +121,12 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
         this.occupation = occupation;
     }
 
-    public String getQualification() {
-        return qualification;
+    public String getPositionDescription() {
+        return positionDescription;
     }
 
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
+    public void setPositionDescription(String positionDescription) {
+        this.positionDescription = positionDescription;
     }
 
     public String getCountry() {

@@ -65,7 +65,7 @@
             <td><input type="submit" name="submit" value="Submit"/></td>
             <td><a style="color:#F9911F;"
                    href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.ADD %>">Sign
-                Up Now!</a> | <a style="color:#F9911F;" href="<portlet:renderURL></portlet:renderURL>">Sign In</a></td>
+                Up</a> | <a style="color:#F9911F;" href="<portlet:renderURL></portlet:renderURL>">Sign In</a></td>
         </tr>
     </table>
     <%
@@ -77,7 +77,7 @@
     <br/>
     <a style="color:#F9911F;"
        href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.ADD %>">Sign
-        Up Now!</a> | <a style="color:#F9911F;" href="<portlet:renderURL></portlet:renderURL>">Sign In</a>
+        Up</a> | <a style="color:#F9911F;" href="<portlet:renderURL></portlet:renderURL>">Sign In</a>
     <%
     } else {
     %>
@@ -117,8 +117,8 @@
             <td>
                 <a style="color:#F9911F;"
                    href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.ADD %>">Sign
-                    Up Now!</a> | <a style="color:#F9911F;"
-                                     href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.RESET %>" /></portlet:renderURL>">Forgot
+                    Up</a> | <a style="color:#F9911F;"
+                                href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.RESET %>" /></portlet:renderURL>">Forgot
                 Password?</a></td>
         </tr>
     </table>

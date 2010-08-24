@@ -158,7 +158,7 @@ public class ReputationService {
         String displayName = ratee.getDisplayName();
         String email = ratee.getEmail();
         String occupation = ratee.getOccupation();
-        String qualification = ratee.getQualification();
+        String qualification = ratee.getPositionDescription();
 
         if (address == null || address.isEmpty()) {
             score--;
