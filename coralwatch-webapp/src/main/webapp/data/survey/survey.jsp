@@ -591,7 +591,9 @@
     <table>
         <tr>
             <th>Surveyor</th>
-            <td><%= survey.getCreator().getDisplayName() == null ? "" : survey.getCreator().getDisplayName()%>
+            <td>
+                <a href="<%=renderRequest.getAttribute("userUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=<%=survey.getCreator().getId()%>"><%= survey.getCreator().getDisplayName() == null ? "" : survey.getCreator().getDisplayName()%>
+                </a>
             </td>
             <td rowspan="4">
                 <%
@@ -621,7 +623,15 @@
         </tr>
         <tr>
             <th>Reef:</th>
-            <td><%= survey.getReef().getName() == null ? "" : survey.getReef().getName()%>
+            <td>
+                <%
+                    if (survey.getReef() != null) {
+                %>
+                <a href="<%=renderRequest.getAttribute("reefUrl")%>?p_p_id=reefportlet_WAR_coralwatch&_reefportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_reefportlet_WAR_coralwatch_reefId=<%=survey.getReef().getId()%>"><%= survey.getReef().getName() == null ? "" : survey.getReef().getName()%>
+                </a>
+                <%
+                    }
+                %>
             </td>
         </tr>
         <tr>

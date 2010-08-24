@@ -6,11 +6,11 @@
 
 <form action="<liferay-portlet:actionURL portletConfiguration="true" />" method="post" name="<portlet:namespace />fm">
     <input name="<portlet:namespace /><%=Constants.CMD%>" type="hidden" value="<%=Constants.UPDATE%>"/>
-    Reef Page URL: <input name="<portlet:namespace />reefUrl" type="text"
-                          value="<%=renderRequest.getAttribute("reefUrl")%>"/>
+    Reef Page Path: <input name="<portlet:namespace />reefUrl" type="text"
+                           value="<%=renderRequest.getAttribute("reefUrl")%>"/>
     <br/>
-    Survey Page URL: <input name="<portlet:namespace />surveyUrl" type="text"
-                            value="<%=renderRequest.getAttribute("surveyUrl")%>"/>
+    Survey Page Path: <input name="<portlet:namespace />surveyUrl" type="text"
+                             value="<%=renderRequest.getAttribute("surveyUrl")%>"/>
     <br/>
     <input type="button" value="Save" onClick="submitForm(document.<portlet:namespace />fm);"/>
 </form>

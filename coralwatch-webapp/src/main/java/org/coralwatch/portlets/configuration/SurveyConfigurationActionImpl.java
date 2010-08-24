@@ -15,7 +15,11 @@ public class SurveyConfigurationActionImpl implements ConfigurationAction {
 
         PortletPreferences prefs = PortletPreferencesFactoryUtil.getPortletSetup(actionRequest, portletResource);
         String surveyUrl = ParamUtil.getString(actionRequest, "surveyUrl");
+        String reefUrl = ParamUtil.getString(actionRequest, "reefUrl");
+        String userUrl = ParamUtil.getString(actionRequest, "userUrl");
         prefs.setValue("surveyUrl", surveyUrl);
+        prefs.setValue("reefUrl", reefUrl);
+        prefs.setValue("userUrl", userUrl);
         prefs.store();
 
         SessionMessages.add(actionRequest, portletConfig.getPortletName() + ".doConfigure");
@@ -25,6 +29,8 @@ public class SurveyConfigurationActionImpl implements ConfigurationAction {
     public String render(PortletConfig portletConfig, RenderRequest renderRequest, RenderResponse renderResponse) throws Exception {
         PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
-        return "/data/reef/configuration.jsp";
+        renderRequest.setAttribute("reefUrl", prefs.getValue("reefUrl", "reef"));
+        renderRequest.setAttribute("userUrl", prefs.getValue("userUrl", "user"));
+        return "/data/survey/configuration.jsp";
     }
 }
