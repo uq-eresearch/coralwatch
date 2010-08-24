@@ -124,36 +124,6 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
-    <portlet>
-        <portlet-name>members-portlet</portlet-name>
-        <display-name>Members List</display-name>
-        <portlet-class>org.coralwatch.portlets.MembersPortlet</portlet-class>
-        <init-param>
-            <name>members-jsp</name>
-            <value>/user-management/members.jsp</value>
-        </init-param>
-        <expiration-cache>0</expiration-cache>
-        <supports>
-            <mime-type>text/html</mime-type>
-        </supports>
-        <portlet-info>
-            <title>CoralWatch Members List</title>
-            <short-title>Members List</short-title>
-            <keywords>Members</keywords>
-        </portlet-info>
-        <security-role-ref>
-            <role-name>administrator</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
-    </portlet>
 
     <portlet>
         <portlet-name>stats-portlet</portlet-name>
