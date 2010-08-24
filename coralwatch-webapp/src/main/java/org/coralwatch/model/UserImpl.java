@@ -35,6 +35,8 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
     @Column(length = 500)
     private String address;
 
+    private String phone;
+
     private String occupation;
 
     private String positionDescription;
@@ -209,5 +211,13 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     public void setPasswordResetId(String passwordResetId) {
         this.passwordResetId = passwordResetId;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

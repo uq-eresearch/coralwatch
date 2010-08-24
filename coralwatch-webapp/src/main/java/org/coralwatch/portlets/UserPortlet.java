@@ -51,6 +51,7 @@ public class UserPortlet extends GenericPortlet {
         String password2 = actionRequest.getParameter("password2");
         String country = actionRequest.getParameter("country");
         String displayName = actionRequest.getParameter("displayName");
+        String phone = actionRequest.getParameter("phone");
         String positionDescription = actionRequest.getParameter("positionDescription");
         String address = actionRequest.getParameter("address");
         long userId = ParamUtil.getLong(actionRequest, "userId");
@@ -114,6 +115,7 @@ public class UserPortlet extends GenericPortlet {
                                 user.setDisplayName(displayName);
                                 user.setCountry(country);
 //                                user.setOccupation(occupation);
+                                user.setPhone(phone);
                                 user.setPositionDescription(positionDescription);
                                 user.setAddress(address);
                                 userDao.update(user);

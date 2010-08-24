@@ -26,7 +26,8 @@
     long userId = ParamUtil.getLong(request, "userId");
     String email = "";
     String displayName = "";
-    String occupation = "";
+    String phone = "";
+//    String occupation = "";
     String positionDescription = "";
     String country = "";
     String address = "";
@@ -60,6 +61,7 @@
             UserImpl user = userDao.getById(userId);
             email = user.getEmail();
             displayName = user.getDisplayName();
+            phone = user.getPhone();
             occupation = user.getOccupation();
             positionDescription = user.getPositionDescription();
             country = user.getCountry();
@@ -181,6 +183,13 @@
                        dojoType="dijit.form.Textarea"
                        trim="true"
                        value="<%=address == null ? "" : address%>"/></td>
+        </tr>
+        <tr>
+            <td><label for="phone">Phone:</label></td>
+            <td><input type="text" name="phone" id="phone"
+                       dojoType="dijit.form.ValidationTextBox"
+                       invalidMessage="Please enter a valid phone number."
+                       value="<%=phone == null ? "" : phone%>"/></td>
         </tr>
         <%
             }
@@ -379,6 +388,11 @@
             <tr>
                 <th>Address:</th>
                 <td><%= user.getAddress() == null ? "Not Set" : user.getAddress()%>
+                </td>
+            </tr>
+            <tr>
+                <th>Phone:</th>
+                <td><%= user.getPhone() == null ? "Not Set" : user.getPhone()%>
                 </td>
             </tr>
             <tr>
