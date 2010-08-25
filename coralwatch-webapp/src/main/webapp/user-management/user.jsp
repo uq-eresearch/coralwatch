@@ -415,13 +415,6 @@
             <tr>
                 <th>Your Rating:</th>
                 <td>
-                    <%
-                        //                        UserRating userRating = userRatingDao.getRating(currentUser, user);
-//                        double userRatingValue = 0;
-//                        if (userRating != null) {
-//                            userRatingValue = userRating.getRatingValue();
-//                        }
-                    %>
                     <span id="connectRating" dojoType="dojox.form.Rating" numStars="5"
                           value="<%=ReputationService.getRaterRating(currentUser, user)%>"></span>
                 </td>
