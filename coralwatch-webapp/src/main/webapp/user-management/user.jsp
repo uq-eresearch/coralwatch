@@ -104,7 +104,8 @@
                        regExp="[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]{2,6}"
                        trim="true"
                        invalidMessage="Enter a valid email address."
-                       value="<%=email == null ? "" : email%>"/></td>
+                       value="<%=email == null ? "" : email%>"/> e.g. name@company.com
+            </td>
         </tr>
         <tr>
             <td><label for="email2">Confirm Email:</label></td>
@@ -188,8 +189,10 @@
             <td><label for="phone">Phone:</label></td>
             <td><input type="text" name="phone" id="phone"
                        dojoType="dijit.form.ValidationTextBox"
+                       regExp="[+ 0-9]*"
                        invalidMessage="Please enter a valid phone number."
-                       value="<%=phone == null ? "" : phone%>"/></td>
+                       value="<%=phone == null ? "" : phone%>"/> e.g + 11 2 1111 1111
+            </td>
         </tr>
         <%
             }
@@ -638,19 +641,19 @@
             return false;
             }
         </script>
-        Reef Name: <input type="text"
-                          id="reefFilterField"
-                          name="reefFilterField"
-                          style="width:100px;"
-                          dojoType="dijit.form.TextBox"
-                          trim="true"
-                          value=""/> Country: <input type="text"
-                                                     id="countryFilterField"
-                                                     name="countryFilterField"
-                                                     style="width:100px;"
-                                                     dojoType="dijit.form.TextBox"
-                                                     trim="true"
-                                                     value=""/><input type="submit" name="submit" value="Filter"/>
+        Name: <input type="text"
+                     id="reefFilterField"
+                     name="reefFilterField"
+                     style="width:100px;"
+                     dojoType="dijit.form.TextBox"
+                     trim="true"
+                     value=""/> Country: <input type="text"
+                                                id="countryFilterField"
+                                                name="countryFilterField"
+                                                style="width:100px;"
+                                                dojoType="dijit.form.TextBox"
+                                                trim="true"
+                                                value=""/><input type="submit" name="submit" value="Filter"/>
     </form>
 </div>
 <br/>
