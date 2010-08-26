@@ -155,22 +155,23 @@
                     if (srv.getLatitude() != null && srv.getLongitude() != null) {
                 %>
                     var center = new GLatLng(<%=srv.getLatitude()%>, <%=srv.getLongitude()%>);
-                }
+
                 <%
                     break;
                     }
                 }
                 %>
-                map.setCenter(center, 5);
+                    map.setCenter(center, 5);
                 <%
                 for(Survey srv : surveys) {
                     if (srv.getLatitude() != null && srv.getLongitude() != null){
                 %>
-                map.addOverlay(new GMarker(new GLatLng(<%=srv.getLatitude()%>, <%=srv.getLongitude()%>)));
+                    map.addOverlay(new GMarker(new GLatLng(<%=srv.getLatitude()%>, <%=srv.getLongitude()%>)));
                 <%
                     }
                 }
                 %>
+                }
             </script>
         </div>
         <%
