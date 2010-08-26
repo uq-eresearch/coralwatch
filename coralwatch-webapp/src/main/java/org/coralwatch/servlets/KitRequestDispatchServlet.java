@@ -45,9 +45,9 @@ public class KitRequestDispatchServlet extends HttpServlet {
                 String line4 = "\n\nThank you for volunteering with CoralWatch.\n\nRegards,\nCoralWatch\nhttp://coralwatch.org";
                 String message = line1 + line2 + line3 + line4;
                 try {
-                    Emailer.sendEmail(kitRequest.getRequester().getEmail(), "no-reply@coralwatch.org", "CoralWatch Kit Shipped", message);
+                    Emailer.sendEmail(kitRequest.getRequester().getEmail(), "no-reply@coralwatch.org", "CoralWatch Kit Shipment", message);
                 } catch (MessagingException e) {
-                    _log.fatal("Cannot send email for Password Reset request.");
+                    _log.fatal("Cannot send kit dispatch email.");
                 }
                 out.println("Successfully dispatched kit request");
             } else {

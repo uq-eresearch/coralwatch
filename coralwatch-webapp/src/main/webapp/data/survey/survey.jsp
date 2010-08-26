@@ -12,13 +12,13 @@
 
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <portlet:defineObjects/>
+
 <script type="text/javascript">
     dojo.locale = "en";
     dojo.require("dojo.fx");
     dojo.require("dojo.parser");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.Button");
-    //    dojo.require("dijit.form.RadioButton");
     dojo.require("dijit.form.ComboBox");
     dojo.require("dijit.form.CheckBox");
     dojo.require("dijit.form.DateTextBox");
@@ -33,7 +33,6 @@
     dojo.require("dijit.TooltipDialog");
     dojo.require("dijit.form.DropDownButton");
     dojo.require("dojo.data.ItemFileReadStore");
-
 </script>
 
 <%
@@ -48,33 +47,29 @@
     long surveyId = 0;
     Survey survey = null;
     if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
-        if (currentUser == null) {
-%>
-<div><span class="portlet-msg-error">You need to sign in to <%=cmd%> a survey.</span></div>
-<%
-} else {
-    List<String> errors = (List<String>) renderRequest.getAttribute("errors");
+//        if (currentUser != null) {
+        List<String> errors = (List<String>) renderRequest.getAttribute("errors");
 //    ReefDao reefDao = (ReefDao) renderRequest.getAttribute("reefDao");
-    List<Reef> reefs = (List<Reef>) renderRequest.getAttribute("reefs");
-    String groupName = "";
-    String participatingAs = "";
-    String country = "";
-    String reefName = "";
-    String lightCondition = "";
-    String activity = "";
-    String comments = "";
-    boolean isGpsDevice = false;
-    if (cmd.equals(Constants.EDIT)) {
-        surveyId = ParamUtil.getLong(request, "surveyId");
-        survey = surveyDao.getById(surveyId);
-        groupName = survey.getGroupName();
-        participatingAs = survey.getParticipatingAs();
-        country = survey.getReef().getCountry();
-        reefName = survey.getReef().getName();
-        lightCondition = survey.getLightCondition();
-        isGpsDevice = survey.isGPSDevice();
-        activity = survey.getActivity();
-        comments = survey.getComments();
+        List<Reef> reefs = (List<Reef>) renderRequest.getAttribute("reefs");
+        String groupName = "";
+        String participatingAs = "";
+        String country = "";
+        String reefName = "";
+        String lightCondition = "";
+        String activity = "";
+        String comments = "";
+        boolean isGpsDevice = false;
+        if (cmd.equals(Constants.EDIT)) {
+            surveyId = ParamUtil.getLong(request, "surveyId");
+            survey = surveyDao.getById(surveyId);
+            groupName = survey.getGroupName();
+            participatingAs = survey.getParticipatingAs();
+            country = survey.getReef().getCountry();
+            reefName = survey.getReef().getName();
+            lightCondition = survey.getLightCondition();
+            isGpsDevice = survey.isGPSDevice();
+            activity = survey.getActivity();
+            comments = survey.getComments();
 %>
 
 <h2 style="margin-top:0;">Edit Survey</h2>
@@ -92,6 +87,11 @@
 <div><span class="portlet-msg-error"><%=error%></span></div>
 <%
         }
+    }
+    if (currentUser == null) {
+%>
+<div><span class="portlet-msg-error">You must sign in to submit a survey.</span></div>
+<%
     }
 %>
 
@@ -113,6 +113,21 @@
             );
 </script>
 <script type="dojo/method" event="onSubmit">
+    <%
+        if (currentUser != null) {
+    %>
+    var isLoggedIn = true;
+    <%
+    } else {
+    %>
+    var isLoggedIn = false;
+    <%
+        }
+    %>
+    if(!isLoggedIn) {
+    alert('You must sign in before you can add or edit a survey.');
+    return false;
+    }
     if(!this.validate()){
     alert('Form contains invalid data. Please correct errors first.');
     return false;
@@ -543,8 +558,9 @@
 </tr>
 </table>
 </form>
+
 <%
-    }
+    //}
 } else if (cmd.equals(Constants.VIEW)) {
     SurveyRatingDao surveyRatingDao = (SurveyRatingDao) renderRequest.getAttribute("surveyRatingDao");
     surveyId = ParamUtil.getLong(request, "surveyId");

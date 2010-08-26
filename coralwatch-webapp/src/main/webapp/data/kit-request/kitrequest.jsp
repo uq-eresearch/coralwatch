@@ -79,7 +79,13 @@
     }
 %>
 <div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Kit Request" style="width:670px; height:60ex">
-
+    <%
+        if (currentUser == null) {
+    %>
+    <div><span class="portlet-msg-error">You must sign in to submit a kit request.</span></div>
+    <%
+        }
+    %>
     <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm"
           jsId="kitReqForm" id="kitReqForm">
         <script type="dojo/method" event="onSubmit">
@@ -106,7 +112,7 @@
         </script>
         <table>
             <tr>
-                <td><label for="kitType">Requesting <span style="color:#00FF00">*</span>:</label></td>
+                <td><label for="kitType">Requesting <span style="color:#FF0000">*</span>:</label></td>
                 <td><select name="kitType" id="kitType"
                             required="true"
                             dojoType="dijit.form.ComboBox"
@@ -170,9 +176,9 @@
             </tr>
             <tr>
                 <td></td>
-                <td><span style="color:#00FF00">*</span> You can download the Do It Yourself Kit from <a
+                <td><span style="color:#FF0000">*</span> You can download the Do It Yourself Kit from <a
                         href="http://coralwatch.org/web/guest/download-materials1">here</a> and request only the chart
-                    to be mailed to you
+                    to be mailed to you.
                 </td>
             </tr>
             <%--<tr>--%>
