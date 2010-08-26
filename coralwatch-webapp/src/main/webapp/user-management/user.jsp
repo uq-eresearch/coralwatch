@@ -349,83 +349,83 @@
 <h2 style="margin-top:0;">User Profile</h2>
 
 <div id="userProfileContainer" dojoType="dijit.layout.TabContainer" style="width:650px;height:60ex">
-    <div id="userDetailsTab" dojoType="dijit.layout.ContentPane" title="Details" style="width:650px; height:60ex">
-        <table>
-            <tr>
-                <th>Display Name:</th>
-                <td><%= user.getDisplayName()%>
-                </td>
-                <td rowspan="4" style="text-align:right">
-                    <img src="<%=user.getGravatarUrl()%>" alt="<%=user.getDisplayName()%>"/>
-                    <%
-                        if (user.equals(currentUser)) {
-                    %>
-                    <br/>
-                    <a href="http://www.gravatar.com" target="_blank">Change Image</a>
-                    <%
-                        }
-                    %>
-                </td>
-            </tr>
-            <%
-                if (currentUser != null && (user.equals(currentUser) || currentUser.isSuperUser())) {
-            %>
-            <tr>
-                <th>Email:</th>
-                <td><a href="mailto:<%= user.getEmail()%>"><%= user.getEmail()%>
-                </a></td>
-            </tr>
-            <%
-                }
-            %>
-            <tr>
-                <th>Member since (d/m/y):</th>
-                <td><%= dateFormat.format(user.getRegistrationDate())%>
-                </td>
-            </tr>
-            <tr>
-                <th>Position Description:</th>
-                <td><%= user.getPositionDescription() == null ? "Not Set" : user.getPositionDescription()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Address:</th>
-                <td><%= user.getAddress() == null ? "Not Set" : user.getAddress()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Phone:</th>
-                <td><%= user.getPhone() == null ? "Not Set" : user.getPhone()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Country:</th>
-                <td><%= user.getCountry() == null ? "Not Set" : user.getCountry()%>
-                </td>
-            </tr>
-            <tr>
-                <th>Surveys:</th>
-                <td>
-                    <a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_userId=<%=String.valueOf(user.getId())%>"><%=userDao.getSurveyEntriesCreated(user).size()%>
-                        survey(s)</a></td>
-            </tr>
-            <%
-                if (currentUser != null && !currentUser.equals(user)) {
-            %>
-            <tr>
-                <th>Your Rating:</th>
-                <td>
+<div id="userDetailsTab" dojoType="dijit.layout.ContentPane" title="Details" style="width:650px; height:60ex">
+    <table>
+        <tr>
+            <th>Display Name:</th>
+            <td><%= user.getDisplayName()%>
+            </td>
+            <td rowspan="4" style="text-align:right">
+                <img src="<%=user.getGravatarUrl()%>" alt="<%=user.getDisplayName()%>"/>
+                <%
+                    if (user.equals(currentUser)) {
+                %>
+                <br/>
+                <a href="http://www.gravatar.com" target="_blank">Change Image</a>
+                <%
+                    }
+                %>
+            </td>
+        </tr>
+        <%
+            if (currentUser != null && (user.equals(currentUser) || currentUser.isSuperUser())) {
+        %>
+        <tr>
+            <th>Email:</th>
+            <td><a href="mailto:<%= user.getEmail()%>"><%= user.getEmail()%>
+            </a></td>
+        </tr>
+        <%
+            }
+        %>
+        <tr>
+            <th>Member since (d/m/y):</th>
+            <td><%= dateFormat.format(user.getRegistrationDate())%>
+            </td>
+        </tr>
+        <tr>
+            <th>Position Description:</th>
+            <td><%= user.getPositionDescription() == null ? "Not Set" : user.getPositionDescription()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Address:</th>
+            <td><%= user.getAddress() == null ? "Not Set" : user.getAddress()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Phone:</th>
+            <td><%= user.getPhone() == null ? "Not Set" : user.getPhone()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Country:</th>
+            <td><%= user.getCountry() == null ? "Not Set" : user.getCountry()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Surveys:</th>
+            <td>
+                <a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_userId=<%=String.valueOf(user.getId())%>"><%=userDao.getSurveyEntriesCreated(user).size()%>
+                    survey(s)</a></td>
+        </tr>
+        <%
+            if (currentUser != null && !currentUser.equals(user)) {
+        %>
+        <tr>
+            <th>Your Rating:</th>
+            <td>
                     <span id="connectRating" dojoType="dojox.form.Rating" numStars="5"
                           value="<%=ReputationService.getRaterRating(currentUser, user)%>"></span>
-                </td>
-            </tr>
-            <%
-                }
-            %>
-            <tr>
-                <th>Overall Rating: <img
-                        src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/icon/information.png")%>"
-                        id="overAllRatingHelp"/>
+            </td>
+        </tr>
+        <%
+            }
+        %>
+        <tr>
+            <th>Overall Rating: <img
+                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/icon/information.png")%>"
+                    id="overAllRatingHelp"/>
                 <span dojoType="dijit.Tooltip" connectId="overAllRatingHelp" id="overAllRatingHelp_tooltip">
                         <strong>How is this rating calculated?</strong><br>
                         <p>This rating is calculated based on the following:</p>
@@ -439,107 +439,128 @@
                             <li>Completeness of data contributed by the volunteer</li>
                         </ul>
                     </span>
-                </th>
-                <td>
+            </th>
+            <td>
                     <span id="overAllRating" dojoType="dojox.form.Rating" numStars="5" disabled="disabled"
                           value="<%=ReputationService.getOverAllRating(user)%>"></span>
-                </td>
-            </tr>
-            <tr>
+            </td>
+        </tr>
+        <tr>
+            <%
+                if (currentUser != null && (currentUser.equals(user) || currentUser.isSuperUser())) {
+            %>
+            <td colspan="2"><input type="button" value="Edit"
+                                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
+
                 <%
-                    if (currentUser != null && (currentUser.equals(user) || currentUser.isSuperUser())) {
-                %>
-                <td colspan="2"><input type="button" value="Edit"
-                                       onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
-
-                    <%
-                        }
-                    %>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div id="friendsTab" dojoType="dijit.layout.ContentPane" title="Friends" style="width:650px; height:60ex">
-        <script>
-            dojo.require("dojox.grid.DataGrid");
-            dojo.require("dojox.data.XmlStore");
-            dojo.require("dojox.form.Rating");
-            dojo.require("dojo.date.locale");
-
-            var dateFormatter = function(data) {
-                return dojo.date.locale.format(new Date(Number(data)), {
-                    datePattern: "dd MMM yyyy",
-                    selector: "date",
-                    locale: "en"
-                });
-            };
-
-            var layoutMembers = [
-                [
-                    {
-                        field: "name",
-                        name: "Name",
-                        width: 10,
-                        formatter: function(item) {
-                            return item.toString();
-                        }
-                    },
-                    {
-                        field: "joined",
-                        name: "Member Since",
-                        width: 10,
-                        formatter: dateFormatter
-
-                    },
-                    {
-                        field: "country",
-                        name: "Country",
-                        width: 10,
-                        formatter: function(item) {
-                            return item.toString();
-                        }
-                    },
-                    {
-                        field: "surveys",
-                        name: "Surveys",
-                        width: 10,
-                        formatter: function(item) {
-                            return item.toString();
-                        }
-                    },
-                    {
-                        field: "rating",
-                        name: "Rating",
-                        width: 10,
-                        formatter: function(item) {
-                            return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});
-                        }
-                    },
-                    {
-                        field: "view",
-                        name: "View",
-                        width: 10,
-                        formatter: function(item) {
-                            var viewURL = "<a href=\"<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=" + item.toString() + "\">Profile</a>";
-                            return viewURL;
-                        }
                     }
-                ]
-            ];
-        </script>
-        <div dojoType="dojox.data.XmlStore"
-             url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/users?format=xml&friendsOf=<%=user.getId()%>"
-             jsId="userStore"
-             label="title">
-        </div>
-        <div id="friendsGrid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
-             store="userStore" structure="layoutMembers" query="{}" rowsPerPage="40">
-        </div>
-    </div>
-    <div id="networkTab" dojoType="dijit.layout.ContentPane" title="Network" style="width:650px; height:60ex">
+                %>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="friendsTab" dojoType="dijit.layout.ContentPane" title="Friends" style="width:650px; height:60ex">
+    <script>
+        dojo.require("dojox.grid.DataGrid");
+        dojo.require("dojox.data.XmlStore");
+        dojo.require("dojox.form.Rating");
+        dojo.require("dojo.date.locale");
 
+        var dateFormatter = function(data) {
+            return dojo.date.locale.format(new Date(Number(data)), {
+                datePattern: "dd MMM yyyy",
+                selector: "date",
+                locale: "en"
+            });
+        };
+
+        var layoutMembers = [
+            [
+                {
+                    field: "name",
+                    name: "Name",
+                    width: 10,
+                    formatter: function(item) {
+                        return item.toString();
+                    }
+                },
+                {
+                    field: "joined",
+                    name: "Member Since",
+                    width: 10,
+                    formatter: dateFormatter
+
+                },
+                {
+                    field: "country",
+                    name: "Country",
+                    width: 10,
+                    formatter: function(item) {
+                        return item.toString();
+                    }
+                },
+                {
+                    field: "surveys",
+                    name: "Surveys",
+                    width: 10,
+                    formatter: function(item) {
+                        return item.toString();
+                    }
+                },
+                {
+                    field: "rating",
+                    name: "Rating",
+                    width: 10,
+                    formatter: function(item) {
+                        return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});
+                    }
+                },
+                {
+                    field: "view",
+                    name: "View",
+                    width: 10,
+                    formatter: function(item) {
+                        var viewURL = "<a href=\"<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=" + item.toString() + "\">Profile</a>";
+                        return viewURL;
+                    }
+                }
+            ]
+        ];
+    </script>
+    <div dojoType="dojox.data.XmlStore"
+         url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/users?format=xml&friendsOf=<%=user.getId()%>"
+         jsId="userStore"
+         label="title">
+    </div>
+    <div id="friendsGrid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
+         store="userStore" structure="layoutMembers" query="{}" rowsPerPage="40">
     </div>
 </div>
+<%--<div id="networkTab" dojoType="dijit.layout.ContentPane" title="Network" style="width:650px; height:60ex">--%>
+
+<%--<div id="center-container">--%>
+<%--<div id="infovis">--%>
+<%--<!--[if IE]>--%>
+<%--<script language="javascript" type="text/javascript"--%>
+<%--src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/js/jit/excanvas.js")%>"></script>--%>
+<%--<![endif]-->--%>
+
+<%--<script type="text/javascript"--%>
+<%--src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/js/jit/jit.js")%>"></script>--%>
+<%--<script type="text/javascript"--%>
+<%--src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/js/jit/example1.js")%>"></script>--%>
+<%--<script type="text/javascript">--%>
+<%--dojo.addOnLoad(function() {--%>
+<%--loadGraph();--%>
+<%--});--%>
+<%--</script>--%>
+<%--<div id="log"></div>--%>
+<%--</div>--%>
+<%--</div>--%>
+
+<%--</div>--%>
+</div>
+
 <%
 } else if (cmd.equals(Constants.PRINT)) {
     String successMsg = ParamUtil.getString(request, "successMsg");
