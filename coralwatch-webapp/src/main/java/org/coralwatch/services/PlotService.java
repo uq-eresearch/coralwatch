@@ -121,11 +121,14 @@ public class PlotService {
         TickUnits tickUnits = new TickUnits();
         tickUnits.add(new DateTickUnit(DateTickUnitType.MONTH, 1, new SimpleDateFormat("MM/yyyy")));
         tickUnits.add(new DateTickUnit(DateTickUnitType.MONTH, 3, new SimpleDateFormat("MM/yyyy")));
+        tickUnits.add(new DateTickUnit(DateTickUnitType.MONTH, 6, new SimpleDateFormat("MM/yyyy")));
+        tickUnits.add(new DateTickUnit(DateTickUnitType.MONTH, 12, new SimpleDateFormat("MM/yyyy")));
         tickUnits.add(new DateTickUnit(DateTickUnitType.YEAR, 1, new SimpleDateFormat("MM/yyyy")));
         plot.getDomainAxis().setStandardTickUnits(tickUnits);
         NumberAxis numberAxis = new NumberAxis();
         numberAxis.setAutoRange(false);
         numberAxis.setRange(1, 6);
+        numberAxis.setTickUnit(new NumberTickUnit(0.5));
         plot.setRangeAxis(numberAxis);
         plot.getRangeAxis().setLabel("Average Colour Score");
         plot.getRangeAxis().setLabelFont(new Font(null, Font.PLAIN, titleSize));
