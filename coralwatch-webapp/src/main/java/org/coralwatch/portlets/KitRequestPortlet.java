@@ -2,13 +2,16 @@ package org.coralwatch.portlets;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Constants;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.KitRequest;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.util.AppUtil;
+import org.coralwatch.util.Emailer;
 
+import javax.mail.MessagingException;
 import javax.portlet.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,6 +79,22 @@ public class KitRequestPortlet extends GenericPortlet {
             kitRequest.setNotes(notes);
             kitRequestDao.save(kitRequest);
             AppUtil.clearCache();
+
+            //send confirmation email
+            String line1 = "Dear " + user.getDisplayName() + "\n\n";
+            String line2 = "We have received your kit request. Your kit request details are below." + "\n\n";
+            String line3 = "Kit Type: " + kitType + "\nLanguage: " + language + "\nPostal Address: " + address + ", " + country + "\nNotes: " + (notes == null ? "" : notes);
+            String line4 = "\n\nWe will send you an email when your request is dispatched.\n\nRegards,\nCoralWatch\nhttp://coralwatch.org";
+            String message = line1 + line2 + line3 + line4;
+            try {
+                Emailer.sendEmail(user.getEmail(), "no-reply@coralwatch.org", "CoralWatch Kit Request", message);
+                actionResponse.setRenderParameter("successMsg", "We have received your kit request. We have sent you a confirmation email. Check your email in few minutes.");
+                actionResponse.setRenderParameter(Constants.CMD, Constants.PRINT);
+            } catch (MessagingException e) {
+                _log.fatal("Cannot send email for Password Reset request.");
+            }
+
+
         } else {
             actionRequest.setAttribute("errors", errors);
         }
