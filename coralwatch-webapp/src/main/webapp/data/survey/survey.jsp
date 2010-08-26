@@ -1018,6 +1018,8 @@
                 var mavDiv = dojo.byId("map");
                 var map = new GMap2(mavDiv);
                 map.setMapType(G_HYBRID_MAP);
+                map.addControl(new GSmallMapControl());
+                map.addControl(new GMapTypeControl());
                 map.addControl(new GOverviewMapControl());
                 var center = new GLatLng(<%=survey.getLatitude()%>, <%=survey.getLongitude()%>);
                 var marker = new GMarker(center);
