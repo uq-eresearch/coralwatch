@@ -166,9 +166,7 @@
 <%--</div>--%>
 <%--<br/>--%>
 
-<%--<div id="dialog" dojoType="dijit.Dialog" title="loading..." style="display:none;" align="center">--%>
-<%--<h3 style="text-align:center;">Loading surveys...</h3>--%>
-<%--</div>--%>
+
 <%--<div id="map_canvas" style="height: 650px; border: 2px solid #333333"></div>--%>
 
 <script type="text/javascript"
@@ -197,8 +195,17 @@
     document.getElementsByTagName("head")[0].appendChild(cssNode);
 
     var map, cluster, eventListeners = [], markersArray = [], icon;
+    var dialog;
+    dojo.addOnLoad(function() {
+        dialog = dijit.byId("dialog");
+        dialog.titleBar.style.display = 'none';
+        dialog.show();
+        //        myOnload();
+    });
 
     function myOnload() {
+
+
         if (GBrowserIsCompatible()) {
 
             map = new GMap2(document.getElementById('map'));
@@ -293,7 +300,7 @@
                 json = [];
                 //                            refreshMap();
                 //                            dialog.hide();
-
+                dialog.hide();
             },
             error: function(error) {
                 targetNode.innerHTML = "An unexpected error occurred: " + error;
@@ -304,3 +311,6 @@
 </script>
 
 <div id="map" style="height: 650px; border: 2px solid #333333"></div>
+<div id="dialog" dojoType="dijit.Dialog" title="loading..." style="display:none;" align="center">
+    <h3 style="text-align:center;">Loading surveys...</h3>
+</div>
