@@ -217,12 +217,12 @@
                 map.closeInfoWindow();
             });
 
-            function myClusterClick(args) {
+            function onClusterClick(args) {
                 cluster.defaultClickAction = function() {
                     map.setCenter(args.clusterMarker.getLatLng(), map.getBoundsZoomLevel(args.clusterMarker.clusterGroupBounds))
                     delete cluster.defaultClickAction;
                 }
-                var html = '<div style="height:8em; overflow:auto; width:24em"><h4>' + args.clusteredMarkers.length + ' Surveys:</h4>';
+                var html = '<div style="height:300px; overflow:auto;"><h4>' + args.clusteredMarkers.length + ' Surveys:</h4>';
                 for (var i = 0; i < args.clusteredMarkers.length; i++) {
                     html += '<br/>' + args.clusteredMarkers[i].getTitle() + '<br />' + '<a href="javascript:cluster.triggerClick(' + args.clusteredMarkers[i].index + ')">Zoom to survey</a><hr/>';
                 }
@@ -231,7 +231,7 @@
             }
 
             //	create a ClusterMarker
-            cluster = new ClusterMarker(map, {clusterMarkerTitle:'Click to see info about %count locations' , clusterMarkerClick:myClusterClick });
+            cluster = new ClusterMarker(map, {clusterMarkerTitle:'Click to see list of %count surveys' , clusterMarkerClick:onClusterClick });
 
             icon = new GIcon();
             icon.shadow = 'http://googlemapsapi.martinpearman.co.uk/maps/clustermarker/images/icon_shadow.png';
@@ -244,8 +244,8 @@
         }
     }
 
-    function newMarker(markerLocation, title, markerIcon) {
-        var marker = new GMarker(markerLocation, {title:title, icon:markerIcon});
+    function newMarker(markerLocation, title, summary, markerIcon) {
+        var marker = new GMarker(markerLocation, {title:"Click to see survey", summary:summary, icon:markerIcon});
         eventListeners.push(GEvent.addListener(marker, 'click', function() {
             marker.openInfoWindowHtml(title);
         }));
@@ -272,11 +272,9 @@
 
                 var json = [];
                 var icon = new GIcon(G_DEFAULT_ICON);
-                icon.image = "http://chart.apis.google.com/chart?cht=mm&chs=24x32&chco=FFFFFF,008CFF,000000&ext=.png";
 
-                var marker, newIcon, j = 1;
+                var marker;
                 for (var i = 0; i < surveyList.surveys.length; i++) {
-                    newIcon = new GIcon(icon, 'http://googlemapsapi.martinpearman.co.uk/maps/clustermarker/images/icon_' + j + '.png');
                     var survey = surveyList.surveys[i];
                     var baseUrl = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>";
                     var piechartUrl = baseUrl + "/graph?type=survey&id=" + survey.id + "&chart=shapePie&width=128&height=128&labels=false&legend=true&titleSize=11";
@@ -284,13 +282,9 @@
                     var numberOfRecs = parseInt(survey.records);
                     var graphs = numberOfRecs <= 0 ? "" : "<br /><img src=\"" + piechartUrl + "\" alt=\"Shape Distribution\" width=\"128\" height=\"128\"/><img src=\"" + coralcountchartUrl + "\" alt=\"Shape Distribution\" width=\"128\" height=\"128\"/>";
                     var title = "<b>" + survey.reef + " (" + survey.country + ")</b><br />- <a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + survey.id + "\">" + numberOfRecs + " Record(s)</a><br />- " + survey.date + graphs + "<br/><div dojoType='dojox.form.Rating' numStars='5' value='1'></div>";
-
-                    marker = newMarker(new GLatLng(survey.latitude, survey.longitude), title, newIcon);
+                    var summary = (i + 1) + ". <b>" + survey.reef + " (" + survey.country + ")</b>," + numberOfRecs + " Record(s)";
+                    marker = newMarker(new GLatLng(survey.latitude, survey.longitude), title, summary, icon);
                     markersArray.push(marker);
-                    j++;
-                    if (j > 26) {
-                        j = 1;
-                    }
                 }
                 cluster.removeMarkers();
                 cluster.addMarkers(markersArray);

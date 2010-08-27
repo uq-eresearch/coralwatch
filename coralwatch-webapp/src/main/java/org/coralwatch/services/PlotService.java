@@ -169,7 +169,7 @@ public class PlotService {
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundAlpha(0);
         plot.setRangeGridlinePaint(Color.GRAY);
-        plot.getRangeAxis().setLabel("Coral Sampled (%)");
+        plot.getRangeAxis().setLabel("Frequency (%)");
         plot.getRangeAxis().setLabelFont(new Font(null, Font.PLAIN, titleSize));
         plot.getDomainAxis().setLabel("Colour Score");
         plot.getDomainAxis().setLabelFont(new Font(null, Font.PLAIN, titleSize));
