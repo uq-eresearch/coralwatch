@@ -145,16 +145,20 @@ public class PlotService {
         for (int i = 1; i <= 6; i++) {
             dataset.setValue(0, rowKey, String.valueOf(i));
         }
+        int totalRecords = 0;
         for (Survey survey : surveys) {
-            for (SurveyRecord record : survey.getDataset()) {
-                int num = (int) (0.5 + (record.getDarkestNumber() + record
-                        .getLightestNumber()) / 2d);
+            List<SurveyRecord> records = survey.getDataset();
+            totalRecords = totalRecords + records.size();
+            for (SurveyRecord record : records) {
+                int num = (int) (0.5 + (record.getDarkestNumber() + record.getLightestNumber()) / 2d);
                 String columnKey = String.valueOf(num);
-                dataset.setValue(
-                        dataset.getValue(rowKey, columnKey).intValue() + 1,
-                        rowKey, columnKey);
+                dataset.setValue(dataset.getValue(rowKey, columnKey).intValue() + 1, rowKey, columnKey);
             }
         }
+        for (int i = 1; i <= 6; i++) {
+            dataset.setValue((dataset.getValue(rowKey, String.valueOf(i)).doubleValue() / totalRecords) * 100, rowKey, String.valueOf(i));
+        }
+
         String chartTitle = "Colour Distribution";
         if (surveys.size() > 1) {
             chartTitle = "Colour Distribution of All Surveys";
@@ -165,13 +169,14 @@ public class PlotService {
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundAlpha(0);
         plot.setRangeGridlinePaint(Color.GRAY);
-        plot.getRangeAxis().setLabel("Number of Coral Sampled");
+        plot.getRangeAxis().setLabel("Coral Sampled (% of " + totalRecords + ")");
         plot.getRangeAxis().setLabelFont(new Font(null, Font.PLAIN, titleSize));
         plot.getDomainAxis().setLabel("Colour Score");
         plot.getDomainAxis().setLabelFont(new Font(null, Font.PLAIN, titleSize));
 
         TickUnits tickUnits = new TickUnits();
-        double[] ticks = new double[]{1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 1000000, 500000};
+//        double[] ticks = new double[]{1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 1000000, 500000};
+        double[] ticks = new double[]{10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
         for (double d : ticks) {
             tickUnits.add(new NumberTickUnit(d));
         }
