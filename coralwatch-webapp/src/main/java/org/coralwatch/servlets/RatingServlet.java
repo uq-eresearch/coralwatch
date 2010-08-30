@@ -41,7 +41,7 @@ public class RatingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AppUtil.clearCache();
-        resp.setContentType("text/plain");
+        resp.setContentType("text/plain;charset=utf-8");
         PrintWriter out = resp.getWriter();
         try {
             String cmd = req.getParameter("cmd");

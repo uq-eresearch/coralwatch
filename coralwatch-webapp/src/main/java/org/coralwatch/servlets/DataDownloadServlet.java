@@ -28,7 +28,7 @@ public class DataDownloadServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AppUtil.clearCache();
-        response.setContentType("application/vnd.ms-excel");
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
         ReefDao reefDao = CoralwatchApplication.getConfiguration().getReefDao();
         long id = Long.valueOf(request.getParameter("id"));
         Reef reef = reefDao.getById(id);

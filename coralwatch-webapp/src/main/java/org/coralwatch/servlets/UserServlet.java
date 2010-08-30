@@ -41,10 +41,11 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         AppUtil.clearCache();
-        PrintWriter out = res.getWriter();
+
         String format = req.getParameter("format");
         if (format.equals("xml")) {
-            res.setContentType("text/xml");
+            res.setContentType("text/xml;charset=utf-8");
+            PrintWriter out = res.getWriter();
             try {
                 DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = builderFactory.newDocumentBuilder();

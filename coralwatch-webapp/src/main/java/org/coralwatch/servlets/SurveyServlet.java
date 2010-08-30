@@ -41,12 +41,13 @@ public class SurveyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         AppUtil.clearCache();
-        PrintWriter out = res.getWriter();
+
         SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
         Random rand = new Random();
         String format = req.getParameter("format");
         if (format.equals("json")) {
-            res.setContentType("application/json");
+            res.setContentType("application/json;charset=utf-8");
+            PrintWriter out = res.getWriter();
             JSONArray surveys = new JSONArray();
             List<Survey> listOfSurveys = surveyDao.getAll();
             int count = 0;
@@ -79,7 +80,8 @@ public class SurveyServlet extends HttpServlet {
             }
             out.print(data);
         } else if (format.equals("xml")) {
-            res.setContentType("text/xml");
+            res.setContentType("text/xml;charset=utf-8");
+            PrintWriter out = res.getWriter();
             try {
                 String userIdStr = req.getParameter("createdByUserId");
                 long createdByUserId = Long.valueOf(userIdStr == null ? "-1" : userIdStr);
@@ -108,7 +110,6 @@ public class SurveyServlet extends HttpServlet {
                 if (reef != null) {
                     listOfSurveys = reefDao.getSurveysByReef(reef);
                 }
-
                 for (Survey srv : listOfSurveys) {
                     Element survey = doc.createElement("survey");
                     root.appendChild(survey);
