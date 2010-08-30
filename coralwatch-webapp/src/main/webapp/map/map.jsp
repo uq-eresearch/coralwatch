@@ -224,7 +224,7 @@
                 }
                 var html = '<div style="height:300px; overflow:auto;"><h4>' + args.clusteredMarkers.length + ' Surveys:</h4>';
                 for (var i = 0; i < args.clusteredMarkers.length; i++) {
-                    html += '<br/>' + args.clusteredMarkers[i].getTitle() + '<br />' + '<a href="javascript:cluster.triggerClick(' + args.clusteredMarkers[i].index + ')">Zoom to survey</a><hr/>';
+                    html += '<a href="javascript:cluster.triggerClick(' + args.clusteredMarkers[i].index + ')">' + args.clusteredMarkers[i].getTitle() + '</a><br/>';
                 }
                 html += '<br /><a href="javascript:void(0)" onclick="cluster.defaultClickAction()">Fit map</a> to show these locations</div>';
                 map.openInfoWindowHtml(args.clusterMarker.getLatLng(), html);
@@ -244,10 +244,10 @@
         }
     }
 
-    function newMarker(markerLocation, title, summary, markerIcon) {
-        var marker = new GMarker(markerLocation, {title:"Click to see survey", summary:summary, icon:markerIcon});
+    function newMarker(markerLocation, title, content, markerIcon) {
+        var marker = new GMarker(markerLocation, {title:title, icon:markerIcon});
         eventListeners.push(GEvent.addListener(marker, 'click', function() {
-            marker.openInfoWindowHtml(title);
+            marker.openInfoWindowHtml(content);
         }));
         return marker;
     }
@@ -281,9 +281,10 @@
                     var coralcountchartUrl = baseUrl + "/graph?type=survey&id=" + survey.id + "&chart=coralCount&width=128&height=128&legend=false&titleSize=11";
                     var numberOfRecs = parseInt(survey.records);
                     var graphs = numberOfRecs <= 0 ? "" : "<br /><img src=\"" + piechartUrl + "\" alt=\"Shape Distribution\" width=\"128\" height=\"128\"/><img src=\"" + coralcountchartUrl + "\" alt=\"Shape Distribution\" width=\"128\" height=\"128\"/>";
-                    var title = "<b>" + survey.reef + " (" + survey.country + ")</b><br />- <a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + survey.id + "\">" + numberOfRecs + " Record(s)</a><br />- " + survey.date + graphs + "<br/><div dojoType='dojox.form.Rating' numStars='5' value='1'></div>";
-                    var summary = (i + 1) + ". <b>" + survey.reef + " (" + survey.country + ")</b>," + numberOfRecs + " Record(s)";
-                    marker = newMarker(new GLatLng(survey.latitude, survey.longitude), title, summary, icon);
+                <%--var title = "<b>" + survey.reef + " (" + survey.country + ")</b><br />- <a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + survey.id + "\">" + numberOfRecs + " Record(s)</a><br />- " + survey.date + graphs + "<br/><div dojoType='dojox.form.Rating' numStars='5' value='1'></div>";--%>
+                    var content = "<b>" + survey.reef + " (" + survey.country + ")</b><br />- <a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + survey.id + "\">" + numberOfRecs + " Record(s)</a><br />- " + survey.date + graphs + "<br/><div dojoType='dojox.form.Rating' numStars='5' value='1'></div>";
+                    var title = "- <b>" + survey.reef + " (" + survey.country + ")</b>, " + numberOfRecs + " Sample(s)";
+                    marker = newMarker(new GLatLng(survey.latitude, survey.longitude), title, content, icon);
                     markersArray.push(marker);
                 }
                 cluster.removeMarkers();
