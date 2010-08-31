@@ -53,18 +53,19 @@ public class ReputationService {
     public static void calculateSystemRating(UserImpl ratee) {
         Double rating = 0.0;
         //1. Get rating of user's metadata
-        rating = rating + getProfileCompletenesRating(ratee);
+        Double profileRating = getProfileCompletenesRating(ratee);
 
-        //Get rating of user's data
+        //2. Get rating of user's data
 
-        //Get rating of user's amount of data
+        //3. Get rating of user's amount of data
+        Double amountOfDataRating = getUserAmountOfDataRating(ratee);
+
+        //4. Get rating of user's frequency of contribution
+
+        //5. Get rating of user's role
 
 
-        //Get rating of user's frequency of contribution
-
-        //Get rating of user's role
-
-//        LOGGER.info("Ratee: " + ratee.getDisplayName() + " System Rating " + rating);
+        rating = ((profileRating + amountOfDataRating) / 2);
         UserReputationProfile userReputationProfile = userReputationProfileDao.getByRatee(ratee);
         if (userReputationProfile == null) {
             userReputationProfile = new UserReputationProfile(ratee);
@@ -181,13 +182,30 @@ public class ReputationService {
         return ((score / 6) * Constants.STAR_RATING_MAX_VALUE);
     }
 
-    private static Double getAmountOfDataRating() {
+    private static Double getUserAmountOfDataRating(UserImpl ratee) {
         Double score = 0.0;
-
+        UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
         //Amount of data rating is calculated based on the number surveys contributed by this user compared to
         //The number of surveys contributed by the highest contributor in the system
-
-
+        UserImpl highestContributor = getHighestContributor();
+        long highestNumberOfSurveys = userDao.getNumberOfSurveys(highestContributor);
+        long userNumberOfSurveys = userDao.getNumberOfSurveys(ratee);
+        score = ((userNumberOfSurveys / highestNumberOfSurveys) * Constants.STAR_RATING_MAX_VALUE);
         return score;
+    }
+
+    public static UserImpl getHighestContributor() {
+        UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
+        List<UserImpl> users = userDao.getAll();
+        UserImpl highestContributor = null;
+        long numberOfSurveys = 0;
+        for (UserImpl user : users) {
+            long userSurveys = userDao.getNumberOfSurveys(user);
+            if (userSurveys >= numberOfSurveys) {
+                highestContributor = user;
+                numberOfSurveys = userSurveys;
+            }
+        }
+        return highestContributor;
     }
 }

@@ -6,6 +6,7 @@ import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
 
+import javax.persistence.NoResultException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -55,6 +56,19 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao, Serializabl
         }
         assert resultList.size() == 1 : "Email should be unique";
         return (UserImpl) resultList.get(0);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Long getNumberOfSurveys(UserImpl user) {
+        try {
+            Long numberOfSurveys = (Long) entityManagerSource.getEntityManager().createQuery(
+                    "SELECT COUNT(s.id) FROM Survey s WHERE s.creator = :user")
+                    .setParameter("user", user).getSingleResult();
+            return numberOfSurveys == null ? 0 : numberOfSurveys.longValue();
+        } catch (NoResultException ex) {
+            return -1L;
+        }
     }
 
 }
