@@ -9,6 +9,7 @@ import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
+import org.coralwatch.services.ReputationService;
 import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
@@ -41,6 +42,8 @@ public class StatsUpdatePortlet extends GenericPortlet {
         renderRequest.setAttribute("users", users == null ? 0 : users.size());
         renderRequest.setAttribute("reefs", reefs == null ? 0 : reefs.size());
         renderRequest.setAttribute("surveys", surveys == null ? 0 : surveys.size());
+        renderRequest.setAttribute("highestContributor", ReputationService.getHighestContributor());
+        renderRequest.setAttribute("userUrl", prefs.getValue("userUrl", "user"));
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
         renderRequest.setAttribute("reefUrl", prefs.getValue("reefUrl", "reef"));
         include(viewJSP, renderRequest, renderResponse);
