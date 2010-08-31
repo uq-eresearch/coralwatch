@@ -70,7 +70,7 @@
     <h2 style="margin-top:0;">Edit User Profile</h2>
     <br/>
 
-    <p style="text-align:justify;">CoralWatch requires all users to provide real contact details to encourage
+    <p style="text-align:justify;">CoralWatch requires all members to provide real contact details to encourage
         authenticity of data. Your profile is protected from others.</p>
     <input name="userId" type="hidden" value="<%= userId %>"/>
     <%
@@ -79,7 +79,7 @@
     <h2 style="margin-top:0;">Sign Up</h2>
     <br/>
 
-    <p style="text-align:justify;">CoralWatch requires all users to provide real contact details to encourage
+    <p style="text-align:justify;">CoralWatch requires all members to provide real contact details to encourage
         authenticity of data. Your profile is protected from others.</p>
     <%
         }
@@ -570,7 +570,7 @@
 <%
 } else {
 %>
-<h2 style="margin-top:0;">All Users</h2>
+<h2 style="margin-top:0;">All Members</h2>
 <script>
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.data.XmlStore");
