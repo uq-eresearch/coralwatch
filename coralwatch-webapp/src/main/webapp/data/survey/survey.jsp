@@ -703,9 +703,9 @@
             </td>
         </tr>
         <tr>
-            <th>QA Status:</th>
+            <th>Quality Status:</th>
             <td><span
-                    style="color:#ff0000;"><%=survey.getQaState().equalsIgnoreCase("Post Migration") ? "New" : "Migrated"%></span>
+                    style="color:#ff0000;"><%=survey.getQaState().equalsIgnoreCase("Post Migration") ? "Data submitted on the new CoralWatch website" : "Data migrated from the old CoralWatch website"%></span>
             </td>
         </tr>
         <%
