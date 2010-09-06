@@ -104,7 +104,9 @@
             function() {
                 dojo.byId("groupName").focus();
                 dojo.byId("latitude").style.display = 'inline';
-                dijit.byId('date').constraints.max = new Date();
+                var now = new Date();
+                dijit.byId('date').constraints.max = now;
+                //                dijit.byId('time').constraints.max = 'T' + now.getHours() + ':' + now.getMinutes()+ ':00';
                 updateLonFromDecimal();
                 updateLatFromDecimal();
                 updateFTemperature();
@@ -171,7 +173,7 @@
         <option selected="selected" value=""></option>
         <option value="Dive Centre">Dive Centre</option>
         <option value="Scientist">Scientist</option>
-        <option value="Ecological Manufacturing Group">Ecological Manufacturing Group</option>
+        <option value="Conservation Group">Conservation Group</option>
         <option value="School/University">School/University</option>
         <option value="Tourist">Tourist</option>
         <option value="Other">Other</option>
@@ -1047,6 +1049,32 @@
     <%
     } else {
     %>
+    <%--<div id="map" style="width: 640px; height: 53ex">--%>
+    <%--<script type="text/javascript">--%>
+    <%--if (GBrowserIsCompatible()) {--%>
+    <%--var mavDiv = dojo.byId("map");--%>
+    <%--var map = new GMap2(mavDiv);--%>
+    <%--map.setMapType(G_HYBRID_MAP);--%>
+    <%--map.addControl(new GSmallMapControl());--%>
+    <%--map.addControl(new GMapTypeControl());--%>
+    <%--map.addControl(new GOverviewMapControl());--%>
+
+    <%--var searchText = "<%=(survey.getReef().getName().toLowerCase().startsWith("unknown") ? "" : survey.getReef().getName()) + (", " + survey.getReef().getCountry()) %>";--%>
+    <%--var geo = new GClientGeocoder();--%>
+    <%--var possibleLocatin;--%>
+    <%--geo.getLocations(searchText, function (result) {--%>
+    <%--var possibleCenter = result.Placemark[0].Point.coordinates;--%>
+    <%--map.setCenter(new GLatLng(possibleCenter[1], possibleCenter[0]), 5);--%>
+    <%--for (var i = 0; i < result.Placemark.length; i++) {--%>
+    <%--var possibleLocation = result.Placemark[i].Point.coordinates;--%>
+    <%--var location = new GLatLng(possibleLocation[1], possibleLocation[0]);--%>
+    <%--var marker = new GMarker(location);--%>
+    <%--map.addOverlay(marker);--%>
+    <%--}--%>
+    <%--});--%>
+    <%--}--%>
+    <%--</script>--%>
+    <%--</div>--%>
     <p>No GPS data available for this survey.</p>
     <%}%>
 </div>
@@ -1124,7 +1152,7 @@
                 name: "Records",
                 width: 5,
                 formatter: function(item) {
-                    return item.toString();
+                    return Number(item.toString());
                 }
             },
             {
