@@ -6,6 +6,7 @@
     int users = Integer.parseInt(renderRequest.getAttribute("users").toString());
     int reefs = Integer.parseInt(renderRequest.getAttribute("reefs").toString());
     int surveys = Integer.parseInt(renderRequest.getAttribute("surveys").toString());
+    int records = Integer.parseInt(renderRequest.getAttribute("records").toString());
     UserImpl highestContributor = (UserImpl) renderRequest.getAttribute("highestContributor");
 %>
 <div>
@@ -20,7 +21,8 @@
         <li><a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch"><%=surveys%>
             Survey<%=surveys > 1 ? "s" : ""%>
         </a></li>
-        <li>Highest Contribution: <a
+        <li><%=records%> Coral<%=records > 1 ? "s" : ""%> Sampled</li>
+        <li>Highest Contributor: <a
                 href="<%=renderRequest.getAttribute("userUrl")%>?p_p_id=surveyportlet_WAR_coralwatch"><%=highestContributor.getDisplayName()%>
         </a></li>
     </ul>

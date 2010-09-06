@@ -5,9 +5,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
+import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.services.ReputationService;
 import org.coralwatch.util.AppUtil;
@@ -23,6 +25,7 @@ public class StatsUpdatePortlet extends GenericPortlet {
     protected UserDao userDao;
     protected ReefDao reefDao;
     protected SurveyDao surveyDao;
+    private SurveyRecordDao surveyRecordDao;
 
     @Override
     public void init() throws PortletException {
@@ -30,6 +33,7 @@ public class StatsUpdatePortlet extends GenericPortlet {
         userDao = CoralwatchApplication.getConfiguration().getUserDao();
         reefDao = CoralwatchApplication.getConfiguration().getReefDao();
         surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
+        surveyRecordDao = CoralwatchApplication.getConfiguration().getSurveyRecordDao();
     }
 
     @Override
@@ -39,9 +43,11 @@ public class StatsUpdatePortlet extends GenericPortlet {
         List<UserImpl> users = userDao.getAll();
         List<Reef> reefs = reefDao.getAll();
         List<Survey> surveys = surveyDao.getAll();
+        List<SurveyRecord> records = surveyRecordDao.getAll();
         renderRequest.setAttribute("users", users == null ? 0 : users.size());
         renderRequest.setAttribute("reefs", reefs == null ? 0 : reefs.size());
         renderRequest.setAttribute("surveys", surveys == null ? 0 : surveys.size());
+        renderRequest.setAttribute("records", records == null ? 0 : records.size());
         renderRequest.setAttribute("highestContributor", ReputationService.getHighestContributor());
         renderRequest.setAttribute("userUrl", prefs.getValue("userUrl", "user"));
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
