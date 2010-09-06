@@ -217,6 +217,12 @@
                 map.closeInfoWindow();
             });
 
+            var mt = map.getMapTypes();
+            for (var i = 0; i < mt.length; i++) {
+                mt[i].getMinimumResolution = function() {
+                    return 2;
+                }
+            }
             function onClusterClick(args) {
                 cluster.defaultClickAction = function() {
                     map.setCenter(args.clusterMarker.getLatLng(), map.getBoundsZoomLevel(args.clusterMarker.clusterGroupBounds))
