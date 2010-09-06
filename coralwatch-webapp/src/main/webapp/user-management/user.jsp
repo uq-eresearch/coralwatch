@@ -389,6 +389,9 @@
             <td><%= user.getPositionDescription() == null ? "Not Set" : user.getPositionDescription()%>
             </td>
         </tr>
+        <%
+            if (currentUser != null && (user.equals(currentUser) || currentUser.isSuperUser())) {
+        %>
         <tr>
             <th>Address:</th>
             <td><%= user.getAddress() == null ? "Not Set" : user.getAddress()%>
@@ -399,6 +402,9 @@
             <td><%= user.getPhone() == null ? "Not Set" : user.getPhone()%>
             </td>
         </tr>
+        <%
+            }
+        %>
         <tr>
             <th>Country:</th>
             <td><%= user.getCountry() == null ? "Not Set" : user.getCountry()%>

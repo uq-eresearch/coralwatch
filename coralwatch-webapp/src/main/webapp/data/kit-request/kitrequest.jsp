@@ -185,21 +185,6 @@
                             href="mailto:info@coralwatch.org">info@coralwatch.org</a> to request it to be mailed to you.
                 </td>
             </tr>
-            <%--<tr>--%>
-            <%--<td colspan="2"><textarea name="conditions"--%>
-            <%--id="conditions"--%>
-            <%--dojoType="dijit.form.SimpleTextarea"--%>
-            <%--style="width: 100%;"--%>
-            <%--readonly="readonly">--%>
-            <%--<jsp:include page="terms_conditions.txt"/>--%>
-            <%--</textarea>--%>
-            <%--</td>--%>
-            <%--</tr>--%>
-            <%--<tr>--%>
-            <%--<td colspan="2"><input type="checkbox" name="agreement" id="agreement" required="true"--%>
-            <%--dojoType="dijit.form.CheckBox"/><label> I agree to the terms and--%>
-            <%--conditions.</label></td>--%>
-            <%--</tr>--%>
             <tr>
                 <td colspan="2"><input type="submit" name="submit" value="Submit"/></td>
             </tr>
