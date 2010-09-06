@@ -336,8 +336,9 @@
         </tr>
         <tr>
             <td></td>
-            <td>If no GPS device used at the survey location, click on "Without GPS Device" to use a map to estimate
-                your survey location by zooming in and clicking on the survey location. Then close the map.
+            <td>If no GPS device used, click on "Without GPS Device" to use a map locator to estimate
+                your survey location by double clicking on the map to zoom in one level at a time to find your location.
+                Then close the map.
             </td>
         </tr>
     </table>
