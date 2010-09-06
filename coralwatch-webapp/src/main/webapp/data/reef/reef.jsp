@@ -64,7 +64,22 @@
             dojo.require("dojox.grid.DataGrid");
             dojo.require("dojox.data.XmlStore");
             dojo.require("dojo.date.locale");
-
+            dojo.require("dojo.parser");
+            dojo.addOnLoad(function() {
+                //        grid.setSortIndex(1, true);
+                surveyStore.comparatorMap = {};
+                surveyStore.comparatorMap["records"] = function(a, b) {
+                    var ret = 0;
+                    if (Number(a) > Number(b)) {
+                        ret = 1;
+                    }
+                    if (Number(a) < Number(b)) {
+                        ret = -1;
+                    }
+                    return ret;
+                };
+                //                surveygrid.setSortIndex(0, true);
+            });
             var dateFormatter = function(data) {
                 return dojo.date.locale.format(new Date(Number(data)), {
                     datePattern: "dd MMM yyyy",
@@ -74,6 +89,23 @@
             };
             var layoutSurveys = [
                 [
+
+                    {
+                        field: "country",
+                        name: "Country",
+                        width: 10,
+                        formatter: function(item) {
+                            return item.toString();
+                        }
+                    },
+                    {
+                        field: "reef",
+                        name: "Reef",
+                        width: 10,
+                        formatter: function(item) {
+                            return item.toString();
+                        }
+                    },
                     {
                         field: "surveyor",
                         name: "Surveyor",
@@ -88,22 +120,6 @@
                         width: 10,
                         formatter: dateFormatter
 
-                    },
-                    {
-                        field: "reef",
-                        name: "Reef",
-                        width: 10,
-                        formatter: function(item) {
-                            return item.toString();
-                        }
-                    },
-                    {
-                        field: "country",
-                        name: "Country",
-                        width: 10,
-                        formatter: function(item) {
-                            return item.toString();
-                        }
                     },
                     {
                         field: "records",
@@ -193,20 +209,37 @@
     dojo.require("dijit.form.TextBox");
     dojo.require("dijit.form.Button");
     dojo.require("dojo.date.locale");
+    dojo.require("dojo.parser");
+
+    dojo.addOnLoad(function() {
+        //        grid.setSortIndex(1, true);
+        reefStore.comparatorMap = {};
+        reefStore.comparatorMap["surveys"] = function(a, b) {
+            var ret = 0;
+            if (Number(a) > Number(b)) {
+                ret = 1;
+            }
+            if (Number(a) < Number(b)) {
+                ret = -1;
+            }
+            return ret;
+        };
+        //        reefgrid.setSortIndex(0, true);
+    });
     var layoutReefs = [
         [
             {
-                field: "name",
-                name: "Reef Name",
-                width: 15,
+                field: "country",
+                name: "Country",
+                width: 10,
                 formatter: function(item) {
                     return item.toString();
                 }
             },
             {
-                field: "country",
-                name: "Country",
-                width: 10,
+                field: "name",
+                name: "Reef Name",
+                width: 15,
                 formatter: function(item) {
                     return item.toString();
                 }
@@ -255,15 +288,15 @@
             return false;
             }
         </script>
-        Reef Name: <input type="text"
-                          id="reefFilterField"
-                          name="reefFilterField"
-                          style="width:100px;"
-                          dojoType="dijit.form.TextBox"
-                          trim="true"
-                          value=""/> Country: <input type="text"
-                                                     id="countryFilterField"
-                                                     name="countryFilterField"
+        Country: <input type="text"
+                        id="countryFilterField"
+                        name="countryFilterField"
+                        style="width:100px;"
+                        dojoType="dijit.form.TextBox"
+                        trim="true"
+                        value=""/> Reef Name: <input type="text"
+                                                     id="reefFilterField"
+                                                     name="reefFilterField"
                                                      style="width:100px;"
                                                      dojoType="dijit.form.TextBox"
                                                      trim="true"

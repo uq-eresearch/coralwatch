@@ -160,7 +160,8 @@
                dojoType="dijit.form.ValidationTextBox"
                regExp="...*"
                invalidMessage="Enter the name of the group you are participating with"
-               value="<%=groupName == null ? "" : groupName%>"/></td>
+               value="<%=groupName == null ? "" : groupName%>"/> Enter your own name if you do not belong to a group.
+    </td>
 </tr>
 <tr>
     <th><label for="participatingAs">Participating As:</label></th>
@@ -1104,9 +1105,22 @@
     dojo.require("dojox.data.XmlStore");
     dojo.require("dojox.form.Rating");
     dojo.require("dojo.date.locale");
-    //    dojo.addOnLoad(function() {
-    //        dijit.byId("grid").setSortIndex(1);
-    //    });
+    dojo.require("dojo.parser");
+
+    dojo.addOnLoad(function() {
+        //        grid.setSortIndex(1, true);
+        surveyStore.comparatorMap = {};
+        surveyStore.comparatorMap["records"] = function(a, b) {
+            var ret = 0;
+            if (Number(a) > Number(b)) {
+                ret = 1;
+            }
+            if (Number(a) < Number(b)) {
+                ret = -1;
+            }
+            return ret;
+        }
+    });
     var dateFormatter = function(data) {
         return dojo.date.locale.format(new Date(Number(data)), {
             datePattern: "dd MMM yyyy",
@@ -1117,6 +1131,23 @@
 
     var layoutSurveys = [
         [
+
+            {
+                field: "country",
+                name: "Country",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
+            {
+                field: "reef",
+                name: "Reef",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
             {
                 field: "surveyor",
                 name: "Surveyor",
@@ -1131,22 +1162,6 @@
                 width: 10,
                 formatter: dateFormatter
 
-            },
-            {
-                field: "reef",
-                name: "Reef",
-                width: 10,
-                formatter: function(item) {
-                    return item.toString();
-                }
-            },
-            {
-                field: "country",
-                name: "Country",
-                width: 10,
-                formatter: function(item) {
-                    return item.toString();
-                }
             },
             {
                 field: "records",
@@ -1192,21 +1207,21 @@
             return false;
             }
         </script>
-        Surveyor: <input type="text"
-                         id="surveyorFilterField"
-                         name="surveyorFilterField"
-                         style="width:100px;"
-                         dojoType="dijit.form.TextBox"
-                         trim="true"
-                         value=""/> Reef Name: <input type="text"
-                                                      id="reefFilterField"
-                                                      name="reefFilterField"
-                                                      style="width:100px;"
-                                                      dojoType="dijit.form.TextBox"
-                                                      trim="true"
-                                                      value=""/> Country: <input type="text"
-                                                                                 id="countryFilterField"
-                                                                                 name="countryFilterField"
+        Country: <input type="text"
+                        id="countryFilterField"
+                        name="countryFilterField"
+                        style="width:100px;"
+                        dojoType="dijit.form.TextBox"
+                        trim="true"
+                        value=""/> Reef Name: <input type="text"
+                                                     id="reefFilterField"
+                                                     name="reefFilterField"
+                                                     style="width:100px;"
+                                                     dojoType="dijit.form.TextBox"
+                                                     trim="true"
+                                                     value=""/> Surveyor: <input type="text"
+                                                                                 id="surveyorFilterField"
+                                                                                 name="surveyorFilterField"
                                                                                  style="width:100px;"
                                                                                  dojoType="dijit.form.TextBox"
                                                                                  trim="true"
@@ -1220,6 +1235,9 @@
 <div dojoType="dojox.data.XmlStore"
      url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/surveys?format=xml&createdByUserId=<%=createdByUserId%>"
      jsId="surveyStore" label="title">
+    <script type="dojo/method" event="onLoad">
+        grid.setSortIndex(1, true);
+    </script>
 </div>
 <div id="grid" jsId="grid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
      store="surveyStore" structure="layoutSurveys" query="{}" rowsPerPage="40">
