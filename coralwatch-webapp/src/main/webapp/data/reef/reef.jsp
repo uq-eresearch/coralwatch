@@ -224,7 +224,7 @@
                 name: "View",
                 width: 10,
                 formatter: function(item) {
-                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("reefUrl")%>?p_p_id=reefportlet_WAR_coralwatch&_reefportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_reefportlet_WAR_coralwatch_reefId=" + item.toString() + "\">More info</a>";
+                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("reefUrl")%>?p_p_id=reefportlet_WAR_coralwatch&_reefportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_reefportlet_WAR_coralwatch_reefId=" + item.toString() + "\">Graphs</a>";
                     return viewURL;
                 }
             },
@@ -233,7 +233,7 @@
                 name: "Download",
                 width: 10,
                 formatter: function(item) {
-                    var downloadUrl = "<a href=\"<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/data-download?id=" + item.toString() + "\">Download Data</a>";
+                    var downloadUrl = "<a href=\"<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/data-download?id=" + item.toString() + "\">Raw Data</a>";
                     return downloadUrl;
                 }
             }
