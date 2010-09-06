@@ -22,7 +22,7 @@
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 %>
-<h2>Kit Request</h2>
+<h2>Chart Request</h2>
 <%
     if (errors != null && errors.size() > 0) {
         for (String error : errors) {
@@ -37,7 +37,7 @@
     List<KitRequest> userKitRequests = kitRequestDao.getByRequester(currentUser);
     if (userKitRequests.size() > 0) {
 %>
-<div id="mykitrequest" dojoType="dijit.layout.ContentPane" title="My Kit Requests" style="width:670px; height:60ex">
+<div id="mykitrequest" dojoType="dijit.layout.ContentPane" title="My Chart Requests" style="width:670px; height:60ex">
     <table class="coralwatch_list_table">
         <tr>
             <th>#</th>
@@ -78,11 +78,11 @@
 <%
     }
 %>
-<div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Kit Request" style="width:670px; height:60ex">
+<div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Chart Request" style="width:670px; height:60ex">
     <%
         if (currentUser == null) {
     %>
-    <div><span class="portlet-msg-error">You must sign in to submit a kit request.</span></div>
+    <div><span class="portlet-msg-error">You must sign in to submit a chart request.</span></div>
     <%
         }
     %>
@@ -101,7 +101,7 @@
                 }
             %>
             if(!isLoggedIn) {
-            alert('You must sign in before you can submit a kit request.');
+            alert('You must sign in before you can submit a chart request.');
             return false;
             }
             if(!this.validate()){
@@ -112,7 +112,7 @@
         </script>
         <table>
             <tr>
-                <td><label for="kitType">Requesting <span style="color:#FF0000">*</span></label></td>
+                <th><label for="kitType">Requesting <span style="color:#FF0000">*</span></label></th>
                 <td><select name="kitType" id="kitType"
                             required="true"
                             dojoType="dijit.form.ComboBox"
@@ -123,9 +123,12 @@
                     <option value="Do It Yourself Kit">Do It Yourself Kit</option>
                 </select>
                 </td>
+                <td rowspan="5"><a href="http://coralwatch.org/web/guest/monitoring-materials"><img alt="Chart request"
+                                                                                                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/image/chart_request.jpeg")%>"/></a>
+                </td>
             </tr>
             <tr>
-                <td><label for="language">Language:</label></td>
+                <th><label for="language">Language:</label></th>
                 <td><select name="language" id="language"
                             required="true"
                             dojoType="dijit.form.ComboBox"
@@ -140,20 +143,20 @@
                 </td>
             </tr>
             <tr>
-                <td width="10%"><label for="address">Postal Address</label></td>
-                <td width="90%"><input type="text"
-                                       name="address"
-                                       id="address"
-                                       required="true"
-                                       style="width:300px"
-                                       dojoType="dijit.form.ValidationTextBox"
-                                       invalidMessage="Address is required."
-                                       trim="true"
-                                       value="<%=currentUser == null || currentUser.getAddress() == null? "" :  currentUser.getAddress()%>"/>
+                <th><label for="address">Postal Address</label></th>
+                <td><input type="text"
+                           name="address"
+                           id="address"
+                           required="true"
+                           style="width:300px"
+                           dojoType="dijit.form.ValidationTextBox"
+                           invalidMessage="Address is required."
+                           trim="true"
+                           value="<%=currentUser == null || currentUser.getAddress() == null? "" :  currentUser.getAddress()%>"/>
                 </td>
             </tr>
             <tr>
-                <td><label for="country">Country:</label></td>
+                <th><label for="country">Country:</label></th>
                 <td><select name="country" id="country"
                             required="true"
                             dojoType="dijit.form.ComboBox"
@@ -165,7 +168,7 @@
                 </td>
             </tr>
             <tr>
-                <td><label for="notes">Notes</label></td>
+                <th><label for="notes">Notes</label></th>
                 <td><input type="text"
                            name="notes"
                            id="notes"
@@ -175,10 +178,11 @@
                 </td>
             </tr>
             <tr>
-                <td></td>
+                <th></th>
                 <td><span style="color:#FF0000">*</span> You can download the Do It Yourself Kit from <a
-                        href="http://coralwatch.org/web/guest/download-materials1">here</a> and request only the chart
-                    to be mailed to you.
+                        href="http://coralwatch.org/web/guest/monitoring-materials">here</a> and request the chart only
+                    to be mailed to you. If you cannot print the material, you should email <a
+                            href="mailto:info@coralwatch.org">info@coralwatch.org</a> to request it to be mailed to you.
                 </td>
             </tr>
             <%--<tr>--%>
@@ -227,7 +231,7 @@
         }
     }
 </script>
-<div id="allkitrequests" dojoType="dijit.layout.ContentPane" title="All Kit Requests"
+<div id="allkitrequests" dojoType="dijit.layout.ContentPane" title="All Chart Requests"
      style="width:670px; height:60ex">
     <table class="coralwatch_list_table">
         <tr>
