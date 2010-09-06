@@ -205,9 +205,9 @@ public class PlotService {
                 }
             }
         }
-        String chartTitle = "Coral Shape Distribution";
+        String chartTitle = "Coral Type Distribution";
         if (surveys.size() > 1) {
-            chartTitle = "Coral Shape Distribution of All Surveys";
+            chartTitle = "Coral Type Distribution of All Surveys";
         }
         JFreeChart chart = ChartFactory.createPieChart(chartTitle, dataset,
                 legend, false, false);
