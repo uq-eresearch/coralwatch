@@ -174,6 +174,7 @@
                 <option value="Tourist Volunteer">Tourist Volunteer</option>
                 <option value="Dive Centre">Dive Centre</option>
                 <option value="Teacher">Teacher</option>
+                <option value="Other">Other</option>
             </select>
             </td>
         </tr>

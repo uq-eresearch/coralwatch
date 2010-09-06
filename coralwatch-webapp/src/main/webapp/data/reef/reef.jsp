@@ -110,7 +110,7 @@
                         name: "Records",
                         width: 10,
                         formatter: function(item) {
-                            return item.toString();
+                            return Number(item.toString());
                         }
                     },
                     {
@@ -216,7 +216,7 @@
                 name: "Surveys",
                 width: 10,
                 formatter: function(item) {
-                    return item.toString();
+                    return Number(item.toString());
                 }
             },
             {
