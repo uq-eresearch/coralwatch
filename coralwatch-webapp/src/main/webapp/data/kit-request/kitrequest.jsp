@@ -112,7 +112,7 @@
         </script>
         <table>
             <tr>
-                <td><label for="kitType">Requesting <span style="color:#FF0000">*</span>:</label></td>
+                <td><label for="kitType">Requesting <span style="color:#FF0000">*</span></label></td>
                 <td><select name="kitType" id="kitType"
                             required="true"
                             dojoType="dijit.form.ComboBox"
@@ -140,7 +140,7 @@
                 </td>
             </tr>
             <tr>
-                <td width="10%"><label for="address">Address</label></td>
+                <td width="10%"><label for="address">Postal Address</label></td>
                 <td width="90%"><input type="text"
                                        name="address"
                                        id="address"
