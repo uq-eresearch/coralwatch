@@ -58,14 +58,15 @@ public class ReputationService {
         //2. Get rating of user's data
 
         //3. Get rating of user's amount of data
-        Double amountOfDataRating = getUserAmountOfDataRating(ratee);
+//        Double amountOfDataRating = getUserAmountOfDataRating(ratee);
 
         //4. Get rating of user's frequency of contribution
 
         //5. Get rating of user's role
 
 
-        rating = ((profileRating + amountOfDataRating) / 2);
+//        rating = ((profileRating + amountOfDataRating) / 2.0);
+        rating = profileRating;
         UserReputationProfile userReputationProfile = userReputationProfileDao.getByRatee(ratee);
         if (userReputationProfile == null) {
             userReputationProfile = new UserReputationProfile(ratee);
@@ -188,8 +189,8 @@ public class ReputationService {
         //Amount of data rating is calculated based on the number surveys contributed by this user compared to
         //The number of surveys contributed by the highest contributor in the system
         UserImpl highestContributor = getHighestContributor();
-        long highestNumberOfSurveys = userDao.getNumberOfSurveys(highestContributor);
-        long userNumberOfSurveys = userDao.getNumberOfSurveys(ratee);
+        double highestNumberOfSurveys = userDao.getNumberOfSurveys(highestContributor).doubleValue();
+        double userNumberOfSurveys = userDao.getNumberOfSurveys(ratee).doubleValue();
         score = ((userNumberOfSurveys / highestNumberOfSurveys) * Constants.STAR_RATING_MAX_VALUE);
         return score;
     }
