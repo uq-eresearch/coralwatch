@@ -70,41 +70,43 @@ public class UserServlet extends HttpServlet {
                 }
 
                 for (UserImpl user : listOfUsers) {
-                    Element userNode = doc.createElement("member");
-                    root.appendChild(userNode);
+                    if (!user.getDisplayName().toLowerCase().startsWith("unknown")) {
+                        Element userNode = doc.createElement("member");
+                        root.appendChild(userNode);
 
-                    Element nameNode = doc.createElement("name");
-                    userNode.appendChild(nameNode);
-                    Text userName = doc.createTextNode(user.getDisplayName());
-                    nameNode.appendChild(userName);
+                        Element nameNode = doc.createElement("name");
+                        userNode.appendChild(nameNode);
+                        Text userName = doc.createTextNode(user.getDisplayName());
+                        nameNode.appendChild(userName);
 
-                    Element joinedDateNode = doc.createElement("joined");
-                    userNode.appendChild(joinedDateNode);
-                    Text joinedDate = doc.createTextNode(user.getRegistrationDate().getTime() + "");
-                    joinedDateNode.appendChild(joinedDate);
+                        Element joinedDateNode = doc.createElement("joined");
+                        userNode.appendChild(joinedDateNode);
+                        Text joinedDate = doc.createTextNode(user.getRegistrationDate().getTime() + "");
+                        joinedDateNode.appendChild(joinedDate);
 
-                    Element countryNode = doc.createElement("country");
-                    userNode.appendChild(countryNode);
-                    String country = user.getCountry();
-                    Text countryName = doc.createTextNode(country == null ? "Not Available" : country);
-                    countryNode.appendChild(countryName);
+                        Element countryNode = doc.createElement("country");
+                        userNode.appendChild(countryNode);
+                        String country = user.getCountry();
+                        Text countryName = doc.createTextNode(country == null ? "Not Available" : country);
+                        countryNode.appendChild(countryName);
 
-                    Element surveysNode = doc.createElement("surveys");
-                    userNode.appendChild(surveysNode);
-                    Text numberOfSurveys = doc.createTextNode(userDao.getSurveyEntriesCreated(user).size() + "");
-                    surveysNode.appendChild(numberOfSurveys);
+                        Element surveysNode = doc.createElement("surveys");
+                        userNode.appendChild(surveysNode);
+                        Text numberOfSurveys = doc.createTextNode(userDao.getSurveyEntriesCreated(user).size() + "");
+                        surveysNode.appendChild(numberOfSurveys);
 
-                    Element ratingNode = doc.createElement("rating");
-                    userNode.appendChild(ratingNode);
-                    Double overAllRating = ReputationService.getOverAllRating(user);
-                    Text rating = doc.createTextNode(overAllRating + "");
+                        Element ratingNode = doc.createElement("rating");
+                        userNode.appendChild(ratingNode);
+                        Double overAllRating = ReputationService.getOverAllRating(user);
+                        Text rating = doc.createTextNode(overAllRating + "");
 
-                    ratingNode.appendChild(rating);
+                        ratingNode.appendChild(rating);
 
-                    Element viewNode = doc.createElement("view");
-                    userNode.appendChild(viewNode);
-                    Text viewLink = doc.createTextNode(user.getId() + "");
-                    viewNode.appendChild(viewLink);
+                        Element viewNode = doc.createElement("view");
+                        userNode.appendChild(viewNode);
+                        Text viewLink = doc.createTextNode(user.getId() + "");
+                        viewNode.appendChild(viewLink);
+                    }
                 }
                 //TransformerFactory instance is used to create Transformer objects.
                 TransformerFactory factory = TransformerFactory.newInstance();
