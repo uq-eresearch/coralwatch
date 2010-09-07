@@ -66,7 +66,8 @@ public class ReefServlet extends HttpServlet {
 
                         Element reefCountryNode = doc.createElement("country");
                         reefNode.appendChild(reefCountryNode);
-                        Text countryName = doc.createTextNode(reef.getCountry());
+                        String country = reef.getCountry();
+                        Text countryName = doc.createTextNode(country == null || country.toLowerCase().startsWith("unknown") ? "" : country);
                         reefCountryNode.appendChild(countryName);
 
                         Element surveysNode = doc.createElement("surveys");
@@ -122,7 +123,8 @@ public class ReefServlet extends HttpServlet {
                             JSONObject rf = new JSONObject();
                             rf.putOpt("id", reef.getId());
                             rf.putOpt("name", reef.getName());
-                            rf.putOpt("country", reef.getCountry());
+                            String reefCountry = reef.getCountry();
+                            rf.putOpt("country", reefCountry == null || reefCountry.toLowerCase().startsWith("unknown") ? "" : reefCountry);
                             reefs.put(rf);
                         } catch (JSONException e) {
                             LOGGER.fatal("Cannot create reef json object." + e.toString());

@@ -57,7 +57,8 @@ public class SurveyServlet extends HttpServlet {
                         JSONObject survey = new JSONObject();
                         survey.putOpt("id", srv.getId());
                         survey.putOpt("reef", srv.getReef().getName());
-                        survey.putOpt("country", srv.getReef().getCountry());
+                        String country = srv.getReef().getCountry();
+                        survey.putOpt("country", country == null || country.toLowerCase().startsWith("unknown") ? "" : country);
                         survey.putOpt("latitude", srv.getLatitude());
                         survey.putOpt("longitude", srv.getLongitude());
                         survey.putOpt("records", surveyDao.getSurveyRecords(srv).size());
@@ -131,7 +132,8 @@ public class SurveyServlet extends HttpServlet {
 
                     Element countryNode = doc.createElement("country");
                     survey.appendChild(countryNode);
-                    Text countryName = doc.createTextNode(srv.getReef().getCountry());
+                    String country = srv.getReef().getCountry();
+                    Text countryName = doc.createTextNode(country == null || country.toLowerCase().startsWith("unknown") ? "" : country);
                     countryNode.appendChild(countryName);
 
                     Element numberOfRecordsNode = doc.createElement("records");

@@ -492,19 +492,19 @@
                     }
                 },
                 {
-                    field: "joined",
-                    name: "Member Since",
-                    width: 10,
-                    formatter: dateFormatter
-
-                },
-                {
                     field: "country",
                     name: "Country",
                     width: 10,
                     formatter: function(item) {
                         return item.toString();
                     }
+                },
+                {
+                    field: "joined",
+                    name: "Member Since",
+                    width: 10,
+                    formatter: dateFormatter
+
                 },
                 {
                     field: "surveys",

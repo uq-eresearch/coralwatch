@@ -87,7 +87,7 @@ public class UserServlet extends HttpServlet {
                         Element countryNode = doc.createElement("country");
                         userNode.appendChild(countryNode);
                         String country = user.getCountry();
-                        Text countryName = doc.createTextNode(country == null ? "Not Available" : country);
+                        Text countryName = doc.createTextNode(country == null || country.toLowerCase().startsWith("unknown") ? "" : country);
                         countryNode.appendChild(countryName);
 
                         Element surveysNode = doc.createElement("surveys");
