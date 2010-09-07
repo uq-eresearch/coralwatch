@@ -42,6 +42,7 @@
         </configuration-action-class>
         <instanceable>false</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
+        <header-portlet-css>/js/jit/css/ForceDirected.css</header-portlet-css>
     </portlet>
     <portlet>
         <portlet-name>survey-portlet</portlet-name>

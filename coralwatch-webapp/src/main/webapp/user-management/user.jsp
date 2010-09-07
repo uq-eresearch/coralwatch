@@ -586,35 +586,38 @@
          store="userStore" structure="layoutMembers" query="{}" rowsPerPage="40">
     </div>
 </div>
-<div id="networkTab" dojoType="dijit.layout.ContentPane" title="Network" style="width:650px; height:60ex">
+<%--<div id="networkTab" dojoType="dijit.layout.ContentPane" title="Network" style="width:650px; height:60ex">--%>
 
-    <div id="center-container">
-        <div id="infovis">
-            <!--[if IE]>
-            <script language="javascript" type="text/javascript"
-                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/js/jit/excanvas.js")%>"></script>
-            <![endif]-->
-
-            <script type="text/javascript"
-                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/js/jit/jit.js")%>"></script>
-            <script type="text/javascript"
-                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/js/jit/example1.js")%>"></script>
-            <script type="text/javascript">
-                dojo.addOnLoad(function() {
-                    loadGraph();
-                });
-            </script>
-            <div id="log"></div>
-        </div>
-    </div>
-
-</div>
 <%
     }
 %>
 
 
 </div>
+<div id="networkTab" style="width:650px; height:60ex">
+    <div id="center-container">
+        <div id="infovis">
+            <!--[if IE]>
+            <script language="javascript" type="text/javascript"
+                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/js/jit/excanvas.js")%>"></script>
+            <![endif]-->
+            <script type="text/javascript"
+                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/js/jit/jit.js")%>"></script>
+            <script type="text/javascript"
+                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/js/jit/example1.js")%>"></script>
+
+            <%--<div id="log"></div>--%>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    dojo.addOnLoad(function() {
+        loadGraph();
+        var tc = dijit.byId("userProfileContainer");
+        var contentPane = new dijit.layout.ContentPane({title:"Network"}, "networkTab");
+        tc.addChild(contentPane);
+    });
+</script>
 
 <%
 } else if (cmd.equals(Constants.PRINT)) {
