@@ -222,7 +222,7 @@
         }
     %>
     <tr>
-        <td><label for="country">Country:</label></td>
+        <td><label for="country">Country of Residence:</label></td>
         <td><select name="country" id="country"
                     required="true"
                     dojoType="dijit.form.ComboBox"
