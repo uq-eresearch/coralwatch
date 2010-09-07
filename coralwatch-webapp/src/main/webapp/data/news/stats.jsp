@@ -1,3 +1,4 @@
+<%@ page import="com.liferay.portal.kernel.util.Constants" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <portlet:defineObjects/>
@@ -23,7 +24,7 @@
         </a></li>
         <li><%=records%> Coral<%=records > 1 ? "s" : ""%> Surveyed</li>
         <li>Highest Contributor: <a
-                href="<%=renderRequest.getAttribute("userUrl")%>?p_p_id=surveyportlet_WAR_coralwatch"><%=highestContributor.getDisplayName()%>
+                href="<%=renderRequest.getAttribute("userUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=<%=highestContributor.getId()%>"><%= highestContributor.getDisplayName()%>
         </a></li>
     </ul>
     <div align="center">
