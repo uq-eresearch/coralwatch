@@ -120,10 +120,10 @@
                 for (var i = 0; i < surveyList.surveys.length; i++) {
                     var survey = surveyList.surveys[i];
                     var baseUrl = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>";
-                    var piechartUrl = baseUrl + "/graph?type=survey&id=" + survey.id + "&chart=shapePie&width=128&height=128&labels=false&legend=true&titleSize=11";
-                    var coralcountchartUrl = baseUrl + "/graph?type=survey&id=" + survey.id + "&chart=coralCount&width=128&height=128&legend=false&titleSize=11";
+                    var piechartUrl = baseUrl + "/graph?type=survey&id=" + survey.id + "&chart=shapePie&width=256&height=256&labels=false&legend=true&titleSize=11";
+                    var coralcountchartUrl = baseUrl + "/graph?type=survey&id=" + survey.id + "&chart=coralCount&width=256&height=256&legend=false&titleSize=11";
                     var numberOfRecs = parseInt(survey.records);
-                    var graphs = numberOfRecs <= 0 ? "" : "<br /><img src=\"" + piechartUrl + "\" alt=\"Shape Distribution\" width=\"128\" height=\"128\"/><img src=\"" + coralcountchartUrl + "\" alt=\"Shape Distribution\" width=\"128\" height=\"128\"/>";
+                    var graphs = numberOfRecs <= 0 ? "" : "<br /><img src=\"" + piechartUrl + "\" alt=\"Shape Distribution\" width=\"256\" height=\"256\"/><img src=\"" + coralcountchartUrl + "\" alt=\"Shape Distribution\" width=\"256\" height=\"256\"/>";
                     var content = "<b>" + survey.reef + " (" + survey.country + ")</b><br />- <a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + survey.id + "\">" + numberOfRecs + " Record(s)</a><br />- " + survey.date + graphs + "<br/><div dojoType='dojox.form.Rating' numStars='5' value='1'></div>";
                     var title = "- " + survey.date;
                     marker = newMarker(new GLatLng(survey.latitude, survey.longitude), title, content, icon);
