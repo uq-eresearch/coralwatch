@@ -32,6 +32,8 @@ public class KitRequestPortlet extends GenericPortlet {
 
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         AppUtil.clearCache();
+        PortletPreferences prefs = renderRequest.getPreferences();
+        renderRequest.setAttribute("userUrl", prefs.getValue("userUrl", "user"));
         renderRequest.setAttribute("kitrequestdao", kitRequestDao);
         include(viewJSP, renderRequest, renderResponse);
     }
@@ -81,7 +83,13 @@ public class KitRequestPortlet extends GenericPortlet {
             AppUtil.clearCache();
 
             //send confirmation email
-            String line1 = "Dear " + user.getDisplayName() + "\n\n";
+            String name = user.getDisplayName();
+
+            if (user.getFirstName() != null && user.getLastName() != null) {
+                name = user.getFirstName() + " " + user.getLastName();
+            }
+
+            String line1 = "Dear " + name + "\n\n";
             String line2 = "We have received your kit request. Your kit request details are below." + "\n\n";
             String line3 = "Kit Type: " + kitType + "\nLanguage: " + language + "\nPostal Address: " + address + ", " + country + "\nNotes: " + (notes == null ? "" : notes);
             String line4 = "\n\nWe will send you an email when your request is dispatched.\n\nRegards,\nCoralWatch\nhttp://coralwatch.org";

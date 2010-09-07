@@ -32,6 +32,10 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     private String displayName;
 
+    private String firstName;
+
+    private String lastName;
+
     @Column(length = 500)
     private String address;
 
@@ -97,6 +101,22 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public long getId() {

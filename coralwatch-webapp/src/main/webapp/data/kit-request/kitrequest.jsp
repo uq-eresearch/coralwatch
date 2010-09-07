@@ -1,3 +1,4 @@
+<%@ page import="com.liferay.portal.kernel.util.Constants" %>
 <%@ page import="org.coralwatch.dataaccess.KitRequestDao" %>
 <%@ page import="org.coralwatch.model.KitRequest" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
@@ -85,6 +86,13 @@
     <div><span class="portlet-msg-error">You must sign in to submit a chart request.</span></div>
     <%
         }
+        if (currentUser != null && (currentUser.getFirstName() == null || currentUser.getLastName() == null)) {
+    %>
+    <div><span class="portlet-msg-error">You must set your first and last name on your profile so we can address your request to you. Click <a
+            href="<%=renderRequest.getAttribute("userUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=<%=currentUser.getId()%>">here</a> to edit your profile.</span>
+    </div>
+    <%
+        }
     %>
     <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm"
           jsId="kitReqForm" id="kitReqForm">
@@ -104,6 +112,22 @@
             alert('You must sign in before you can submit a chart request.');
             return false;
             }
+            <%
+                if (currentUser != null && (currentUser.getFirstName() == null || currentUser.getLastName() == null)) {
+            %>
+            var isNameSet = false;
+            <%
+            } else {
+            %>
+            var isNameSet = true;
+            <%
+                }
+            %>
+            if(!isNameSet) {
+            alert('You must set your full name in your profile before you can submit a chart request.');
+            return false;
+            }
+
             if(!this.validate()){
             alert('Form contains invalid data. Please correct errors first.');
             return false;

@@ -6,7 +6,9 @@
     <portlet>
         <portlet-name>kitrequest-portlet</portlet-name>
         <icon>/icon/icon.png</icon>
-        <instanceable>true</instanceable>
+        <configuration-action-class>org.coralwatch.portlets.configuration.KitRequestConfigurationActionImpl
+        </configuration-action-class>
+        <instanceable>false</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>
     <portlet>
@@ -40,6 +42,7 @@
         </configuration-action-class>
         <instanceable>false</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
+        <header-portlet-css>/js/jit/css/ForceDirected.css</header-portlet-css>
     </portlet>
     <portlet>
         <portlet-name>survey-portlet</portlet-name>
