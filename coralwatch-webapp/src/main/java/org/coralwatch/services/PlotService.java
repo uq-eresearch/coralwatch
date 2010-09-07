@@ -222,6 +222,7 @@ public class PlotService {
 
 
         final TextTitle subtitle = new TextTitle(numberOfRecords + " Corals Surveyed");
+        subtitle.setFont(new Font("SansSerif", Font.PLAIN, titleSize - 2));
         subtitle.setPosition(RectangleEdge.BOTTOM);
         subtitle.setVerticalAlignment(VerticalAlignment.BOTTOM);
         chart.addSubtitle(subtitle);

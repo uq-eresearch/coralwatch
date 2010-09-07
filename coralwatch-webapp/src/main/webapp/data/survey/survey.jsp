@@ -778,205 +778,213 @@
 </div>
 
 <div id="dataTab" dojoType="dijit.layout.ContentPane" title="Data" style="width:650px; height:60ex">
-    <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
-    <script type="text/javascript">
-        function validate() {
-            var form = dijit.byId("recordForm");
-            if (!form.validate()) {
-                alert('You must select coral type to submit a record.');
-                return false;
-            }
-            var selectedLightColor = dojo.query('INPUT[name=light_color_input]', 'recordForm').filter(function(n) {
-                return n.getAttribute('value') != '';
-            }).length > 0;
-            var selectedDarkColor = dojo.query('INPUT[name=dark_color_input]', 'recordForm').filter(function(n) {
-                return n.getAttribute('value') != '';
-            }).length > 0;
-            if (!selectedLightColor) {
-                alert('You must select lightest colour.');
-                return false;
-            }
-            if (!selectedDarkColor) {
-                alert('You must select darkest colour.');
-                return false;
-            }
-            var type = dijit.byId('coralType').getValue();
-            var light = dijit.byId('light_color_input').getValue();
-            var dark = dijit.byId('dark_color_input').getValue();
-            saveRecord(type, light, dark);
-            return true;
+<%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
+<script type="text/javascript">
+    function validate() {
+        var form = dijit.byId("recordForm");
+        if (!form.validate()) {
+            alert('You must select coral type to submit a record.');
+            return false;
         }
+        var selectedLightColor = dojo.query('INPUT[name=light_color_input]', 'recordForm').filter(function(n) {
+            return n.getAttribute('value') != '';
+        }).length > 0;
+        var selectedDarkColor = dojo.query('INPUT[name=dark_color_input]', 'recordForm').filter(function(n) {
+            return n.getAttribute('value') != '';
+        }).length > 0;
+        if (!selectedLightColor) {
+            alert('You must select lightest colour.');
+            return false;
+        }
+        if (!selectedDarkColor) {
+            alert('You must select darkest colour.');
+            return false;
+        }
+        var type = dijit.byId('coralType').getValue();
+        var light = dijit.byId('light_color_input').getValue();
+        var dark = dijit.byId('dark_color_input').getValue();
 
-        function saveRecord(coralType, lightColor, darkColor) {
-            dojo.xhrPost({
-                url:'<%=renderResponse.encodeURL(renderRequest.getContextPath())%>' + '/record?cmd=add&surveyId=<%=survey.getId()%>&coralType=' + coralType + '&light_color=' + lightColor + '&dark_color=' + darkColor,
-                timeout: 5000,
-                load: function(response, ioArgs) {
-                    var table = dojo.byId('survey_records');
-                    if (table == null) {
-                        var table = dojo.create('table');
-                        table.setAttribute('id', 'survey_records');
-                        if (dojo.isIE) {
-                            table.setAttribute('className', 'coralwatch_list_table');
-                        }
-                        table.setAttribute('class', 'coralwatch_list_table');
+        //Validate colour here
+        var lightNumber = light.substring(1);
+        var darkNumber = dark.substring(1);
+        if (Number(lightNumber) >= Number(darkNumber)) {
+            alert('Lightest colour number (' + lightNumber + ') must be a smaller than darkest colour number (' + darkNumber + ').');
+            return false;
+        }
+        saveRecord(type, light, dark);
+        return true;
+    }
 
-                        var tbody = dojo.create('tbody');
-                        var row = dojo.create('tr');
-                        row.appendChild(dojo.create('th', { innerHTML: 'No', nowrap:'nowrap' }));
-                        row.appendChild(dojo.create('th', { innerHTML: 'Coral Type', nowrap:'nowrap' }));
-                        row.appendChild(dojo.create('th', { innerHTML: 'Lightest', nowrap:'nowrap' }));
-                        row.appendChild(dojo.create('th', { innerHTML: 'Darkest', nowrap:'nowrap' }));
-                        row.appendChild(dojo.create('th', { innerHTML: 'Delete', nowrap:'nowrap' }));
-                        tbody.appendChild(row);
-                        table.appendChild(tbody);
-                        dojo.destroy('nodata');
-                        dojo.byId('dataTab').appendChild(table);
-
+    function saveRecord(coralType, lightColor, darkColor) {
+        dojo.xhrPost({
+            url:'<%=renderResponse.encodeURL(renderRequest.getContextPath())%>' + '/record?cmd=add&surveyId=<%=survey.getId()%>&coralType=' + coralType + '&light_color=' + lightColor + '&dark_color=' + darkColor,
+            timeout: 5000,
+            load: function(response, ioArgs) {
+                var table = dojo.byId('survey_records');
+                if (table == null) {
+                    var table = dojo.create('table');
+                    table.setAttribute('id', 'survey_records');
+                    if (dojo.isIE) {
+                        table.setAttribute('className', 'coralwatch_list_table');
                     }
-                    var tbody = table.getElementsByTagName('tbody')[0];
-                    var numberOfRaws = tbody.children.length;
+                    table.setAttribute('class', 'coralwatch_list_table');
+
+                    var tbody = dojo.create('tbody');
                     var row = dojo.create('tr');
-                    row.setAttribute('id', 'record' + numberOfRaws);
-                    row.appendChild(dojo.create('td', { innerHTML: numberOfRaws }));
-                    row.appendChild(dojo.create('td', { innerHTML: coralType }));
-                    row.appendChild(dojo.create('td', { innerHTML: lightColor }));
-                    row.appendChild(dojo.create('td', { innerHTML: darkColor }));
-                    row.appendChild(dojo.create('td', { innerHTML: '<a href="#" onClick="deleteRecord(' + Number(response) + ', ' + Number(numberOfRaws) + '); return false;">Delete</a>' }));
+                    row.appendChild(dojo.create('th', { innerHTML: 'No', nowrap:'nowrap' }));
+                    row.appendChild(dojo.create('th', { innerHTML: 'Coral Type', nowrap:'nowrap' }));
+                    row.appendChild(dojo.create('th', { innerHTML: 'Lightest', nowrap:'nowrap' }));
+                    row.appendChild(dojo.create('th', { innerHTML: 'Darkest', nowrap:'nowrap' }));
+                    row.appendChild(dojo.create('th', { innerHTML: 'Delete', nowrap:'nowrap' }));
                     tbody.appendChild(row);
-                    reloadImage();
-                    return response;
-                },
-                error: function(response, ioArgs) {
-                    alert('Cannot add record: ' + response);
-                    return response;
+                    table.appendChild(tbody);
+                    dojo.destroy('nodata');
+                    dojo.byId('dataTab').appendChild(table);
+
                 }
-            });
-        }
-        function deleteRecord(recordId, pos) {
-            dojo.xhrPost({
-                url:'<%=renderResponse.encodeURL(renderRequest.getContextPath())%>' + '/record?cmd=delete&recordId=' + recordId,
-                timeout: 5000,
-                load: function(response, ioArgs) {
-                    dojo.destroy('record' + pos)
-                    reloadImage();
-                    return response;
-                },
-                error: function(response, ioArgs) {
-                    alert('Cannot delete record: ' + response);
-                    return response;
-                }
-            });
+                var tbody = table.getElementsByTagName('tbody')[0];
+                var numberOfRaws = tbody.children.length;
+                var row = dojo.create('tr');
+                row.setAttribute('id', 'record' + numberOfRaws);
+                row.appendChild(dojo.create('td', { innerHTML: numberOfRaws }));
+                row.appendChild(dojo.create('td', { innerHTML: coralType }));
+                row.appendChild(dojo.create('td', { innerHTML: lightColor }));
+                row.appendChild(dojo.create('td', { innerHTML: darkColor }));
+                row.appendChild(dojo.create('td', { innerHTML: '<a href="#" onClick="deleteRecord(' + Number(response) + ', ' + Number(numberOfRaws) + '); return false;">Delete</a>' }));
+                tbody.appendChild(row);
+                reloadImage();
+                return response;
+            },
+            error: function(response, ioArgs) {
+                alert('Cannot add record: ' + response);
+                return response;
+            }
+        });
+    }
+    function deleteRecord(recordId, pos) {
+        dojo.xhrPost({
+            url:'<%=renderResponse.encodeURL(renderRequest.getContextPath())%>' + '/record?cmd=delete&recordId=' + recordId,
+            timeout: 5000,
+            load: function(response, ioArgs) {
+                dojo.destroy('record' + pos)
+                reloadImage();
+                return response;
+            },
+            error: function(response, ioArgs) {
+                alert('Cannot delete record: ' + response);
+                return response;
+            }
+        });
+    }
+</script>
+
+<span>Add Records:</span><br/>
+
+<form dojoType="dijit.form.Form" jsId="recordForm" id="recordForm">
+
+    <script type="text/javascript">
+        function setColor(colorCode, slate, inputField) {
+            dijit.byId(slate).setAttribute('label', colorCode);
+            dojo.byId(inputField).setAttribute('value', colorCode);
         }
     </script>
-
-    <span>Add Records:</span><br/>
-
-    <form dojoType="dijit.form.Form" jsId="recordForm" id="recordForm">
-
-        <script type="text/javascript">
-            function setColor(colorCode, slate, inputField) {
-                dijit.byId(slate).setAttribute('label', colorCode);
-                dojo.byId(inputField).setAttribute('value', colorCode);
-            }
-        </script>
-        <table width="100%" class="coralwatch_list_table">
-            <tr>
-                <th nowrap="nowrap">Coral Type</th>
-                <th nowrap="nowrap">Lightest</th>
-                <th nowrap="nowrap">Darkest</th>
-                <th nowrap="nowrap">Action</th>
-            </tr>
-
-            <tr>
-                <td nowrap="nowrap">
-                    <select name="coralType" id="coralType"
-                            required="true"
-                            dojoType="dijit.form.ComboBox"
-                            hasDownArrow="true"
-                            value="">
-                        <option selected="selected" value=""></option>
-                        <option value="Boulder">Boulder</option>
-                        <option value="Branching">Branching</option>
-                        <option value="Plate">Plate</option>
-                        <option value="Soft">Soft</option>
-                    </select>
-                </td>
-                <td nowrap="nowrap">
-                    <input dojoType="dijit.form.TextBox" name="light_color_input" id="light_color_input" type="hidden"
-                           value=""/>
-
-                    <div id="light_color_slate" dojoType="dijit.form.DropDownButton" label="" style="width:30px">
-                        <div dojoType="dijit.TooltipDialog">
-                            <jsp:include page="lightcolorslate.jsp"/>
-                        </div>
-                    </div>
-                </td>
-                <td nowrap="nowrap">
-                    <input dojoType="dijit.form.TextBox" name="dark_color_input" id="dark_color_input" type="hidden"
-                           value=""/>
-
-                    <div id="dark_color_slate" dojoType="dijit.form.DropDownButton" label="" style="width:30px">
-                        <div dojoType="dijit.TooltipDialog">
-                            <jsp:include page="darkcolorslate.jsp"/>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <input type="button" onclick="validate();" value="Add"/>
-                </td>
-            </tr>
-        </table>
-    </form>
-    <%}%>
-    <%
-        List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
-        if (!surveyRecords.isEmpty()) {
-    %>
-    <table id="survey_records" class="coralwatch_list_table">
+    <table width="100%" class="coralwatch_list_table">
         <tr>
-            <th nowrap="nowrap">No</th>
             <th nowrap="nowrap">Coral Type</th>
             <th nowrap="nowrap">Lightest</th>
             <th nowrap="nowrap">Darkest</th>
-            <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
             <th nowrap="nowrap">Action</th>
-            <%}%>
         </tr>
-        <%
 
-            for (int index = 0; index < surveyRecords.size(); index++) {
-                SurveyRecord record = surveyRecords.get(index);
-        %>
-        <tr id="record<%=(index + 1)%>">
-            <td><%=(index + 1) + "" %>
+        <tr>
+            <td nowrap="nowrap">
+                <select name="coralType" id="coralType"
+                        required="true"
+                        dojoType="dijit.form.ComboBox"
+                        hasDownArrow="true"
+                        value="">
+                    <option selected="selected" value=""></option>
+                    <option value="Boulder">Boulder</option>
+                    <option value="Branching">Branching</option>
+                    <option value="Plate">Plate</option>
+                    <option value="Soft">Soft</option>
+                </select>
             </td>
-            <td><%=record.getCoralType()%>
+            <td nowrap="nowrap">
+                <input dojoType="dijit.form.TextBox" name="light_color_input" id="light_color_input" type="hidden"
+                       value=""/>
+
+                <div id="light_color_slate" dojoType="dijit.form.DropDownButton" label="" style="width:30px">
+                    <div dojoType="dijit.TooltipDialog">
+                        <jsp:include page="lightcolorslate.jsp"/>
+                    </div>
+                </div>
             </td>
-            <td><%=record.getLightestLetter() + "" + record.getLightestNumber()%>
+            <td nowrap="nowrap">
+                <input dojoType="dijit.form.TextBox" name="dark_color_input" id="dark_color_input" type="hidden"
+                       value=""/>
+
+                <div id="dark_color_slate" dojoType="dijit.form.DropDownButton" label="" style="width:30px">
+                    <div dojoType="dijit.TooltipDialog">
+                        <jsp:include page="darkcolorslate.jsp"/>
+                    </div>
+                </div>
             </td>
-            <td><%=record.getDarkestLetter() + "" + record.getDarkestNumber()%>
-            </td>
-            <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
             <td>
-                <a href="#" onClick="deleteRecord(<%=record.getId()%>, <%=(index + 1)%>); return false;">Delete</a>
+                <input type="button" onclick="validate();" value="Add"/>
             </td>
-            <%}%>
         </tr>
-        <%
-            }
-        %>
     </table>
+</form>
+<%}%>
+<%
+    List<SurveyRecord> surveyRecords = surveyDao.getSurveyRecords(survey);
+    if (!surveyRecords.isEmpty()) {
+%>
+<table id="survey_records" class="coralwatch_list_table">
+    <tr>
+        <th nowrap="nowrap">No</th>
+        <th nowrap="nowrap">Coral Type</th>
+        <th nowrap="nowrap">Lightest</th>
+        <th nowrap="nowrap">Darkest</th>
+        <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
+        <th nowrap="nowrap">Action</th>
+        <%}%>
+    </tr>
     <%
-    } else {
+
+        for (int index = 0; index < surveyRecords.size(); index++) {
+            SurveyRecord record = surveyRecords.get(index);
     %>
-    <div id="nodata" align="center">
-        <br/>
-        <span style="text-align:center;">No Data Recorded</span>
-    </div>
+    <tr id="record<%=(index + 1)%>">
+        <td><%=(index + 1) + "" %>
+        </td>
+        <td><%=record.getCoralType()%>
+        </td>
+        <td><%=record.getLightestLetter() + "" + record.getLightestNumber()%>
+        </td>
+        <td><%=record.getDarkestLetter() + "" + record.getDarkestNumber()%>
+        </td>
+        <%if (currentUser != null && currentUser.equals(survey.getCreator())) {%>
+        <td>
+            <a href="#" onClick="deleteRecord(<%=record.getId()%>, <%=(index + 1)%>); return false;">Delete</a>
+        </td>
+        <%}%>
+    </tr>
     <%
         }
     %>
+</table>
+<%
+} else {
+%>
+<div id="nodata" align="center">
+    <br/>
+    <span style="text-align:center;">No Data Recorded</span>
+</div>
+<%
+    }
+%>
 </div>
 <div id="graphTab" dojoType="dijit.layout.ContentPane" title="Graphs" style="width:650px; height:60ex">
     <%
