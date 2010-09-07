@@ -808,7 +808,7 @@
         var lightNumber = light.substring(1);
         var darkNumber = dark.substring(1);
         if (Number(lightNumber) >= Number(darkNumber)) {
-            alert('Lightest colour number (' + lightNumber + ') must be a smaller than darkest colour number (' + darkNumber + ').');
+            alert('Lightest colour number (' + lightNumber + ') must be smaller than darkest colour number (' + darkNumber + ').');
             return false;
         }
         saveRecord(type, light, dark);
