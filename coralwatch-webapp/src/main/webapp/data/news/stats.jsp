@@ -21,7 +21,7 @@
         <li><a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch"><%=surveys%>
             Survey<%=surveys > 1 ? "s" : ""%>
         </a></li>
-        <li><%=records%> Coral<%=records > 1 ? "s" : ""%> Sampled</li>
+        <li><%=records%> Coral<%=records > 1 ? "s" : ""%> Surveyed</li>
         <li>Highest Contributor: <a
                 href="<%=renderRequest.getAttribute("userUrl")%>?p_p_id=surveyportlet_WAR_coralwatch"><%=highestContributor.getDisplayName()%>
         </a></li>

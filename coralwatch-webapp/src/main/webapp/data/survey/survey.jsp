@@ -1246,6 +1246,7 @@
                                                                                  value=""/><input type="submit"
                                                                                                   name="submit"
                                                                                                   value="Filter"/>
+        Filter is case sensitive
     </form>
 </div>
 <br/>
