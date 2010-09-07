@@ -26,6 +26,8 @@
     long userId = ParamUtil.getLong(request, "userId");
     String email = "";
     String displayName = "";
+    String firstName = "";
+    String lastName = "";
     String phone = "";
 //    String occupation = "";
     String positionDescription = "";
@@ -49,191 +51,212 @@
 </script>
 
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
-    <script type="dojo/method" event="onSubmit">
-        if(!this.validate()){
-        alert('Form contains invalid data. Please correct errors first');
-        return false;
+<script type="dojo/method" event="onSubmit">
+    if(!this.validate()){
+    alert('Form contains invalid data. Please correct errors first');
+    return false;
+    }
+    return true;
+</script>
+<%
+    if (cmd.equals(Constants.EDIT)) {
+        UserImpl user = userDao.getById(userId);
+        email = user.getEmail();
+        displayName = user.getDisplayName();
+        firstName = user.getFirstName();
+        lastName = user.getLastName();
+        phone = user.getPhone();
+//            occupation = user.getOccupation();
+        positionDescription = user.getPositionDescription();
+        country = user.getCountry();
+        address = user.getAddress();
+%>
+<h2 style="margin-top:0;">Edit User Profile</h2>
+<br/>
+
+<p style="text-align:justify;">CoralWatch requires all members to provide real contact details to encourage
+    authenticity of data. Your profile is protected from others. Your first and last names, email address, address and
+    phone number are hidden from other members.</p>
+<input name="userId" type="hidden" value="<%= userId %>"/>
+<%
+} else {
+%>
+<h2 style="margin-top:0;">Sign Up</h2>
+<br/>
+
+<p style="text-align:justify;">CoralWatch requires all members to provide real contact details to encourage
+    authenticity of data. Your profile is protected from others. Your first and last names, email address, address and
+    phone number are hidden from other members.</p>
+<%
+    }
+
+    if (errors != null && errors.size() > 0) {
+        for (String error : errors) {
+%>
+<div><span class="portlet-msg-error"><%=error%></span></div>
+<%
         }
-        return true;
-    </script>
+    }
+%>
+<input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
+<table>
+    <tr>
+        <td><label for="email">Email:</label></td>
+        <td><input type="text" name="email" id="email"
+                   dojoType="dijit.form.ValidationTextBox"
+                <%if (cmd.equals(Constants.ADD)) {%>
+                   required="true"
+                <%}%>
+                   regExp="[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]{2,6}"
+                   trim="true"
+                   invalidMessage="Enter a valid email address."
+                   value="<%=email == null ? "" : email%>"/> e.g. name@company.com
+        </td>
+    </tr>
+    <tr>
+        <td><label for="email2">Confirm Email:</label></td>
+        <td><input type="text" name="email2" id="email2"
+                   dojoType="dijit.form.ValidationTextBox"
+                <%if (cmd.equals(Constants.ADD)) {%>
+                   required="true"
+                <%}%>
+                   validator="return this.getValue() == dijit.byId('email').getValue()"
+                   trim="true"
+                   invalidMessage="Re-enter your email address."
+                   value=""/></td>
+    </tr>
+    <tr>
+        <td><label for="password">Password <%if (cmd.equals(Constants.EDIT)) {%>(optional)<%}%>:</label></td>
+        <td><input type="password" name="password" id="password"
+                <%if (cmd.equals(Constants.ADD)) {%>
+                   required="true"
+                <%}%>
+                   dojoType="dijit.form.ValidationTextBox"
+                   validator="var pwLen = this.getValue().length; return <%=cmd.equals(Constants.ADD) ? "(pwLen >= 6)" : "(pwLen == 0)"%>"
+                   invalidMessage="Please enter a password with at least 6 characters"
+                   value=""/></td>
+    </tr>
+    <tr>
+        <td><label for="password2">Confirm Password <%if (cmd.equals(Constants.EDIT)) {%>(optional)<%}%>:</label>
+        </td>
+        <td><input type="password"
+                   name="password2"
+                   id="password2"
+                <%if (cmd.equals(Constants.ADD)) {%>
+                   required="true"
+                <%}%>
+                   dojoType="dijit.form.ValidationTextBox"
+                   validator="return this.getValue() == dijit.byId('password').getValue()"
+                   invalidMessage="Re-enter the same password again."/></td>
+    </tr>
+    <tr>
+        <td><label for="firstName">First Name:</label></td>
+        <td><input type="text" name="firstName" id="firstName"
+                   required="true"
+                   dojoType="dijit.form.ValidationTextBox"
+                   invalidMessage="Please enter your first name."
+                   value="<%=firstName == null ? "" : firstName%>"/></td>
+    </tr>
+    <tr>
+        <td><label for="lastName">Last Name:</label></td>
+        <td><input type="text" name="lastName" id="lastName"
+                   required="true"
+                   dojoType="dijit.form.ValidationTextBox"
+                   invalidMessage="Please enter your last name."
+                   value="<%=lastName == null ? "" : lastName%>"/></td>
+    </tr>
+    <tr>
+        <td><label for="displayName">Display Name:</label></td>
+        <td><input type="text" name="displayName" id="displayName"
+                   required="true"
+                   dojoType="dijit.form.ValidationTextBox"
+                   invalidMessage="Please enter a display name."
+                   value="<%=displayName == null ? "" : displayName%>"/></td>
+    </tr>
+
     <%
         if (cmd.equals(Constants.EDIT)) {
-            UserImpl user = userDao.getById(userId);
-            email = user.getEmail();
-            displayName = user.getDisplayName();
-            phone = user.getPhone();
-//            occupation = user.getOccupation();
-            positionDescription = user.getPositionDescription();
-            country = user.getCountry();
-            address = user.getAddress();
     %>
-    <h2 style="margin-top:0;">Edit User Profile</h2>
-    <br/>
-
-    <p style="text-align:justify;">CoralWatch requires all members to provide real contact details to encourage
-        authenticity of data. Your profile is protected from others.</p>
-    <input name="userId" type="hidden" value="<%= userId %>"/>
-    <%
-    } else {
-    %>
-    <h2 style="margin-top:0;">Sign Up</h2>
-    <br/>
-
-    <p style="text-align:justify;">CoralWatch requires all members to provide real contact details to encourage
-        authenticity of data. Your profile is protected from others.</p>
-    <%
-        }
-
-        if (errors != null && errors.size() > 0) {
-            for (String error : errors) {
-    %>
-    <div><span class="portlet-msg-error"><%=error%></span></div>
-    <%
-            }
-        }
-    %>
-    <input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
-    <table>
-        <tr>
-            <td><label for="email">Email:</label></td>
-            <td><input type="text" name="email" id="email"
-                       dojoType="dijit.form.ValidationTextBox"
-                    <%if (cmd.equals(Constants.ADD)) {%>
-                       required="true"
-                    <%}%>
-                       regExp="[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]{2,6}"
-                       trim="true"
-                       invalidMessage="Enter a valid email address."
-                       value="<%=email == null ? "" : email%>"/> e.g. name@company.com
-            </td>
-        </tr>
-        <tr>
-            <td><label for="email2">Confirm Email:</label></td>
-            <td><input type="text" name="email2" id="email2"
-                       dojoType="dijit.form.ValidationTextBox"
-                    <%if (cmd.equals(Constants.ADD)) {%>
-                       required="true"
-                    <%}%>
-                       validator="return this.getValue() == dijit.byId('email').getValue()"
-                       trim="true"
-                       invalidMessage="Re-enter your email address."
-                       value=""/></td>
-        </tr>
-        <tr>
-            <td><label for="password">Password <%if (cmd.equals(Constants.EDIT)) {%>(optional)<%}%>:</label></td>
-            <td><input type="password" name="password" id="password"
-                    <%if (cmd.equals(Constants.ADD)) {%>
-                       required="true"
-                    <%}%>
-                       dojoType="dijit.form.ValidationTextBox"
-                       validator="var pwLen = this.getValue().length; return <%=cmd.equals(Constants.ADD) ? "(pwLen >= 6)" : "(pwLen == 0)"%>"
-                       invalidMessage="Please enter a password with at least 6 characters"
-                       value=""/></td>
-        </tr>
-        <tr>
-            <td><label for="password2">Confirm Password <%if (cmd.equals(Constants.EDIT)) {%>(optional)<%}%>:</label>
-            </td>
-            <td><input type="password"
-                       name="password2"
-                       id="password2"
-                    <%if (cmd.equals(Constants.ADD)) {%>
-                       required="true"
-                    <%}%>
-                       dojoType="dijit.form.ValidationTextBox"
-                       validator="return this.getValue() == dijit.byId('password').getValue()"
-                       invalidMessage="Re-enter the same password again."/></td>
-        </tr>
-        <tr>
-            <td><label for="displayName">Display Name:</label></td>
-            <td><input type="text" name="displayName" id="displayName"
-                       required="true"
-                       dojoType="dijit.form.ValidationTextBox"
-                       invalidMessage="Please enter a display name."
-                       value="<%=displayName == null ? "" : displayName%>"/></td>
-        </tr>
-        <%
-            if (cmd.equals(Constants.EDIT)) {
-        %>
-        <tr>
-            <td><label for="positionDescription">Position Description:</label></td>
-            <td><select name="positionDescription" id="positionDescription"
-                        required="true"
-                        dojoType="dijit.form.ComboBox"
-                        hasDownArrow="true"
-                        value="<%=positionDescription == null ? "" : positionDescription%>">
-                <option selected="selected" value=""></option>
-                <option value="Senior Researcher">Senior Researcher</option>
-                <option value="Early Career  Researcher">Early Career Researcher</option>
-                <option value="Post Doc">Post Doc</option>
-                <option value="PhD Student">PhD Student</option>
-                <option value="Undergrad Student">Undergrad Student</option>
-                <option value="Secondary School Student">Secondary School Student</option>
-                <option value="Primary School Student">Primary School Student</option>
-                <option value="General Volunteer">General Volunteer</option>
-                <option value="Industry Volunteer">Industry Volunteer</option>
-                <option value="Tourist Volunteer">Tourist Volunteer</option>
-                <option value="Dive Centre">Dive Centre</option>
-                <option value="Teacher">Teacher</option>
-                <option value="Other">Other</option>
-            </select>
-            </td>
-        </tr>
-        <tr>
-            <td><label for="address">Address:</label></td>
-            <td><input type="text" name="address" id="address"
-                       style="width:300px"
-                       dojoType="dijit.form.Textarea"
-                       trim="true"
-                       value="<%=address == null ? "" : address%>"/></td>
-        </tr>
-        <tr>
-            <td><label for="phone">Phone:</label></td>
-            <td><input type="text" name="phone" id="phone"
-                       dojoType="dijit.form.ValidationTextBox"
-                       regExp="[+ 0-9]*"
-                       invalidMessage="Please enter a valid phone number."
-                       value="<%=phone == null ? "" : phone%>"/> e.g + 11 2 1111 1111
-            </td>
-        </tr>
-        <%
-            }
-        %>
-        <tr>
-            <td><label for="country">Country:</label></td>
-            <td><select name="country" id="country"
-                        required="true"
-                        dojoType="dijit.form.ComboBox"
-                        hasDownArrow="true"
-                        value="<%=country == null ? "" : country%>">
-                <option selected="selected" value=""></option>
-                <jsp:include page="/include/countrylist.jsp"/>
-            </select>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit" name="signup"
-                                   value="<%=cmd.equals(Constants.ADD) ? "Sign Up" : "Save"%>"/>
-                <%
-                    if (cmd.equals(Constants.EDIT)) {
-                %>
-                <input type="button" value="Cancel"
-                       onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="userId" value="<%= String.valueOf(userId) %>" /></portlet:renderURL>';"/>
-                <%
-                    }
-                %>
-            </td>
-        </tr>
-    </table>
-    <%
-        if (renderRequest.getWindowState().equals(WindowState.MAXIMIZED)) {
-    %>
-
-    <script type="text/javascript">
-        document.<portlet:namespace />fm.email.focus();
-    </script>
+    <tr>
+        <td><label for="positionDescription">Position Description:</label></td>
+        <td><select name="positionDescription" id="positionDescription"
+                    required="true"
+                    dojoType="dijit.form.ComboBox"
+                    hasDownArrow="true"
+                    value="<%=positionDescription == null ? "" : positionDescription%>">
+            <option selected="selected" value=""></option>
+            <option value="Senior Researcher">Senior Researcher</option>
+            <option value="Early Career  Researcher">Early Career Researcher</option>
+            <option value="Post Doc">Post Doc</option>
+            <option value="PhD Student">PhD Student</option>
+            <option value="Undergrad Student">Undergrad Student</option>
+            <option value="Secondary School Student">Secondary School Student</option>
+            <option value="Primary School Student">Primary School Student</option>
+            <option value="General Volunteer">General Volunteer</option>
+            <option value="Industry Volunteer">Industry Volunteer</option>
+            <option value="Tourist Volunteer">Tourist Volunteer</option>
+            <option value="Dive Centre">Dive Centre</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Other">Other</option>
+        </select>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="address">Address:</label></td>
+        <td><input type="text" name="address" id="address"
+                   style="width:300px"
+                   dojoType="dijit.form.Textarea"
+                   trim="true"
+                   value="<%=address == null ? "" : address%>"/></td>
+    </tr>
+    <tr>
+        <td><label for="phone">Phone:</label></td>
+        <td><input type="text" name="phone" id="phone"
+                   dojoType="dijit.form.ValidationTextBox"
+                   regExp="[+ 0-9]*"
+                   invalidMessage="Please enter a valid phone number."
+                   value="<%=phone == null ? "" : phone%>"/> e.g + 11 2 1111 1111
+        </td>
+    </tr>
     <%
         }
     %>
+    <tr>
+        <td><label for="country">Country:</label></td>
+        <td><select name="country" id="country"
+                    required="true"
+                    dojoType="dijit.form.ComboBox"
+                    hasDownArrow="true"
+                    value="<%=country == null ? "" : country%>">
+            <option selected="selected" value=""></option>
+            <jsp:include page="/include/countrylist.jsp"/>
+        </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"><input type="submit" name="signup"
+                               value="<%=cmd.equals(Constants.ADD) ? "Sign Up" : "Save"%>"/>
+            <%
+                if (cmd.equals(Constants.EDIT)) {
+            %>
+            <input type="button" value="Cancel"
+                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="userId" value="<%= String.valueOf(userId) %>" /></portlet:renderURL>';"/>
+            <%
+                }
+            %>
+        </td>
+    </tr>
+</table>
+<%
+    if (renderRequest.getWindowState().equals(WindowState.MAXIMIZED)) {
+%>
+
+<script type="text/javascript">
+    document.<portlet:namespace />fm.email.focus();
+</script>
+<%
+    }
+%>
 </form>
 <% } else if (cmd.equals(Constants.RESET)) {
     String resetid = ParamUtil.getString(request, "resetid");
@@ -372,6 +395,11 @@
             if (currentUser != null && (user.equals(currentUser) || currentUser.isSuperUser())) {
         %>
         <tr>
+            <th>Full Name:</th>
+            <td><%= (user.getFirstName() == null || user.getLastName() == null) ? "Not Set" : user.getFirstName() + " " + user.getLastName()%>
+            </td>
+        </tr>
+        <tr>
             <th>Email:</th>
             <td><a href="mailto:<%= user.getEmail()%>"><%= user.getEmail()%>
             </a></td>
@@ -466,83 +494,83 @@
         </tr>
     </table>
 </div>
-<div id="friendsTab" dojoType="dijit.layout.ContentPane" title="Friends" style="width:650px; height:60ex">
-    <script>
-        dojo.require("dojox.grid.DataGrid");
-        dojo.require("dojox.data.XmlStore");
-        dojo.require("dojox.form.Rating");
-        dojo.require("dojo.date.locale");
+<%--<div id="friendsTab" dojoType="dijit.layout.ContentPane" title="Friends" style="width:650px; height:60ex">--%>
+<%--<script>--%>
+<%--dojo.require("dojox.grid.DataGrid");--%>
+<%--dojo.require("dojox.data.XmlStore");--%>
+<%--dojo.require("dojox.form.Rating");--%>
+<%--dojo.require("dojo.date.locale");--%>
 
-        var dateFormatter = function(data) {
-            return dojo.date.locale.format(new Date(Number(data)), {
-                datePattern: "dd MMM yyyy",
-                selector: "date",
-                locale: "en"
-            });
-        };
+<%--var dateFormatter = function(data) {--%>
+<%--return dojo.date.locale.format(new Date(Number(data)), {--%>
+<%--datePattern: "dd MMM yyyy",--%>
+<%--selector: "date",--%>
+<%--locale: "en"--%>
+<%--});--%>
+<%--};--%>
 
-        var layoutMembers = [
-            [
-                {
-                    field: "name",
-                    name: "Name",
-                    width: 10,
-                    formatter: function(item) {
-                        return item.toString();
-                    }
-                },
-                {
-                    field: "country",
-                    name: "Country",
-                    width: 10,
-                    formatter: function(item) {
-                        return item.toString();
-                    }
-                },
-                {
-                    field: "joined",
-                    name: "Member Since",
-                    width: 10,
-                    formatter: dateFormatter
+<%--var layoutMembers = [--%>
+<%--[--%>
+<%--{--%>
+<%--field: "name",--%>
+<%--name: "Name",--%>
+<%--width: 10,--%>
+<%--formatter: function(item) {--%>
+<%--return item.toString();--%>
+<%--}--%>
+<%--},--%>
+<%--{--%>
+<%--field: "country",--%>
+<%--name: "Country",--%>
+<%--width: 10,--%>
+<%--formatter: function(item) {--%>
+<%--return item.toString();--%>
+<%--}--%>
+<%--},--%>
+<%--{--%>
+<%--field: "joined",--%>
+<%--name: "Member Since",--%>
+<%--width: 10,--%>
+<%--formatter: dateFormatter--%>
 
-                },
-                {
-                    field: "surveys",
-                    name: "Surveys",
-                    width: 10,
-                    formatter: function(item) {
-                        return item.toString();
-                    }
-                },
-                {
-                    field: "rating",
-                    name: "Rating",
-                    width: 10,
-                    formatter: function(item) {
-                        return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});
-                    }
-                },
-                {
-                    field: "view",
-                    name: "View",
-                    width: 10,
-                    formatter: function(item) {
-                        var viewURL = "<a href=\"<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=" + item.toString() + "\">Profile</a>";
-                        return viewURL;
-                    }
-                }
-            ]
-        ];
-    </script>
-    <div dojoType="dojox.data.XmlStore"
-         url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/users?format=xml&friendsOf=<%=user.getId()%>"
-         jsId="userStore"
-         label="title">
-    </div>
-    <div id="friendsGrid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
-         store="userStore" structure="layoutMembers" query="{}" rowsPerPage="40">
-    </div>
-</div>
+<%--},--%>
+<%--{--%>
+<%--field: "surveys",--%>
+<%--name: "Surveys",--%>
+<%--width: 10,--%>
+<%--formatter: function(item) {--%>
+<%--return item.toString();--%>
+<%--}--%>
+<%--},--%>
+<%--{--%>
+<%--field: "rating",--%>
+<%--name: "Rating",--%>
+<%--width: 10,--%>
+<%--formatter: function(item) {--%>
+<%--return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});--%>
+<%--}--%>
+<%--},--%>
+<%--{--%>
+<%--field: "view",--%>
+<%--name: "View",--%>
+<%--width: 10,--%>
+<%--formatter: function(item) {--%>
+<%--var viewURL = "<a href=\"<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=" + item.toString() + "\">Profile</a>";--%>
+<%--return viewURL;--%>
+<%--}--%>
+<%--}--%>
+<%--]--%>
+<%--];--%>
+<%--</script>--%>
+<%--<div dojoType="dojox.data.XmlStore"--%>
+<%--url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/users?format=xml&friendsOf=<%=user.getId()%>"--%>
+<%--jsId="userStore"--%>
+<%--label="title">--%>
+<%--</div>--%>
+<%--<div id="friendsGrid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"--%>
+<%--store="userStore" structure="layoutMembers" query="{}" rowsPerPage="40">--%>
+<%--</div>--%>
+<%--</div>--%>
 <%--<div id="networkTab" dojoType="dijit.layout.ContentPane" title="Network" style="width:650px; height:60ex">--%>
 
 <%--<div id="center-container">--%>
@@ -606,19 +634,19 @@
                 }
             },
             {
-                field: "joined",
-                name: "Member Since",
-                width: 10,
-                formatter: dateFormatter
-
-            },
-            {
                 field: "country",
                 name: "Country",
                 width: 10,
                 formatter: function(item) {
                     return item.toString();
                 }
+            },
+            {
+                field: "joined",
+                name: "Member Since",
+                width: 10,
+                formatter: dateFormatter
+
             },
             {
                 field: "surveys",

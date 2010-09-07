@@ -88,7 +88,7 @@
         }
         if (currentUser != null && (currentUser.getFirstName() == null || currentUser.getLastName() == null)) {
     %>
-    <div><span class="portlet-msg-error">You must set your first and last name on your profile so we can address your request to you. Click <a
+    <div><span class="portlet-msg-error">You must set your first and last names on your profile so we can address your request to you. Click <a
             href="<%=renderRequest.getAttribute("userUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=<%=currentUser.getId()%>">here</a> to edit your profile.</span>
     </div>
     <%
@@ -246,6 +246,7 @@
         <tr>
             <th>#</th>
             <th>Requester</th>
+            <th>Full Name</th>
             <th>Kit Type</th>
             <th>Language</th>
             <th>Address</th>
@@ -262,6 +263,12 @@
             </td>
             <td><%=kitRequests.get(i).getRequester().getDisplayName()%>
             </td>
+
+
+            <td><%=kitRequests.get(i).getRequester().getFirstName() == null && kitRequests.get(i).getRequester().getLastName() == null ? "" : kitRequests.get(i).getRequester().getFirstName() + " " + kitRequests.get(i).getRequester().getLastName()%>
+            </td>
+
+
             <td><%=kitRequests.get(i).getKitType() == null ? "" : kitRequests.get(i).getKitType()%>
             </td>
             <td><%=kitRequests.get(i).getLanguage() == null ? "" : kitRequests.get(i).getLanguage()%>

@@ -51,13 +51,15 @@ public class UserPortlet extends GenericPortlet {
         String password2 = actionRequest.getParameter("password2");
         String country = actionRequest.getParameter("country");
         String displayName = actionRequest.getParameter("displayName");
+        String firstName = actionRequest.getParameter("firstName");
+        String lastName = actionRequest.getParameter("lastName");
         String phone = actionRequest.getParameter("phone");
         String positionDescription = actionRequest.getParameter("positionDescription");
         String address = actionRequest.getParameter("address");
         long userId = ParamUtil.getLong(actionRequest, "userId");
 
         if (cmd.equals(Constants.ADD)) {
-            if ((email == null) || email.isEmpty() || (displayName == null) || displayName.isEmpty() || (password == null) || (country == null) || country.isEmpty()) {
+            if ((email == null) || email.isEmpty() || (firstName == null) || firstName.isEmpty() || (lastName == null) || lastName.isEmpty() || (displayName == null) || displayName.isEmpty() || (password == null) || (country == null) || country.isEmpty()) {
                 errors.add("All fields are required.");
             } else {
                 //TODO validate email
@@ -75,6 +77,8 @@ public class UserPortlet extends GenericPortlet {
                             } else {
                                 UserImpl userImpl = new UserImpl(displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
                                 userImpl.setCountry(country);
+                                userImpl.setFirstName(firstName);
+                                userImpl.setLastName(lastName);
                                 userDao.save(userImpl);
                                 actionResponse.setRenderParameter("userId", String.valueOf(userImpl.getId()));
                                 actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
@@ -114,6 +118,8 @@ public class UserPortlet extends GenericPortlet {
                                 user.setEmail(email);
                                 user.setDisplayName(displayName);
                                 user.setCountry(country);
+                                user.setFirstName(firstName);
+                                user.setLastName(lastName);
 //                                user.setOccupation(occupation);
                                 user.setPhone(phone);
                                 user.setPositionDescription(positionDescription);
