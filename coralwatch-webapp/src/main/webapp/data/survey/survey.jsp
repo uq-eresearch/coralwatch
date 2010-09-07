@@ -744,6 +744,11 @@
                   value="<%=surveyRatingDao.getCommunityRatingValue(survey)%>"></span>
             </td>
         </tr>
+
+        <%
+            }
+        %>
+
         <tr>
             <th>Submitted:</th>
             <td><%=survey.getDateSubmitted() == null ? "" : survey.getDateSubmitted()%>
@@ -754,17 +759,6 @@
             <td><%=survey.getDateModified() == null ? "" : survey.getDateModified()%>
             </td>
         </tr>
-
-        <%--<tr>--%>
-        <%--<th>Community Rating:</th>--%>
-        <%--<td></td>--%>
-        <%--</tr>--%>
-
-        <%
-            }
-        %>
-
-
         <%
             if (currentUser != null && (currentUser.equals(survey.getCreator()) || currentUser.isSuperUser())) {
         %>

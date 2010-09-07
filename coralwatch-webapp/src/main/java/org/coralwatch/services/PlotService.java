@@ -13,11 +13,14 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.xy.XYShapeRenderer;
+import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.ui.RectangleEdge;
+import org.jfree.ui.VerticalAlignment;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -194,8 +197,11 @@ public class PlotService {
 
     public static JFreeChart createShapePiePlot(final List<Survey> surveys, boolean labels, boolean legend, int titleSize) {
         DefaultPieDataset dataset = new DefaultPieDataset();
+        int numberOfRecords = 0;
         for (Survey survey : surveys) {
-            for (SurveyRecord record : survey.getDataset()) {
+            List<SurveyRecord> surveyRecords = survey.getDataset();
+            numberOfRecords = numberOfRecords + surveyRecords.size();
+            for (SurveyRecord record : surveyRecords) {
                 String coralShape = record.getCoralType();
                 if (!dataset.getKeys().contains(coralShape)) {
                     dataset.setValue(coralShape, 1);
@@ -209,10 +215,17 @@ public class PlotService {
         if (surveys.size() > 1) {
             chartTitle = "Coral Type Distribution of All Surveys";
         }
-        JFreeChart chart = ChartFactory.createPieChart(chartTitle, dataset,
-                legend, false, false);
+
+        JFreeChart chart = ChartFactory.createPieChart(chartTitle, dataset, legend, false, false);
         chart.getTitle().setFont(new Font(null, Font.PLAIN, titleSize));
         chart.getLegend().setItemFont(new Font("SansSerif", Font.PLAIN, titleSize - 2));
+
+
+        final TextTitle subtitle = new TextTitle(numberOfRecords + " Corals Surveyed");
+        subtitle.setPosition(RectangleEdge.BOTTOM);
+        subtitle.setVerticalAlignment(VerticalAlignment.BOTTOM);
+        chart.addSubtitle(subtitle);
+
         PiePlot plot = (PiePlot) chart.getPlot();
         plot.setBackgroundAlpha(0);
         plot.setSimpleLabels(true);

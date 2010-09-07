@@ -39,14 +39,13 @@
         </div>
         <br/>
 
-        <div><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
-                  alt="Colour Distribution" width="256" height="256"/>
-        </div>
-        <br/>
-
         <div><img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + pieChartUrl)%>"
                   alt="Shape Distribution" width="256" height="256"/>
+            <img src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + barChartUrl)%>"
+                 alt="Colour Distribution" width="256" height="256"/>
         </div>
+
+
         <%
         } else {
         %>
