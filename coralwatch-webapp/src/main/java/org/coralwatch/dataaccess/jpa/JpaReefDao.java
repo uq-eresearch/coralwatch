@@ -16,7 +16,7 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao, Serializable {
 
     @Override
     public List<Reef> getAll() {
-        return entityManagerSource.getEntityManager().createQuery("SELECT o FROM Reef o ORDER BY name").getResultList();
+        return entityManagerSource.getEntityManager().createQuery("SELECT o FROM Reef o ORDER BY country").getResultList();
     }
 
     @Override

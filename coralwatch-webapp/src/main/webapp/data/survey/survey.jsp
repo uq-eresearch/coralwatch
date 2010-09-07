@@ -1181,6 +1181,9 @@
                     return Number(item.toString());
                 }
             },
+            <%
+                if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
+            %>
             {
                 field: "rating",
                 name: "Rating",
@@ -1189,6 +1192,9 @@
                     return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});
                 }
             },
+            <%
+            }
+            %>
             {
                 field: "view",
                 name: "View",
