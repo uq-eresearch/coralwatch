@@ -1,6 +1,7 @@
 <%@ page import="com.liferay.portal.kernel.util.Constants" %>
 <%@ page import="com.liferay.portal.kernel.util.HtmlUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
+<%@ page import="org.coralwatch.app.CoralwatchApplication" %>
 <%@ page import="org.coralwatch.dataaccess.SurveyDao" %>
 <%@ page import="org.coralwatch.dataaccess.SurveyRatingDao" %>
 <%@ page import="org.coralwatch.model.*" %>
@@ -708,13 +709,16 @@
                     style="color:#ff0000;"><%=survey.getQaState().equalsIgnoreCase("Post Migration") ? "Data submitted on the new CoralWatch website" : "Data migrated from the old CoralWatch website"%></span>
             </td>
         </tr>
+
+
         <%
-            if (currentUser != null) {
-                SurveyRating userSurveyRating = surveyRatingDao.getSurveyRating(currentUser, survey);
-                double userSurveyRatingValue = 0;
-                if (userSurveyRating != null) {
-                    userSurveyRatingValue = userSurveyRating.getRatingValue();
-                }
+            if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
+                if (currentUser != null) {
+                    SurveyRating userSurveyRating = surveyRatingDao.getSurveyRating(currentUser, survey);
+                    double userSurveyRatingValue = 0;
+                    if (userSurveyRating != null) {
+                        userSurveyRatingValue = userSurveyRating.getRatingValue();
+                    }
         %>
         <tr>
             <th>Your Rating:</th>
@@ -755,6 +759,12 @@
         <%--<th>Community Rating:</th>--%>
         <%--<td></td>--%>
         <%--</tr>--%>
+
+        <%
+            }
+        %>
+
+
         <%
             if (currentUser != null && (currentUser.equals(survey.getCreator()) || currentUser.isSuperUser())) {
         %>

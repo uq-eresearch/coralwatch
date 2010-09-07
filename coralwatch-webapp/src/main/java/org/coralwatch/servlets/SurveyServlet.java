@@ -62,7 +62,12 @@ public class SurveyServlet extends HttpServlet {
                         survey.putOpt("latitude", srv.getLatitude());
                         survey.putOpt("longitude", srv.getLongitude());
                         survey.putOpt("records", surveyDao.getSurveyRecords(srv).size());
-                        survey.putOpt("rating", rand.nextInt(6));
+
+                        //Rating stuff
+                        if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
+                            survey.putOpt("rating", rand.nextInt(6));
+                        }
+
                         survey.putOpt("date", srv.getDate().toLocaleString());
                         surveys.put(survey);
                         count++;
@@ -141,11 +146,13 @@ public class SurveyServlet extends HttpServlet {
                     Text numberOfRecords = doc.createTextNode(surveyDao.getSurveyRecords(srv).size() + "");
                     numberOfRecordsNode.appendChild(numberOfRecords);
 
-
-                    Element ratingNode = doc.createElement("rating");
-                    survey.appendChild(ratingNode);
-                    Text rating = doc.createTextNode(rand.nextInt(6) + "");
-                    ratingNode.appendChild(rating);
+                    //Rating
+                    if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
+                        Element ratingNode = doc.createElement("rating");
+                        survey.appendChild(ratingNode);
+                        Text rating = doc.createTextNode(rand.nextInt(6) + "");
+                        ratingNode.appendChild(rating);
+                    }
 
                     Element viewNode = doc.createElement("view");
                     survey.appendChild(viewNode);

@@ -56,4 +56,7 @@ public interface Configuration {
      * @return If the test mode has been enabled.
      */
     boolean isTestSetup();
+
+
+    boolean isRatingSetup();
 }

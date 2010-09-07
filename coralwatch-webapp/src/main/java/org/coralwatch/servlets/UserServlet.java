@@ -95,12 +95,16 @@ public class UserServlet extends HttpServlet {
                         Text numberOfSurveys = doc.createTextNode(userDao.getSurveyEntriesCreated(user).size() + "");
                         surveysNode.appendChild(numberOfSurveys);
 
-                        Element ratingNode = doc.createElement("rating");
-                        userNode.appendChild(ratingNode);
-                        Double overAllRating = ReputationService.getOverAllRating(user);
-                        Text rating = doc.createTextNode(overAllRating + "");
+                        //Rating stuff
+                        if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
 
-                        ratingNode.appendChild(rating);
+                            Element ratingNode = doc.createElement("rating");
+                            userNode.appendChild(ratingNode);
+                            Double overAllRating = ReputationService.getOverAllRating(user);
+                            Text rating = doc.createTextNode(overAllRating + "");
+
+                            ratingNode.appendChild(rating);
+                        }
 
                         Element viewNode = doc.createElement("view");
                         userNode.appendChild(viewNode);

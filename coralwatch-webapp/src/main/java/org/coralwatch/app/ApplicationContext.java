@@ -33,9 +33,11 @@ public class ApplicationContext implements Configuration, ServletContextListener
     private final UserRatingDao userRatingDao;
     private final SurveyRatingDao surveyRatingDao;
     private final boolean isTestSetup;
+    private final boolean isRatingSetup;
     private final Properties submissionEmailConfig;
     private final ReefDao reefDao;
     private final UserReputationProfileDao userReputationProfileDao;
+
 
     public ApplicationContext() throws InitializationException {
         Properties properties = new Properties();
@@ -109,6 +111,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.httpPort = Integer.valueOf(getProperty(properties, "httpPort", "8181"));
         this.baseUrl = getProperty(properties, "baseUrl", null);
         this.isTestSetup = Boolean.valueOf(getProperty(properties, "testMode", "false"));
+        this.isRatingSetup = Boolean.valueOf(getProperty(properties, "ratingOnOff", "false"));
     }
 
     /**
@@ -319,6 +322,10 @@ public class ApplicationContext implements Configuration, ServletContextListener
     @Override
     public boolean isTestSetup() {
         return isTestSetup;
+    }
+
+    public boolean isRatingSetup() {
+        return isRatingSetup;
     }
 
     private static String getProperty(Properties properties, String propertyName) throws InitializationException {
