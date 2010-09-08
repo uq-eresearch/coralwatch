@@ -89,4 +89,14 @@
         <servlet-name>rating</servlet-name>
         <url-pattern>/rating/*</url-pattern>
     </servlet-mapping>
+
+    <servlet id="reputationServlet">
+        <servlet-name>reputation</servlet-name>
+        <servlet-class>org.coralwatch.servlets.ReputationServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>reputation</servlet-name>
+        <url-pattern>/reputation/*</url-pattern>
+    </servlet-mapping>
 </web-app>

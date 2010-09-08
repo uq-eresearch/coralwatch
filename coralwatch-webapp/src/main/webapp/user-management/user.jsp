@@ -9,7 +9,9 @@
 <%@ page import="javax.portlet.WindowState" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Random" %>
 
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <portlet:defineObjects/>
@@ -604,15 +606,27 @@
             <script type="text/javascript"
                     src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/js/jit/jit.js")%>"></script>
             <script type="text/javascript"
-                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/js/jit/example1.js")%>"></script>
-
-            <%--<div id="log"></div>--%>
+                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/js/jit/hypertree.js")%>?preventCache=<%=new Random(new Date().getTime()).nextLong()%>"></script>
         </div>
     </div>
 </div>
 <script type="text/javascript">
     dojo.addOnLoad(function() {
-        loadGraph();
+        var ht = loadGraph();
+        var xhrArgs = {
+            url: "<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/reputation?format=json")%>&friendsOf=<%=user.getId()%>&preventCache=<%=new Random(new Date().getTime()).nextLong()%>",
+            handleAs: "json",
+            load: function(data) {
+                var json = data;
+                ht.loadJSON(json);
+                ht.refresh();
+            },
+            error: function(error) {
+                alert('Cannot load hyper tree. Error: ' + error);
+            }
+        };
+        var deferred = dojo.xhrGet(xhrArgs);
+        //inject the graph into the dijit tab
         var tc = dijit.byId("userProfileContainer");
         var contentPane = new dijit.layout.ContentPane({title:"Network"}, "networkTab");
         tc.addChild(contentPane);

@@ -518,7 +518,7 @@ function loadGraph() {
             //Enable panning events only if we're dragging the empty
             //canvas (and not a node).
             panning: 'avoid nodes',
-            zooming: 10 //zoom speed. higher is more sensible
+            zooming: 20 //zoom speed. higher is more sensible
         },
         // Change node and edge styles such as
         // color and width.
@@ -531,7 +531,7 @@ function loadGraph() {
         Edge: {
             overridable: true,
             color: '#23A4FF',
-            lineWidth: 0.4
+            lineWidth: 1.5
         },
         //Native canvas text styling
         Label: {
