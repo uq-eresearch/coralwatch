@@ -169,6 +169,13 @@ public class PlotService {
         JFreeChart chart = ChartFactory.createBarChart(chartTitle, null, null,
                 dataset, PlotOrientation.VERTICAL, legend, false, false);
         chart.getTitle().setFont(new Font(null, Font.PLAIN, titleSize));
+
+        final TextTitle subtitle = new TextTitle(totalRecords + " Corals Surveyed");
+        subtitle.setFont(new Font("SansSerif", Font.PLAIN, titleSize));
+        subtitle.setPosition(RectangleEdge.RIGHT);
+        subtitle.setVerticalAlignment(VerticalAlignment.CENTER);
+        chart.addSubtitle(subtitle);
+
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundAlpha(0);
         plot.setRangeGridlinePaint(Color.GRAY);
@@ -221,12 +228,6 @@ public class PlotService {
         chart.getLegend().setItemFont(new Font("SansSerif", Font.PLAIN, titleSize - 2));
 
 
-        final TextTitle subtitle = new TextTitle(numberOfRecords + " Corals Surveyed");
-        subtitle.setFont(new Font("SansSerif", Font.PLAIN, titleSize - 2));
-        subtitle.setPosition(RectangleEdge.BOTTOM);
-        subtitle.setVerticalAlignment(VerticalAlignment.BOTTOM);
-        chart.addSubtitle(subtitle);
-
         PiePlot plot = (PiePlot) chart.getPlot();
         plot.setBackgroundAlpha(0);
         plot.setSimpleLabels(true);
@@ -240,6 +241,13 @@ public class PlotService {
         for (Object key : plot.getDataset().getKeys()) {
             plot.setSectionPaint((Comparable<?>) key, SHAPE_COLORS.get(key));
         }
+
+        final TextTitle subtitle = new TextTitle(numberOfRecords + " Corals Surveyed");
+        subtitle.setFont(new Font("SansSerif", Font.PLAIN, titleSize));
+        subtitle.setPosition(RectangleEdge.BOTTOM);
+        subtitle.setVerticalAlignment(VerticalAlignment.BOTTOM);
+        chart.addSubtitle(subtitle);
+
         return chart;
     }
 }

@@ -169,14 +169,13 @@
                 for (Survey srv : surveys) {
                     if (srv.getLatitude() != null && srv.getLongitude() != null) {
                 %>
-                    var center = new GLatLng(<%=srv.getLatitude()%>, <%=srv.getLongitude()%>);
-
+                    map.setCenter(new GLatLng(<%=srv.getLatitude()%>, <%=srv.getLongitude()%>), 5);
                 <%
                     break;
                     }
                 }
                 %>
-                    map.setCenter(center, 5);
+                    //                    map.setCenter(center, 5);
                 <%
                 for(Survey srv : surveys) {
                     if (srv.getLatitude() != null && srv.getLongitude() != null){
