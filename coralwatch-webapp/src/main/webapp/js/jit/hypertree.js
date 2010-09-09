@@ -63,8 +63,11 @@ function loadGraph() {
                     count++;
                 });
                 //display node info in tooltip
-                tip.innerHTML = "<div class=\"tip-title\">" + node.name + "</div>"
-                        + "<div class=\"tip-text\"><b>Rating:</b> " + node.data.rating + "</div>";
+                if (node.data.relation == "root") {
+                    tip.innerHTML = "<div class=\"tip-title\">" + node.name + "</div>";
+                } else {
+                    tip.innerHTML = "<div class=\"tip-title\">" + node.name + "</div><div class=\"tip-text\"><b>Rating:</b> " + node.data.rating + "</div>";
+                }
             }
         },
         onBeforeCompute: function(node) {

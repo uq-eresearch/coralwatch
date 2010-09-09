@@ -561,7 +561,7 @@
                 },
                 {
                     field: "rating",
-                    name: "Rating",
+                    name: "Overall Rating",
                     width: 10,
                     formatter: function(item) {
                         return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});
@@ -707,7 +707,7 @@
             %>
             {
                 field: "rating",
-                name: "Rating",
+                name: "Overall Rating",
                 width: 10,
                 formatter: function(item) {
                     return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});
