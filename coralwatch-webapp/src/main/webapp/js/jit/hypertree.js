@@ -44,12 +44,14 @@ function loadGraph() {
         //Change node and edge styles such as
         //color, width and dimensions.
         Node: {
+            overridable: true,
             dim: 9,
-            color: "#f00"
+            color: "#336699"
         },
         Edge: {
+            overridable: true,
             lineWidth: 2,
-            color: "#088"
+            color: "#F9911F"
         },
         onBeforeCompute: function(node) {
             Log.write("centering");
@@ -69,13 +71,17 @@ function loadGraph() {
             var style = domElement.style;
             style.display = '';
             style.cursor = 'pointer';
-            if (node._depth <= 1) {
-                style.fontSize = "1.1em";
-                style.color = "#000";
+            if (node._depth == 0) {
+                style.fontSize = "1.3em";
+                style.color = "#000000";
+
+            } else if (node._depth == 1) {
+                style.fontSize = "1em";
+                style.color = "#333333";
 
             } else if (node._depth == 2) {
-                style.fontSize = "1em";
-                style.color = "#000";
+                style.fontSize = "0.8em";
+                style.color = "#888888";
 
             } else {
                 style.display = 'none';
@@ -85,7 +91,12 @@ function loadGraph() {
             var w = domElement.offsetWidth;
             style.left = (left - w / 2) + 'px';
         },
-
+        //        onBeforePlotLine: function(adj) {
+        //            if (adj.nodeTo.selected._depth) {
+        //                adj.data.$color = "#eed";
+        //                adj.data.$lineWidth = 3;
+        //            }
+        //        },
         onAfterCompute: function() {
             //            Log.write("done");
 

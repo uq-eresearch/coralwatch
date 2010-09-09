@@ -49,10 +49,21 @@ public class ReputationServlet extends HttpServlet {
                 JSONObject child = new JSONObject();
                 child.putOpt("id", user.getId() + "");
                 child.putOpt("name", user.getDisplayName());
-                child.putOpt("children", new JSONArray());
+                JSONArray grandChildren = new JSONArray();
+                List<UserImpl> grandChildrenUsers = ReputationService.getRateesFor(user);
+                for (UserImpl granChildUser : grandChildrenUsers) {
+                    JSONObject grandChild = new JSONObject();
+                    grandChild.putOpt("id", granChildUser.getId() + "");
+                    grandChild.putOpt("name", granChildUser.getDisplayName());
+                    grandChild.putOpt("children", new JSONArray());
+                    JSONObject data = new JSONObject();
+                    data.putOpt("$color", "#99d4ef");
+                    grandChild.putOpt("data", data);
+                    grandChildren.put(grandChild);
+                }
+                child.putOpt("children", grandChildren);
                 JSONObject data = new JSONObject();
-                data.putOpt("band", "Danny Lohner");
-                data.putOpt("relation", "member of band");
+                data.putOpt("$color", "#ec8f8f");
                 child.putOpt("data", data);
                 children.put(child);
             } catch (JSONException e) {
@@ -64,7 +75,9 @@ public class ReputationServlet extends HttpServlet {
             data.putOpt("id", friendsOfUser.getId() + "");
             data.putOpt("name", friendsOfUser.getDisplayName());
             data.putOpt("children", children);
-            data.putOpt("data", new JSONArray());
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.putOpt("$color", "#a0ec9c");
+            data.putOpt("data", jsonObject);
         } catch (JSONException ex) {
             LOGGER.fatal("Cannot create data json object." + ex.toString());
         }
