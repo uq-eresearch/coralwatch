@@ -596,6 +596,9 @@
 
 
 </div>
+<%
+    if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
+%>
 <div id="networkTab" style="width:650px; height:60ex">
     <img align="left" src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/image/network_legend.png")%>"
          id="legend"/>
@@ -637,6 +640,7 @@
 </script>
 
 <%
+    }
 } else if (cmd.equals(Constants.PRINT)) {
     String successMsg = ParamUtil.getString(request, "successMsg");
 %>
