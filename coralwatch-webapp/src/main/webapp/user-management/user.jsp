@@ -597,6 +597,9 @@
 
 </div>
 <div id="networkTab" style="width:650px; height:60ex">
+    <img align="left" src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/image/network_legend.png")%>"
+         id="legend"/>
+
     <div id="center-container">
         <div id="infovis">
             <!--[if IE]>

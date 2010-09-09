@@ -64,7 +64,7 @@ function loadGraph() {
                 });
                 //display node info in tooltip
                 tip.innerHTML = "<div class=\"tip-title\">" + node.name + "</div>"
-                        + "<div class=\"tip-text\"><b>connections:</b> " + count + "</div><br/><span id=\"ratingNode\" dojoType=\"dojox.form.Rating\" numStars=\"5\" disabled=\"disabled\" value=\"4\"></span>";
+                        + "<div class=\"tip-text\"><b>Rating:</b> " + node.data.rating + "</div>";
             }
         },
         onBeforeCompute: function(node) {

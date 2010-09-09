@@ -58,12 +58,14 @@ public class ReputationServlet extends HttpServlet {
                     grandChild.putOpt("children", new JSONArray());
                     JSONObject data = new JSONObject();
                     data.putOpt("$color", "#99d4ef");
+                    data.putOpt("rating", "2.5");
                     grandChild.putOpt("data", data);
                     grandChildren.put(grandChild);
                 }
                 child.putOpt("children", grandChildren);
                 JSONObject data = new JSONObject();
                 data.putOpt("$color", "#ec8f8f");
+                data.putOpt("rating", ReputationService.getRaterRating(friendsOfUser, user) + "");
                 child.putOpt("data", data);
                 children.put(child);
             } catch (JSONException e) {
