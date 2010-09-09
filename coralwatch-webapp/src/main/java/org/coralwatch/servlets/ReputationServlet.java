@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ReputationServlet extends HttpServlet {
@@ -35,6 +36,8 @@ public class ReputationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+
         resp.setContentType("application/json;charset=utf-8");
         PrintWriter out = resp.getWriter();
 
@@ -58,7 +61,8 @@ public class ReputationServlet extends HttpServlet {
                     grandChild.putOpt("children", new JSONArray());
                     JSONObject data = new JSONObject();
                     data.putOpt("$color", "#99d4ef");
-                    data.putOpt("rating", "2.5");
+                    data.putOpt("rating", "2.50");
+                    data.putOpt("overallrating", twoDForm.format(ReputationService.getOverAllRating(granChildUser)) + "");
                     data.putOpt("relation", "grandchild");
                     grandChild.putOpt("data", data);
                     grandChildren.put(grandChild);
@@ -66,7 +70,8 @@ public class ReputationServlet extends HttpServlet {
                 child.putOpt("children", grandChildren);
                 JSONObject data = new JSONObject();
                 data.putOpt("$color", "#ec8f8f");
-                data.putOpt("rating", ReputationService.getRaterRating(friendsOfUser, user) + "");
+                data.putOpt("rating", twoDForm.format(ReputationService.getRaterRating(friendsOfUser, user)) + "");
+                data.putOpt("overallrating", twoDForm.format(ReputationService.getOverAllRating(user)) + "");
                 data.putOpt("relation", "child");
                 child.putOpt("data", data);
                 children.put(child);
@@ -82,6 +87,7 @@ public class ReputationServlet extends HttpServlet {
             JSONObject jsonDataObject = new JSONObject();
             jsonDataObject.putOpt("$color", "#a0ec9c");
             jsonDataObject.putOpt("relation", "root");
+            jsonDataObject.putOpt("overallrating", twoDForm.format(ReputationService.getOverAllRating(friendsOfUser)));
             data.putOpt("data", jsonDataObject);
         } catch (JSONException ex) {
             LOGGER.fatal("Cannot create data json object." + ex.toString());

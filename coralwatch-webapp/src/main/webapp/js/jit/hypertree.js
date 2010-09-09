@@ -64,9 +64,9 @@ function loadGraph() {
                 });
                 //display node info in tooltip
                 if (node.data.relation == "root") {
-                    tip.innerHTML = "<div class=\"tip-title\">" + node.name + "</div>";
+                    tip.innerHTML = "<div class=\"tip-title\">" + node.name + "</div><div class=\"tip-text\"><b>Overall Rating:</b> " + node.data.overallrating + "</div>";
                 } else {
-                    tip.innerHTML = "<div class=\"tip-title\">" + node.name + "</div><div class=\"tip-text\"><b>Rating:</b> " + node.data.rating + "</div>";
+                    tip.innerHTML = "<div class=\"tip-title\">" + node.name + "</div><div class=\"tip-text\"><b>Rating:</b> " + node.data.rating + "</div><div class=\"tip-text\"><b>Overall Rating:</b> " + node.data.overallrating + "</div>";
                 }
             }
         },
