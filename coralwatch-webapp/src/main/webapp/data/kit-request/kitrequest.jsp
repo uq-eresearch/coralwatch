@@ -43,7 +43,7 @@
         <tr>
             <th>#</th>
             <th>Date</th>
-            <th>Kit Type</th>
+            <th>Request</th>
             <th>Language</th>
             <th>Dispatched Date</th>
             <th>Address</th>
@@ -247,7 +247,7 @@
             <th>#</th>
             <th>Requester</th>
             <th>Full Name</th>
-            <th>Kit Type</th>
+            <th>Request</th>
             <th>Language</th>
             <th>Address</th>
             <th>Country</th>

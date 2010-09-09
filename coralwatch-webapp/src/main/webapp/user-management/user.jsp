@@ -612,14 +612,14 @@
 </div>
 <script type="text/javascript">
     dojo.addOnLoad(function() {
-        var ht = loadGraph();
+        var hyperTree = loadGraph();
         var xhrArgs = {
             url: "<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/reputation?format=json")%>&friendsOf=<%=user.getId()%>&preventCache=<%=new Random(new Date().getTime()).nextLong()%>",
             handleAs: "json",
             load: function(data) {
                 var json = data;
-                ht.loadJSON(json);
-                ht.refresh();
+                hyperTree.loadJSON(json);
+                hyperTree.refresh();
             },
             error: function(error) {
                 alert('Cannot load hyper tree. Error: ' + error);
@@ -627,9 +627,9 @@
         };
         var deferred = dojo.xhrGet(xhrArgs);
         //inject the graph into the dijit tab
-        var tc = dijit.byId("userProfileContainer");
+        var tabContainer = dijit.byId("userProfileContainer");
         var contentPane = new dijit.layout.ContentPane({title:"Network"}, "networkTab");
-        tc.addChild(contentPane);
+        tabContainer.addChild(contentPane);
     });
 </script>
 
