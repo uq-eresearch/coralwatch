@@ -224,8 +224,8 @@
     <label>Position:</label>
 </th>
 <td>
-<div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:25ex">
-<div id="tabDecimal" dojoType="dijit.layout.ContentPane" title="Decimal" style="width:40em;height:25ex;">
+<div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:30ex">
+<div id="tabDecimal" dojoType="dijit.layout.ContentPane" title="Decimal" style="width:40em;height:30ex;">
     <table>
         <tr>
             <th>
@@ -1063,32 +1063,6 @@
     <%
     } else {
     %>
-    <%--<div id="map" style="width: 640px; height: 53ex">--%>
-    <%--<script type="text/javascript">--%>
-    <%--if (GBrowserIsCompatible()) {--%>
-    <%--var mavDiv = dojo.byId("map");--%>
-    <%--var map = new GMap2(mavDiv);--%>
-    <%--map.setMapType(G_HYBRID_MAP);--%>
-    <%--map.addControl(new GSmallMapControl());--%>
-    <%--map.addControl(new GMapTypeControl());--%>
-    <%--map.addControl(new GOverviewMapControl());--%>
-
-    <%--var searchText = "<%=(survey.getReef().getName().toLowerCase().startsWith("unknown") ? "" : survey.getReef().getName()) + (", " + survey.getReef().getCountry()) %>";--%>
-    <%--var geo = new GClientGeocoder();--%>
-    <%--var possibleLocatin;--%>
-    <%--geo.getLocations(searchText, function (result) {--%>
-    <%--var possibleCenter = result.Placemark[0].Point.coordinates;--%>
-    <%--map.setCenter(new GLatLng(possibleCenter[1], possibleCenter[0]), 5);--%>
-    <%--for (var i = 0; i < result.Placemark.length; i++) {--%>
-    <%--var possibleLocation = result.Placemark[i].Point.coordinates;--%>
-    <%--var location = new GLatLng(possibleLocation[1], possibleLocation[0]);--%>
-    <%--var marker = new GMarker(location);--%>
-    <%--map.addOverlay(marker);--%>
-    <%--}--%>
-    <%--});--%>
-    <%--}--%>
-    <%--</script>--%>
-    <%--</div>--%>
     <p>No GPS data available for this survey.</p>
     <%}%>
 </div>

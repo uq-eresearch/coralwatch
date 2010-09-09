@@ -33,12 +33,12 @@
         }
     }
 %>
-<div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:670px;height:60ex">
+<div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:670px;height:65ex">
 <%
     List<KitRequest> userKitRequests = kitRequestDao.getByRequester(currentUser);
     if (userKitRequests.size() > 0) {
 %>
-<div id="mykitrequest" dojoType="dijit.layout.ContentPane" title="My Chart Requests" style="width:670px; height:60ex">
+<div id="mykitrequest" dojoType="dijit.layout.ContentPane" title="My Chart Requests" style="width:670px; height:65ex">
     <table class="coralwatch_list_table">
         <tr>
             <th>#</th>
@@ -79,7 +79,7 @@
 <%
     }
 %>
-<div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Chart Request" style="width:670px; height:60ex">
+<div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Chart Request" style="width:670px; height:65ex">
     <%
         if (currentUser == null) {
     %>
@@ -241,7 +241,7 @@
     }
 </script>
 <div id="allkitrequests" dojoType="dijit.layout.ContentPane" title="All Chart Requests"
-     style="width:670px; height:60ex">
+     style="width:670px; height:65ex">
     <table class="coralwatch_list_table">
         <tr>
             <th>#</th>
