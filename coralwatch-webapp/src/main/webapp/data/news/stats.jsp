@@ -11,7 +11,7 @@
     UserImpl highestContributor = (UserImpl) renderRequest.getAttribute("highestContributor");
 %>
 <div>
-    <h3 style="margin-top:0;">Updates</h3>
+    <h3 style="margin-top:0;">Coralwatch up-to-date</h3>
     <ul>
         <li><a href="<%=renderRequest.getAttribute("userUrl")%>?p_p_id=reefportlet_WAR_coralwatch"><%=users%>
             Member<%=users > 1 ? "s" : ""%>

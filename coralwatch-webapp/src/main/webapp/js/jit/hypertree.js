@@ -53,6 +53,20 @@ function loadGraph() {
             lineWidth: 2,
             color: "#F9911F"
         },
+        //Add Tips
+        Tips: {
+            enable: true,
+            onShow: function(tip, node) {
+                //count connections
+                var count = 0;
+                node.eachAdjacency(function() {
+                    count++;
+                });
+                //display node info in tooltip
+                tip.innerHTML = "<div class=\"tip-title\">" + node.name + "</div>"
+                        + "<div class=\"tip-text\"><b>connections:</b> " + count + "</div><br/><span id=\"ratingNode\" dojoType=\"dojox.form.Rating\" numStars=\"5\" disabled=\"disabled\" value=\"4\"></span>";
+            }
+        },
         onBeforeCompute: function(node) {
             Log.write("centering");
         },
