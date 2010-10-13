@@ -111,7 +111,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.httpPort = Integer.valueOf(getProperty(properties, "httpPort", "8181"));
         this.baseUrl = getProperty(properties, "baseUrl", null);
         this.isTestSetup = Boolean.valueOf(getProperty(properties, "testMode", "false"));
-        this.isRatingSetup = Boolean.valueOf(getProperty(properties, "ratingOnOff", "false"));
+        this.isRatingSetup = Boolean.valueOf(getProperty(properties, "ratingOn", "false"));
     }
 
     /**

@@ -11,12 +11,12 @@
         <repository>
             <id>maenad-releases</id>
             <name>maenad-releases</name>
-            <url>http://g709-0157.itee.uq.edu.au:8081/artifactory/libs-releases-local</url>
+            <url>http://maven.metadata.net/artifactory/libs-releases-local</url>
         </repository>
         <snapshotRepository>
             <id>maenad-snapshots</id>
             <name>maenad-snapshots</name>
-            <url>http://g709-0157.itee.uq.edu.au:8081/artifactory/libs-snapshots-local</url>
+            <url>http://maven.metadata.net/artifactory/libs-snapshots-local</url>
         </snapshotRepository>
     </distributionManagement>
     <inceptionYear>2009</inceptionYear>
@@ -177,19 +177,9 @@
             <url>http://maven.restlet.org</url>
         </repository>
         <repository>
-            <id>eresearch_ext_releases</id>
-            <name>External eResearch repository for releases</name>
-            <url>http://g709-0157.itee.uq.edu.au:8081/artifactory/ext-releases-local</url>
-        </repository>
-        <repository>
-            <id>eresearch_snapshots</id>
-            <name>Internal eResearch repository for snapshots</name>
-            <url>http://g709-0157.itee.uq.edu.au:8081/artifactory/libs-snapshots-local</url>
-        </repository>
-        <repository>
-            <id>eresearch_releases</id>
-            <name>Internal eResearch repository for releases</name>
-            <url>http://g709-0157.itee.uq.edu.au:8081/artifactory/libs-releases-local</url>
+            <id>eresearch</id>
+            <name>eResearch repository for releases</name>
+            <url>http://maven.metadata.net/artifactory/repo</url>
         </repository>
     </repositories>
 

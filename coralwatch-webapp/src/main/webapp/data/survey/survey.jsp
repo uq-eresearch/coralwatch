@@ -1157,20 +1157,20 @@
                     return Number(item.toString());
                 }
             },
-            <%
-                if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
-            %>
-            {
-                field: "rating",
-                name: "Overall Rating",
-                width: 10,
-                formatter: function(item) {
-                    return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});
-                }
-            },
-            <%
-            }
-            %>
+            <%--<%--%>
+            <%--if (CoralwatchApplication.getConfiguration().isRatingSetup()) {--%>
+            <%--%>--%>
+            <%--{--%>
+            <%--field: "rating",--%>
+            <%--name: "Overall Rating",--%>
+            <%--width: 10,--%>
+            <%--formatter: function(item) {--%>
+            <%--return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});--%>
+            <%--}--%>
+            <%--},--%>
+            <%--<%--%>
+            <%--}--%>
+            <%--%>--%>
             {
                 field: "view",
                 name: "View",
