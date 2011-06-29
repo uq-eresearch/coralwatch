@@ -20,8 +20,8 @@ public class KitRequestConfigurationActionImpl implements ConfigurationAction {
         String portletResource = ParamUtil.getString(actionRequest, "portletResource");
 
         PortletPreferences prefs = PortletPreferencesFactoryUtil.getPortletSetup(actionRequest, portletResource);
-        String userUrl = ParamUtil.getString(actionRequest, "userUrl");
-        prefs.setValue("userUrl", userUrl);
+        prefs.setValue("userUrl", ParamUtil.getString(actionRequest, "userUrl"));
+        prefs.setValue("orderFormUrl", ParamUtil.getString(actionRequest, "orderFormUrl"));
         prefs.store();
 
         SessionMessages.add(actionRequest, portletConfig.getPortletName() + ".doConfigure");
@@ -31,6 +31,7 @@ public class KitRequestConfigurationActionImpl implements ConfigurationAction {
     public String render(PortletConfig portletConfig, RenderRequest renderRequest, RenderResponse renderResponse) throws Exception {
         PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("userUrl", prefs.getValue("userUrl", "user"));
+        renderRequest.setAttribute("orderFormUrl", prefs.getValue("orderFormUrl", "http://coralwatch.org/c/document_library/get_file?p_l_id=10132&folderId=10790&name=DLFE-510.pdf"));
         return "/data/kit-request/configuration.jsp";
     }
 }

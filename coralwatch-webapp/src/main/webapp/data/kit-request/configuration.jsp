@@ -10,5 +10,8 @@
     User Page Path: <input name="<portlet:namespace />userUrl" type="text"
                            value="<%=renderRequest.getAttribute("userUrl")%>"/>
     <br/>
+    Order Form URL: <input name="<portlet:namespace />orderFormUrl" type="text" style="width: 50em;"
+                           value="<%=renderRequest.getAttribute("orderFormUrl")%>"/>
+    <br/>
     <input type="button" value="Save" onClick="submitForm(document.<portlet:namespace />fm);"/>
 </form>

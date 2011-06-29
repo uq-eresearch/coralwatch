@@ -33,12 +33,12 @@
         }
     }
 %>
-<div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:670px;height:65ex">
+<div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:670px;height:70ex">
 <%
     List<KitRequest> userKitRequests = kitRequestDao.getByRequester(currentUser);
     if (userKitRequests.size() > 0) {
 %>
-<div id="mykitrequest" dojoType="dijit.layout.ContentPane" title="My Chart Requests" style="width:670px; height:65ex">
+<div id="mykitrequest" dojoType="dijit.layout.ContentPane" title="My Chart Requests" style="width:670px; height:70ex">
     <table class="coralwatch_list_table">
         <tr>
             <th>#</th>
@@ -79,7 +79,7 @@
 <%
     }
 %>
-<div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Chart Request" style="width:670px; height:65ex">
+<div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Chart Request" style="width:670px; height:70ex">
     <%
         if (currentUser == null) {
     %>
@@ -207,6 +207,8 @@
                         href="http://coralwatch.org/web/guest/monitoring-materials">here</a> and request the chart only
                     to be mailed to you. If you cannot print the material, you should email <a
                             href="mailto:info@coralwatch.org">info@coralwatch.org</a> to request it to be mailed to you.
+                    If you would like to order multiple charts or other Coralwatch materials, you can download an order form
+                    <a href="<%=renderRequest.getAttribute("orderFormUrl")%>">here</a>.
                 </td>
             </tr>
             <tr>
@@ -241,7 +243,7 @@
     }
 </script>
 <div id="allkitrequests" dojoType="dijit.layout.ContentPane" title="All Chart Requests"
-     style="width:670px; height:65ex">
+     style="width:670px; height:70ex">
     <table class="coralwatch_list_table">
         <tr>
             <th>#</th>
