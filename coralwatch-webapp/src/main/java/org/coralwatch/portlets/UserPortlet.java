@@ -41,6 +41,7 @@ public class UserPortlet extends GenericPortlet {
     }
 
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
+        AppUtil.clearCache();
         PortletSession session = actionRequest.getPortletSession(true);
         List<String> errors = new ArrayList<String>();
         String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
