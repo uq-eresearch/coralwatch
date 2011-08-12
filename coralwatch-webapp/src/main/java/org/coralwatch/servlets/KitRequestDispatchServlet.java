@@ -38,11 +38,24 @@ public class KitRequestDispatchServlet extends HttpServlet {
                 kitRequest.setDispatchdate(new Date());
                 kitRequest.setDispatcher(dispatcher);
                 kitRequestDao.update(kitRequest);
-                String line1 = "Dear " + kitRequest.getRequester().getDisplayName() + "\n\n";
-                String line2 = "We have shipped your CoralWatch kit. Your kit request details are below." + "\n\n";
-                String line3 = "Kit Type: " + kitRequest.getKitType() + "\nLanguage: " + kitRequest.getLanguage() + "\nPostal Address: " + kitRequest.getAddress() + ", " + kitRequest.getCountry() + "\nNotes: " + (kitRequest.getNotes() == null ? "" : kitRequest.getNotes());
-                String line4 = "\n\nThank you for volunteering with CoralWatch.\n\nRegards,\nCoralWatch\nhttp://coralwatch.org";
-                String message = line1 + line2 + line3 + line4;
+                String message =
+                    "Dear " + kitRequest.getRequester().getDisplayName() + "\n"+
+                    "\n" +
+                    "We have shipped your CoralWatch kit. Your kit request details are below." + "\n" +
+                    "\n" +
+                    "Kit Type: " + kitRequest.getKitType() + "\n" +
+                    "Language: " + kitRequest.getLanguage() + "\n" +
+                    "Postal Address:\n" +
+                    "\n" +
+                    kitRequest.getAddressListing(true) + "\n" +
+                    "\n" +
+                    "Notes: " + (kitRequest.getNotes() == null ? "" : kitRequest.getNotes()) + "\n" +
+                    "\n" +
+                    "Thank you for volunteering with CoralWatch.\n" +
+                    "\n" +
+                    "Regards,\n" +
+                    "CoralWatch\n" +
+                    "http://coralwatch.org";
                 try {
                     Emailer.sendEmail(kitRequest.getRequester().getEmail(), "no-reply@coralwatch.org", "CoralWatch Kit Shipment", message);
                 } catch (MessagingException e) {
