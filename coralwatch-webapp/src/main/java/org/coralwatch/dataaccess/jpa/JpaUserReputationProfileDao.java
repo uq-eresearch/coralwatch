@@ -23,7 +23,6 @@ public class JpaUserReputationProfileDao extends JpaDao<UserReputationProfile> i
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public UserReputationProfile getByRatee(UserImpl ratee) {
         List<?> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM UserReputationProfile o WHERE o.ratee = :ratee")
                 .setParameter("ratee", ratee).getResultList();

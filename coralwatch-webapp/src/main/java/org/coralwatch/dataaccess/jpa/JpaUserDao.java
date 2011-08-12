@@ -26,6 +26,7 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao, Serializabl
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<UserImpl> getAll() {
         return entityManagerSource.getEntityManager().createQuery("SELECT o FROM AppUser o ORDER BY o.displayName").getResultList();
     }
@@ -59,7 +60,6 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao, Serializabl
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Long getNumberOfSurveys(UserImpl user) {
         try {
             Long numberOfSurveys = (Long) entityManagerSource.getEntityManager().createQuery(

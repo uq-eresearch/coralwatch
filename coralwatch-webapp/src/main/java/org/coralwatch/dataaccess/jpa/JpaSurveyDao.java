@@ -16,6 +16,7 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Survey> getAll() {
         return entityManagerSource.getEntityManager().createQuery("SELECT o FROM Survey o ORDER BY date DESC").getResultList();
     }
@@ -28,7 +29,6 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Survey getById(Long id) {
         List<?> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM Survey o WHERE o.id = :id").setParameter("id", id).getResultList();
         if (resultList.isEmpty()) {

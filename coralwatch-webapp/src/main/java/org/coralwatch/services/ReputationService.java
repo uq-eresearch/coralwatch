@@ -1,25 +1,27 @@
 package org.coralwatch.services;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.coralwatch.app.Constants;
 import org.coralwatch.app.CoralwatchApplication;
-import org.coralwatch.dataaccess.*;
+import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.dataaccess.SurveyRatingDao;
+import org.coralwatch.dataaccess.UserDao;
+import org.coralwatch.dataaccess.UserRatingDao;
+import org.coralwatch.dataaccess.UserReputationProfileDao;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.model.UserReputationProfile;
 import org.coralwatch.services.reputation.Criterion;
 import org.coralwatch.util.AppUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 public class ReputationService {
-    private static Log LOGGER = LogFactoryUtil.getLog(ReputationService.class);
     private static UserReputationProfileDao userReputationProfileDao = CoralwatchApplication.getConfiguration().getReputationProfileDao();
 
     //    private static UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
+    @SuppressWarnings("unused")
     public static double rateSurvey(long surveyId) {
         SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
         UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
@@ -183,6 +185,7 @@ public class ReputationService {
         return ((score / 6) * Constants.STAR_RATING_MAX_VALUE);
     }
 
+    @SuppressWarnings("unused")
     private static Double getUserAmountOfDataRating(UserImpl ratee) {
         Double score = 0.0;
         UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();

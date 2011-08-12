@@ -48,7 +48,6 @@ public class LoginPortlet extends GenericPortlet {
             session.removeAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
         } else if (cmd.equals(Constants.RESET)) {
             String email = actionRequest.getParameter("email");
-            //TODO validate the email here
             UserImpl user;
             if (email == null || email.isEmpty()) {
                 errors.add("Enter a valid email address.");
@@ -84,7 +83,6 @@ public class LoginPortlet extends GenericPortlet {
             }
         } else {
             String email = actionRequest.getParameter("signinEmail");
-            //TODO validate the email here
             UserImpl currentUser;
             if (email == null || email.isEmpty()) {
                 errors.add("Enter a valid email address.");

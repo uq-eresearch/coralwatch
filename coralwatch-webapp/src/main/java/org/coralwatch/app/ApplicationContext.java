@@ -150,6 +150,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
                 "Created new default admin user with email address 'admin@coralwatch.org' and password 'coralwatch'.");
     }
 
+    @SuppressWarnings("unused")
     private void createTestUsers(UserImpl admin) {
         UserImpl charlie = new UserImpl("Charlie", "brooking@itee.uq.edu.au", BCrypt.hashpw("charlie", BCrypt.gensalt()), false);
         userDao.save(charlie);
@@ -231,6 +232,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
             survey.setLatitude(new Float(-11 - rand.nextInt(20) - rand.nextDouble()));
             survey.setLongitude(new Float(154 + rand.nextInt(10) + rand.nextDouble()));
         }
+        @SuppressWarnings("deprecation")
         Date date = new Date(2000 + rand.nextInt(11) - 1900, rand.nextInt(12), rand.nextInt(30));
         survey.setDate(date);
         survey.setTime(date);

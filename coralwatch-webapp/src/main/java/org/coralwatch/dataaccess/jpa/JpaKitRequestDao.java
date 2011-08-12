@@ -15,7 +15,6 @@ public class JpaKitRequestDao extends JpaDao<KitRequest> implements KitRequestDa
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public KitRequest getById(Long id) {
         List<?> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM KitRequest o WHERE o.id = :id").setParameter("id", id).getResultList();
         if (resultList.isEmpty()) {
@@ -27,6 +26,7 @@ public class JpaKitRequestDao extends JpaDao<KitRequest> implements KitRequestDa
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<KitRequest> getAll() {
         return entityManagerSource.getEntityManager().createQuery("SELECT o FROM KitRequest o ORDER BY requestDate DESC").getResultList();
     }

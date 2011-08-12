@@ -16,7 +16,6 @@ public class JpaSurveyRatingDao extends JpaDao<SurveyRating> implements SurveyRa
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public SurveyRating getSurveyRating(UserImpl rator, Survey survey) {
         try {
             SurveyRating surveyRating = (SurveyRating) entityManagerSource.getEntityManager().createQuery(
@@ -33,7 +32,6 @@ public class JpaSurveyRatingDao extends JpaDao<SurveyRating> implements SurveyRa
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public double getCommunityRatingValue(Survey survey) {
         try {
             Double ratingValue = (Double) entityManagerSource.getEntityManager().createQuery(
@@ -45,7 +43,6 @@ public class JpaSurveyRatingDao extends JpaDao<SurveyRating> implements SurveyRa
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public double getRatingValueByUser(UserImpl rator, Survey survey) {
         try {
             Double ratingValue = (Double) entityManagerSource.getEntityManager().createQuery(
@@ -62,7 +59,6 @@ public class JpaSurveyRatingDao extends JpaDao<SurveyRating> implements SurveyRa
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public long getNumberOfRatingsForASurvey(Survey survey) {
         try {
             Long ratingValue = (Long) entityManagerSource.getEntityManager().createQuery(

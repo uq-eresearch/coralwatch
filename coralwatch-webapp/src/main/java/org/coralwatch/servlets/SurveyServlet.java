@@ -68,7 +68,9 @@ public class SurveyServlet extends HttpServlet {
                             survey.putOpt("rating", rand.nextInt(6));
                         }
 
-                        survey.putOpt("date", srv.getDate().toLocaleString());
+                        @SuppressWarnings("deprecation")
+                        String localeString = srv.getDate().toLocaleString();
+                        survey.putOpt("date", localeString);
                         surveys.put(survey);
                         count++;
                     }

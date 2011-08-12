@@ -63,7 +63,6 @@ public class UserPortlet extends GenericPortlet {
             if ((email == null) || email.isEmpty() || (firstName == null) || firstName.isEmpty() || (lastName == null) || lastName.isEmpty() || (displayName == null) || displayName.isEmpty() || (password == null) || (country == null) || country.isEmpty()) {
                 errors.add("All fields are required.");
             } else {
-                //TODO validate email
                 if (!email.equals(email2)) {
                     errors.add("Confirm your email address.");
                 } else {
@@ -147,7 +146,11 @@ public class UserPortlet extends GenericPortlet {
             String resetid = actionRequest.getParameter("resetid");
             if (resetPassword.length() < 6) {
                 errors.add("Password must be at least 6 characters.");
-            } else {
+            }
+            else if (!resetPassword.equals(resetPassword2)) {
+                errors.add("Password and confirmation don't match.");
+            }
+            else {
                 UserImpl user = userDao.getById(userId);
                 if (resetid.equals(user.getPasswordResetId())) {
                     user.setPasswordHash(BCrypt.hashpw(resetPassword, BCrypt.gensalt()));

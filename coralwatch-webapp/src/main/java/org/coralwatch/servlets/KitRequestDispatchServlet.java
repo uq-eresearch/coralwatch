@@ -38,7 +38,6 @@ public class KitRequestDispatchServlet extends HttpServlet {
                 kitRequest.setDispatchdate(new Date());
                 kitRequest.setDispatcher(dispatcher);
                 kitRequestDao.update(kitRequest);
-                //TODO Send email to requester
                 String line1 = "Dear " + kitRequest.getRequester().getDisplayName() + "\n\n";
                 String line2 = "We have shipped your CoralWatch kit. Your kit request details are below." + "\n\n";
                 String line3 = "Kit Type: " + kitRequest.getKitType() + "\nLanguage: " + kitRequest.getLanguage() + "\nPostal Address: " + kitRequest.getAddress() + ", " + kitRequest.getCountry() + "\nNotes: " + (kitRequest.getNotes() == null ? "" : kitRequest.getNotes());

@@ -15,6 +15,7 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao, Serializable {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Reef> getAll() {
         return entityManagerSource.getEntityManager().createQuery("SELECT o FROM Reef o ORDER BY country").getResultList();
     }
@@ -31,6 +32,7 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao, Serializable {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Reef> getReefsByCountry(String country) {
         List<Reef> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM Reef o WHERE o.country = :country ORDER BY name").setParameter(
                 "country", country).getResultList();
@@ -50,7 +52,6 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao, Serializable {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Reef getById(Long id) {
         List<?> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM Reef o WHERE o.id = :id").setParameter("id", id).getResultList();
         if (resultList.isEmpty()) {

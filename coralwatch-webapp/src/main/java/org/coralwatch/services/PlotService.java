@@ -1,12 +1,23 @@
 package org.coralwatch.services;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Paint;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.*;
+import org.jfree.chart.axis.DateTickUnit;
+import org.jfree.chart.axis.DateTickUnitType;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.TickUnits;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
@@ -22,16 +33,8 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.VerticalAlignment;
 
-import java.awt.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @SuppressWarnings("serial")
 public class PlotService {
-    private static Log _log = LogFactoryUtil.getLog(PlotService.class);
     public static final Map<Character, Map<Integer, Color>> CORAL_COLORS = new HashMap<Character, Map<Integer, Color>>() {{
         HashMap<Integer, Color> bValues = new HashMap<Integer, Color>();
         bValues.put(1, new Color(247, 248, 232));

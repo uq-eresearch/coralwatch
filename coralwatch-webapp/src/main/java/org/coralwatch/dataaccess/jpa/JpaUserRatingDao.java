@@ -19,7 +19,6 @@ public class JpaUserRatingDao extends JpaDao<UserRating> implements UserRatingDa
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public UserRating getRating(UserImpl rater, UserImpl rated) {
         try {
             UserRating userRating = (UserRating) entityManagerSource.getEntityManager().createQuery(
@@ -36,7 +35,6 @@ public class JpaUserRatingDao extends JpaDao<UserRating> implements UserRatingDa
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public double getRatingValueByUser(UserImpl rater, UserImpl rated) {
         try {
             Double ratingValue = (Double) entityManagerSource.getEntityManager().createQuery(
@@ -53,7 +51,6 @@ public class JpaUserRatingDao extends JpaDao<UserRating> implements UserRatingDa
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public double getCommunityRatingValue(UserImpl rated) {
         try {
             Double ratingValue = (Double) entityManagerSource.getEntityManager().createQuery(
