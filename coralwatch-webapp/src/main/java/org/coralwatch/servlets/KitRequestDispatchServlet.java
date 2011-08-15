@@ -52,7 +52,7 @@ public class KitRequestDispatchServlet extends HttpServlet {
                     "\n" +
                     "Notes:\n" +
                     "\n" +
-                    (kitRequest.getNotes() == null ? "(none provided)" : kitRequest.getNotes()) + "\n" +
+                    ((kitRequest.getNotes() == null || kitRequest.getNotes().isEmpty()) ? "(none provided)" : kitRequest.getNotes()) + "\n" +
                     "\n" +
                     "Thank you for volunteering with CoralWatch.\n" +
                     "\n" +

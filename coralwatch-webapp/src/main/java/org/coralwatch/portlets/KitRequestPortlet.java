@@ -104,7 +104,7 @@ public class KitRequestPortlet extends GenericPortlet {
                 "\n" +
                 "Notes:\n" +
                 "\n" +
-                (notes == null ? "(none provided)" : notes) + "\n" +
+                ((notes == null || notes.isEmpty()) ? "(none provided)" : notes) + "\n" +
                 "\n" +
                 "We will send you an email when your request is dispatched.\n" +
                 "\n" +
