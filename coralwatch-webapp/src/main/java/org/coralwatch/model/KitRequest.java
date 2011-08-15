@@ -202,20 +202,19 @@ public class KitRequest implements Serializable {
         this.kitType = kitType;
     }
     
-    public String getAddressListing(boolean multiLine) {
+    public String getAddressListing() {
         if (address != null) {
             return address;
         }
-        String delimiter = multiLine ? "\n" : ", ";
         StringBuilder builder = new StringBuilder();
-        builder.append(addressLine1 + delimiter);
+        builder.append(addressLine1 + "\n");
         if (addressLine2 != null && !addressLine2.isEmpty()) {
-            builder.append(addressLine2 + delimiter);
+            builder.append(addressLine2 + "\n");
         }
         if (addressLine3 != null && !addressLine3.isEmpty()) {
-            builder.append(addressLine3 + delimiter);
+            builder.append(addressLine3 + "\n");
         }
-        builder.append(city + ", " + state + ", " + postcode + delimiter);
+        builder.append(city + ", " + state + ", " + postcode + "\n");
         builder.append(country);
         return builder.toString();
     }

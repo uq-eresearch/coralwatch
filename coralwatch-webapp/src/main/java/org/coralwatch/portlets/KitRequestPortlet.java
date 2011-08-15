@@ -129,7 +129,7 @@ public class KitRequestPortlet extends GenericPortlet {
                 "Language: " + language + "\n" +
                 "Postal Address:\n" +
                 "\n" +
-                kitRequest.getAddressListing(true) + "\n" +
+                kitRequest.getAddressListing() + "\n" +
                 "\n" +
                 "Notes: " + (notes == null ? "" : notes) + "\n" +
                 "\n" +

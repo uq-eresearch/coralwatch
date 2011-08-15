@@ -47,7 +47,7 @@ public class KitRequestDispatchServlet extends HttpServlet {
                     "Language: " + kitRequest.getLanguage() + "\n" +
                     "Postal Address:\n" +
                     "\n" +
-                    kitRequest.getAddressListing(true) + "\n" +
+                    kitRequest.getAddressListing() + "\n" +
                     "\n" +
                     "Notes: " + (kitRequest.getNotes() == null ? "" : kitRequest.getNotes()) + "\n" +
                     "\n" +

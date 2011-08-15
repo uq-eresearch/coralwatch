@@ -64,7 +64,7 @@
             </td>
             <td><%=userKitRequests.get(i).getDispatchdate() == null ? "Not Yet" : dateFormat.format(userKitRequests.get(i).getDispatchdate())%>
             </td>
-            <td><%=userKitRequests.get(i).getAddressListing(false)%>
+            <td><%=userKitRequests.get(i).getAddressListing().replaceAll("\\n", "<br />")%>
             </td>
             <td><%=userKitRequests.get(i).getCountry() == null ? "" : userKitRequests.get(i).getCountry()%>
             </td>
@@ -331,7 +331,7 @@
             </td>
             <td><%=kitRequests.get(i).getLanguage() == null ? "" : kitRequests.get(i).getLanguage()%>
             </td>
-            <td><%=kitRequests.get(i).getAddressListing(false)%>
+            <td><%=kitRequests.get(i).getAddressListing().replaceAll("\\n", "<br />")%>
             </td>
             <td><%=kitRequests.get(i).getCountry() == null ? "" : kitRequests.get(i).getCountry()%>
             </td>
