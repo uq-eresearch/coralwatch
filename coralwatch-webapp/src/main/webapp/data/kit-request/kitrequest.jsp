@@ -47,6 +47,7 @@
             <th>Language</th>
             <th>Dispatched Date</th>
             <th>Address</th>
+            <th>Country</th>
             <th>Notes</th>
         </tr>
         <%
@@ -64,6 +65,8 @@
             <td><%=userKitRequests.get(i).getDispatchdate() == null ? "Not Yet" : dateFormat.format(userKitRequests.get(i).getDispatchdate())%>
             </td>
             <td><%=userKitRequests.get(i).getAddressListing(false)%>
+            </td>
+            <td><%=userKitRequests.get(i).getCountry() == null ? "" : userKitRequests.get(i).getCountry()%>
             </td>
             <td><%=userKitRequests.get(i).getNotes() == null ? "" : userKitRequests.get(i).getNotes()%>
             </td>
@@ -328,7 +331,7 @@
             </td>
             <td><%=kitRequests.get(i).getLanguage() == null ? "" : kitRequests.get(i).getLanguage()%>
             </td>
-            <td><%=kitRequests.get(i).getAddress() == null ? "" : kitRequests.get(i).getAddress()%>
+            <td><%=kitRequests.get(i).getAddressListing(false)%>
             </td>
             <td><%=kitRequests.get(i).getCountry() == null ? "" : kitRequests.get(i).getCountry()%>
             </td>
