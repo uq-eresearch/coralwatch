@@ -62,6 +62,11 @@ public class LoginPortlet extends GenericPortlet {
                     user.setPasswordResetId(passwordResetId);
                     userdao.update(user);
                     AppUtil.clearCache();
+                    //reset user object stored on session
+                    UserImpl currentUser = (UserImpl) session.getAttribute("currentUser");
+                    if ((currentUser != null) && (currentUser.getId() == user.getId())) {
+                        session.setAttribute("currentUser", user, PortletSession.APPLICATION_SCOPE);
+                    }
                     //construct link
                     PortletPreferences prefs = actionRequest.getPreferences();
                     String userPageUrl = prefs.getValue("userPageUrl", "user");

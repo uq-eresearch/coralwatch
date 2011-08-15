@@ -82,7 +82,11 @@ public class UserPortlet extends GenericPortlet {
                                 userDao.save(userImpl);
                                 actionResponse.setRenderParameter("userId", String.valueOf(userImpl.getId()));
                                 actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
-                                session.setAttribute("currentUser", userImpl, PortletSession.APPLICATION_SCOPE);
+                                //reset user object stored on session
+                                UserImpl currentUser = (UserImpl) session.getAttribute("currentUser");
+                                if ((currentUser != null) && (currentUser.getId() == userImpl.getId())) {
+                                    session.setAttribute("currentUser", userImpl, PortletSession.APPLICATION_SCOPE);
+                                }
                             }
                         }
 
@@ -128,7 +132,11 @@ public class UserPortlet extends GenericPortlet {
                                 AppUtil.clearCache();
                                 actionResponse.setRenderParameter("userId", String.valueOf(user.getId()));
                                 actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
-
+                                //reset user object stored on session
+                                UserImpl currentUser = (UserImpl) session.getAttribute("currentUser");
+                                if ((currentUser != null) && (currentUser.getId() == user.getId())) {
+                                    session.setAttribute("currentUser", user, PortletSession.APPLICATION_SCOPE);
+                                }
                             }
                         }
                     }
@@ -162,6 +170,11 @@ public class UserPortlet extends GenericPortlet {
 //                    actionResponse.setRenderParameter("userId", String.valueOf(user.getId()));
                     actionResponse.setRenderParameter("successMsg", "Your password has been updated successfully.");
                     actionResponse.setRenderParameter(Constants.CMD, Constants.PRINT);
+                    //reset user object stored on session
+                    UserImpl currentUser = (UserImpl) session.getAttribute("currentUser");
+                    if ((currentUser != null) && (currentUser.getId() == user.getId())) {
+                        session.setAttribute("currentUser", user, PortletSession.APPLICATION_SCOPE);
+                    }
                 } else {
                     errors.add("Invalid password reset request.");
                 }
