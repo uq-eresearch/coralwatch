@@ -33,12 +33,12 @@
         }
     }
 %>
-<div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:670px; height: 110ex;">
+<div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:670px;height:70ex">
 <%
     List<KitRequest> userKitRequests = kitRequestDao.getByRequester(currentUser);
     if (userKitRequests.size() > 0) {
 %>
-<div id="mykitrequest" dojoType="dijit.layout.ContentPane" title="My Chart Requests" style="width:670px; height: 100ex;">
+<div id="mykitrequest" dojoType="dijit.layout.ContentPane" title="My Chart Requests" style="width:670px; height:70ex">
     <table class="coralwatch_list_table">
         <tr>
             <th>#</th>
@@ -64,7 +64,7 @@
             </td>
             <td><%=userKitRequests.get(i).getDispatchdate() == null ? "Not Yet" : dateFormat.format(userKitRequests.get(i).getDispatchdate())%>
             </td>
-            <td><%=userKitRequests.get(i).getAddressListing().replaceAll("\\n", "<br />")%>
+            <td><%=userKitRequests.get(i).getAddress() == null ? "" : userKitRequests.get(i).getAddress()%>
             </td>
             <td><%=userKitRequests.get(i).getCountry() == null ? "" : userKitRequests.get(i).getCountry()%>
             </td>
@@ -79,7 +79,7 @@
 <%
     }
 %>
-<div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Chart Request" style="width:670px;">
+<div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Chart Request" style="width:670px; height:70ex">
     <%
         if (currentUser == null) {
     %>
@@ -136,7 +136,7 @@
         </script>
         <table>
             <tr>
-                <th style="width: 150px;"><label for="kitType">Requesting <span style="color:#FF0000">*</span></label></th>
+                <th><label for="kitType">Requesting <span style="color:#FF0000">*</span></label></th>
                 <td><select name="kitType" id="kitType"
                             required="true"
                             dojoType="dijit.form.ComboBox"
@@ -167,73 +167,16 @@
                 </td>
             </tr>
             <tr>
-                <th><label for="addressLine1">Address Line 1</label></th>
+                <th><label for="address">Postal Address</label></th>
                 <td><input type="text"
-                           name="addressLine1"
+                           name="address"
+                           id="address"
                            required="true"
-                           style="width: 300px"
+                           style="width:300px"
                            dojoType="dijit.form.ValidationTextBox"
-                           invalidMessage="At least one address line is required."
+                           invalidMessage="Address is required."
                            trim="true"
-                           value=""/>
-                </td>
-            </tr>
-            <tr>
-                <th><label for="addressLine2">Address Line 1</label></th>
-                <td><input type="text"
-                           name="addressLine2"
-                           required="false"
-                           style="width: 300px"
-                           dojoType="dijit.form.TextBox"
-                           trim="true"
-                           value=""/>
-                </td>
-            </tr>
-            <tr>
-                <th><label for="addressLine3">Address Line 3</label></th>
-                <td><input type="text"
-                           name="addressLine3"
-                           required="false"
-                           style="width: 300px"
-                           dojoType="dijit.form.TextBox"
-                           trim="true"
-                           value=""/>
-                </td>
-            </tr>
-            <tr>
-                <th><label for="city">City / Suburb</label></th>
-                <td><input type="text"
-                           name="city"
-                           required="true"
-                           style="width: 300px"
-                           dojoType="dijit.form.ValidationTextBox"
-                           invalidMessage="City / Suburb is required."
-                           trim="true"
-                           value=""/>
-                </td>
-            </tr>
-            <tr>
-                <th><label for="state">State / Province / Region</label></th>
-                <td><input type="text"
-                           name="state"
-                           required="true"
-                           style="width: 300px"
-                           dojoType="dijit.form.ValidationTextBox"
-                           invalidMessage="State / Province / Region is required."
-                           trim="true"
-                           value=""/>
-                </td>
-            </tr>
-            <tr>
-                <th><label for="postcode">Post code / ZIP code</label></th>
-                <td><input type="text"
-                           name="postcode"
-                           required="true"
-                           style="width: 300px"
-                           dojoType="dijit.form.ValidationTextBox"
-                           invalidMessage="Post code / ZIP Code is required."
-                           trim="true"
-                           value=""/>
+                           value="<%=currentUser == null || currentUser.getAddress() == null? "" :  currentUser.getAddress()%>"/>
                 </td>
             </tr>
             <tr>
@@ -253,7 +196,7 @@
                 <td><input type="text"
                            name="notes"
                            id="notes"
-                           style="width: 300px"
+                           style="width:300px"
                            dojoType="dijit.form.SimpleTextarea"
                            trim="true"/>
                 </td>
@@ -299,7 +242,8 @@
         }
     }
 </script>
-<div id="allkitrequests" dojoType="dijit.layout.ContentPane" title="All Chart Requests" style="width:670px;>
+<div id="allkitrequests" dojoType="dijit.layout.ContentPane" title="All Chart Requests"
+     style="width:670px; height:70ex">
     <table class="coralwatch_list_table">
         <tr>
             <th>#</th>
@@ -331,7 +275,7 @@
             </td>
             <td><%=kitRequests.get(i).getLanguage() == null ? "" : kitRequests.get(i).getLanguage()%>
             </td>
-            <td><%=kitRequests.get(i).getAddressListing().replaceAll("\\n", "<br />")%>
+            <td><%=kitRequests.get(i).getAddress() == null ? "" : kitRequests.get(i).getAddress()%>
             </td>
             <td><%=kitRequests.get(i).getCountry() == null ? "" : kitRequests.get(i).getCountry()%>
             </td>

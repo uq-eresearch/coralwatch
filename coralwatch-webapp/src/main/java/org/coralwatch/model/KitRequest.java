@@ -28,31 +28,8 @@ public class KitRequest implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dispatchdate;
 
-    // Old field for address: single line rather than separate fields.
-    // Do not set this field for new records. Only kept for old records.
     @Column(length = 500)
     private String address;
-    
-    @Column(length = 255)
-    private String addressLine1;
-    
-    @Column(length = 255)
-    private String addressLine2;
-    
-    @Column(length = 255)
-    private String addressLine3;
-    
-    // City / Suburb
-    @Column(length = 255)
-    private String city;
-    
-    // State / Province / Region
-    @Column(length = 255)
-    private String state;
-    
-    // Post code / ZIP code
-    @Column(length = 255)
-    private String postcode;
 
     @Column(length = 256)
     private String country;
@@ -72,6 +49,7 @@ public class KitRequest implements Serializable {
     public KitRequest(UserImpl requester) {
         this.requester = requester;
         this.requestDate = new Date();
+        this.address = requester.getAddress();
     }
 
     public long getId() {
@@ -130,54 +108,6 @@ public class KitRequest implements Serializable {
         this.notes = notes;
     }
 
-    public String getAddressLine1() {
-        return addressLine1;
-    }
-
-    public void setAddressLine1(String addressLine1) {
-        this.addressLine1 = addressLine1;
-    }
-
-    public String getAddressLine2() {
-        return addressLine2;
-    }
-
-    public void setAddressLine2(String addressLine2) {
-        this.addressLine2 = addressLine2;
-    }
-
-    public String getAddressLine3() {
-        return addressLine3;
-    }
-
-    public void setAddressLine3(String addressLine3) {
-        this.addressLine3 = addressLine3;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getPostcode() {
-        return postcode;
-    }
-
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -200,22 +130,5 @@ public class KitRequest implements Serializable {
 
     public void setKitType(String kitType) {
         this.kitType = kitType;
-    }
-    
-    public String getAddressListing() {
-        if (address != null) {
-            return address;
-        }
-        StringBuilder builder = new StringBuilder();
-        builder.append(addressLine1 + "\n");
-        if (addressLine2 != null && !addressLine2.isEmpty()) {
-            builder.append(addressLine2 + "\n");
-        }
-        if (addressLine3 != null && !addressLine3.isEmpty()) {
-            builder.append(addressLine3 + "\n");
-        }
-        builder.append(city + ", " + state + ", " + postcode + "\n");
-        builder.append(country);
-        return builder.toString();
-    }
+    }    
 }
