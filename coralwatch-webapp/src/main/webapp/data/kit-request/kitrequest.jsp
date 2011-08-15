@@ -33,12 +33,12 @@
         }
     }
 %>
-<div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:670px;height:70ex">
+<div id="surveyDetailsContainer" dojoType="dijit.layout.TabContainer" style="width:670px;height:100ex">
 <%
     List<KitRequest> userKitRequests = kitRequestDao.getByRequester(currentUser);
     if (userKitRequests.size() > 0) {
 %>
-<div id="mykitrequest" dojoType="dijit.layout.ContentPane" title="My Chart Requests" style="width:670px; height:70ex">
+<div id="mykitrequest" dojoType="dijit.layout.ContentPane" title="My Chart Requests" style="width:670px; height:100ex">
     <table class="coralwatch_list_table">
         <tr>
             <th>#</th>
@@ -64,7 +64,7 @@
             </td>
             <td><%=userKitRequests.get(i).getDispatchdate() == null ? "Not Yet" : dateFormat.format(userKitRequests.get(i).getDispatchdate())%>
             </td>
-            <td><%=userKitRequests.get(i).getAddress() == null ? "" : userKitRequests.get(i).getAddress()%>
+            <td><%=userKitRequests.get(i).getAddress() == null ? "" : userKitRequests.get(i).getAddress().replaceAll("\\n", "<br />")%>
             </td>
             <td><%=userKitRequests.get(i).getCountry() == null ? "" : userKitRequests.get(i).getCountry()%>
             </td>
@@ -79,7 +79,7 @@
 <%
     }
 %>
-<div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Chart Request" style="width:670px; height:70ex">
+<div id="newkitrequest" dojoType="dijit.layout.ContentPane" title="New Chart Request" style="width:670px; height:100ex">
     <%
         if (currentUser == null) {
     %>
@@ -136,53 +136,66 @@
         </script>
         <table>
             <tr>
-                <th><label for="kitType">Requesting <span style="color:#FF0000">*</span></label></th>
-                <td><select name="kitType" id="kitType"
+                <th style="vertical-align: top; padding: 0.5em; width: 115px;">
+                    <label for="kitType">Requesting <span style="color:#FF0000">*</span></label>
+                </th>
+                <td style="vertical-align: top;">
+                    <select name="kitType" id="kitType"
                             required="true"
                             dojoType="dijit.form.ComboBox"
                             hasDownArrow="true"
                             value="">
-                    <option selected="selected" value=""></option>
-                    <option value="Chart Only">Chart Only</option>
-                    <option value="Do It Yourself Kit">Do It Yourself Kit</option>
-                </select>
+	                    <option selected="selected" value=""></option>
+	                    <option value="Chart Only">Chart Only</option>
+	                    <option value="Do It Yourself Kit">Do It Yourself Kit</option>
+	                </select>
                 </td>
                 <td rowspan="5"><a href="http://coralwatch.org/web/guest/monitoring-materials"><img alt="Chart request"
                                                                                                     src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/image/chart_request.jpeg")%>"/></a>
                 </td>
             </tr>
             <tr>
-                <th><label for="language">Language:</label></th>
-                <td><select name="language" id="language"
+                <th style="vertical-align: top; padding: 0.5em;">
+                    <label for="language">Language</label>
+                </th>
+                <td style="vertical-align: top;">
+                    <select name="language" id="language"
                             required="true"
                             dojoType="dijit.form.ComboBox"
                             hasDownArrow="true"
                             value="">
-                    <option selected="selected" value=""></option>
-                    <option value="English">English</option>
-                    <option value="Chinese">Chinese</option>
-                    <option value="Japanese">Japanese</option>
-                    <option value="Spanish">Spanish</option>
-                </select>
+	                    <option selected="selected" value=""></option>
+	                    <option value="English">English</option>
+	                    <option value="Chinese">Chinese</option>
+	                    <option value="Japanese">Japanese</option>
+	                    <option value="Spanish">Spanish</option>
+	                </select>
                 </td>
             </tr>
             <tr>
-                <th><label for="address">Postal Address</label></th>
-                <td><input type="text"
+                <th style="vertical-align: top; padding: 0.5em;">
+                    <label for="address">Postal Address</label><br />
+                    <span style="font-weight: normal;">(excluding country)</span>
+                </th>
+                <td style="vertical-align: top;">
+                    <textarea
                            name="address"
                            id="address"
                            required="true"
-                           style="width:300px"
-                           dojoType="dijit.form.ValidationTextBox"
-                           invalidMessage="Address is required."
+                           style="width: 300px; height: 100px;"
+                           dojoType="dijit.form.SimpleTextarea"
                            trim="true"
-                           value="<%=currentUser == null || currentUser.getAddress() == null? "" :  currentUser.getAddress()%>"/>
+                           ><%=currentUser == null || currentUser.getAddress() == null? "" :  currentUser.getAddress()%></textarea>
                 </td>
             </tr>
             <tr>
-                <th><label for="country">Country:</label></th>
-                <td><select name="country" id="country"
+                <th style="vertical-align: top; padding: 0.5em;">
+                    <label for="country">Country</label>
+                </th>
+                <td style="vertical-align: top;">
+                    <select name="country" id="country"
                             required="true"
+                            style="width: 300px;"
                             dojoType="dijit.form.ComboBox"
                             hasDownArrow="true"
                             value="<%=currentUser == null || currentUser.getCountry() == null ? "" : currentUser.getCountry()%>">
@@ -192,13 +205,17 @@
                 </td>
             </tr>
             <tr>
-                <th><label for="notes">Notes</label></th>
-                <td><input type="text"
+                <th style="vertical-align: top; padding: 0.5em;">
+                    <label for="notes">Notes</label>
+                </th>
+                <td style="vertical-align: top;">
+                    <textarea
                            name="notes"
                            id="notes"
-                           style="width:300px"
+                           style="width: 300px; height: 100px;"
                            dojoType="dijit.form.SimpleTextarea"
-                           trim="true"/>
+                           trim="true"
+                           ></textarea>
                 </td>
             </tr>
             <tr>
@@ -243,7 +260,7 @@
     }
 </script>
 <div id="allkitrequests" dojoType="dijit.layout.ContentPane" title="All Chart Requests"
-     style="width:670px; height:70ex">
+     style="width:670px; height:100ex">
     <table class="coralwatch_list_table">
         <tr>
             <th>#</th>
@@ -275,7 +292,7 @@
             </td>
             <td><%=kitRequests.get(i).getLanguage() == null ? "" : kitRequests.get(i).getLanguage()%>
             </td>
-            <td><%=kitRequests.get(i).getAddress() == null ? "" : kitRequests.get(i).getAddress()%>
+            <td><%=kitRequests.get(i).getAddress() == null ? "" : kitRequests.get(i).getAddress().replaceAll("\\n", "<br />")%>
             </td>
             <td><%=kitRequests.get(i).getCountry() == null ? "" : kitRequests.get(i).getCountry()%>
             </td>

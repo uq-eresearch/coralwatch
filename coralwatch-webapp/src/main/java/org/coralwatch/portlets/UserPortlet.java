@@ -98,7 +98,8 @@ public class UserPortlet extends GenericPortlet {
             if ((email == null) || email.isEmpty()) {
                 errors.add("Email is required.");
             } else {
-                if (!email.equals(email2)) {
+                UserImpl user = userDao.getById(userId);
+                if (!email.equals(user.getEmail()) && !email.equals(email2)) {
                     errors.add("Confirm your email address.");
                 } else {
                     UserImpl userByEmail = userDao.getByEmail(email);
@@ -111,7 +112,6 @@ public class UserPortlet extends GenericPortlet {
                             if (country == null || country.isEmpty()) {
                                 errors.add("Country is required.");
                             } else {
-                                UserImpl user = userDao.getById(userId);
                                 if (password != null && password2 != null && password.length() >= 6 && password.equals(password2)) {
                                     user.setPasswordHash(BCrypt.hashpw(password, BCrypt.gensalt()));
                                 }

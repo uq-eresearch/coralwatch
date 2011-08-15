@@ -122,8 +122,10 @@
                    dojoType="dijit.form.ValidationTextBox"
                 <%if (cmd.equals(Constants.ADD)) {%>
                    required="true"
-                <%}%>
                    validator="return this.getValue() == dijit.byId('email').getValue()"
+                <%} else {%>
+                   validator="return (dijit.byId('email').getValue() == '<%=email == null ? "" : email%>') || (this.getValue() == dijit.byId('email').getValue())"
+                <%}%>
                    trim="true"
                    invalidMessage="Re-enter your email address."
                    value=""/></td>
@@ -205,14 +207,6 @@
         </td>
     </tr>
     <tr>
-        <td><label for="address">Address:</label></td>
-        <td><input type="text" name="address" id="address"
-                   style="width:300px"
-                   dojoType="dijit.form.Textarea"
-                   trim="true"
-                   value="<%=address == null ? "" : address%>"/></td>
-    </tr>
-    <tr>
         <td><label for="phone">Phone:</label></td>
         <td><input type="text" name="phone" id="phone"
                    dojoType="dijit.form.ValidationTextBox"
@@ -220,6 +214,16 @@
                    invalidMessage="Please enter a valid phone number."
                    value="<%=phone == null ? "" : phone%>"/> e.g + 11 2 1111 1111
         </td>
+    </tr>
+    <tr>
+        <td><label for="address">Address (excluding country):</label></td>
+        <td><textarea
+                   name="address"
+                   id="address"
+                   style="width: 300px; height: 100px;"
+                   dojoType="dijit.form.SimpleTextarea"
+                   trim="true"
+                   ><%=address == null ? "" : address%></textarea></td>
     </tr>
     <%
         }
@@ -425,7 +429,7 @@
         %>
         <tr>
             <th>Address:</th>
-            <td><%= user.getAddress() == null ? "Not Set" : user.getAddress()%>
+            <td><%= user.getAddress() == null ? "Not Set" : user.getAddress().replaceAll("\\n", "<br />")%>
             </td>
         </tr>
         <tr>

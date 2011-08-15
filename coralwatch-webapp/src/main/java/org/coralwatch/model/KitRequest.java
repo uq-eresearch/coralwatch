@@ -50,6 +50,7 @@ public class KitRequest implements Serializable {
         this.requester = requester;
         this.requestDate = new Date();
         this.address = requester.getAddress();
+        this.country = requester.getCountry();
     }
 
     public long getId() {

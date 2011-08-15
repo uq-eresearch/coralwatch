@@ -90,11 +90,27 @@ public class KitRequestPortlet extends GenericPortlet {
                 name = user.getFirstName() + " " + user.getLastName();
             }
 
-            String line1 = "Dear " + name + "\n\n";
-            String line2 = "We have received your kit request. Your kit request details are below." + "\n\n";
-            String line3 = "Kit Type: " + kitType + "\nLanguage: " + language + "\nPostal Address: " + address + ", " + country + "\nNotes: " + (notes == null ? "" : notes);
-            String line4 = "\n\nWe will send you an email when your request is dispatched.\n\nRegards,\nCoralWatch\nhttp://coralwatch.org";
-            String message = line1 + line2 + line3 + line4;
+            String message = 
+                "Dear " + name + "\n" +
+                "\n" +
+                "We have received your kit request. Your kit request details are below.\n" +
+                "\n" +
+                "Kit Type: " + kitType + "\n" +
+                "Language: " + language + "\n" +
+                "Postal Address:\n" +
+                "\n" +
+                address + "\n" +
+                country + "\n" +
+                "\n" +
+                "Notes:\n" +
+                "\n" +
+                (notes == null ? "(none provided)" : notes) + "\n" +
+                "\n" +
+                "We will send you an email when your request is dispatched.\n" +
+                "\n" +
+                "Regards,\n" +
+                "CoralWatch\n" +
+                "http://coralwatch.org";
             try {
                 Emailer.sendEmail(user.getEmail(), "no-reply@coralwatch.org", "CoralWatch Kit Request", message);
                 actionResponse.setRenderParameter("successMsg", "We have received your kit request. We have sent you a confirmation email. Check your email in few minutes.");
