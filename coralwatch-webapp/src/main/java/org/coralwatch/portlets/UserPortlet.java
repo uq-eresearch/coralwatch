@@ -12,6 +12,7 @@ import org.coralwatch.model.UserImpl;
 import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,7 @@ public class UserPortlet extends GenericPortlet {
                                 actionResponse.setRenderParameter("userId", String.valueOf(userImpl.getId()));
                                 actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
                                 //reset user object stored on session
-                                UserImpl currentUser = (UserImpl) session.getAttribute("currentUser");
+                                UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
                                 if ((currentUser != null) && (currentUser.getId() == userImpl.getId())) {
                                     session.setAttribute("currentUser", userImpl, PortletSession.APPLICATION_SCOPE);
                                 }
@@ -133,7 +134,7 @@ public class UserPortlet extends GenericPortlet {
                                 actionResponse.setRenderParameter("userId", String.valueOf(user.getId()));
                                 actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
                                 //reset user object stored on session
-                                UserImpl currentUser = (UserImpl) session.getAttribute("currentUser");
+                                UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
                                 if ((currentUser != null) && (currentUser.getId() == user.getId())) {
                                     session.setAttribute("currentUser", user, PortletSession.APPLICATION_SCOPE);
                                 }
@@ -171,7 +172,7 @@ public class UserPortlet extends GenericPortlet {
                     actionResponse.setRenderParameter("successMsg", "Your password has been updated successfully.");
                     actionResponse.setRenderParameter(Constants.CMD, Constants.PRINT);
                     //reset user object stored on session
-                    UserImpl currentUser = (UserImpl) session.getAttribute("currentUser");
+                    UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
                     if ((currentUser != null) && (currentUser.getId() == user.getId())) {
                         session.setAttribute("currentUser", user, PortletSession.APPLICATION_SCOPE);
                     }

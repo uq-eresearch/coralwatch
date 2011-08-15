@@ -63,7 +63,7 @@ public class LoginPortlet extends GenericPortlet {
                     userdao.update(user);
                     AppUtil.clearCache();
                     //reset user object stored on session
-                    UserImpl currentUser = (UserImpl) session.getAttribute("currentUser");
+                    UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
                     if ((currentUser != null) && (currentUser.getId() == user.getId())) {
                         session.setAttribute("currentUser", user, PortletSession.APPLICATION_SCOPE);
                     }
