@@ -353,7 +353,7 @@ public class UserPortlet extends GenericPortlet {
                     HSSFCell cell = row.createCell(columnIndex++);
                     cell.setCellValue(new HSSFRichTextString("Display name"));
                     cell.setCellStyle(headerCellStyle);
-                    sheet.setColumnWidth(cell.getColumnIndex(), 30 * 256);
+                    sheet.setColumnWidth(cell.getColumnIndex(), 40 * 256);
                 }
                 {
                     HSSFCell cell = row.createCell(columnIndex++);
