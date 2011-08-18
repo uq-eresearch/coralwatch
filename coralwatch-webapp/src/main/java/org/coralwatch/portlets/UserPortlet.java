@@ -1,22 +1,58 @@
 package org.coralwatch.portlets;
 
-import au.edu.uq.itee.maenad.util.BCrypt;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.ParamUtil;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.GenericPortlet;
+import javax.portlet.PortletContext;
+import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequestDispatcher;
+import javax.portlet.PortletSession;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.dataaccess.UserRatingDao;
+import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
+import org.coralwatch.services.ReputationService;
 import org.coralwatch.util.AppUtil;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
-import javax.portlet.*;
+import au.edu.uq.itee.maenad.util.BCrypt;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.ParamUtil;
 
 public class UserPortlet extends GenericPortlet {
 
@@ -188,7 +224,219 @@ public class UserPortlet extends GenericPortlet {
             }
         }
     }
+    
+    @Override
+    public void serveResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
+        if (request.getResourceID().equals("ajax")) {
+            serveAjaxResourse(request, response);
+        }
+        else if (request.getResourceID().equals("export")) {
+            serveExportResource(request, response);
+        }
+    }
 
+    private void serveAjaxResourse(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
+        response.setContentType("text/xml;charset=utf-8");
+        response.setProperty(ResourceResponse.EXPIRATION_CACHE, "0");
+        PrintWriter out = response.getWriter();
+        try {
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = builderFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+
+            //creating a new instance of a DOM to build a DOM tree.
+
+            Element root = doc.createElement("members");
+            //adding a node after the last child node of the specified node.
+            doc.appendChild(root);
+
+            UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
+
+            String friendsOfStr = request.getParameter("friendsOf");
+            List<UserImpl> listOfUsers;
+            if (friendsOfStr != null) {
+                long friendsOfId = Long.valueOf(friendsOfStr);
+                UserImpl friendsOfUser = userDao.getById(friendsOfId);
+                listOfUsers = ReputationService.getRateesFor(friendsOfUser);
+            } else {
+                listOfUsers = userDao.getAll();
+            }
+
+            for (UserImpl user : listOfUsers) {
+                if (!user.getDisplayName().toLowerCase().startsWith("unknown")) {
+                    Element userNode = doc.createElement("member");
+                    root.appendChild(userNode);
+
+                    Element nameNode = doc.createElement("name");
+                    userNode.appendChild(nameNode);
+                    Text userName = doc.createTextNode(user.getDisplayName());
+                    nameNode.appendChild(userName);
+
+                    Element joinedDateNode = doc.createElement("joined");
+                    userNode.appendChild(joinedDateNode);
+                    Text joinedDate = doc.createTextNode(user.getRegistrationDate().getTime() + "");
+                    joinedDateNode.appendChild(joinedDate);
+
+                    Element countryNode = doc.createElement("country");
+                    userNode.appendChild(countryNode);
+                    String country = user.getCountry();
+                    Text countryName = doc.createTextNode(country == null || country.toLowerCase().startsWith("unknown") ? "" : country);
+                    countryNode.appendChild(countryName);
+
+                    Element surveysNode = doc.createElement("surveys");
+                    userNode.appendChild(surveysNode);
+                    Text numberOfSurveys = doc.createTextNode(userDao.getSurveyEntriesCreated(user).size() + "");
+                    surveysNode.appendChild(numberOfSurveys);
+
+                    //Rating stuff
+                    if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
+
+                        Element ratingNode = doc.createElement("rating");
+                        userNode.appendChild(ratingNode);
+                        Double overAllRating = ReputationService.getOverAllRating(user);
+                        Text rating = doc.createTextNode(overAllRating + "");
+
+                        ratingNode.appendChild(rating);
+                    }
+
+                    Element viewNode = doc.createElement("view");
+                    userNode.appendChild(viewNode);
+                    Text viewLink = doc.createTextNode(user.getId() + "");
+                    viewNode.appendChild(viewLink);
+                }
+            }
+            //TransformerFactory instance is used to create Transformer objects.
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+            // create string from xml tree
+            StringWriter sw = new StringWriter();
+            StreamResult result = new StreamResult(sw);
+            DOMSource source = new DOMSource(doc);
+            transformer.transform(source, result);
+
+            String xmlString = sw.toString();
+            out.print(xmlString);
+        }
+        catch (Exception ex) {
+            _log.fatal("Cannot create user xml list.", ex);
+        }
+    }
+    
+    private void serveExportResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
+        PortletSession session = request.getPortletSession(true);
+        UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
+        if (currentUser == null || !currentUser.isSuperUser()) {
+            throw new PortletException("Only the administrator can export member details");
+        }
+        response.setContentType("application/vnd.ms-excel");
+        response.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"users.xls\"");
+        response.setProperty(ResourceResponse.EXPIRATION_CACHE, "0");
+        try {
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            
+            HSSFCellStyle headerCellStyle = workbook.createCellStyle();
+            HSSFFont font = workbook.createFont();
+            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+            headerCellStyle.setFont(font);
+            
+            HSSFCellStyle dateCellStyle = workbook.createCellStyle();
+            dateCellStyle.setDataFormat(workbook.createDataFormat().getFormat("dd/mm/yyyy"));
+            
+            HSSFSheet sheet = workbook.createSheet("Users");
+            {
+                HSSFRow row = sheet.createRow(0);
+                
+                int columnIndex = 0;
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString("Display name"));
+                    cell.setCellStyle(headerCellStyle);
+                    sheet.setColumnWidth(cell.getColumnIndex(), 30 * 256);
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString("First name"));
+                    cell.setCellStyle(headerCellStyle);
+                    sheet.setColumnWidth(cell.getColumnIndex(), 20 * 256);
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString("Last name"));
+                    cell.setCellStyle(headerCellStyle);
+                    sheet.setColumnWidth(cell.getColumnIndex(), 20 * 256);
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString("Email address"));
+                    cell.setCellStyle(headerCellStyle);
+                    sheet.setColumnWidth(cell.getColumnIndex(), 40 * 256);
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString("Date registered"));
+                    cell.setCellStyle(headerCellStyle);
+                    sheet.setColumnWidth(cell.getColumnIndex(), 20 * 256);
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString("Date last entered data"));
+                    cell.setCellStyle(headerCellStyle);
+                    sheet.setColumnWidth(cell.getColumnIndex(), 20 * 256);
+                }
+            }
+            List<UserImpl> users = userDao.getAll();
+            for (int i = 0; i < users.size(); i++) {
+                UserImpl user = users.get(i);
+                Date dateLastEnteredData = null;
+                List<Survey> surveys = userDao.getSurveyEntriesCreated(user);
+                for (Survey survey : surveys) {
+                    if (dateLastEnteredData == null || survey.getDateModified().after(dateLastEnteredData)) {
+                        dateLastEnteredData = survey.getDateModified();
+                    }
+                }
+                HSSFRow row = sheet.createRow(1 + i);
+                int columnIndex = 0;
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString(user.getDisplayName()));
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString(user.getFirstName()));
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString(user.getLastName()));
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString(user.getEmail()));
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellStyle(dateCellStyle);
+                    if (user.getRegistrationDate() != null) {
+                        cell.setCellValue(user.getRegistrationDate());
+                    }
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellStyle(dateCellStyle);
+                    if (dateLastEnteredData != null) {
+                        cell.setCellValue(dateLastEnteredData);
+                    }
+                }
+            }
+            workbook.write(response.getPortletOutputStream());
+            response.getPortletOutputStream().close();
+        }
+        catch (Exception e) {
+            throw new PortletException("Exception creating user spreadsheet", e);
+        }
+    }
+    
     protected void include(String path, RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
 
         PortletContext portletContext = getPortletContext();

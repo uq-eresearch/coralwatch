@@ -583,8 +583,13 @@
             ]
         ];
     </script>
+    <portlet:resourceURL var="friendsOfAjaxURL" id="ajax">
+        <portlet:param name="friendsOf">
+            <jsp:attribute name="value"><%= user.getId() %></jsp:attribute>
+        </portlet:param>
+    </portlet:resourceURL>
     <div dojoType="dojox.data.XmlStore"
-         url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/users?format=xml&friendsOf=<%=user.getId()%>"
+         url="<%= friendsOfAjaxURL %>"
          jsId="userStore"
          label="title">
     </div>
@@ -733,6 +738,11 @@
     ];
 </script>
 <div>
+    <% if (currentUser != null && currentUser.isSuperUser()) { %>
+    <div style="float: right;">
+        <a href="<portlet:resourceURL id="export" />">Export member details</a>
+    </div>
+    <% } %>
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
         <script type="dojo/method" event="onSubmit">
             if(!this.validate()){
@@ -765,7 +775,8 @@
 <br/>
 
 <div dojoType="dojox.data.XmlStore"
-     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/users?format=xml" jsId="userStore"
+     url="<portlet:resourceURL id="ajax" />"
+     jsId="userStore"
      label="title">
 </div>
 <div id="grid" jsId="grid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
