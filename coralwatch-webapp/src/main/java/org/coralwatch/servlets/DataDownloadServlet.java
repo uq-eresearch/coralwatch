@@ -22,9 +22,6 @@ import java.util.Map;
 
 public class DataDownloadServlet extends HttpServlet {
 
-    private HSSFCellStyle dateStyle;
-    private HSSFCellStyle timeStyle;
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AppUtil.clearCache();
@@ -38,46 +35,49 @@ public class DataDownloadServlet extends HttpServlet {
         final List<Survey> surveys = reefDao.getSurveysByReef(reef);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
-        createDateStyles(workbook);
-        writeSurveySheet(workbook, surveys);
-        writeSurveyRecordSheet(workbook, surveys);
+        
+        HSSFCellStyle dateStyle = workbook.createCellStyle();
+        dateStyle.setDataFormat(workbook.createDataFormat().getFormat("dd/MM/yyyy"));
+        HSSFCellStyle timeStyle = workbook.createCellStyle();
+        timeStyle.setDataFormat(workbook.createDataFormat().getFormat("HH:mm"));
+        
+        writeSurveySheet(workbook, surveys, dateStyle, timeStyle);
+        writeSurveyRecordSheet(workbook, surveys, dateStyle, timeStyle);
+        
         ServletOutputStream stream = response.getOutputStream();
         workbook.write(stream);
     }
 
-    protected void createDateStyles(HSSFWorkbook workbook) {
-        HSSFDataFormat dataFormat = workbook.createDataFormat();
-        dateStyle = workbook.createCellStyle();
-        dateStyle.setDataFormat(dataFormat.getFormat("dd/MM/yyyy"));
-        timeStyle = workbook.createCellStyle();
-        timeStyle.setDataFormat(dataFormat.getFormat("HH:mm"));
-    }
-
-    private void writeSurveySheet(HSSFWorkbook workbook, List<Survey> surveys) {
+    private static void writeSurveySheet(
+        HSSFWorkbook workbook,
+        List<Survey> surveys,
+        HSSFCellStyle dateStyle,
+        HSSFCellStyle timeStyle
+    ) {
         HSSFSheet sheet = workbook.createSheet("Surveys");
         HSSFRow row = sheet.createRow(0);
         int c = 0;
-        setCell(row.createCell(c++), "ID");
-        setCell(row.createCell(c++), "Creator");
-        setCell(row.createCell(c++), "Group Name");
-        setCell(row.createCell(c++), "Participating As");
-        setCell(row.createCell(c++), "Reef");
-        setCell(row.createCell(c++), "Longitude");
-        setCell(row.createCell(c++), "Latitude");
-        setCell(row.createCell(c++), "Date");
-        setCell(row.createCell(c++), "Time");
-        setCell(row.createCell(c++), "Light Condition");
-        setCell(row.createCell(c++), "Activity");
-        setCell(row.createCell(c++), "Water Temperature");
-        setCell(row.createCell(c++), "Comments");
-        setCell(row.createCell(c++), "Number of records");
-        setCell(row.createCell(c++), "Branching");
-        setCell(row.createCell(c++), "Boulder");
-        setCell(row.createCell(c++), "Plate");
-        setCell(row.createCell(c++), "Soft");
-        setCell(row.createCell(c++), "Average lightest");
-        setCell(row.createCell(c++), "Average darkest");
-        setCell(row.createCell(c++), "Average overall");
+        row.createCell(c++).setCellValue(new HSSFRichTextString("ID"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Creator"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Group Name"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Participating As"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Reef"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Longitude"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Latitude"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Date"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Time"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Light Condition"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Activity"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Water Temperature"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Comments"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Number of records"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Branching"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Boulder"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Plate"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Soft"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Average lightest"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Average darkest"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Average overall"));
         int r = 1;
         for (Survey survey : surveys) {
             Map<String, Long> shapeCounts = new HashMap<String, Long>();
@@ -95,126 +95,110 @@ public class DataDownloadServlet extends HttpServlet {
             int numRecords = survey.getDataset().size();
             row = sheet.createRow(r++);
             c = 0;
-            setCell(row.createCell(c++), survey.getId());
-            setCell(row.createCell(c++), survey.getCreator().getUsername());
-            setCell(row.createCell(c++), survey.getGroupName());
-            setCell(row.createCell(c++), survey.getParticipatingAs());
-            setCell(row.createCell(c++), survey.getReef().getName());
-            setCell(row.createCell(c++), survey.getLongitude());
-            setCell(row.createCell(c++), survey.getLatitude());
-            setCell(row.createCell(c++), survey.getDate());
-            setTimeCell(row.createCell(c++), survey.getTime());
-            setCell(row.createCell(c++), survey.getLightCondition());
-            setCell(row.createCell(c++), survey.getActivity());
-            setCell(row.createCell(c++), survey.getWaterTemperature());
-            setCell(row.createCell(c++), survey.getComments());
-            setCell(row.createCell(c++), numRecords);
-            setCell(row.createCell(c++), shapeCounts.get("Branching"));
-            setCell(row.createCell(c++), shapeCounts.get("Boulder"));
-            setCell(row.createCell(c++), shapeCounts.get("Plate"));
-            setCell(row.createCell(c++), shapeCounts.get("Soft"));
-            setCell(row.createCell(c++), sumLight / (double) numRecords);
-            setCell(row.createCell(c++), sumDark / (double) numRecords);
-            setCell(row.createCell(c++), (sumLight + sumDark) / (2d * numRecords));
+            row.createCell(c++).setCellValue(survey.getId());
+            row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getCreator().getUsername()));
+            row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getGroupName()));
+            row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getParticipatingAs()));
+            row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getReef().getName()));
+            {
+                HSSFCell cell = row.createCell(c++);
+                if (survey.getLongitude() != null) {
+                    cell.setCellValue(survey.getLongitude());
+                }
+            }
+            {
+                HSSFCell cell = row.createCell(c++);
+                if (survey.getLatitude() != null) {
+                    cell.setCellValue(survey.getLatitude());
+                }
+            }
+            {
+                HSSFCell cell = row.createCell(c++);
+                cell.setCellStyle(dateStyle);
+                if (survey.getDate() != null) {
+                    cell.setCellValue(survey.getDate());
+                }
+            }
+            {
+                HSSFCell cell = row.createCell(c++);
+                cell.setCellStyle(timeStyle);
+                if (survey.getTime() != null) {
+                    cell.setCellValue(survey.getTime());
+                }
+            }
+            row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getLightCondition()));
+            row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getActivity()));
+            {
+                HSSFCell cell = row.createCell(c++);
+                if (survey.getWaterTemperature() != null) {
+                    cell.setCellValue(survey.getWaterTemperature());
+                }
+            }
+            row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getComments()));
+            row.createCell(c++).setCellValue(numRecords);
+            row.createCell(c++).setCellValue(shapeCounts.get("Branching"));
+            row.createCell(c++).setCellValue(shapeCounts.get("Boulder"));
+            row.createCell(c++).setCellValue(shapeCounts.get("Plate"));
+            row.createCell(c++).setCellValue(shapeCounts.get("Soft"));
+            row.createCell(c++).setCellValue(sumLight / (double) numRecords);
+            row.createCell(c++).setCellValue(sumDark / (double) numRecords);
+            row.createCell(c++).setCellValue((sumLight + sumDark) / (2d * numRecords));
         }
         for (; c >= 0; c--) {
             sheet.autoSizeColumn((short) c);
         }
     }
 
-    private void writeSurveyRecordSheet(HSSFWorkbook workbook,
-                                        List<Survey> surveys) {
+    private static void writeSurveyRecordSheet(
+        HSSFWorkbook workbook,
+        List<Survey> surveys,
+        HSSFCellStyle dateStyle,
+        HSSFCellStyle timeStyle
+    ) {
         HSSFSheet sheet = workbook.createSheet("Survey Records");
         HSSFRow row = sheet.createRow(0);
         int c = 0;
-        setCell(row.createCell(c++), "Survey");
-        setCell(row.createCell(c++), "Creator");
-        setCell(row.createCell(c++), "Reef");
-        setCell(row.createCell(c++), "Date");
-        setCell(row.createCell(c++), "Time");
-        setCell(row.createCell(c++), "Coral Type");
-        setCell(row.createCell(c++), "Lightest Letter");
-        setCell(row.createCell(c++), "Lightest Number");
-        setCell(row.createCell(c++), "Darkest Letter");
-        setCell(row.createCell(c++), "Darkest Number");
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Survey"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Creator"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Reef"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Date"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Time"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Coral Type"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Lightest Letter"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Lightest Number"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Darkest Letter"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Darkest Number"));
         int r = 1;
         for (Survey survey : surveys) {
             for (SurveyRecord record : survey.getDataset()) {
                 row = sheet.createRow(r++);
                 c = 0;
-                setCell(row.createCell(c++), record.getSurvey().getId());
-                setCell(row.createCell(c++), record.getSurvey().getCreator().getDisplayName());
-                setCell(row.createCell(c++), record.getSurvey().getReef().getName());
-                setCell(row.createCell(c++), record.getSurvey().getDate());
-                setTimeCell(row.createCell(c++), record.getSurvey().getTime());
-                setCell(row.createCell(c++), record.getCoralType());
-                setCell(row.createCell(c++), record.getLightestLetter());
-                setCell(row.createCell(c++), record.getLightestNumber());
-                setCell(row.createCell(c++), record.getDarkestLetter());
-                setCell(row.createCell(c++), record.getDarkestNumber());
+                row.createCell(c++).setCellValue(record.getSurvey().getId());
+                row.createCell(c++).setCellValue(new HSSFRichTextString(record.getSurvey().getCreator().getDisplayName()));
+                row.createCell(c++).setCellValue(new HSSFRichTextString(record.getSurvey().getReef().getName()));
+                {
+                    HSSFCell cell = row.createCell(c++);
+                    cell.setCellStyle(dateStyle);
+                    if (record.getSurvey().getDate() != null) {
+                        cell.setCellValue(record.getSurvey().getDate());
+                    }
+                }
+                {
+                    HSSFCell cell = row.createCell(c++);
+                    cell.setCellStyle(timeStyle);
+                    if (record.getSurvey().getTime() != null) {
+                        cell.setCellValue(record.getSurvey().getTime());
+                    }
+                }
+                row.createCell(c++).setCellValue(new HSSFRichTextString(record.getCoralType()));
+                row.createCell(c++).setCellValue(new HSSFRichTextString(String.valueOf(record.getLightestLetter())));
+                row.createCell(c++).setCellValue(record.getLightestNumber());
+                row.createCell(c++).setCellValue(new HSSFRichTextString(String.valueOf(record.getDarkestLetter())));
+                row.createCell(c++).setCellValue(record.getDarkestNumber());
             }
         }
         for (; c >= 0; c--) {
             sheet.autoSizeColumn((short) c);
         }
     }
-
-    private void setCell(HSSFCell cell, String value) {
-        if (value == null) {
-            return;
-        }
-        cell.setCellValue(new HSSFRichTextString(value));
-    }
-
-    private void setCell(HSSFCell cell, Character value) {
-        if (value == null) {
-            return;
-        }
-        cell.setCellValue(new HSSFRichTextString(value.toString()));
-    }
-
-    private void setCell(HSSFCell cell, Integer value) {
-        if (value == null) {
-            return;
-        }
-        cell.setCellValue(value);
-    }
-
-    private void setCell(HSSFCell cell, Long value) {
-        if (value == null) {
-            return;
-        }
-        cell.setCellValue(value);
-    }
-
-    private void setCell(HSSFCell cell, Float value) {
-        if (value == null) {
-            return;
-        }
-        cell.setCellValue(value);
-    }
-
-    private void setCell(HSSFCell cell, Double value) {
-        if (value == null) {
-            return;
-        }
-        cell.setCellValue(value);
-    }
-
-    private void setCell(HSSFCell cell, Date value) {
-        if (value == null) {
-            return;
-        }
-        cell.setCellValue(value);
-        cell.setCellStyle(dateStyle);
-    }
-
-    private void setTimeCell(HSSFCell cell, Date value) {
-        if (value == null) {
-            return;
-        }
-        cell.setCellValue(value);
-        cell.setCellStyle(timeStyle);
-    }
-
 }
