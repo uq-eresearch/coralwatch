@@ -3,6 +3,7 @@ package org.coralwatch.portlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -331,7 +332,8 @@ public class UserPortlet extends GenericPortlet {
             throw new PortletException("Only the administrator can export member details");
         }
         response.setContentType("application/vnd.ms-excel");
-        response.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"users.xls\"");
+        String fileName = "users-" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".xls";
+        response.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
         response.setProperty(ResourceResponse.EXPIRATION_CACHE, "0");
         try {
             HSSFWorkbook workbook = new HSSFWorkbook();
