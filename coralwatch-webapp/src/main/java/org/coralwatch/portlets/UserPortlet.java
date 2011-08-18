@@ -375,6 +375,12 @@ public class UserPortlet extends GenericPortlet {
                 }
                 {
                     HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString("Country"));
+                    cell.setCellStyle(headerCellStyle);
+                    sheet.setColumnWidth(cell.getColumnIndex(), 30 * 256);
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
                     cell.setCellValue(new HSSFRichTextString("Date registered"));
                     cell.setCellStyle(headerCellStyle);
                     sheet.setColumnWidth(cell.getColumnIndex(), 20 * 256);
@@ -384,6 +390,12 @@ public class UserPortlet extends GenericPortlet {
                     cell.setCellValue(new HSSFRichTextString("Date last entered data"));
                     cell.setCellStyle(headerCellStyle);
                     sheet.setColumnWidth(cell.getColumnIndex(), 20 * 256);
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString("Surveys"));
+                    cell.setCellStyle(headerCellStyle);
+                    sheet.setColumnWidth(cell.getColumnIndex(), 10 * 256);
                 }
             }
             List<UserImpl> users = userDao.getAll();
@@ -416,6 +428,10 @@ public class UserPortlet extends GenericPortlet {
                 }
                 {
                     HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(new HSSFRichTextString(user.getCountry()));
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
                     cell.setCellStyle(dateCellStyle);
                     if (user.getRegistrationDate() != null) {
                         cell.setCellValue(user.getRegistrationDate());
@@ -427,6 +443,10 @@ public class UserPortlet extends GenericPortlet {
                     if (dateLastEnteredData != null) {
                         cell.setCellValue(dateLastEnteredData);
                     }
+                }
+                {
+                    HSSFCell cell = row.createCell(columnIndex++);
+                    cell.setCellValue(surveys.size());
                 }
             }
             workbook.write(response.getPortletOutputStream());
