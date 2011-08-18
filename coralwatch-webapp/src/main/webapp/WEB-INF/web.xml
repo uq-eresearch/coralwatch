@@ -20,16 +20,6 @@
         <url-pattern>/graph/*</url-pattern>
     </servlet-mapping>
 
-    <servlet id="dataDownloadServlet">
-        <servlet-name>data-download</servlet-name>
-        <servlet-class>org.coralwatch.servlets.DataDownloadServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>data-download</servlet-name>
-        <url-pattern>/data-download/*</url-pattern>
-    </servlet-mapping>
-
     <servlet id="surveyServlet">
         <servlet-name>surveys</servlet-name>
         <servlet-class>org.coralwatch.servlets.SurveyServlet</servlet-class>

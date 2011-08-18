@@ -56,8 +56,12 @@
     </div>
     <div id="surveys" dojoType="dijit.layout.ContentPane" title="Data" style="width:680px; height:60ex">
         <div align="right">
-            <a href="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/data-download?id=" + reefId)%>">Download
-                Data</a>
+            <portlet:resourceURL var="surveyExportURL" id="surveyExport">
+                <portlet:param name="reefId">
+                    <jsp:attribute name="value"><%= reefId %></jsp:attribute>
+                </portlet:param>
+            </portlet:resourceURL>
+            <a href="<%= surveyExportURL %>%>">Download Data</a>
         </div>
         <script>
             dojo.require("dojox.grid.DataGrid");
@@ -264,7 +268,7 @@
                 name: "Download",
                 width: 10,
                 formatter: function(item) {
-                    var downloadUrl = "<a href=\"<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/data-download?id=" + item.toString() + "\">Raw Data</a>";
+                    var downloadUrl = "<a href=\"<portlet:resourceURL id="surveyExport"/>&<portlet:namespace/>reefId=" + item.toString() + "\">Raw Data</a>";
                     return downloadUrl;
                 }
             }

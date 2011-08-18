@@ -8,6 +8,7 @@ import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.util.AppUtil;
 
 import javax.portlet.*;
+
 import java.io.IOException;
 
 public class ReefPortlet extends GenericPortlet {
@@ -39,6 +40,13 @@ public class ReefPortlet extends GenericPortlet {
     public void processAction(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException, PortletException {
 //        String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 //        _log.info("Command: " + cmd);
+    }
+    
+    @Override
+    public void serveResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
+        if (request.getResourceID().equals("surveyExport")) {
+            SurveyPortlet.serveExportResource(request, response);
+        }
     }
 
     protected void include(String path, RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {

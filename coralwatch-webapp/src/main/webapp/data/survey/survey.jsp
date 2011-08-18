@@ -1079,8 +1079,13 @@
     if (currentUser != null) {
 %>
 <div align="right">
-    <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">New
-        Survey</a>
+    <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">New Survey</a>
+    <% if (currentUser != null && currentUser.isSuperUser()) { %>
+        <portlet:resourceURL var="exportURL" id="export">
+            <portlet:param name="singleSheet" value="true" />
+        </portlet:resourceURL>
+        | <a href="<%= exportURL %>">Export survey data</a>
+    <% } %>
 </div>
 <%
     }
