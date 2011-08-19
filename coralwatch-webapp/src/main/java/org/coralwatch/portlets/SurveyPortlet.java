@@ -327,6 +327,7 @@ public class SurveyPortlet extends GenericPortlet {
         row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getGroupName()));
         row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getParticipatingAs()));
         row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getReef().getName()));
+        row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getReef().getCountry()));
         {
             HSSFCell cell = row.createCell(c++);
             if (survey.getLongitude() != null) {
@@ -379,6 +380,7 @@ public class SurveyPortlet extends GenericPortlet {
         row.createCell(c++).setCellValue(new HSSFRichTextString("Group Name"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Participating As"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Reef"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Country"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Longitude"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Latitude"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Date"));
