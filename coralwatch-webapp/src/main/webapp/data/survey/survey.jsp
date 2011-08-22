@@ -110,8 +110,8 @@
                 //                dijit.byId('time').constraints.max = 'T' + now.getHours() + ':' + now.getMinutes()+ ':00';
                 updateLonFromDeg();
                 updateLatFromDeg();
+                updateDepthFeet();
                 updateFTemperature();
-                updateCTemperature();
             }
             );
 </script>
@@ -578,6 +578,31 @@
         <option value="Broken Cloud">Broken Cloud</option>
         <option value="Cloudy">Cloudy</option>
     </select>
+    </td>
+</tr>
+<tr>
+    <th><label for="depth">Depth (Metres):</label></th>
+    <td>
+        <input type="text"
+               id="depth"
+               name="depth"
+               required="false"
+               trim="true"
+               dojoType="dijit.form.NumberTextBox"
+               onBlur="updateDepthFeet()"
+               onChange="updateDepthFeet()"
+               invalidMessage="Enter a valid depth value."
+               value="<%= cmd.equals(Constants.EDIT) ? survey.getDepth() : "" %>"/>
+        (Feet):
+        <input type="text"
+               id="depthFeet"
+               name="depthFeet"
+               required="false"
+               trim="true"
+               dojoType="dijit.form.NumberTextBox"
+               onBlur="updateDepthMetres()"
+               onChange="updateDepthMetres()"
+               invalidMessage="Enter a valid depth value."/>
     </td>
 </tr>
 <tr>
