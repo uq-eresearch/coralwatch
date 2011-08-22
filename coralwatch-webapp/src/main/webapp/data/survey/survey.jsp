@@ -104,12 +104,12 @@
     dojo.addOnLoad(
             function() {
                 dojo.byId("groupName").focus();
-                dojo.byId("latitude").style.display = 'inline';
+                dojo.byId("latitudeDeg1").style.display = 'inline';
                 var now = new Date();
                 dijit.byId('date').constraints.max = now;
                 //                dijit.byId('time').constraints.max = 'T' + now.getHours() + ':' + now.getMinutes()+ ':00';
-                updateLonFromDecimal();
-                updateLatFromDecimal();
+                updateLonFromDeg();
+                updateLatFromDeg();
                 updateFTemperature();
                 updateCTemperature();
             }
@@ -225,22 +225,22 @@
 </th>
 <td>
 <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:30ex">
-<div id="tabDecimal" dojoType="dijit.layout.ContentPane" title="Decimal" style="width:40em;height:30ex;">
+<div id="tabDeg" dojoType="dijit.layout.ContentPane" title="Degrees" style="width:40em;height:30ex;">
     <table>
         <tr>
-            <th>
-                <label for="latitude">Latitude:</label>
+            <th style="width: 72px;">
+                <label for="latitudeDeg1">Latitude:</label>
             </th>
             <td>
                 <input type="text"
-                       id="latitude"
-                       name="latitude"
+                       id="latitudeDeg1"
+                       name="latitudeDeg1"
                        required="true"
                        dojoType="dijit.form.NumberTextBox"
                        constraints="{places:6,min:-90,max:90}"
                        trim="true"
-                       onBlur="updateLatFromDecimal()"
-                       onChange="updateLatFromDecimal()"
+                       onBlur="updateLatFromDeg()"
+                       onChange="updateLatFromDeg()"
                        invalidMessage="Enter a valid latitude value rounded to six decimal places. Append 0s if required."
                        value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
                 <%
@@ -266,10 +266,10 @@
                             GEvent.addListener(map, 'click', function(overlay, latlng) {
                                 var Lat5 = latlng.lat();
                                 var Lng5 = latlng.lng();
-                                document.getElementById("latitude").value = Lat5.toFixed(6);
-                                updateLatFromDecimal();
-                                document.getElementById("longitude").value = Lng5.toFixed(6);
-                                updateLonFromDecimal();
+                                document.getElementById("latitudeDeg1").value = Lat5.toFixed(6);
+                                updateLatFromDeg();
+                                document.getElementById("longitudeDeg1").value = Lng5.toFixed(6);
+                                updateLonFromDeg();
                             });
                         } else {
                             alert("Sorry, the Google Maps API is not compatible with this browser");
@@ -299,10 +299,10 @@
                                     GEvent.addListener(map, 'click', function(overlay, latlng) {
                                         var Lat5 = latlng.lat();
                                         var Lng5 = latlng.lng();
-                                        document.getElementById("latitude").value = Lat5.toFixed(6);
-                                        updateLatFromDecimal();
-                                        document.getElementById("longitude").value = Lng5.toFixed(6);
-                                        updateLonFromDecimal();
+                                        document.getElementById("latitudeDeg1").value = Lat5.toFixed(6);
+                                        updateLatFromDeg();
+                                        document.getElementById("longitudeDeg1").value = Lng5.toFixed(6);
+                                        updateLonFromDeg();
                                     });
                                 } else {
                                     alert("Sorry, the Google Maps API is not compatible with this browser");
@@ -316,18 +316,18 @@
         </tr>
         <tr>
             <th>
-                <label for="longitude">Longitude:</label>
+                <label for="longitudeDeg1">Longitude:</label>
             </th>
             <td>
                 <input type="text"
-                       id="longitude"
-                       name="longitude"
+                       id="longitudeDeg1"
+                       name="longitudeDeg1"
                        required="true"
                        dojoType="dijit.form.NumberTextBox"
                        constraints="{places:6,min:-180,max:360}"
                        trim="true"
-                       onBlur="updateLonFromDecimal()"
-                       onChange="updateLonFromDecimal()"
+                       onBlur="updateLonFromDeg()"
+                       onChange="updateLonFromDeg()"
                        invalidMessage="Enter a valid longitude value rounded to six decimal places. Append 0s if required."
                        value="<%=cmd.equals(Constants.EDIT) ? survey.getLongitude() : ""%>"/>
                 <input id="isGpsDevice" name="isGpsDevice"
@@ -346,51 +346,41 @@
     </table>
 
 </div>
-<div id="tabDegrees" dojoType="dijit.layout.ContentPane" title="Degrees" style="width:40em;height:20ex;">
+<div id="tabDegMin" dojoType="dijit.layout.ContentPane" title="Degrees/Minutes" style="width:40em;height:20ex;">
     <table>
         <tr>
-            <th>
-                <label for="latitudeDeg">Latitude:</label>
+            <th style="width: 72px;">
+                <label for="latitudeDeg2">Latitude:</label>
             </th>
             <td>
                 <input type="text"
-                       id="latitudeDeg"
-                       name="latitudeDeg"
+                       id="latitudeDeg2"
+                       name="latitudeDeg2"
                        required="true"
                        dojoType="dijit.form.NumberTextBox"
                        constraints="{places:0,min:0,max:90}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLatFromDegrees()"
+                       onBlur="updateLatFromDegMin()"
                        invalidMessage="Enter a valid degree value."/>
                 &deg;
                 <input type="text"
-                       id="latitudeMin"
-                       name="latitudeMin"
+                       id="latitudeMin2"
+                       name="latitudeMin2"
                        required="true"
                        dojoType="dijit.form.NumberTextBox"
-                       constraints="{places:0,min:0,max:59}"
+                       constraints="{places:4,min:0,max:60}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLatFromDegrees()"
-                       invalidMessage="Enter a valid minute value."/>'
-                <input type="text"
-                       id="latitudeSec"
-                       name="latitudeSec"
-                       required="true"
-                       dojoType="dijit.form.NumberTextBox"
-                       constraints="{places:0,min:0,max:59}"
-                       trim="true"
-                       style="width:6em;"
-                       onBlur="updateLatFromDegrees()"
-                       invalidMessage="Enter a valid second value."/>
-                &quot;
-                <select name="latitudeDir"
-                        id="latitudeDir"
+                       onBlur="updateLatFromDegMin()"
+                       invalidMessage="Enter a valid minute value rounded to four decimal places. Append 0s if required."/>
+                '
+                <select name="latitudeDir2"
+                        id="latitudeDir2"
                         required="true"
                         dojoType="dijit.form.ComboBox"
                         hasDownArrow="true"
-                        onBlur="updateLatFromDegrees()"
+                        onBlur="updateLatFromDegMin()"
                         style="width:4.5em;">
                     <option value="north">N</option>
                     <option value="south">S</option>
@@ -399,47 +389,141 @@
         </tr>
         <tr>
             <th>
-                <label for="longitudeDeg">Longitude:</label>
+                <label for="longitudeDeg2">Longitude:</label>
             </th>
             <td>
                 <input type="text"
-                       id="longitudeDeg"
-                       name="longitudeDeg"
+                       id="longitudeDeg2"
+                       name="longitudeDeg2"
                        required="true"
                        dojoType="dijit.form.NumberTextBox"
                        constraints="{places:0,min:0,max:180}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLonFromDegrees()"
+                       onBlur="updateLonFromDegMin()"
                        invalidMessage="Enter a valid degree value."/>
                 &deg;
                 <input type="text"
-                       id="longitudeMin"
-                       name="longitudeMin"
+                       id="longitudeMin2"
+                       name="longitudeMin2"
                        required="true"
                        dojoType="dijit.form.NumberTextBox"
-                       constraints="{places:0,min:0,max:59}"
+                       constraints="{places:4,min:0,max:60}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLonFromDegrees()"
-                       invalidMessage="Enter a valid minute value."/>'
-                <input type="text"
-                       id="longitudeSec"
-                       name="longitudeSec"
-                       required="true"
-                       dojoType="dijit.form.NumberTextBox"
-                       constraints="{places:0,min:0,max:59}"
-                       trim="true"
-                       style="width:6em;"
-                       onBlur="updateLonFromDegrees()"
-                       invalidMessage="Enter a valid second value."/>
-                &quot;
-                <select name="longitudeDir"
-                        id="longitudeDir"
+                       onBlur="updateLonFromDegMin()"
+                       invalidMessage="Enter a valid minute value rounded to four decimal places. Append 0s if required."/>
+                '
+                <select name="longitudeDir2"
+                        id="longitudeDir2"
                         required="true"
                         dojoType="dijit.form.ComboBox"
                         hasDownArrow="true"
-                        onBlur="updateLonFromDegrees()"
+                        onBlur="updateLonFromDegMin()"
+                        style="width:4.5em;">
+                    <option value="east">E</option>
+                    <option value="west">W</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="tabDegMinSec" dojoType="dijit.layout.ContentPane" title="Degrees/Minutes/Seconds" style="width:40em;height:20ex;">
+    <table>
+        <tr>
+            <th style="width: 72px;">
+                <label for="latitudeDeg3">Latitude:</label>
+            </th>
+            <td>
+                <input type="text"
+                       id="latitudeDeg3"
+                       name="latitudeDeg3"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:0,min:0,max:90}"
+                       trim="true"
+                       style="width:6em;"
+                       onBlur="updateLatFromDegMinSec()"
+                       invalidMessage="Enter a valid degree value."/>
+                &deg;
+                <input type="text"
+                       id="latitudeMin3"
+                       name="latitudeMin3"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:0,min:0,max:59}"
+                       trim="true"
+                       style="width:6em;"
+                       onBlur="updateLatFromDegMinSec()"
+                       invalidMessage="Enter a valid minute value."/>
+                '
+                <input type="text"
+                       id="latitudeSec3"
+                       name="latitudeSec3"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:0,min:0,max:59}"
+                       trim="true"
+                       style="width:6em;"
+                       onBlur="updateLatFromDegMinSec()"
+                       invalidMessage="Enter a valid second value."/>
+                &quot;
+                <select name="latitudeDir3"
+                        id="latitudeDir3"
+                        required="true"
+                        dojoType="dijit.form.ComboBox"
+                        hasDownArrow="true"
+                        onBlur="updateLatFromDegMinSec()"
+                        style="width:4.5em;">
+                    <option value="north">N</option>
+                    <option value="south">S</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="longitudeDeg3">Longitude:</label>
+            </th>
+            <td>
+                <input type="text"
+                       id="longitudeDeg3"
+                       name="longitudeDeg3"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:0,min:0,max:180}"
+                       trim="true"
+                       style="width:6em;"
+                       onBlur="updateLonFromDegMinSec()"
+                       invalidMessage="Enter a valid degree value."/>
+                &deg;
+                <input type="text"
+                       id="longitudeMin3"
+                       name="longitudeMin3"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:0,min:0,max:59}"
+                       trim="true"
+                       style="width:6em;"
+                       onBlur="updateLonFromDegMinSec()"
+                       invalidMessage="Enter a valid minute value."/>
+                '
+                <input type="text"
+                       id="longitudeSec3"
+                       name="longitudeSec3"
+                       required="true"
+                       dojoType="dijit.form.NumberTextBox"
+                       constraints="{places:0,min:0,max:59}"
+                       trim="true"
+                       style="width:6em;"
+                       onBlur="updateLonFromDegMinSec()"
+                       invalidMessage="Enter a valid second value."/>
+                &quot;
+                <select name="longitudeDir3"
+                        id="longitudeDir3"
+                        required="true"
+                        dojoType="dijit.form.ComboBox"
+                        hasDownArrow="true"
+                        onBlur="updateLonFromDegMinSec()"
                         style="width:4.5em;">
                     <option value="east">E</option>
                     <option value="west">W</option>
