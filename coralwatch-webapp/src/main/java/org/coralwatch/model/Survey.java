@@ -60,8 +60,6 @@ public class Survey implements Serializable {
 
     @NotNull
     private String activity;
-    
-    private Double depth;
 
 //    @NotNull
     private Double waterTemperature;
@@ -201,14 +199,6 @@ public class Survey implements Serializable {
 
     public void setActivity(String activity) {
         this.activity = activity;
-    }
-
-    public Double getDepth() {
-        return depth;
-    }
-
-    public void setDepth(Double depth) {
-        this.depth = depth;
     }
 
     public Double getWaterTemperature() {

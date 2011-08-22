@@ -145,16 +145,6 @@ function updateLatFromDegMinSec() {
     var deg1 = (dir3 == "N" ? 1 : -1) * (deg3 + min3 / 60 + sec3 / 3600);
     dijit.byId("latitudeDeg1").setValue(deg1);
 }
-function updateDepthFeet() {
-    if (dijit.byId("depthMetres").getValue() != null) {
-        dijit.byId("depthFeet").setValue((1 / 0.3048) * dijit.byId("depthMetres").getValue());
-    }
-}
-function updateDepthMetres() {
-    if (dijit.byId("depthFeet").getValue() != null) {
-        dijit.byId("depthMetres").setValue(0.3048 * (dijit.byId("depthFeet").getValue());
-    }
-}
 function updateFTemperature() {
     if (dijit.byId("watertemperature").getValue() != null) {
         dijit.byId("temperatureF").setValue((212 - 32) / 100 * dijit.byId("watertemperature").getValue() + 32);
