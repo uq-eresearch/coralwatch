@@ -145,13 +145,38 @@ function updateLatFromDegMinSec() {
     var deg1 = (dir3 == "N" ? 1 : -1) * (deg3 + min3 / 60 + sec3 / 3600);
     dijit.byId("latitudeDeg1").setValue(deg1);
 }
+function updateDepthFeet() {
+    if ((dijit.byId("depth").getValue() != null) && !isNaN(dijit.byId("depth").getValue())) {
+    	var feet = dijit.byId("depth").getValue() / 0.3048;
+    	var inches = (feet - Math.floor(feet)) * 12.0;
+        dijit.byId("depthFeet").setValue(Math.floor(feet));
+        dijit.byId("depthInches").setValue(Math.round(inches));
+    }
+}
+function updateDepthMetres() {
+    if (
+		((dijit.byId("depthFeet").getValue() != null) && !isNaN(dijit.byId("depthFeet").getValue())) ||
+		((dijit.byId("depthInches").getValue() != null) && !isNaN(dijit.byId("depthInches").getValue()))
+	) {
+    	var feet = 0;
+    	if ((dijit.byId("depthFeet").getValue() != null) && !isNaN(dijit.byId("depthFeet").getValue())) {
+    		feet = dijit.byId("depthFeet").getValue();
+    	}
+    	var inches = 0;
+    	if ((dijit.byId("depthInches").getValue() != null) && !isNaN(dijit.byId("depthInches").getValue())) {
+    		inches = dijit.byId("depthInches").getValue();
+    	}
+    	var metres = 0.3048 * (feet + (inches / 12.0));
+        dijit.byId("depth").setValue(metres);
+    }
+}
 function updateFTemperature() {
-    if (dijit.byId("watertemperature").getValue() != null) {
+    if ((dijit.byId("watertemperature").getValue() != null) && !isNaN(dijit.byId("watertemperature").getValue())) {
         dijit.byId("temperatureF").setValue((212 - 32) / 100 * dijit.byId("watertemperature").getValue() + 32);
     }
 }
 function updateCTemperature() {
-    if (dijit.byId("temperatureF").getValue() != null) {
+    if ((dijit.byId("temperatureF").getValue() != null) && !isNaN(dijit.byId("temperatureF").getValue())) {
         dijit.byId("watertemperature").setValue(100 / (212 - 32) * (dijit.byId("temperatureF").getValue() - 32 ));
     }
 }

@@ -110,6 +110,7 @@
                 //                dijit.byId('time').constraints.max = 'T' + now.getHours() + ':' + now.getMinutes()+ ':00';
                 updateLonFromDeg();
                 updateLatFromDeg();
+                updateDepthFeet();
                 updateFTemperature();
                 updateCTemperature();
             }
@@ -229,12 +230,12 @@
     <table>
         <tr>
             <th style="width: 72px;">
-                <label for="latitudeDeg1">Latitude:</label>
+                <label for="latitude">Latitude:</label>
             </th>
             <td>
                 <input type="text"
                        id="latitudeDeg1"
-                       name="latitudeDeg1"
+                       name="latitude"
                        required="true"
                        dojoType="dijit.form.NumberTextBox"
                        constraints="{places:6,min:-90,max:90}"
@@ -316,12 +317,12 @@
         </tr>
         <tr>
             <th>
-                <label for="longitudeDeg1">Longitude:</label>
+                <label for="longitude">Longitude:</label>
             </th>
             <td>
                 <input type="text"
                        id="longitudeDeg1"
-                       name="longitudeDeg1"
+                       name="longitude"
                        required="true"
                        dojoType="dijit.form.NumberTextBox"
                        constraints="{places:6,min:-180,max:360}"
@@ -581,6 +582,46 @@
     </td>
 </tr>
 <tr>
+    <th><label for="depth">Depth (metres):</label></th>
+    <td>
+        <input type="text"
+               id="depth"
+               name="depth"
+               style="width:6em;"
+               required="false"
+               trim="true"
+               dojoType="dijit.form.NumberTextBox"
+               constraints="{places:2,min:0}"
+               onBlur="updateDepthFeet()"
+               onChange="updateDepthFeet()"
+               invalidMessage="Enter a valid depth value rounded to two decimal places. Append 0s if required."
+               value="<%= cmd.equals(Constants.EDIT) ? survey.getDepth() : "" %>"/>
+        <label for="depthFeet" style="font-weight: bold;">or (feet):</label>
+        <input type="text"
+               id="depthFeet"
+               name="depthFeet"
+               style="width:6em;"
+               required="false"
+               trim="true"
+               dojoType="dijit.form.NumberTextBox"
+               constraints="{places:0,min:0}"
+               onBlur="updateDepthMetres()"
+               onChange="updateDepthMetres()"
+               invalidMessage="Enter a valid depth value without decimal places."/> '
+        <input type="text"
+               id="depthInches"
+               name="depthInches"
+               style="width:6em;"
+               required="false"
+               trim="true"
+               dojoType="dijit.form.NumberTextBox"
+               constraints="{places:0,min:0}"
+               onBlur="updateDepthMetres()"
+               onChange="updateDepthMetres()"
+               invalidMessage="Enter a valid depth value without decimal places."/> "
+    </td>
+</tr>
+<tr>
     <th><label for="watertemperature">Water Temperature (&deg;C):</label></th>
     <td>
         <input type="text"
@@ -593,15 +634,16 @@
                onChange="updateFTemperature()"
                invalidMessage="Enter a valid temperature value."
                value="<%=cmd.equals(Constants.EDIT) ? survey.getWaterTemperature() : ""%>"/>
-        (&deg;F): <input type="text"
-                         id="temperatureF"
-                         name="temperatureF"
-                         required="true"
-                         dojoType="dijit.form.NumberTextBox"
-                         onBlur="updateCTemperature()"
-                         onChange="updateCTemperature()"
-                         trim="true"
-                         invalidMessage="Enter a valid temperature value."/>
+        <label for="temperatureF" style="font-weight: bold;">or (&deg;F):</label>
+        <input type="text"
+               id="temperatureF"
+               name="temperatureF"
+               required="true"
+               dojoType="dijit.form.NumberTextBox"
+               onBlur="updateCTemperature()"
+               onChange="updateCTemperature()"
+               trim="true"
+               invalidMessage="Enter a valid temperature value."/>
     </td>
 </tr>
 <tr>
@@ -767,6 +809,16 @@
         <tr>
             <th>Light Condition:</th>
             <td><%=survey.getLightCondition() == null ? "" : survey.getLightCondition()%>
+            </td>
+        </tr>
+        <tr>
+            <th>Depth:</th>
+            <td>
+                <%if (survey.getDepth() != null) {%>
+                <% double depthFeet = survey.getDepth() / 0.3048; %>
+                <% double depthInches = (depthFeet - Math.floor(depthFeet)) * 12.0; %>
+                <%=survey.getDepth()%> m (<%=(int) Math.floor(depthFeet)%>' <%=Math.round(depthInches)%>")
+                <%}%>
             </td>
         </tr>
         <tr>

@@ -102,12 +102,28 @@ public class SurveyPortlet extends GenericPortlet {
                     Date date = ParamUtil.getDate(actionRequest, "date", new SimpleDateFormat("yyyy-MM-dd"));
                     Date time = ParamUtil.getDate(actionRequest, "time", new SimpleDateFormat("'T'HH:mm:ss"));
                     String lightCondition = actionRequest.getParameter("lightCondition");
+                    String depthStr = actionRequest.getParameter("depth");
+                    Double depth = ParamUtil.getDouble(actionRequest, "depth");
                     String waterTemperatureStr = actionRequest.getParameter("watertemperature");
                     Double waterTemperature = ParamUtil.getDouble(actionRequest, "watertemperature");
                     String activity = actionRequest.getParameter("activity");
                     String comments = actionRequest.getParameter("comments");
 
-                    validateEmptyFields(errors, groupName, participatingAs, country, reefName, latitudeStr, longitudeStr, date, time, lightCondition, waterTemperatureStr, activity);
+                    validateEmptyFields(
+                        errors,
+                        groupName,
+                        participatingAs,
+                        country,
+                        reefName,
+                        latitudeStr,
+                        longitudeStr,
+                        date,
+                        time,
+                        lightCondition,
+                        depthStr,
+                        waterTemperatureStr,
+                        activity
+                    );
 
                     if (errors.isEmpty()) {
                         Reef reef = reefDao.getReefByName(reefName);
@@ -128,6 +144,7 @@ public class SurveyPortlet extends GenericPortlet {
                             survey.setDate(date);
                             survey.setTime(time);
                             survey.setLightCondition(lightCondition);
+                            survey.setDepth(depth);
                             survey.setWaterTemperature(waterTemperature);
                             survey.setActivity(activity);
                             survey.setComments(comments);
@@ -148,6 +165,7 @@ public class SurveyPortlet extends GenericPortlet {
                             survey.setDate(date);
                             survey.setTime(time);
                             survey.setLightCondition(lightCondition);
+                            survey.setDepth(depth);
                             survey.setWaterTemperature(waterTemperature);
                             survey.setActivity(activity);
                             survey.setComments(comments);
@@ -190,7 +208,21 @@ public class SurveyPortlet extends GenericPortlet {
 
     }
 
-    private void validateEmptyFields(List<String> errors, String groupName, String participatingAs, String country, String reefName, String latitudeStr, String longitudeStr, Date date, Date time, String lightCondition, String waterTemperatureStr, String activity) {
+    private void validateEmptyFields(
+        List<String> errors,
+        String groupName,
+        String participatingAs,
+        String country,
+        String reefName,
+        String latitudeStr,
+        String longitudeStr,
+        Date date,
+        Date time,
+        String lightCondition,
+        String depthStr,
+        String waterTemperatureStr,
+        String activity
+    ) {
         List<String> emptyFields = new ArrayList<String>();
         if (groupName == null || groupName.trim().isEmpty()) {
             emptyFields.add("Group Name");
@@ -355,13 +387,19 @@ public class SurveyPortlet extends GenericPortlet {
             }
         }
         row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getLightCondition()));
-        row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getActivity()));
+        {
+            HSSFCell cell = row.createCell(c++);
+            if (survey.getDepth() != null) {
+                cell.setCellValue(survey.getDepth());
+            }
+        }
         {
             HSSFCell cell = row.createCell(c++);
             if (survey.getWaterTemperature() != null) {
                 cell.setCellValue(survey.getWaterTemperature());
             }
         }
+        row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getActivity()));
         row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getComments()));
         row.createCell(c++).setCellValue(numRecords);
         row.createCell(c++).setCellValue(shapeCounts.get("Branching"));
@@ -386,8 +424,9 @@ public class SurveyPortlet extends GenericPortlet {
         row.createCell(c++).setCellValue(new HSSFRichTextString("Date"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Time"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Light Condition"));
-        row.createCell(c++).setCellValue(new HSSFRichTextString("Activity"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Depth"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Water Temperature"));
+        row.createCell(c++).setCellValue(new HSSFRichTextString("Activity"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Comments"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Number of records"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Branching"));
