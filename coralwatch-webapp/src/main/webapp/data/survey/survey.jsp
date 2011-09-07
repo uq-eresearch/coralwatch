@@ -240,7 +240,6 @@
                        dojoType="dijit.form.NumberTextBox"
                        constraints="{places:6,min:-90,max:90}"
                        trim="true"
-                       onBlur="updateLatFromDeg()"
                        onChange="updateLatFromDeg()"
                        invalidMessage="Enter a valid latitude value rounded to six decimal places. Append 0s if required."
                        value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
@@ -327,7 +326,6 @@
                        dojoType="dijit.form.NumberTextBox"
                        constraints="{places:6,min:-180,max:360}"
                        trim="true"
-                       onBlur="updateLonFromDeg()"
                        onChange="updateLonFromDeg()"
                        invalidMessage="Enter a valid longitude value rounded to six decimal places. Append 0s if required."
                        value="<%=cmd.equals(Constants.EDIT) ? survey.getLongitude() : ""%>"/>
@@ -362,7 +360,7 @@
                        constraints="{places:0,min:0,max:90}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLatFromDegMin()"
+                       onChange="updateLatFromDegMin()"
                        invalidMessage="Enter a valid degree value."/>
                 &deg;
                 <input type="text"
@@ -373,7 +371,7 @@
                        constraints="{places:4,min:0,max:60}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLatFromDegMin()"
+                       onChange="updateLatFromDegMin()"
                        invalidMessage="Enter a valid minute value rounded to four decimal places. Append 0s if required."/>
                 '
                 <select name="latitudeDir2"
@@ -381,7 +379,7 @@
                         required="true"
                         dojoType="dijit.form.ComboBox"
                         hasDownArrow="true"
-                        onBlur="updateLatFromDegMin()"
+                        onChange="updateLatFromDegMin()"
                         style="width:4.5em;">
                     <option value="north">N</option>
                     <option value="south">S</option>
@@ -401,7 +399,7 @@
                        constraints="{places:0,min:0,max:180}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLonFromDegMin()"
+                       onChange="updateLonFromDegMin()"
                        invalidMessage="Enter a valid degree value."/>
                 &deg;
                 <input type="text"
@@ -412,7 +410,7 @@
                        constraints="{places:4,min:0,max:60}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLonFromDegMin()"
+                       onChange="updateLonFromDegMin()"
                        invalidMessage="Enter a valid minute value rounded to four decimal places. Append 0s if required."/>
                 '
                 <select name="longitudeDir2"
@@ -420,7 +418,7 @@
                         required="true"
                         dojoType="dijit.form.ComboBox"
                         hasDownArrow="true"
-                        onBlur="updateLonFromDegMin()"
+                        onChange="updateLonFromDegMin()"
                         style="width:4.5em;">
                     <option value="east">E</option>
                     <option value="west">W</option>
@@ -444,7 +442,7 @@
                        constraints="{places:0,min:0,max:90}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLatFromDegMinSec()"
+                       onChange="updateLatFromDegMinSec()"
                        invalidMessage="Enter a valid degree value."/>
                 &deg;
                 <input type="text"
@@ -455,7 +453,7 @@
                        constraints="{places:0,min:0,max:59}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLatFromDegMinSec()"
+                       onChange="updateLatFromDegMinSec()"
                        invalidMessage="Enter a valid minute value."/>
                 '
                 <input type="text"
@@ -466,7 +464,7 @@
                        constraints="{places:0,min:0,max:59}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLatFromDegMinSec()"
+                       onChange="updateLatFromDegMinSec()"
                        invalidMessage="Enter a valid second value."/>
                 &quot;
                 <select name="latitudeDir3"
@@ -474,7 +472,7 @@
                         required="true"
                         dojoType="dijit.form.ComboBox"
                         hasDownArrow="true"
-                        onBlur="updateLatFromDegMinSec()"
+                        onChange="updateLatFromDegMinSec()"
                         style="width:4.5em;">
                     <option value="north">N</option>
                     <option value="south">S</option>
@@ -494,7 +492,7 @@
                        constraints="{places:0,min:0,max:180}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLonFromDegMinSec()"
+                       onChange="updateLonFromDegMinSec()"
                        invalidMessage="Enter a valid degree value."/>
                 &deg;
                 <input type="text"
@@ -505,7 +503,7 @@
                        constraints="{places:0,min:0,max:59}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLonFromDegMinSec()"
+                       onChange="updateLonFromDegMinSec()"
                        invalidMessage="Enter a valid minute value."/>
                 '
                 <input type="text"
@@ -516,7 +514,7 @@
                        constraints="{places:0,min:0,max:59}"
                        trim="true"
                        style="width:6em;"
-                       onBlur="updateLonFromDegMinSec()"
+                       onChange="updateLonFromDegMinSec()"
                        invalidMessage="Enter a valid second value."/>
                 &quot;
                 <select name="longitudeDir3"
@@ -524,7 +522,7 @@
                         required="true"
                         dojoType="dijit.form.ComboBox"
                         hasDownArrow="true"
-                        onBlur="updateLonFromDegMinSec()"
+                        onChange="updateLonFromDegMinSec()"
                         style="width:4.5em;">
                     <option value="east">E</option>
                     <option value="west">W</option>
@@ -592,7 +590,6 @@
                trim="true"
                dojoType="dijit.form.NumberTextBox"
                constraints="{places:2,min:0}"
-               onBlur="updateDepthFeet()"
                onChange="updateDepthFeet()"
                invalidMessage="Enter a valid depth value rounded to two decimal places. Append 0s if required."
                value="<%= cmd.equals(Constants.EDIT) ? survey.getDepth() : "" %>"/>
@@ -605,7 +602,6 @@
                trim="true"
                dojoType="dijit.form.NumberTextBox"
                constraints="{places:0,min:0}"
-               onBlur="updateDepthMetres()"
                onChange="updateDepthMetres()"
                invalidMessage="Enter a valid depth value without decimal places."/> '
         <input type="text"
@@ -616,7 +612,6 @@
                trim="true"
                dojoType="dijit.form.NumberTextBox"
                constraints="{places:0,min:0}"
-               onBlur="updateDepthMetres()"
                onChange="updateDepthMetres()"
                invalidMessage="Enter a valid depth value without decimal places."/> "
     </td>
@@ -630,7 +625,6 @@
                required="true"
                dojoType="dijit.form.NumberTextBox"
                trim="true"
-               onBlur="updateFTemperature()"
                onChange="updateFTemperature()"
                invalidMessage="Enter a valid temperature value."
                value="<%=cmd.equals(Constants.EDIT) ? survey.getWaterTemperature() : ""%>"/>
@@ -640,7 +634,6 @@
                name="temperatureF"
                required="true"
                dojoType="dijit.form.NumberTextBox"
-               onBlur="updateCTemperature()"
                onChange="updateCTemperature()"
                trim="true"
                invalidMessage="Enter a valid temperature value."/>
