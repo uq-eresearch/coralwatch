@@ -112,7 +112,6 @@
                 updateLatFromDeg();
                 updateDepthFeet();
                 updateFTemperature();
-                updateCTemperature();
             }
             );
 </script>
