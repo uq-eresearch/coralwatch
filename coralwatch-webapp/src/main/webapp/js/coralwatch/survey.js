@@ -11,8 +11,8 @@ function updateLonFromDeg() {
     // Fix for values appearing to be 60 in text box with 6 decimal places
     // Only integers in the range 0 to 59 are permitted by Dojo validator 
     if (min2 >= 59.9999995) {
-    	deg2 = deg2 + 1;
-    	min2 = 0;
+        deg2 = deg2 + 1;
+        min2 = 0;
     }
     
     dijit.byId("longitudeDeg2").setValue(deg2);
@@ -27,12 +27,12 @@ function updateLonFromDeg() {
     // Fix for values appearing to be 60 in text box with 6 decimal places
     // Only integers in the range 0 to 59 are permitted by Dojo validator
     if (sec3 >= 59.9999995) {
-    	min3 = min3 + 1;
-    	sec3 = 0;
+        min3 = min3 + 1;
+        sec3 = 0;
     }
     if (min3 >= 59.9999995) {
-    	deg3 = deg3 + 1;
-    	min3 = 0;
+        deg3 = deg3 + 1;
+        min3 = 0;
     }
     
     dijit.byId("longitudeDeg3").setValue(deg3);
@@ -50,8 +50,8 @@ function updateLatFromDeg() {
     // Fix for values appearing to be 60 in text box with 6 decimal places
     // Only integers in the range 0 to 59 are permitted by Dojo validator
     if (min2 >= 59.9999995) {
-    	deg2 = deg2 + 1;
-    	min2 = 0;
+        deg2 = deg2 + 1;
+        min2 = 0;
     }
     
     dijit.byId("latitudeDeg2").setValue(deg2);
@@ -66,12 +66,12 @@ function updateLatFromDeg() {
     // Fix for values appearing to be 60 in text box with 6 decimal places
     // Only integers in the range 0 to 59 are permitted by Dojo validator
     if (sec3 >= 59.9999995) {
-    	min3 = min3 + 1;
-    	sec3 = 0;
+        min3 = min3 + 1;
+        sec3 = 0;
     }
     if (min3 >= 59.9999995) {
-    	deg3 = deg3 + 1;
-    	min3 = 0;
+        deg3 = deg3 + 1;
+        min3 = 0;
     }
     
     dijit.byId("latitudeDeg3").setValue(deg3);
@@ -80,7 +80,7 @@ function updateLatFromDeg() {
     dijit.byId("latitudeDir3").setValue(dir3);
 }
 function updateLonFromDegMin() {
-	var deg2 = parseInt(dijit.byId("longitudeDeg2").getValue());
+    var deg2 = parseInt(dijit.byId("longitudeDeg2").getValue());
     var min2 = dijit.byId("longitudeMin2").getValue();
     var dir2 = dijit.byId("longitudeDir2").getValue();
     
@@ -97,7 +97,7 @@ function updateLonFromDegMin() {
     dijit.byId("longitudeDir3").setValue(dir3);
 }
 function updateLatFromDegMin() {
-	var deg2 = parseInt(dijit.byId("latitudeDeg2").getValue());
+    var deg2 = parseInt(dijit.byId("latitudeDeg2").getValue());
     var min2 = dijit.byId("latitudeMin2").getValue();
     var dir2 = dijit.byId("latitudeDir2").getValue();
     
@@ -147,26 +147,26 @@ function updateLatFromDegMinSec() {
 }
 function updateDepthFeet() {
     if ((dijit.byId("depth").getValue() != null) && !isNaN(dijit.byId("depth").getValue())) {
-    	var feet = dijit.byId("depth").getValue() / 0.3048;
-    	var inches = (feet - Math.floor(feet)) * 12.0;
+        var feet = dijit.byId("depth").getValue() / 0.3048;
+        var inches = (feet - Math.floor(feet)) * 12.0;
         dijit.byId("depthFeet").setValue(Math.floor(feet));
         dijit.byId("depthInches").setValue(Math.round(inches));
     }
 }
 function updateDepthMetres() {
     if (
-		((dijit.byId("depthFeet").getValue() != null) && !isNaN(dijit.byId("depthFeet").getValue())) ||
-		((dijit.byId("depthInches").getValue() != null) && !isNaN(dijit.byId("depthInches").getValue()))
-	) {
-    	var feet = 0;
-    	if ((dijit.byId("depthFeet").getValue() != null) && !isNaN(dijit.byId("depthFeet").getValue())) {
-    		feet = dijit.byId("depthFeet").getValue();
-    	}
-    	var inches = 0;
-    	if ((dijit.byId("depthInches").getValue() != null) && !isNaN(dijit.byId("depthInches").getValue())) {
-    		inches = dijit.byId("depthInches").getValue();
-    	}
-    	var metres = 0.3048 * (feet + (inches / 12.0));
+        ((dijit.byId("depthFeet").getValue() != null) && !isNaN(dijit.byId("depthFeet").getValue())) ||
+        ((dijit.byId("depthInches").getValue() != null) && !isNaN(dijit.byId("depthInches").getValue()))
+    ) {
+        var feet = 0;
+        if ((dijit.byId("depthFeet").getValue() != null) && !isNaN(dijit.byId("depthFeet").getValue())) {
+            feet = dijit.byId("depthFeet").getValue();
+        }
+        var inches = 0;
+        if ((dijit.byId("depthInches").getValue() != null) && !isNaN(dijit.byId("depthInches").getValue())) {
+            inches = dijit.byId("depthInches").getValue();
+        }
+        var metres = 0.3048 * (feet + (inches / 12.0));
         dijit.byId("depth").setValue(metres);
     }
 }
