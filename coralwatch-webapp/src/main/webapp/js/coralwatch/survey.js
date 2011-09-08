@@ -145,45 +145,57 @@ function updateLatFromDegMinSec() {
     var deg1 = (dir3 == "N" ? 1 : -1) * (deg3 + min3 / 60 + sec3 / 3600);
     dijit.byId("latitudeDeg1").setValue(deg1);
 }
-function getFeetAndInchesFromMetres(depth) {
-    var feet = depth / 0.3048;
+function getFeetAndInchesFromMetres(metres) {
+    var feet = metres / 0.3048;
     var inches = (feet - Math.floor(feet)) * 12.0;
     return [Math.floor(feet), Math.round(inches)];
 }
-function updateDepthFeet() {
-    if ((dijit.byId("depth").getValue() != null) && !isNaN(dijit.byId("depth").getValue())) {
-        var feetAndInches = getFeetAndInchesFromMetres(dijit.byId("depth").getValue());
-        dijit.byId("depthFeet").setValue(feetAndInches[0]);
-        dijit.byId("depthInches").setValue(feetAndInches[1]);
+// Check whether depth field values "match".
+// Example: if current metres value is 1m, this is said to match 3'3".
+// If we did a conversion from feet/inches to metres, we'd get 0.9906m,
+// which would be annoying for a user that entered the depth in metres.
+function areDepthFieldsConsistent() {
+    var metres = 0;
+    if (((dijit.byId("depth").getValue() != null) && !isNaN(dijit.byId("depth").getValue()))) {
+        metres = dijit.byId("depth").getValue();
     }
+    var feet = 0;
+    if ((dijit.byId("depthFeet").getValue() != null) && !isNaN(dijit.byId("depthFeet").getValue())) {
+        feet = dijit.byId("depthFeet").getValue();
+    }
+    var inches = 0;
+    if ((dijit.byId("depthInches").getValue() != null) && !isNaN(dijit.byId("depthInches").getValue())) {
+        inches = dijit.byId("depthInches").getValue();
+    }
+    var derivedFeetAndInches = getFeetAndInchesFromMetres(metres);
+    return (derivedFeetAndInches[0] == feet && derivedFeetAndInches[1] == inches);
+}
+function updateDepthFeet() {
+    if (areDepthFieldsConsistent()) {
+        return;
+    }
+    var metres = 0;
+    if ((dijit.byId("depth").getValue() != null) && !isNaN(dijit.byId("depth").getValue())) {
+        metres = dijit.byId("depth").getValue();
+    }
+    var feetAndInches = getFeetAndInchesFromMetres(metres);
+    dijit.byId("depthFeet").setValue(feetAndInches[0]);
+    dijit.byId("depthInches").setValue(feetAndInches[1]);
 }
 function updateDepthMetres() {
-    if (
-        ((dijit.byId("depthFeet").getValue() != null) && !isNaN(dijit.byId("depthFeet").getValue())) ||
-        ((dijit.byId("depthInches").getValue() != null) && !isNaN(dijit.byId("depthInches").getValue()))
-    ) {
-        var feet = 0;
-        if ((dijit.byId("depthFeet").getValue() != null) && !isNaN(dijit.byId("depthFeet").getValue())) {
-            feet = dijit.byId("depthFeet").getValue();
-        }
-        var inches = 0;
-        if ((dijit.byId("depthInches").getValue() != null) && !isNaN(dijit.byId("depthInches").getValue())) {
-            inches = dijit.byId("depthInches").getValue();
-        }
-        // Don't update metres if new feet/inches match current metres.
-        // Example: if current metres value is 1m, this matches 3'3" so we do nothing.
-        // If we proceeded with the above example, we'd change the metres field to 0.9906m,
-        // which is annoying for a user that has entered the depth in metres.
-        if (((dijit.byId("depth").getValue() != null) && !isNaN(dijit.byId("depth").getValue()))) {
-            var currentMetres = dijit.byId("depth").getValue();
-            var currentDerivedFeetAndInches = getFeetAndInchesFromMetres(currentMetres);
-            if (currentDerivedFeetAndInches[0] == feet && currentDerivedFeetAndInches[1] == inches) {
-                return;
-            }
-        }
-        var metres = 0.3048 * (feet + (inches / 12.0));
-        dijit.byId("depth").setValue(metres);
+    if (areDepthFieldsConsistent()) {
+        return;
     }
+    var feet = 0;
+    if ((dijit.byId("depthFeet").getValue() != null) && !isNaN(dijit.byId("depthFeet").getValue())) {
+        feet = dijit.byId("depthFeet").getValue();
+    }
+    var inches = 0;
+    if ((dijit.byId("depthInches").getValue() != null) && !isNaN(dijit.byId("depthInches").getValue())) {
+        inches = dijit.byId("depthInches").getValue();
+    }
+    var metres = 0.3048 * (feet + (inches / 12.0));
+    dijit.byId("depth").setValue(metres);
 }
 function updateFTemperature() {
     if ((dijit.byId("watertemperature").getValue() != null) && !isNaN(dijit.byId("watertemperature").getValue())) {
