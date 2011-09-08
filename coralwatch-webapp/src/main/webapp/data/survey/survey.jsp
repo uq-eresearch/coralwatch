@@ -108,8 +108,8 @@
                 var now = new Date();
                 dijit.byId('date').constraints.max = now;
                 //                dijit.byId('time').constraints.max = 'T' + now.getHours() + ':' + now.getMinutes()+ ':00';
-                updateLonFromDeg();
-                updateLatFromDeg();
+                updateLonFromHidden();
+                updateLatFromHidden();
                 updateDepthFeet();
                 updateFTemperature();
             }
@@ -224,6 +224,22 @@
     <label>Position:</label>
 </th>
 <td>
+<input type="text"
+       id="latitudeHidden"
+       name="latitudeHidden"
+       required="false"
+       dojoType="dijit.form.NumberTextBox"
+       trim="true"
+       onChange="updateLatFromHidden()"
+       value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
+<input type="text"
+       id="longitudeHidden"
+       name="longitudeHidden"
+       required="false"
+       dojoType="dijit.form.NumberTextBox"
+       trim="true"
+       onChange="updateLonFromHidden()"
+       value="<%=cmd.equals(Constants.EDIT) ? survey.getLongitude() : ""%>"/>
 <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:30ex">
 <div id="tabDeg" dojoType="dijit.layout.ContentPane" title="Degrees" style="width:40em;height:30ex;">
     <table>
@@ -241,7 +257,7 @@
                        trim="true"
                        onChange="updateLatFromDeg()"
                        invalidMessage="Enter a valid latitude value rounded to six decimal places."
-                       value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
+                       value=""/>
                 <%
                     String userAgent = request.getHeader("user-agent");
                     if (userAgent.indexOf("MSIE") > -1) {
@@ -327,7 +343,7 @@
                        trim="true"
                        onChange="updateLonFromDeg()"
                        invalidMessage="Enter a valid longitude value rounded to six decimal places."
-                       value="<%=cmd.equals(Constants.EDIT) ? survey.getLongitude() : ""%>"/>
+                       value=""/>
                 <input id="isGpsDevice" name="isGpsDevice"
                        <%if(isGpsDevice) {%>checked="checked"<%}%> dojoType="dijit.form.CheckBox"
                        value="">
