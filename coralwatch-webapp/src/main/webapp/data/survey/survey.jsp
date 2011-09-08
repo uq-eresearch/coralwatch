@@ -237,10 +237,10 @@
                        name="latitude"
                        required="true"
                        dojoType="dijit.form.NumberTextBox"
-                       constraints="{places:6,min:-90,max:90}"
+                       constraints="{places:'0,6',min:-90,max:90}"
                        trim="true"
                        onChange="updateLatFromDeg()"
-                       invalidMessage="Enter a valid latitude value rounded to six decimal places. Append 0s if required."
+                       invalidMessage="Enter a valid latitude value rounded to six decimal places."
                        value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
                 <%
                     String userAgent = request.getHeader("user-agent");
@@ -323,10 +323,10 @@
                        name="longitude"
                        required="true"
                        dojoType="dijit.form.NumberTextBox"
-                       constraints="{places:6,min:-180,max:360}"
+                       constraints="{places:'0,6',min:-180,max:360}"
                        trim="true"
                        onChange="updateLonFromDeg()"
-                       invalidMessage="Enter a valid longitude value rounded to six decimal places. Append 0s if required."
+                       invalidMessage="Enter a valid longitude value rounded to six decimal places."
                        value="<%=cmd.equals(Constants.EDIT) ? survey.getLongitude() : ""%>"/>
                 <input id="isGpsDevice" name="isGpsDevice"
                        <%if(isGpsDevice) {%>checked="checked"<%}%> dojoType="dijit.form.CheckBox"
@@ -367,11 +367,11 @@
                        name="latitudeMin2"
                        required="true"
                        dojoType="dijit.form.NumberTextBox"
-                       constraints="{places:4,min:0,max:60}"
+                       constraints="{places:'0,4',min:0,max:60}"
                        trim="true"
                        style="width:6em;"
                        onChange="updateLatFromDegMin()"
-                       invalidMessage="Enter a valid minute value rounded to four decimal places. Append 0s if required."/>
+                       invalidMessage="Enter a valid minute value rounded to four decimal places."/>
                 '
                 <select name="latitudeDir2"
                         id="latitudeDir2"
@@ -406,11 +406,11 @@
                        name="longitudeMin2"
                        required="true"
                        dojoType="dijit.form.NumberTextBox"
-                       constraints="{places:4,min:0,max:60}"
+                       constraints="{places:'0,4',min:0,max:60}"
                        trim="true"
                        style="width:6em;"
                        onChange="updateLonFromDegMin()"
-                       invalidMessage="Enter a valid minute value rounded to four decimal places. Append 0s if required."/>
+                       invalidMessage="Enter a valid minute value rounded to four decimal places."/>
                 '
                 <select name="longitudeDir2"
                         id="longitudeDir2"
