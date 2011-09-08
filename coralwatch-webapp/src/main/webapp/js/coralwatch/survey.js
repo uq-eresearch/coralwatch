@@ -5,7 +5,7 @@ function round(n, d) {
 }
 function getDegMinDirFromDeg(deg, dirPos, dirNeg) {
     var deg2 = Math.floor(Math.abs(deg));
-    var min2 = round((Math.abs(deg) - deg2) * 60, 4);
+    var min2 = (Math.abs(deg) - deg2) * 60;
     var dir2 = (deg >= 0) ? dirPos : dirNeg;
     
     // Fix for values appearing to be 60 in text box with 6 decimal places
@@ -46,9 +46,11 @@ function updateCoordinateFromHidden(fieldNamePrefix, dirPos, dirNeg) {
     
     var degMinDir = getDegMinDirFromDeg(hidden, dirPos, dirNeg);
     var degMinSecDir = getDegMinSecDirFromDeg(hidden, dirPos, dirNeg);
+
+    dijit.byId(fieldNamePrefix + "Deg1").setValue(round(hidden, 6));
     
     dijit.byId(fieldNamePrefix + "Deg2").setValue(degMinDir.deg2);
-    dijit.byId(fieldNamePrefix + "Min2").setValue(degMinDir.min2);
+    dijit.byId(fieldNamePrefix + "Min2").setValue(round(degMinDir.min2, 4));
     dijit.byId(fieldNamePrefix + "Dir2").setValue(degMinDir.dir2);
     
     dijit.byId(fieldNamePrefix + "Deg3").setValue(degMinSecDir.deg3);
@@ -99,7 +101,7 @@ function updateCoordinateFromDegMin(fieldNamePrefix, dirPos, dirNeg) {
 
     if (
         deg2 != degMinDirFromHidden.deg2 ||
-        min2 != degMinDirFromHidden.min2 ||
+        min2 != round(degMinDirFromHidden.min2, 4) ||
         dir2 != degMinDirFromHidden.dir2
     ) {
         var deg = (dir2 == dirPos ? 1 : -1) * (deg2 + min2 / 60);
