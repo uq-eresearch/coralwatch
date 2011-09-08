@@ -588,9 +588,9 @@
                required="false"
                trim="true"
                dojoType="dijit.form.NumberTextBox"
-               constraints="{places:2,min:0}"
+               constraints="{places:'0,2',min:0}"
                onChange="updateDepthFeet()"
-               invalidMessage="Enter a valid depth value rounded to two decimal places. Append 0s if required."
+               invalidMessage="Enter a valid depth value rounded to two decimal places."
                value="<%= cmd.equals(Constants.EDIT) ? survey.getDepth() : "" %>"/>
         <label for="depthFeet" style="font-weight: bold;">or (feet):</label>
         <input type="text"
