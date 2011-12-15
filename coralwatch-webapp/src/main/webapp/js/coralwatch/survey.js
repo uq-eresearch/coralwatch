@@ -150,10 +150,11 @@ function updateLatFromDegMinSec() {
 
 /* Depth field handling */
 
-function getFeetAndInchesFromMetres(metres) {
-    var feet = metres / 0.3048;
-    var inches = (feet - Math.floor(feet)) * 12.0;
-    return [Math.floor(feet), Math.round(inches)];
+function getFeetFromMetres(metres) {
+    return metres / 0.3048;
+}
+function getMetresFromFeet(feet) {
+	return 0.3048 * feet;
 }
 // Check whether depth field values "match".
 // Example: if current metres value is 1m, this is said to match 3'3".
@@ -168,12 +169,8 @@ function areDepthFieldsConsistent() {
     if (!isNaN(dijit.byId("depthFeet").getValue())) {
         feet = dijit.byId("depthFeet").getValue();
     }
-    var inches = 0;
-    if (!isNaN(dijit.byId("depthInches").getValue())) {
-        inches = dijit.byId("depthInches").getValue();
-    }
-    var derivedFeetAndInches = getFeetAndInchesFromMetres(metres);
-    return (derivedFeetAndInches[0] == feet && derivedFeetAndInches[1] == inches);
+    var derivedFeet = getFeetFromMetres(metres);
+    return derivedFeet == feet;
 }
 function updateDepthFeet() {
     if (areDepthFieldsConsistent()) {
@@ -183,9 +180,8 @@ function updateDepthFeet() {
     if (!isNaN(dijit.byId("depth").getValue())) {
         metres = dijit.byId("depth").getValue();
     }
-    var feetAndInches = getFeetAndInchesFromMetres(metres);
-    dijit.byId("depthFeet").setValue(feetAndInches[0]);
-    dijit.byId("depthInches").setValue(feetAndInches[1]);
+    var feet = getFeetFromMetres(metres);
+    dijit.byId("depthFeet").setValue(feet);
 }
 function updateDepthMetres() {
     if (areDepthFieldsConsistent()) {
@@ -195,11 +191,7 @@ function updateDepthMetres() {
     if (!isNaN(dijit.byId("depthFeet").getValue())) {
         feet = dijit.byId("depthFeet").getValue();
     }
-    var inches = 0;
-    if (!isNaN(dijit.byId("depthInches").getValue())) {
-        inches = dijit.byId("depthInches").getValue();
-    }
-    var metres = 0.3048 * (feet + (inches / 12.0));
+    var metres = getMetresFromFeet(feet);
     dijit.byId("depth").setValue(metres);
 }
 function updateFTemperature() {

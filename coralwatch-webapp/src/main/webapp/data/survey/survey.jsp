@@ -616,23 +616,13 @@
         <input type="text"
                id="depthFeet"
                name="depthFeet"
-               style="width:4em;"
+               style="width:6em;"
                required="false"
                trim="true"
                dojoType="dijit.form.NumberTextBox"
-               constraints="{places:0,min:0}"
+               constraints="{places:'0,2',min:0}"
                onChange="updateDepthMetres()"
-               invalidMessage="Enter a valid depth value without decimal places."/> '
-        <input type="text"
-               id="depthInches"
-               name="depthInches"
-               style="width:4em;"
-               required="false"
-               trim="true"
-               dojoType="dijit.form.NumberTextBox"
-               constraints="{places:0,min:0}"
-               onChange="updateDepthMetres()"
-               invalidMessage="Enter a valid depth value without decimal places."/> "
+               invalidMessage="Enter a valid depth value."/>
     </td>
 </tr>
 <tr>
@@ -830,8 +820,7 @@
             <td>
                 <%if (survey.getDepth() != null) {%>
                 <% double depthFeet = survey.getDepth() / 0.3048; %>
-                <% double depthInches = (depthFeet - Math.floor(depthFeet)) * 12.0; %>
-                <%=survey.getDepth()%> m (<%=(int) Math.floor(depthFeet)%>' <%=Math.round(depthInches)%>")
+                <%=survey.getDepth()%> m (<%=Math.round(depthFeet)%> feet)
                 <%}%>
             </td>
         </tr>
