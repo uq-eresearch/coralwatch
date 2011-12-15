@@ -148,52 +148,21 @@ function updateLatFromDegMinSec() {
     updateCoordinateFromDegMinSec("latitude", "N", "S");
 }
 
-/* Depth field handling */
+function onChangeDepthMetres() {
+	if (isNaN(dijit.byId("depthMetres").getValue())) {
+		return;
+	}
+	dijit.byId("depthFeet").setValue(Number.NaN);
+	dijit.byId("depth").setValue(dijit.byId("depthMetres").getValue());
+}
+function onChangeDepthFeet() {
+	if (isNaN(dijit.byId("depthFeet").getValue())) {
+		return;
+	}
+    dijit.byId("depthMetres").setValue(Number.NaN);
+    dijit.byId("depth").setValue(dijit.byId("depthFeet").getValue() * 0.3048);
+}
 
-function getFeetFromMetres(metres) {
-    return metres / 0.3048;
-}
-function getMetresFromFeet(feet) {
-	return 0.3048 * feet;
-}
-// Check whether depth field values "match".
-// Example: if current metres value is 1m, this is said to match 3'3".
-// If we did a conversion from feet/inches to metres, we'd get 0.9906m,
-// which would be annoying for a user that entered the depth in metres.
-function areDepthFieldsConsistent() {
-    var metres = 0;
-    if (!isNaN(dijit.byId("depth").getValue())) {
-        metres = dijit.byId("depth").getValue();
-    }
-    var feet = 0;
-    if (!isNaN(dijit.byId("depthFeet").getValue())) {
-        feet = dijit.byId("depthFeet").getValue();
-    }
-    var derivedFeet = getFeetFromMetres(metres);
-    return derivedFeet == feet;
-}
-function updateDepthFeet() {
-    if (areDepthFieldsConsistent()) {
-        return;
-    }
-    var metres = 0;
-    if (!isNaN(dijit.byId("depth").getValue())) {
-        metres = dijit.byId("depth").getValue();
-    }
-    var feet = getFeetFromMetres(metres);
-    dijit.byId("depthFeet").setValue(feet);
-}
-function updateDepthMetres() {
-    if (areDepthFieldsConsistent()) {
-        return;
-    }
-    var feet = 0;
-    if (!isNaN(dijit.byId("depthFeet").getValue())) {
-        feet = dijit.byId("depthFeet").getValue();
-    }
-    var metres = getMetresFromFeet(feet);
-    dijit.byId("depth").setValue(metres);
-}
 function updateFTemperature() {
     if (!isNaN(dijit.byId("watertemperature").getValue())) {
         dijit.byId("temperatureF").setValue((212 - 32) / 100 * dijit.byId("watertemperature").getValue() + 32);

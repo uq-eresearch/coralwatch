@@ -103,7 +103,6 @@ public class SurveyPortlet extends GenericPortlet {
                     Date time = ParamUtil.getDate(actionRequest, "time", new SimpleDateFormat("'T'HH:mm:ss"));
                     String lightCondition = actionRequest.getParameter("lightCondition");
                     String depthStr = actionRequest.getParameter("depth");
-                    Double depth = ParamUtil.getDouble(actionRequest, "depth");
                     String waterTemperatureStr = actionRequest.getParameter("watertemperature");
                     Double waterTemperature = ParamUtil.getDouble(actionRequest, "watertemperature");
                     String activity = actionRequest.getParameter("activity");
@@ -124,6 +123,8 @@ public class SurveyPortlet extends GenericPortlet {
                         waterTemperatureStr,
                         activity
                     );
+                    
+                    Double depth = ParamUtil.getDouble(actionRequest, "depth");
 
                     if (errors.isEmpty()) {
                         Reef reef = reefDao.getReefByName(reefName);
@@ -253,6 +254,9 @@ public class SurveyPortlet extends GenericPortlet {
         }
         if (lightCondition == null || lightCondition.trim().isEmpty()) {
             emptyFields.add("Light Condition");
+        }
+        if (depthStr == null || depthStr.trim().isEmpty()) {
+            emptyFields.add("Depth");
         }
         if (activity == null || activity.trim().isEmpty()) {
             emptyFields.add("Activity");

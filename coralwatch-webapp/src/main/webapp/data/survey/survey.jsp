@@ -110,7 +110,6 @@
                 //                dijit.byId('time').constraints.max = 'T' + now.getHours() + ':' + now.getMinutes()+ ':00';
                 updateLonFromHidden();
                 updateLatFromHidden();
-                updateDepthFeet();
                 updateFTemperature();
             }
             );
@@ -599,29 +598,37 @@
     </td>
 </tr>
 <tr>
-    <th><label for="depth">Depth (metres):</label></th>
+    <th><label for="depthMetres">Depth (metres):</label></th>
     <td>
-        <input type="text"
+        <div>
+        <input type="hidden"
                id="depth"
                name="depth"
+               style="display: none; width:6em;"
+               required="false"
+               trim="true"
+               dojoType="dijit.form.NumberTextBox"
+               value="<%= cmd.equals(Constants.EDIT) ? survey.getDepth() : "" %>"/>
+        </div>
+        <input type="text"
+               id="depthMetres"
                style="width:6em;"
                required="false"
                trim="true"
                dojoType="dijit.form.NumberTextBox"
                constraints="{places:'0,2',min:0}"
-               onChange="updateDepthFeet()"
+               onChange="onChangeDepthMetres()"
                invalidMessage="Enter a valid depth value rounded to two decimal places."
                value="<%= cmd.equals(Constants.EDIT) ? survey.getDepth() : "" %>"/>
         <label for="depthFeet" style="font-weight: bold;">or (feet):</label>
         <input type="text"
                id="depthFeet"
-               name="depthFeet"
                style="width:6em;"
                required="false"
                trim="true"
                dojoType="dijit.form.NumberTextBox"
                constraints="{places:'0,2',min:0}"
-               onChange="updateDepthMetres()"
+               onChange="onChangeDepthFeet()"
                invalidMessage="Enter a valid depth value."/>
     </td>
 </tr>
