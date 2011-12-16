@@ -1071,7 +1071,7 @@
                 <input dojoType="dijit.form.TextBox" name="light_color_input" id="light_color_input" type="hidden"
                        value=""/>
 
-                <div id="light_color_slate" dojoType="dijit.form.DropDownButton" label="" style="width:30px; height: 18px;">
+                <div id="light_color_slate" dojoType="dijit.form.DropDownButton" label="Select..." style="width: 30px;">
                     <div dojoType="dijit.TooltipDialog">
                         <jsp:include page="lightcolorslate.jsp"/>
                     </div>
@@ -1081,7 +1081,7 @@
                 <input dojoType="dijit.form.TextBox" name="dark_color_input" id="dark_color_input" type="hidden"
                        value=""/>
 
-                <div id="dark_color_slate" dojoType="dijit.form.DropDownButton" label="" style="width: 30px; height: 18px;">
+                <div id="dark_color_slate" dojoType="dijit.form.DropDownButton" label="Select..." style="width: 30px;">
                     <div dojoType="dijit.TooltipDialog">
                         <jsp:include page="darkcolorslate.jsp"/>
                     </div>
