@@ -43,7 +43,7 @@
             </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
-                <artifactId>maven-jetty-plugin</artifactId>
+                <artifactId>jetty-maven-plugin</artifactId>
                 <configuration>
                     <contextPath>/coralwatch</contextPath>
                 </configuration>
