@@ -964,8 +964,8 @@
         //Validate colour here
         var lightNumber = light.substring(1);
         var darkNumber = dark.substring(1);
-        if (Number(lightNumber) >= Number(darkNumber)) {
-            alert('Lightest colour number (' + lightNumber + ') must be smaller than darkest colour number (' + darkNumber + ').');
+        if (Number(lightNumber) > Number(darkNumber)) {
+            alert('Lightest colour number (' + lightNumber + ') must be smaller than (or equal to) darkest colour number (' + darkNumber + ').');
             return false;
         }
         saveRecord(type, light, dark);
@@ -1071,7 +1071,7 @@
                 <input dojoType="dijit.form.TextBox" name="light_color_input" id="light_color_input" type="hidden"
                        value=""/>
 
-                <div id="light_color_slate" dojoType="dijit.form.DropDownButton" label="" style="width:30px">
+                <div id="light_color_slate" dojoType="dijit.form.DropDownButton" label="" style="width:30px; height: 18px;">
                     <div dojoType="dijit.TooltipDialog">
                         <jsp:include page="lightcolorslate.jsp"/>
                     </div>
@@ -1081,7 +1081,7 @@
                 <input dojoType="dijit.form.TextBox" name="dark_color_input" id="dark_color_input" type="hidden"
                        value=""/>
 
-                <div id="dark_color_slate" dojoType="dijit.form.DropDownButton" label="" style="width:30px">
+                <div id="dark_color_slate" dojoType="dijit.form.DropDownButton" label="" style="width: 30px; height: 18px;">
                     <div dojoType="dijit.TooltipDialog">
                         <jsp:include page="darkcolorslate.jsp"/>
                     </div>
