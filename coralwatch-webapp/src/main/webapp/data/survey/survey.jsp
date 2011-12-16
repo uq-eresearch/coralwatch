@@ -153,14 +153,25 @@
 %>
 <tr>
     <th><label for="groupName">Group Name:</label></th>
-    <td><input type="text"
-               id="groupName"
-               name="groupName"
-               required="true"
-               dojoType="dijit.form.ValidationTextBox"
-               regExp="...*"
-               invalidMessage="Enter the name of the group you are participating with"
-               value="<%=groupName == null ? "" : groupName%>"/> Enter your own name if you do not belong to a group.
+    <td>
+        <table>
+        <tr>
+        <td style="padding: 0; vertical-align: middle;">
+        <input type="text"
+            id="groupName"
+            name="groupName"
+            required="true"
+            dojoType="dijit.form.ValidationTextBox"
+            regExp="...*"
+            invalidMessage="Enter the name of the group you are participating with"
+            value="<%=groupName == null ? "" : groupName%>" />
+        </td>
+        <td style="padding: 0; vertical-align: middle;">
+            e.g. EarthCheck, ReefCheck, OceansWatch.<br />
+            Enter your own name if you do not belong to a group.
+        </td>
+        </tr>
+        </table>
     </td>
 </tr>
 <tr>
