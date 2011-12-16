@@ -3,149 +3,111 @@
 function round(n, d) {
     return Math.round(n * Math.pow(10, d)) / Math.pow(10, d);
 }
-function getDegMinDirFromDeg(deg, dirPos, dirNeg) {
-    var deg2 = Math.floor(Math.abs(deg));
-    var min2 = (Math.abs(deg) - deg2) * 60;
-    var dir2 = (deg >= 0) ? dirPos : dirNeg;
-    
-    // Fix for values appearing to be 60 in text box with 6 decimal places
-    // Only integers in the range 0 to 59 are permitted by Dojo validator 
-    if (min2 >= 59.9999995) {
-        deg2 = deg2 + 1;
-        min2 = 0;
-    }
 
-    return {deg2: deg2, min2: min2, dir2: dir2};
-}
-function getDegMinSecDirFromDeg(deg, dirPos, dirNeg) {
-    var degMinDir = getDegMinDirFromDeg(deg, dirPos, dirNeg);
-    
-    var deg3 = degMinDir.deg2;
-    var min3 = Math.floor(degMinDir.min2);
-    var sec3 = Math.round((degMinDir.min2 - min3) * 60);
-    var dir3 = degMinDir.dir2;
-    
-    // Fix for values appearing to be 60 in text box with 6 decimal places
-    // Only integers in the range 0 to 59 are permitted by Dojo validator
-    if (sec3 >= 59.9999995) {
-        min3 = min3 + 1;
-        sec3 = 0;
-    }
-    if (min3 >= 59.9999995) {
-        deg3 = deg3 + 1;
-        min3 = 0;
-    }
-    
-    return {deg3: deg3, min3: min3, sec3: sec3, dir3: dir3};
-}
-function updateCoordinateFromHidden(fieldNamePrefix, dirPos, dirNeg) {
-    if (isNaN(dijit.byId(fieldNamePrefix + "Hidden").getValue())) {
-        return;
-    }
-    var hidden = dijit.byId(fieldNamePrefix + "Hidden").getValue();
-    
-    var degMinDir = getDegMinDirFromDeg(hidden, dirPos, dirNeg);
-    var degMinSecDir = getDegMinSecDirFromDeg(hidden, dirPos, dirNeg);
-
-    dijit.byId(fieldNamePrefix + "Deg1").setValue(round(hidden, 6));
-    
-    dijit.byId(fieldNamePrefix + "Deg2").setValue(degMinDir.deg2);
-    dijit.byId(fieldNamePrefix + "Min2").setValue(round(degMinDir.min2, 4));
-    dijit.byId(fieldNamePrefix + "Dir2").setValue(degMinDir.dir2);
-    
-    dijit.byId(fieldNamePrefix + "Deg3").setValue(degMinSecDir.deg3);
-    dijit.byId(fieldNamePrefix + "Min3").setValue(degMinSecDir.min3);
-    dijit.byId(fieldNamePrefix + "Sec3").setValue(degMinSecDir.sec3);
-    dijit.byId(fieldNamePrefix + "Dir3").setValue(degMinSecDir.dir3);
-}
-function updateLonFromHidden() {
-    updateCoordinateFromHidden("longitude", "E", "W");
-}
-function updateLatFromHidden() {
-    updateCoordinateFromHidden("latitude", "N", "S");
-}
-
-function updateCoordinateFromDeg(fieldNamePrefix, dirPos, dirNeg) {
+function updatePositionFromDeg(fieldNamePrefix) {
     if (isNaN(dijit.byId(fieldNamePrefix + "Deg1").getValue())) {
-        return;
+    	dijit.byId(fieldNamePrefix).setValue(Number.NaN);
     }
     var deg1 = dijit.byId(fieldNamePrefix + "Deg1").getValue();
-    if (deg1 > 180) {
-        deg1 = deg1 - 360;
-    }
-    var hidden = dijit.byId(fieldNamePrefix + "Hidden").getValue();
-    if (isNaN(hidden) || (deg1 != round(hidden, 6))) {
-        dijit.byId(fieldNamePrefix + "Hidden").setValue(deg1);
-    }
+    var deg = (deg1 > 180) ? (deg1 - 360) : deg1;
+    dijit.byId(fieldNamePrefix).setValue(deg);
 }
-function updateLonFromDeg() {
-    updateCoordinateFromDeg("longitude", "E", "W");
-}
-function updateLatFromDeg() {
-    updateCoordinateFromDeg("latitude", "N", "S");
-}
-function updateCoordinateFromDegMin(fieldNamePrefix, dirPos, dirNeg) {
+
+function updatePositionFromDegMin(fieldNamePrefix, dirPos, dirNeg) {
     if (
         isNaN(dijit.byId(fieldNamePrefix + "Deg2").getValue()) ||
         isNaN(dijit.byId(fieldNamePrefix + "Min2").getValue()) ||
         (dijit.byId(fieldNamePrefix + "Dir2").getValue() == "")
     ) {
-        return;
+    	dijit.byId(fieldNamePrefix).setValue(Number.NaN);
     }
     var deg2 = parseInt(dijit.byId(fieldNamePrefix + "Deg2").getValue());
     var min2 = dijit.byId(fieldNamePrefix + "Min2").getValue();
     var dir2 = dijit.byId(fieldNamePrefix + "Dir2").getValue();
-    
-    var hidden = dijit.byId(fieldNamePrefix + "Hidden").getValue();
-    var degMinDirFromHidden = getDegMinDirFromDeg(hidden, dirPos, dirNeg);
+    var deg = (dir2 == dirPos ? 1 : -1) * (deg2 + min2 / 60);
+    dijit.byId(fieldNamePrefix).setValue(deg);
+}
 
-    if (
-        deg2 != degMinDirFromHidden.deg2 ||
-        min2 != round(degMinDirFromHidden.min2, 4) ||
-        dir2 != degMinDirFromHidden.dir2
-    ) {
-        var deg = (dir2 == dirPos ? 1 : -1) * (deg2 + min2 / 60);
-        dijit.byId(fieldNamePrefix + "Hidden").setValue(deg);
-    }
-}
-function updateLonFromDegMin() {
-    updateCoordinateFromDegMin("longitude", "E", "W");
-}
-function updateLatFromDegMin() {
-    updateCoordinateFromDegMin("latitude", "N", "S");
-}
-function updateCoordinateFromDegMinSec(fieldNamePrefix, dirPos, dirNeg) {
+function updatePositionFromDegMinSec(fieldNamePrefix, dirPos, dirNeg) {
     if (
         isNaN(dijit.byId(fieldNamePrefix + "Deg3").getValue()) ||
         isNaN(dijit.byId(fieldNamePrefix + "Min3").getValue()) ||
         isNaN(dijit.byId(fieldNamePrefix + "Sec3").getValue()) ||
         (dijit.byId(fieldNamePrefix + "Dir3").getValue() == "")
     ) {
-        return;
+    	dijit.byId(fieldNamePrefix).setValue(Number.NaN);
     }
     var deg3 = parseInt(dijit.byId(fieldNamePrefix + "Deg3").getValue());
     var min3 = parseInt(dijit.byId(fieldNamePrefix + "Min3").getValue());
     var sec3 = parseInt(dijit.byId(fieldNamePrefix + "Sec3").getValue());
     var dir3 = dijit.byId(fieldNamePrefix + "Dir3").getValue();
-    
-    var hidden = dijit.byId(fieldNamePrefix + "Hidden").getValue();
-    var degMinSecDirFromHidden = getDegMinSecDirFromDeg(hidden, dirPos, dirNeg);
-    
-    if (
-        deg3 != degMinSecDirFromHidden.deg3 ||
-        min3 != degMinSecDirFromHidden.min3 ||
-        sec3 != degMinSecDirFromHidden.sec3 ||
-        dir3 != degMinSecDirFromHidden.dir3
-    ) {
-        var deg = (dir3 == dirPos ? 1 : -1) * (deg3 + min3 / 60 + sec3 / 3600);
-        dijit.byId(fieldNamePrefix + "Hidden").setValue(deg);
-    }
+    var deg = (dir3 == dirPos ? 1 : -1) * (deg3 + min3 / 60 + sec3 / 3600);
+    dijit.byId(fieldNamePrefix).setValue(deg);
 }
-function updateLonFromDegMinSec() {
-    updateCoordinateFromDegMinSec("longitude", "E", "W");
+
+function onChangePositionDeg(fieldId) {
+	if (isNaN(dijit.byId(fieldId).getValue())) {
+		return;
+	}
+	
+    dijit.byId("latitudeDeg2").setValue(Number.NaN);
+    dijit.byId("latitudeMin2").setValue(Number.NaN);
+    dijit.byId("latitudeDir2").setValue("");
+    dijit.byId("longitudeDeg2").setValue(Number.NaN);
+    dijit.byId("longitudeMin2").setValue(Number.NaN);
+    dijit.byId("longitudeDir2").setValue("");
+    
+    dijit.byId("latitudeDeg3").setValue(Number.NaN);
+    dijit.byId("latitudeMin3").setValue(Number.NaN);
+    dijit.byId("latitudeSec3").setValue(Number.NaN);
+    dijit.byId("latitudeDir3").setValue("");
+    dijit.byId("longitudeDeg3").setValue(Number.NaN);
+    dijit.byId("longitudeMin3").setValue(Number.NaN);
+    dijit.byId("longitudeSec3").setValue(Number.NaN);
+    dijit.byId("longitudeDir3").setValue("");
+    
+    updatePositionFromDeg("latitude");
+    updatePositionFromDeg("longitude");
 }
-function updateLatFromDegMinSec() {
-    updateCoordinateFromDegMinSec("latitude", "N", "S");
+
+function onChangePositionDegMin(fieldId) {
+	if (isNaN(dijit.byId(fieldId).getValue()) || (dijit.byId(fieldId).getValue() == "")) {
+		return;
+	}
+	
+    dijit.byId("latitudeDeg1").setValue(Number.NaN);
+    dijit.byId("longitudeDeg1").setValue(Number.NaN);
+    
+    dijit.byId("latitudeDeg3").setValue(Number.NaN);
+    dijit.byId("latitudeMin3").setValue(Number.NaN);
+    dijit.byId("latitudeSec3").setValue(Number.NaN);
+    dijit.byId("latitudeDir3").setValue("");
+    dijit.byId("longitudeDeg3").setValue(Number.NaN);
+    dijit.byId("longitudeMin3").setValue(Number.NaN);
+    dijit.byId("longitudeSec3").setValue(Number.NaN);
+    dijit.byId("longitudeDir3").setValue("");
+    
+    updatePositionFromDegMin("latitude", "N", "S");
+    updatePositionFromDegMin("longitude", "E", "W");
+}
+
+function onChangePositionDegMinSec(fieldId) {
+	if (isNaN(dijit.byId(fieldId).getValue()) || (dijit.byId(fieldId).getValue() == "")) {
+		return;
+	}
+	
+    dijit.byId("latitudeDeg1").setValue(Number.NaN);
+    dijit.byId("longitudeDeg1").setValue(Number.NaN);
+    
+    dijit.byId("latitudeDeg2").setValue(Number.NaN);
+    dijit.byId("latitudeMin2").setValue(Number.NaN);
+    dijit.byId("latitudeDir2").setValue("");
+    dijit.byId("longitudeDeg2").setValue(Number.NaN);
+    dijit.byId("longitudeMin2").setValue(Number.NaN);
+    dijit.byId("longitudeDir2").setValue("");
+    
+    updatePositionFromDegMinSec("latitude", "N", "S");
+    updatePositionFromDegMinSec("longitude", "E", "W");
 }
 
 function onChangeDepthMetres() {
@@ -155,6 +117,7 @@ function onChangeDepthMetres() {
 	dijit.byId("depthFeet").setValue(Number.NaN);
 	dijit.byId("depth").setValue(dijit.byId("depthMetres").getValue());
 }
+
 function onChangeDepthFeet() {
 	if (isNaN(dijit.byId("depthFeet").getValue())) {
 		return;

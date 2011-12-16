@@ -95,9 +95,7 @@ public class SurveyPortlet extends GenericPortlet {
                     String country = actionRequest.getParameter("country");
                     String reefName = actionRequest.getParameter("reefName");
                     String latitudeStr = actionRequest.getParameter("latitude");
-                    Float latitude = ParamUtil.getFloat(actionRequest, "latitude");
                     String longitudeStr = actionRequest.getParameter("longitude");
-                    Float longitude = ParamUtil.getFloat(actionRequest, "longitude");
                     boolean isGpsDevice = ParamUtil.getBoolean(actionRequest, "isGpsDevice");
                     Date date = ParamUtil.getDate(actionRequest, "date", new SimpleDateFormat("yyyy-MM-dd"));
                     Date time = ParamUtil.getDate(actionRequest, "time", new SimpleDateFormat("'T'HH:mm:ss"));
@@ -125,6 +123,8 @@ public class SurveyPortlet extends GenericPortlet {
                     );
                     
                     Double depth = ParamUtil.getDouble(actionRequest, "depth");
+                    Float latitude = ParamUtil.getFloat(actionRequest, "latitude");
+                    Float longitude = ParamUtil.getFloat(actionRequest, "longitude");
 
                     if (errors.isEmpty()) {
                         Reef reef = reefDao.getReefByName(reefName);
