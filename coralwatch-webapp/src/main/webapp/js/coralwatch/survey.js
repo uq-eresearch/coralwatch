@@ -6,7 +6,7 @@ function round(n, d) {
 
 function updatePositionFromDeg(fieldNamePrefix) {
     if (isNaN(dijit.byId(fieldNamePrefix + "Deg1").getValue())) {
-    	dijit.byId(fieldNamePrefix).setValue(Number.NaN);
+        dijit.byId(fieldNamePrefix).setValue(Number.NaN);
     }
     var deg1 = dijit.byId(fieldNamePrefix + "Deg1").getValue();
     var deg = (deg1 > 180) ? (deg1 - 360) : deg1;
@@ -19,7 +19,7 @@ function updatePositionFromDegMin(fieldNamePrefix, dirPos, dirNeg) {
         isNaN(dijit.byId(fieldNamePrefix + "Min2").getValue()) ||
         (dijit.byId(fieldNamePrefix + "Dir2").getValue() == "")
     ) {
-    	dijit.byId(fieldNamePrefix).setValue(Number.NaN);
+        dijit.byId(fieldNamePrefix).setValue(Number.NaN);
     }
     var deg2 = parseInt(dijit.byId(fieldNamePrefix + "Deg2").getValue());
     var min2 = dijit.byId(fieldNamePrefix + "Min2").getValue();
@@ -35,7 +35,7 @@ function updatePositionFromDegMinSec(fieldNamePrefix, dirPos, dirNeg) {
         isNaN(dijit.byId(fieldNamePrefix + "Sec3").getValue()) ||
         (dijit.byId(fieldNamePrefix + "Dir3").getValue() == "")
     ) {
-    	dijit.byId(fieldNamePrefix).setValue(Number.NaN);
+        dijit.byId(fieldNamePrefix).setValue(Number.NaN);
     }
     var deg3 = parseInt(dijit.byId(fieldNamePrefix + "Deg3").getValue());
     var min3 = parseInt(dijit.byId(fieldNamePrefix + "Min3").getValue());
@@ -46,10 +46,10 @@ function updatePositionFromDegMinSec(fieldNamePrefix, dirPos, dirNeg) {
 }
 
 function onChangePositionDeg(fieldId) {
-	if (isNaN(dijit.byId(fieldId).getValue())) {
-		return;
-	}
-	
+    if (isNaN(dijit.byId(fieldId).getValue())) {
+        return;
+    }
+    
     dijit.byId("latitudeDeg2").setValue(Number.NaN);
     dijit.byId("latitudeMin2").setValue(Number.NaN);
     dijit.byId("latitudeDir2").setValue("");
@@ -71,10 +71,10 @@ function onChangePositionDeg(fieldId) {
 }
 
 function onChangePositionDegMin(fieldId) {
-	if (isNaN(dijit.byId(fieldId).getValue()) || (dijit.byId(fieldId).getValue() == "")) {
-		return;
-	}
-	
+    if (isNaN(dijit.byId(fieldId).getValue()) || (dijit.byId(fieldId).getValue() == "")) {
+        return;
+    }
+    
     dijit.byId("latitudeDeg1").setValue(Number.NaN);
     dijit.byId("longitudeDeg1").setValue(Number.NaN);
     
@@ -92,10 +92,10 @@ function onChangePositionDegMin(fieldId) {
 }
 
 function onChangePositionDegMinSec(fieldId) {
-	if (isNaN(dijit.byId(fieldId).getValue()) || (dijit.byId(fieldId).getValue() == "")) {
-		return;
-	}
-	
+    if (isNaN(dijit.byId(fieldId).getValue()) || (dijit.byId(fieldId).getValue() == "")) {
+        return;
+    }
+    
     dijit.byId("latitudeDeg1").setValue(Number.NaN);
     dijit.byId("longitudeDeg1").setValue(Number.NaN);
     
@@ -111,17 +111,17 @@ function onChangePositionDegMinSec(fieldId) {
 }
 
 function onChangeDepthMetres() {
-	if (isNaN(dijit.byId("depthMetres").getValue())) {
-		return;
-	}
-	dijit.byId("depthFeet").setValue(Number.NaN);
-	dijit.byId("depth").setValue(dijit.byId("depthMetres").getValue());
+    if (isNaN(dijit.byId("depthMetres").getValue())) {
+        return;
+    }
+    dijit.byId("depthFeet").setValue(Number.NaN);
+    dijit.byId("depth").setValue(dijit.byId("depthMetres").getValue());
 }
 
 function onChangeDepthFeet() {
-	if (isNaN(dijit.byId("depthFeet").getValue())) {
-		return;
-	}
+    if (isNaN(dijit.byId("depthFeet").getValue())) {
+        return;
+    }
     dijit.byId("depthMetres").setValue(Number.NaN);
     dijit.byId("depth").setValue(dijit.byId("depthFeet").getValue() * 0.3048);
 }
