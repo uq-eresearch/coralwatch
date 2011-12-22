@@ -101,8 +101,8 @@ public class SurveyPortlet extends GenericPortlet {
                     Date time = ParamUtil.getDate(actionRequest, "time", new SimpleDateFormat("'T'HH:mm:ss"));
                     String lightCondition = actionRequest.getParameter("lightCondition");
                     String depthStr = actionRequest.getParameter("depth");
-                    String waterTemperatureStr = actionRequest.getParameter("watertemperature");
-                    Double waterTemperature = ParamUtil.getDouble(actionRequest, "watertemperature");
+                    String waterTemperatureStr = actionRequest.getParameter("waterTemperature");
+                    Double waterTemperature = ParamUtil.getDouble(actionRequest, "waterTemperature");
                     String activity = actionRequest.getParameter("activity");
                     String comments = actionRequest.getParameter("comments");
 

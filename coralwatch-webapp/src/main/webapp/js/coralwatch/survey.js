@@ -126,13 +126,17 @@ function onChangeDepthFeet() {
     dijit.byId("depth").setValue(dijit.byId("depthFeet").getValue() * 0.3048);
 }
 
-function updateFTemperature() {
-    if (!isNaN(dijit.byId("watertemperature").getValue())) {
-        dijit.byId("temperatureF").setValue((212 - 32) / 100 * dijit.byId("watertemperature").getValue() + 32);
+function onChangeWaterTemperatureC() {
+    if (isNaN(dijit.byId("waterTemperatureC").getValue())) {
+        return;
     }
+    dijit.byId("waterTemperatureF").setValue(Number.NaN);
+    dijit.byId("waterTemperature").setValue(dijit.byId("waterTemperatureC").getValue());
 }
-function updateCTemperature() {
-    if (!isNaN(dijit.byId("temperatureF").getValue())) {
-        dijit.byId("watertemperature").setValue(100 / (212 - 32) * (dijit.byId("temperatureF").getValue() - 32 ));
+function onChangeWaterTemperatureF() {
+    if (isNaN(dijit.byId("waterTemperatureF").getValue())) {
+        return;
     }
+    dijit.byId("waterTemperatureC").setValue(Number.NaN);
+    dijit.byId("waterTemperature").setValue(100 / (212 - 32) * (dijit.byId("waterTemperatureF").getValue() - 32));
 }

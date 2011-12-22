@@ -108,7 +108,6 @@
                 var now = new Date();
                 dijit.byId('date').constraints.max = now;
                 //                dijit.byId('time').constraints.max = 'T' + now.getHours() + ':' + now.getMinutes()+ ':00';
-                updateFTemperature();
             }
             );
 </script>
@@ -605,7 +604,7 @@
 <tr>
     <th><label for="depthMetres">Depth (metres):</label></th>
     <td>
-        <div>
+        <div style="display: none;">
         <input type="hidden"
                id="depth"
                name="depth"
@@ -638,26 +637,34 @@
     </td>
 </tr>
 <tr>
-    <th><label for="watertemperature">Water Temperature (&deg;C):</label></th>
+    <th><label for="waterTemperatureC">Water Temperature (&deg;C):</label></th>
     <td>
+        <div style="display: none;">
+        <input type="hidden"
+               id="waterTemperature"
+               name="waterTemperature"
+               style="display: none; width:6em;"
+               required="false"
+               trim="true"
+               dojoType="dijit.form.NumberTextBox"
+               value="<%=cmd.equals(Constants.EDIT) ? survey.getWaterTemperature() : ""%>"/>
+        </div>
         <input type="text"
-               id="watertemperature"
-               name="watertemperature"
-               style="width:6em;"
-               required="true"
+               id="waterTemperatureC"
+               style="width: 6em;"
+               required="false"
                dojoType="dijit.form.NumberTextBox"
                trim="true"
-               onChange="updateFTemperature()"
+               onChange="onChangeWaterTemperatureC()"
                invalidMessage="Enter a valid temperature value."
                value="<%=cmd.equals(Constants.EDIT) ? survey.getWaterTemperature() : ""%>"/>
-        <label for="temperatureF" style="font-weight: bold;">or (&deg;F):</label>
+        <label for="waterTemperatureF" style="font-weight: bold;">or (&deg;F):</label>
         <input type="text"
-               id="temperatureF"
-               name="temperatureF"
-               style="width:6em;"
-               required="true"
+               id="waterTemperatureF"
+               style="width: 6em;"
+               required="false"
                dojoType="dijit.form.NumberTextBox"
-               onChange="updateCTemperature()"
+               onChange="onChangeWaterTemperatureF()"
                trim="true"
                invalidMessage="Enter a valid temperature value."/>
     </td>
