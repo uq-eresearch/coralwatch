@@ -141,6 +141,7 @@
                 </th>
                 <td style="vertical-align: top;">
                     <select name="kitType" id="kitType"
+                            style="width: 300px;"
                             required="true"
                             dojoType="dijit.form.ComboBox"
                             hasDownArrow="true"
@@ -160,6 +161,7 @@
                 </th>
                 <td style="vertical-align: top;">
                     <select name="language" id="language"
+                            style="width: 300px;"
                             required="true"
                             dojoType="dijit.form.ComboBox"
                             hasDownArrow="true"
