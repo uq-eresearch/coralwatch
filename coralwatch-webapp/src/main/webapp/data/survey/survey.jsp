@@ -288,10 +288,8 @@
                             map.removeMapType(G_SATELLITE_MAP);
                             map.getContainer().style.overflow = "hidden";
                             GEvent.addListener(map, 'click', function(overlay, latlng) {
-                                var Lat5 = latlng.lat();
-                                var Lng5 = latlng.lng();
-                                document.getElementById("latitudeDeg1").value = Lat5.toFixed(6);
-                                document.getElementById("longitudeDeg1").value = Lng5.toFixed(6);
+                                dijit.byId("latitudeDeg1").setValue(latlng.lat().toFixed(6));
+                                dijit.byId("longitudeDeg1").setValue(latlng.lng().toFixed(6));
                                 onChangePositionDeg('latitudeDeg1');
                                 onChangePositionDeg('longitudeDeg1');
                             });
@@ -321,10 +319,10 @@
                                     map.removeMapType(G_SATELLITE_MAP);
                                     map.getContainer().style.overflow = "hidden";
                                     GEvent.addListener(map, 'click', function(overlay, latlng) {
-                                        var Lat5 = latlng.lat();
-                                        var Lng5 = latlng.lng();
-                                        document.getElementById("latitudeDeg1").value = Lat5.toFixed(6);
-                                        document.getElementById("longitudeDeg1").value = Lng5.toFixed(6);
+                                        dijit.byId("latitudeDeg1").setValue(latlng.lat().toFixed(6));
+                                        dijit.byId("longitudeDeg1").setValue(latlng.lng().toFixed(6));
+                                        onChangePositionDeg('latitudeDeg1');
+                                        onChangePositionDeg('longitudeDeg1');
                                     });
                                 } else {
                                     alert("Sorry, the Google Maps API is not compatible with this browser");
