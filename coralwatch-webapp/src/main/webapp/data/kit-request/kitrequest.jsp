@@ -146,8 +146,8 @@
                             hasDownArrow="true"
                             value="">
 	                    <option selected="selected" value=""></option>
-	                    <option value="Chart Only">Chart Only</option>
-	                    <option value="Do It Yourself Kit">Do It Yourself Kit</option>
+	                    <option value="Chart Only">Coral Health Chart only</option>
+	                    <option value="Do It Yourself Kit">Complete Do it Yourself Kit (includes Coral Health Chart)</option>
 	                </select>
                 </td>
                 <td rowspan="5"><a href="http://coralwatch.org/web/guest/monitoring-materials"><img alt="Chart request"
