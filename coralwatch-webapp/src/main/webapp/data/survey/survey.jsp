@@ -394,7 +394,7 @@
                        trim="true"
                        style="width:6em;"
                        onChange="onChangePositionDegMin('latitudeMin2');"
-                       invalidMessage="Enter a valid minute value rounded to four decimal places."/>
+                       invalidMessage="Enter a valid minute value rounded to three decimal places."/>
                 '
                 <select name="latitudeDir2"
                         id="latitudeDir2"
@@ -433,7 +433,7 @@
                        trim="true"
                        style="width:6em;"
                        onChange="onChangePositionDegMin('longitudeMin2');"
-                       invalidMessage="Enter a valid minute value rounded to four decimal places."/>
+                       invalidMessage="Enter a valid minute value rounded to three decimal places."/>
                 '
                 <select name="longitudeDir2"
                         id="longitudeDir2"
@@ -487,7 +487,7 @@
                        trim="true"
                        style="width:6em;"
                        onChange="onChangePositionDegMinSec('latitudeSec3');"
-                       invalidMessage="Enter a valid second value."/>
+                       invalidMessage="Enter a valid second value rounded to two decimal places."/>
                 &quot;
                 <select name="latitudeDir3"
                         id="latitudeDir3"
@@ -537,7 +537,7 @@
                        trim="true"
                        style="width:6em;"
                        onChange="onChangePositionDegMinSec('longitudeSec3');"
-                       invalidMessage="Enter a valid second value."/>
+                       invalidMessage="Enter a valid second value rounded to two decimal places."/>
                 &quot;
                 <select name="longitudeDir3"
                         id="longitudeDir3"
@@ -633,7 +633,7 @@
                dojoType="dijit.form.NumberTextBox"
                constraints="{places:'0,2',round:-1,min:0}"
                onChange="onChangeDepthFeet()"
-               invalidMessage="Enter a valid depth value."/>
+               invalidMessage="Enter a valid depth value rounded to two decimal places."/>
     </td>
 </tr>
 <tr>
@@ -657,7 +657,7 @@
                constraints="{places:'0,2',round:-1}"
                trim="true"
                onChange="onChangeWaterTemperatureC()"
-               invalidMessage="Enter a valid temperature value."
+               invalidMessage="Enter a valid temperature value rounded to two decimal places."
                value="<%=cmd.equals(Constants.EDIT) ? survey.getWaterTemperature() : ""%>"/>
         <label for="waterTemperatureF" style="font-weight: bold;">or (&deg;F):</label>
         <input type="text"
@@ -668,7 +668,7 @@
                constraints="{places:'0,2',round:-1}"
                onChange="onChangeWaterTemperatureF()"
                trim="true"
-               invalidMessage="Enter a valid temperature value."/>
+               invalidMessage="Enter a valid temperature value rounded to two decimal places."/>
     </td>
 </tr>
 <tr>
