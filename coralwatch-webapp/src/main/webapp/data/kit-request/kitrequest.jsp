@@ -166,9 +166,11 @@
                             value="">
 	                    <option selected="selected" value=""></option>
 	                    <option value="English">English</option>
-	                    <option value="Chinese">Chinese</option>
+	                    <option value="Bahasa Indonesia">Bahasa Indonesia</option>
 	                    <option value="Japanese">Japanese</option>
 	                    <option value="Spanish">Spanish</option>
+	                    <option value="Traditional Chinese (Taiwan)">Traditional Chinese (Taiwan)</option>
+	                    <option value="Traditional Chinese (Hong Kong)">Traditional Chinese (Hong Kong)</option>
 	                </select>
                 </td>
             </tr>
