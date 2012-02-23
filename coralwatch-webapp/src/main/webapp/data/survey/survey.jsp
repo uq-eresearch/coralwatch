@@ -1009,7 +1009,12 @@
                 row.appendChild(dojo.create('td', { innerHTML: lightColor }));
                 row.appendChild(dojo.create('td', { innerHTML: darkColor }));
                 row.appendChild(dojo.create('td', { innerHTML: '<a href="#" onClick="deleteRecord(' + Number(response) + ', ' + Number(numberOfRaws) + '); return false;">Delete</a>' }));
-                tbody.appendChild(row);
+                if (tbody.childNodes.length > 1) {
+                    tbody.insertBefore(row, tbody.childNodes[1]);
+                }
+                else {
+                    tbody.appendChild(row);
+                }
                 reloadImage();
                 return response;
             },
