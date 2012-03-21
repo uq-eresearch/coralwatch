@@ -62,7 +62,7 @@
             }
             function onClusterClick(args) {
                 cluster.defaultClickAction = function() {
-                    map.setCenter(args.clusterMarker.getLatLng(), map.getBoundsZoomLevel(args.clusterMarker.clusterGroupBounds))
+                    map.setCenter(args.clusterMarker.getLatLng(), Math.min(15, map.getBoundsZoomLevel(args.clusterMarker.clusterGroupBounds)))
                     delete cluster.defaultClickAction;
                 };
                 var html = '<div style="height:300px; overflow:auto;"><h4>' + args.clusteredMarkers.length + ' Surveys:</h4>';
