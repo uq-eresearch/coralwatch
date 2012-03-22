@@ -62,8 +62,15 @@
             }
             function onClusterClick(args) {
                 cluster.defaultClickAction = function() {
-                    map.setCenter(args.clusterMarker.getLatLng(), Math.min(15, map.getBoundsZoomLevel(args.clusterMarker.clusterGroupBounds)))
-                    delete cluster.defaultClickAction;
+                    var latlng = args.clusterMarker.getLatLng();
+                    var zoom = map.getBoundsZoomLevel(args.clusterMarker.clusterGroupBounds);
+                    map.getCurrentMapType().getMaxZoomAtLatLng(latlng, function(response) {
+                        if (response && response['status'] == G_GEO_SUCCESS) {
+                            zoom = Math.min(zoom, response['zoom']);
+                        }
+                        map.setCenter(latlng, zoom)
+                        delete cluster.defaultClickAction;
+                    });
                 };
                 var html = '<div style="height:300px; overflow:auto;"><h4>' + args.clusteredMarkers.length + ' Surveys:</h4>';
                 for (var i = 0; i < args.clusteredMarkers.length; i++) {
