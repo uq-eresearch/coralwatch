@@ -42,20 +42,27 @@
         dialog.show();
     });
 
-    function zoom(map, latlng, desiredZoom, maxZoom) {
-        var zoom = Math.min(desiredZoom, maxZoom);
-        map.getCurrentMapType().getMaxZoomAtLatLng(latlng, function(response) {
+    function fixZoom() {
+        map.getCurrentMapType().getMaxZoomAtLatLng(map.getCenter(), function(response) {
             if (response && response['status'] == G_GEO_SUCCESS) {
-                zoom = Math.min(zoom, response['zoom']);
+                map.setCenter(map.getCenter(), response['zoom']);
             }
-            map.setCenter(latlng, zoom)
         });
     }
     function myOnload() {
         if (GBrowserIsCompatible()) {
 
             map = new GMap2(document.getElementById('map'));
-            map.setCenter(new GLatLng(25.799891, 15.468750), 2);
+
+            var minZoom = 2; 
+            var maxZoom = 12; 
+            var mapTypes = map.getMapTypes(); 
+            for (var i = 0; i < mapTypes.length; i++) { 
+                mapTypes[i].getMinimumResolution = function() {return minZoom;} 
+                mapTypes[i].getMaximumResolution = function() {return maxZoom;} 
+            }
+
+            map.setCenter(new GLatLng(25.799891, 15.468750), minZoom);
             map.setMapType(G_HYBRID_MAP);
             map.setUIToDefault();
             map.addControl(new GOverviewMapControl());
@@ -63,19 +70,19 @@
                 map.closeInfoWindow();
             });
 
-            var mt = map.getMapTypes();
-            for (var i = 0; i < mt.length; i++) {
-                mt[i].getMinimumResolution = function() {
-                    return 2;
-                }
-            }
             function onClusterClick(args) {
                 cluster.defaultClickAction = function() {
-                    zoom(map, args.clusterMarker.getLatLng(), map.getBoundsZoomLevel(args.clusterMarker.clusterGroupBounds), 12);
+                    var latlng = args.clusterMarker.getLatLng();
+                    var zoomLevel = map.getBoundsZoomLevel(args.clusterMarker.clusterGroupBounds);
+                    map.getCurrentMapType().getMaxZoomAtLatLng(latlng, function(response) {
+                        if (response && response['status'] == G_GEO_SUCCESS) {
+                            map.setCenter(latlng, Math.min(zoomLevel, response['zoom']));
+                        }
+                    });
                 };
                 var html = '<div style="height:300px; overflow:auto;"><h4>' + args.clusteredMarkers.length + ' Surveys:</h4>';
                 for (var i = 0; i < args.clusteredMarkers.length; i++) {
-                    html += '<a href="javascript:cluster.triggerClick(' + args.clusteredMarkers[i].index + ')">' + args.clusteredMarkers[i].getTitle() + '</a><br/>';
+                    html += '<a href="javascript:void(0)" onclick="cluster.triggerClick(' + args.clusteredMarkers[i].index + '); fixZoom();">' + args.clusteredMarkers[i].getTitle() + '</a><br/>';
                 }
                 html += '<br /><a href="javascript:void(0)" onclick="cluster.defaultClickAction()">Fit map</a> to show these locations</div>';
                 map.openInfoWindowHtml(args.clusterMarker.getLatLng(), html);
