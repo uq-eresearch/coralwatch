@@ -42,13 +42,6 @@
         dialog.show();
     });
 
-    function fixZoom() {
-        map.getCurrentMapType().getMaxZoomAtLatLng(map.getCenter(), function(response) {
-            if (response && response['status'] == G_GEO_SUCCESS) {
-                map.setCenter(map.getCenter(), response['zoom']);
-            }
-        });
-    }
     function myOnload() {
         if (GBrowserIsCompatible()) {
 
@@ -72,17 +65,11 @@
 
             function onClusterClick(args) {
                 cluster.defaultClickAction = function() {
-                    var latlng = args.clusterMarker.getLatLng();
-                    var zoomLevel = map.getBoundsZoomLevel(args.clusterMarker.clusterGroupBounds);
-                    map.getCurrentMapType().getMaxZoomAtLatLng(latlng, function(response) {
-                        if (response && response['status'] == G_GEO_SUCCESS) {
-                            map.setCenter(latlng, Math.min(zoomLevel, response['zoom']));
-                        }
-                    });
+                    map.setCenter(args.clusterMarker.getLatLng(), map.getBoundsZoomLevel(args.clusterMarker.clusterGroupBounds));
                 };
                 var html = '<div style="height:300px; overflow:auto;"><h4>' + args.clusteredMarkers.length + ' Surveys:</h4>';
                 for (var i = 0; i < args.clusteredMarkers.length; i++) {
-                    html += '<a href="javascript:void(0)" onclick="cluster.triggerClick(' + args.clusteredMarkers[i].index + '); fixZoom();">' + args.clusteredMarkers[i].getTitle() + '</a><br/>';
+                    html += '<a href="javascript:void(0)" onclick="cluster.triggerClick(' + args.clusteredMarkers[i].index + ');">' + args.clusteredMarkers[i].getTitle() + '</a><br/>';
                 }
                 html += '<br /><a href="javascript:void(0)" onclick="cluster.defaultClickAction()">Fit map</a> to show these locations</div>';
                 map.openInfoWindowHtml(args.clusterMarker.getLatLng(), html);
