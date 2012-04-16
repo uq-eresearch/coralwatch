@@ -34,7 +34,7 @@
     cssNode.href = 'http://googlemapsapi.martinpearman.co.uk/maps/clustermarker/HtmlControl/HtmlControl.css';
     document.getElementsByTagName("head")[0].appendChild(cssNode);
 
-    var map, cluster, eventListeners = [], markersArray = [], icon;
+    var map, cluster, eventListeners = [], markersArray = [];
     var dialog;
     dojo.addOnLoad(function() {
         dialog = dijit.byId("dialog");
@@ -76,14 +76,10 @@
             }
 
             //	create a ClusterMarker
-            cluster = new ClusterMarker(map, {clusterMarkerTitle:'Click to see list of %count surveys' , clusterMarkerClick:onClusterClick });
-
-            icon = new GIcon();
-            icon.shadow = 'http://googlemapsapi.martinpearman.co.uk/maps/clustermarker/images/icon_shadow.png';
-            icon.shadowSize = new GSize(37, 34);
-            icon.iconSize = new GSize(20, 34);
-            icon.iconAnchor = new GPoint(10, 30);
-            icon.infoWindowAnchor = new GPoint(10, 8);
+            cluster = new ClusterMarker(map, {
+                clusterMarkerTitle: 'Click to see list of %count surveys',
+                clusterMarkerClick: onClusterClick
+            });
 
             selectExample();
         }
