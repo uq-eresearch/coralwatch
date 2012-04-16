@@ -117,13 +117,22 @@ function onChangeDepthMetres() {
     dijit.byId("depthFeet").setValue(Number.NaN);
     dijit.byId("depth").setValue(dijit.byId("depthMetres").getValue());
 }
-
 function onChangeDepthFeet() {
     if (isNaN(dijit.byId("depthFeet").getValue())) {
         return;
     }
     dijit.byId("depthMetres").setValue(Number.NaN);
     dijit.byId("depth").setValue(dijit.byId("depthFeet").getValue() * 0.3048);
+}
+function onChangeDepthDisabled() {
+    var disabled = dijit.byId("depthDisabled").checked;
+    if (disabled) {
+        dijit.byId("depth").setValue(Number.NaN);
+        dijit.byId("depthMetres").setValue(Number.NaN);
+        dijit.byId("depthFeet").setValue(Number.NaN);
+    }
+    dijit.byId("depthMetres").setDisabled(disabled);
+    dijit.byId("depthFeet").setDisabled(disabled);
 }
 
 function onChangeWaterTemperatureC() {
@@ -139,4 +148,14 @@ function onChangeWaterTemperatureF() {
     }
     dijit.byId("waterTemperatureC").setValue(Number.NaN);
     dijit.byId("waterTemperature").setValue(100 / (212 - 32) * (dijit.byId("waterTemperatureF").getValue() - 32));
+}
+function onChangeWaterTemperatureDisabled() {
+    var disabled = dijit.byId("waterTemperatureDisabled").checked;
+    if (disabled) {
+        dijit.byId("waterTemperature").setValue(Number.NaN);
+        dijit.byId("waterTemperatureC").setValue(Number.NaN);
+        dijit.byId("waterTemperatureF").setValue(Number.NaN);
+    }
+    dijit.byId("waterTemperatureC").setDisabled(disabled);
+    dijit.byId("waterTemperatureF").setDisabled(disabled);
 }

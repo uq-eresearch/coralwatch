@@ -100,9 +100,6 @@ public class SurveyPortlet extends GenericPortlet {
                     Date date = ParamUtil.getDate(actionRequest, "date", new SimpleDateFormat("yyyy-MM-dd"));
                     Date time = ParamUtil.getDate(actionRequest, "time", new SimpleDateFormat("'T'HH:mm:ss"));
                     String lightCondition = actionRequest.getParameter("lightCondition");
-                    String depthStr = actionRequest.getParameter("depth");
-                    String waterTemperatureStr = actionRequest.getParameter("waterTemperature");
-                    Double waterTemperature = ParamUtil.getDouble(actionRequest, "waterTemperature");
                     String activity = actionRequest.getParameter("activity");
                     String comments = actionRequest.getParameter("comments");
 
@@ -117,14 +114,28 @@ public class SurveyPortlet extends GenericPortlet {
                         date,
                         time,
                         lightCondition,
-                        depthStr,
-                        waterTemperatureStr,
                         activity
                     );
                     
-                    Double depth = ParamUtil.getDouble(actionRequest, "depth");
                     Float latitude = ParamUtil.getFloat(actionRequest, "latitude");
                     Float longitude = ParamUtil.getFloat(actionRequest, "longitude");
+
+                    boolean depthDisabled = ParamUtil.getBoolean(actionRequest, "depthDisabled", false);
+                    Double depth = ParamUtil.getDouble(actionRequest, "depth", Double.NaN);
+                    if (depth.isNaN()) {
+                        if (!depthDisabled) {
+                            errors.add("Depth is a required field unless marked 'not available'.");
+                        }
+                        depth = null;
+                    }
+                    boolean waterTemperatureDisabled = ParamUtil.getBoolean(actionRequest, "waterTemperatureDisabled", false);
+                    Double waterTemperature = ParamUtil.getDouble(actionRequest, "waterTemperature", Double.NaN);
+                    if (waterTemperature.isNaN()) {
+                        if (!waterTemperatureDisabled) {
+                            errors.add("Water temperature is a required field unless marked 'not available'.");
+                        }
+                        waterTemperature = null;
+                    }
 
                     if (errors.isEmpty()) {
                         Reef reef = reefDao.getReefByName(reefName);
@@ -220,8 +231,6 @@ public class SurveyPortlet extends GenericPortlet {
         Date date,
         Date time,
         String lightCondition,
-        String depthStr,
-        String waterTemperatureStr,
         String activity
     ) {
         List<String> emptyFields = new ArrayList<String>();
@@ -249,14 +258,8 @@ public class SurveyPortlet extends GenericPortlet {
         if (time == null || time.toString().trim().isEmpty()) {
             emptyFields.add("Time");
         }
-        if (waterTemperatureStr == null || waterTemperatureStr.trim().isEmpty()) {
-            emptyFields.add("Water Temperature");
-        }
         if (lightCondition == null || lightCondition.trim().isEmpty()) {
             emptyFields.add("Light Condition");
-        }
-        if (depthStr == null || depthStr.trim().isEmpty()) {
-            emptyFields.add("Depth");
         }
         if (activity == null || activity.trim().isEmpty()) {
             emptyFields.add("Activity");

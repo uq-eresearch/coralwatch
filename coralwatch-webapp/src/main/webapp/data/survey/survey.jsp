@@ -620,8 +620,11 @@
                dojoType="dijit.form.NumberTextBox"
                constraints="{places:'0,2',round:-1,min:0}"
                onChange="onChangeDepthMetres()"
+               <% if (cmd.equals(Constants.EDIT) && (survey.getDepth() == null)) { %>
+               disabled="disabled"
+               <% } %>
                invalidMessage="Enter a valid depth value rounded to two decimal places."
-               value="<%= cmd.equals(Constants.EDIT) ? survey.getDepth() : "" %>"/>
+               value="<%= (cmd.equals(Constants.EDIT) && (survey.getDepth() != null)) ? survey.getDepth() : "" %>"/>
         <label for="depthFeet" style="font-weight: bold;">or (feet):</label>
         <input type="text"
                id="depthFeet"
@@ -631,7 +634,20 @@
                dojoType="dijit.form.NumberTextBox"
                constraints="{places:'0,2',round:-1,min:0}"
                onChange="onChangeDepthFeet()"
+               <% if (cmd.equals(Constants.EDIT) && (survey.getDepth() == null)) { %>
+               disabled="disabled"
+               <% } %>
                invalidMessage="Enter a valid depth value rounded to two decimal places."/>
+        <input type="checkbox"
+               id="depthDisabled"
+               name="depthDisabled"
+               dojoType="dijit.form.CheckBox"
+               <% if (cmd.equals(Constants.EDIT) && (survey.getDepth() == null)) { %>
+               checked="checked"
+               <% } %>
+               value="true"
+               onChange="onChangeDepthDisabled()" />
+        <label for="depthDisabled">Not available</label>
     </td>
 </tr>
 <tr>
@@ -656,6 +672,9 @@
                trim="true"
                onChange="onChangeWaterTemperatureC()"
                invalidMessage="Enter a valid temperature value rounded to two decimal places."
+               <% if (cmd.equals(Constants.EDIT) && (survey.getWaterTemperature() == null)) { %>
+               disabled="disabled"
+               <% } %>
                value="<%=cmd.equals(Constants.EDIT) ? survey.getWaterTemperature() : ""%>"/>
         <label for="waterTemperatureF" style="font-weight: bold;">or (&deg;F):</label>
         <input type="text"
@@ -666,7 +685,20 @@
                constraints="{places:'0,2',round:-1}"
                onChange="onChangeWaterTemperatureF()"
                trim="true"
+               <% if (cmd.equals(Constants.EDIT) && (survey.getWaterTemperature() == null)) { %>
+               disabled="disabled"
+               <% } %>
                invalidMessage="Enter a valid temperature value rounded to two decimal places."/>
+        <input type="checkbox"
+               id="waterTemperatureDisabled"
+               name="waterTemperatureDisabled"
+               dojoType="dijit.form.CheckBox"
+               <% if (cmd.equals(Constants.EDIT) && (survey.getWaterTemperature() == null)) { %>
+               checked="checked"
+               <% } %>
+               value="true"
+               onChange="onChangeWaterTemperatureDisabled()" />
+        <label for="waterTemperatureDisabled">Not available</label>
     </td>
 </tr>
 <tr>
@@ -840,6 +872,8 @@
                 <%if (survey.getDepth() != null) {%>
                 <% double depthFeet = survey.getDepth() / 0.3048; %>
                 <%=survey.getDepth()%> m (<%=Math.round(depthFeet)%> feet)
+                <%} else {%>
+                Not available
                 <%}%>
             </td>
         </tr>
@@ -848,6 +882,8 @@
             <td>
                 <%if (survey.getWaterTemperature() != null) {%>
                 <%=survey.getWaterTemperature()%> &deg;C (<%=((survey.getWaterTemperature() * 9 / 5) + 32)%> &deg;F)
+                <%} else {%>
+                Not available
                 <%}%>
             </td>
         </tr>
