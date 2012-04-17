@@ -340,7 +340,12 @@ public class SurveyPortlet extends GenericPortlet {
         int r = 1;
         for (Survey survey : surveys) {
             HSSFRow row = sheet.createRow(r++);
-            addSurveyDataCells(row, survey, dateStyle, timeStyle, 0);
+            try {
+                addSurveyDataCells(row, survey, dateStyle, timeStyle, 0);
+            }
+            catch (Exception e) {
+                _log.error(e);
+            }
         }
         for (; c >= 0; c--) {
             sheet.autoSizeColumn((short) c);
@@ -475,34 +480,39 @@ public class SurveyPortlet extends GenericPortlet {
         for (Survey survey : surveys) {
             for (SurveyRecord record : survey.getDataset()) {
                 row = sheet.createRow(r++);
-                c = 0;
-                if (includeSurveyColumns) {
-                    c = addSurveyDataCells(row, survey, dateStyle, timeStyle, c);
-                }
-                else {
-                    row.createCell(c++).setCellValue(record.getSurvey().getId());
-                    row.createCell(c++).setCellValue(new HSSFRichTextString(record.getSurvey().getCreator().getDisplayName()));
-                    row.createCell(c++).setCellValue(new HSSFRichTextString(record.getSurvey().getReef().getName()));
-                    {
-                        HSSFCell cell = row.createCell(c++);
-                        cell.setCellStyle(dateStyle);
-                        if (record.getSurvey().getDate() != null) {
-                            cell.setCellValue(record.getSurvey().getDate());
+                try {
+                    c = 0;
+                    if (includeSurveyColumns) {
+                        c = addSurveyDataCells(row, survey, dateStyle, timeStyle, c);
+                    }
+                    else {
+                        row.createCell(c++).setCellValue(record.getSurvey().getId());
+                        row.createCell(c++).setCellValue(new HSSFRichTextString(record.getSurvey().getCreator().getDisplayName()));
+                        row.createCell(c++).setCellValue(new HSSFRichTextString(record.getSurvey().getReef().getName()));
+                        {
+                            HSSFCell cell = row.createCell(c++);
+                            cell.setCellStyle(dateStyle);
+                            if (record.getSurvey().getDate() != null) {
+                                cell.setCellValue(record.getSurvey().getDate());
+                            }
+                        }
+                        {
+                            HSSFCell cell = row.createCell(c++);
+                            cell.setCellStyle(timeStyle);
+                            if (record.getSurvey().getTime() != null) {
+                                cell.setCellValue(record.getSurvey().getTime());
+                            }
                         }
                     }
-                    {
-                        HSSFCell cell = row.createCell(c++);
-                        cell.setCellStyle(timeStyle);
-                        if (record.getSurvey().getTime() != null) {
-                            cell.setCellValue(record.getSurvey().getTime());
-                        }
-                    }
+                    row.createCell(c++).setCellValue(new HSSFRichTextString(record.getCoralType()));
+                    row.createCell(c++).setCellValue(new HSSFRichTextString(String.valueOf(record.getLightestLetter())));
+                    row.createCell(c++).setCellValue(record.getLightestNumber());
+                    row.createCell(c++).setCellValue(new HSSFRichTextString(String.valueOf(record.getDarkestLetter())));
+                    row.createCell(c++).setCellValue(record.getDarkestNumber());
                 }
-                row.createCell(c++).setCellValue(new HSSFRichTextString(record.getCoralType()));
-                row.createCell(c++).setCellValue(new HSSFRichTextString(String.valueOf(record.getLightestLetter())));
-                row.createCell(c++).setCellValue(record.getLightestNumber());
-                row.createCell(c++).setCellValue(new HSSFRichTextString(String.valueOf(record.getDarkestLetter())));
-                row.createCell(c++).setCellValue(record.getDarkestNumber());
+                catch (Exception e) {
+                    _log.error(e);
+                }
             }
         }
         for (; c >= 0; c--) {
