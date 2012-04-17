@@ -3,6 +3,7 @@ package org.coralwatch.portlets;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +54,7 @@ public class SurveyPortlet extends GenericPortlet {
     protected SurveyRecordDao surveyRecordDao;
     protected ReefDao reefDao;
     protected SurveyRatingDao surveyRatingDao;
+    private List<String> shapes = Arrays.asList("Branching", "Boulder", "Plate", "Soft");
 
     @Override
     public void init() throws PortletException {
@@ -281,7 +283,7 @@ public class SurveyPortlet extends GenericPortlet {
         }
     }
     
-    protected static void serveExportResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
+    protected void serveExportResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
         AppUtil.clearCache();
         
         List<Survey> surveys = null;
@@ -328,7 +330,7 @@ public class SurveyPortlet extends GenericPortlet {
         workbook.write(response.getPortletOutputStream());
     }
 
-    private static void writeSurveySheet(
+    private void writeSurveySheet(
         HSSFWorkbook workbook,
         List<Survey> surveys,
         HSSFCellStyle dateStyle,
@@ -352,16 +354,17 @@ public class SurveyPortlet extends GenericPortlet {
         }
     }
 
-    private static int addSurveyDataCells(HSSFRow row, Survey survey, HSSFCellStyle dateStyle, HSSFCellStyle timeStyle, int c) {
+    private int addSurveyDataCells(HSSFRow row, Survey survey, HSSFCellStyle dateStyle, HSSFCellStyle timeStyle, int c) {
         Map<String, Long> shapeCounts = new HashMap<String, Long>();
-        shapeCounts.put("Branching", 0l);
-        shapeCounts.put("Boulder", 0l);
-        shapeCounts.put("Plate", 0l);
-        shapeCounts.put("Soft", 0l);
+        for (String shape : shapes) {
+            shapeCounts.put(shape, 0l);
+        }
         long sumLight = 0;
         long sumDark = 0;
         for (SurveyRecord record : survey.getDataset()) {
-            shapeCounts.put(record.getCoralType(), shapeCounts.get(record.getCoralType()) + 1);
+            if (shapeCounts.containsKey(record.getCoralType())) {
+                shapeCounts.put(record.getCoralType(), shapeCounts.get(record.getCoralType()) + 1);
+            }
             sumLight += record.getLightestNumber();
             sumDark += record.getDarkestNumber();
         }
@@ -414,17 +417,16 @@ public class SurveyPortlet extends GenericPortlet {
         row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getActivity()));
         row.createCell(c++).setCellValue(new HSSFRichTextString(survey.getComments()));
         row.createCell(c++).setCellValue(numRecords);
-        row.createCell(c++).setCellValue(shapeCounts.get("Branching"));
-        row.createCell(c++).setCellValue(shapeCounts.get("Boulder"));
-        row.createCell(c++).setCellValue(shapeCounts.get("Plate"));
-        row.createCell(c++).setCellValue(shapeCounts.get("Soft"));
+        for (String shape : shapes) {
+            row.createCell(c++).setCellValue(shapeCounts.get(shape));
+        }
         row.createCell(c++).setCellValue(sumLight / (double) numRecords);
         row.createCell(c++).setCellValue(sumDark / (double) numRecords);
         row.createCell(c++).setCellValue((sumLight + sumDark) / (2d * numRecords));
         return c;
     }
     
-    private static int addSurveyHeaderCells(HSSFRow row, int c) {
+    private int addSurveyHeaderCells(HSSFRow row, int c) {
         row.createCell(c++).setCellValue(new HSSFRichTextString("Survey"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Creator"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Group Name"));
@@ -441,17 +443,16 @@ public class SurveyPortlet extends GenericPortlet {
         row.createCell(c++).setCellValue(new HSSFRichTextString("Activity"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Comments"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Number of records"));
-        row.createCell(c++).setCellValue(new HSSFRichTextString("Branching"));
-        row.createCell(c++).setCellValue(new HSSFRichTextString("Boulder"));
-        row.createCell(c++).setCellValue(new HSSFRichTextString("Plate"));
-        row.createCell(c++).setCellValue(new HSSFRichTextString("Soft"));
+        for (String shape : shapes) {
+            row.createCell(c++).setCellValue(new HSSFRichTextString(shape));
+        }
         row.createCell(c++).setCellValue(new HSSFRichTextString("Average lightest"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Average darkest"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Average overall"));
         return c;
     }
 
-    private static void writeSurveyRecordSheet(
+    private void writeSurveyRecordSheet(
         HSSFWorkbook workbook,
         List<Survey> surveys,
         boolean includeSurveyColumns,
