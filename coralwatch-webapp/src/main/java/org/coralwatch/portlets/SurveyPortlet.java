@@ -39,6 +39,7 @@ import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.util.AppUtil;
+import org.hibernate.ScrollableResults;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -286,14 +287,15 @@ public class SurveyPortlet extends GenericPortlet {
     protected static void serveExportResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
         AppUtil.clearCache();
         
-        List<Survey> surveys = null;
+        ScrollableResults surveys = null;
         String fileNamePrefix = null;
         
         String reefIdParam = request.getParameter("reefId");
         if (reefIdParam != null) {
             ReefDao reefDao = CoralwatchApplication.getConfiguration().getReefDao();
             Reef reef = reefDao.getById(Long.valueOf(reefIdParam));
-            surveys = reefDao.getSurveysByReef(reef);
+            SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
+            surveys = surveyDao.getSurveysIterator(reef);
             fileNamePrefix = reef.getName();
         }
         else {
@@ -303,7 +305,7 @@ public class SurveyPortlet extends GenericPortlet {
                 throw new PortletException("Only the administrator can export all survey data");
             }
             SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
-            surveys = surveyDao.getAll();
+            surveys = surveyDao.getSurveysIterator();
             fileNamePrefix = "surveys";
         }
         
@@ -332,7 +334,7 @@ public class SurveyPortlet extends GenericPortlet {
 
     private static void writeSurveySheet(
         HSSFWorkbook workbook,
-        List<Survey> surveys,
+        ScrollableResults surveys,
         HSSFCellStyle dateStyle,
         HSSFCellStyle timeStyle
     ) {
@@ -340,7 +342,9 @@ public class SurveyPortlet extends GenericPortlet {
         HSSFRow headerRow = sheet.createRow(0);
         int c = addSurveyHeaderCells(headerRow, 0);
         int r = 1;
-        for (Survey survey : surveys) {
+        surveys.beforeFirst();
+        while (surveys.next()) {
+            Survey survey = (Survey) surveys.get(0);
             HSSFRow row = sheet.createRow(r++);
             try {
                 addSurveyDataCells(row, survey, dateStyle, timeStyle, 0);
@@ -454,7 +458,7 @@ public class SurveyPortlet extends GenericPortlet {
 
     private static void writeSurveyRecordSheet(
         HSSFWorkbook workbook,
-        List<Survey> surveys,
+        ScrollableResults surveys,
         boolean includeSurveyColumns,
         HSSFCellStyle dateStyle,
         HSSFCellStyle timeStyle
@@ -478,7 +482,9 @@ public class SurveyPortlet extends GenericPortlet {
         row.createCell(c++).setCellValue(new HSSFRichTextString("Darkest Letter"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Darkest Number"));
         int r = 1;
-        for (Survey survey : surveys) {
+        surveys.beforeFirst();
+        while (surveys.next()) {
+            Survey survey = (Survey) surveys.get(0);
             for (SurveyRecord record : survey.getDataset()) {
                 row = sheet.createRow(r++);
                 try {

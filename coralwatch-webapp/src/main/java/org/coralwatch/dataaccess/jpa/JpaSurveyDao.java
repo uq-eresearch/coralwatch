@@ -1,13 +1,18 @@
 package org.coralwatch.dataaccess.jpa;
 
-import au.edu.uq.itee.maenad.dataaccess.jpa.EntityManagerSource;
-import au.edu.uq.itee.maenad.dataaccess.jpa.JpaDao;
-import org.coralwatch.dataaccess.SurveyDao;
-import org.coralwatch.model.Survey;
-import org.coralwatch.model.SurveyRecord;
-
 import java.io.Serializable;
 import java.util.List;
+
+import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.model.Reef;
+import org.coralwatch.model.Survey;
+import org.coralwatch.model.SurveyRecord;
+import org.hibernate.CacheMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.ejb.HibernateEntityManager;
+
+import au.edu.uq.itee.maenad.dataaccess.jpa.EntityManagerSource;
+import au.edu.uq.itee.maenad.dataaccess.jpa.JpaDao;
 
 
 public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializable {
@@ -39,4 +44,33 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
 
     }
 
+    @Override
+    public ScrollableResults getSurveysIterator() {
+        HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
+        return entityManager.getSession()
+            .createQuery(
+                "SELECT o\n" +
+                "FROM Survey o\n" +
+                "ORDER BY date DESC"
+            )
+            .setCacheMode(CacheMode.IGNORE)
+            .setFetchSize(50)
+            .scroll();
+    }
+
+    @Override
+    public ScrollableResults getSurveysIterator(Reef reef) {
+        HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
+        return entityManager.getSession()
+            .createQuery(
+                "SELECT o\n" +
+                "FROM Survey o\n" +
+                "WHERE o.reef.id = :reefId\n" +
+                "ORDER BY date DESC"
+            )
+            .setCacheMode(CacheMode.IGNORE)
+            .setFetchSize(50)
+            .setParameter("reefId", reef.getId())
+            .scroll();
+    }
 }
