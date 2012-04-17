@@ -1,6 +1,8 @@
 package org.coralwatch.portlets;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +42,8 @@ import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.util.AppUtil;
 import org.hibernate.ScrollableResults;
+
+import au.com.bytecode.opencsv.CSVWriter;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -312,8 +316,132 @@ public class SurveyPortlet extends GenericPortlet {
         String singleSheetParam = request.getParameter("singleSheet");
         boolean singleSheet = (singleSheetParam != null && singleSheetParam.equals("true"));
         
-        String fileName = fileNamePrefix + "-" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".xls";
-        response.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
+        String fileNameBase = fileNamePrefix + "-" + new SimpleDateFormat("yyyyMMdd").format(new Date());
+        String format = request.getParameter("format");
+        if (format != null && format.equals("csv")) {
+            writeCSVStream(fileNameBase, response, surveys, singleSheet);
+        }
+        else {
+            writeExcelWorkbook(fileNameBase, response, surveys, singleSheet);
+        }
+    }
+    
+    private static void writeCSVStream(
+        String fileNameBase,
+        ResourceResponse response,
+        ScrollableResults surveys,
+        boolean singleSheet
+    )
+    throws IOException {
+        response.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileNameBase + ".csv\"");
+        response.setProperty(ResourceResponse.EXPIRATION_CACHE, "0");
+        response.setContentType("text/csv;charset=utf-8");
+
+        CSVWriter writer = new CSVWriter(new OutputStreamWriter(response.getPortletOutputStream(), "UTF8"));
+
+        List<String> headers = new ArrayList<String>();
+        headers.add("Survey");
+        headers.add("Creator");
+        headers.add("Group Name");
+        headers.add("Participating As");
+        headers.add("Reef");
+        headers.add("Country");
+        headers.add("Longitude");
+        headers.add("Latitude");
+        headers.add("Date");
+        headers.add("Time");
+        headers.add("Light Condition");
+        headers.add("Depth");
+        headers.add("Water Temperature");
+        headers.add("Activity");
+        headers.add("Comments");
+        headers.add("Number of records");
+        for (String shape : shapes) {
+            headers.add(shape);
+        }
+        headers.add("Average lightest");
+        headers.add("Average darkest");
+        headers.add("Average overall");
+        headers.add("Coral Type");
+        headers.add("Lightest Letter");
+        headers.add("Lightest Number");
+        headers.add("Darkest Letter");
+        headers.add("Darkest Number");
+        writer.writeNext(headers.toArray(new String[headers.size()]));
+
+        surveys.beforeFirst();
+        while (surveys.next()) {
+            Survey survey = (Survey) surveys.get(0);
+            Map<String, Long> shapeCounts = new HashMap<String, Long>();
+            for (String shape : shapes) {
+                shapeCounts.put(shape, 0l);
+            }
+            long sumLight = 0;
+            long sumDark = 0;
+            for (SurveyRecord record : survey.getDataset()) {
+                if (shapeCounts.containsKey(record.getCoralType())) {
+                    shapeCounts.put(record.getCoralType(), shapeCounts.get(record.getCoralType()) + 1);
+                }
+                sumLight += record.getLightestNumber();
+                sumDark += record.getDarkestNumber();
+            }
+            DecimalFormat latLngFormat = new DecimalFormat("0.000000");
+            DecimalFormat depthFormat = new DecimalFormat("0.00");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+            DecimalFormat waterTemperatureFormat = new DecimalFormat("0.00");
+            DecimalFormat averageFormat = new DecimalFormat("0.00");
+            for (SurveyRecord record : survey.getDataset()) {
+                try {
+                    List<String> values = new ArrayList<String>();
+                    int numRecords = survey.getDataset().size();
+                    values.add(String.valueOf(survey.getId()));
+                    values.add(survey.getCreator().getDisplayName());
+                    values.add(survey.getGroupName());
+                    values.add(survey.getParticipatingAs());
+                    values.add(survey.getReef().getName());
+                    values.add(survey.getReef().getCountry());
+                    values.add((survey.getLongitude() != null) ? latLngFormat.format(survey.getLongitude()) : "");
+                    values.add((survey.getLatitude() != null) ? latLngFormat.format(survey.getLatitude()) : "");
+                    values.add((survey.getDate() != null) ? dateFormat.format(survey.getDate()) : "");
+                    values.add((survey.getTime() != null) ? timeFormat.format(survey.getTime()) : "");
+                    values.add(survey.getLightCondition());
+                    values.add((survey.getDepth() != null) ? depthFormat.format(survey.getDepth()) : "");
+                    values.add((survey.getWaterTemperature() != null) ? waterTemperatureFormat.format(survey.getWaterTemperature()) : "");
+                    values.add(survey.getActivity());
+                    values.add(survey.getComments());
+                    values.add(String.valueOf(numRecords));
+                    for (String shape : shapes) {
+                        values.add(String.valueOf(shapeCounts.get(shape)));
+                    }
+                    values.add(averageFormat.format(sumLight / (double) numRecords));
+                    values.add(averageFormat.format(sumDark / (double) numRecords));
+                    values.add(averageFormat.format((sumLight + sumDark) / (2d * numRecords)));
+                    values.add(record.getCoralType());
+                    values.add(String.valueOf(record.getLightestLetter()));
+                    values.add(String.valueOf(record.getLightestNumber()));
+                    values.add(String.valueOf(record.getDarkestLetter()));
+                    values.add(String.valueOf(record.getDarkestNumber()));
+                    writer.writeNext(values.toArray(new String[values.size()]));
+                }
+                catch (Exception e) {
+                    _log.error(e);
+                }
+            }
+            writer.flush();
+        }
+        
+        writer.close();
+    }
+    
+    private static void writeExcelWorkbook(
+        String fileNameBase,
+        ResourceResponse response,
+        ScrollableResults surveys,
+        boolean singleSheet
+    )
+    throws IOException {
+        response.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileNameBase + ".xls\"");
         response.setProperty(ResourceResponse.EXPIRATION_CACHE, "0");
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
 

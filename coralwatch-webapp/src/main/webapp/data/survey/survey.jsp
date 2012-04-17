@@ -1282,6 +1282,7 @@
     <% if (currentUser != null && currentUser.isSuperUser()) { %>
         <portlet:resourceURL var="exportURL" id="export">
             <portlet:param name="singleSheet" value="true" />
+            <portlet:param name="format" value="csv" />
         </portlet:resourceURL>
         | <a href="<%= exportURL %>">Export survey data</a>
     <% } %>

@@ -60,6 +60,7 @@
                 <portlet:param name="reefId">
                     <jsp:attribute name="value"><%= reefId %></jsp:attribute>
                 </portlet:param>
+                <portlet:param name="format" value="xls" />
             </portlet:resourceURL>
             <a href="<%= surveyExportURL %>%>">Download Data</a>
         </div>
@@ -268,7 +269,12 @@
                 name: "Download",
                 width: 10,
                 formatter: function(item) {
-                    var downloadUrl = "<a href=\"<portlet:resourceURL id="surveyExport"/>&<portlet:namespace/>reefId=" + item.toString() + "\">Raw Data</a>";
+                    var downloadUrl =
+                    	"<a href=\"" +
+                    	"<portlet:resourceURL id="surveyExport"/>" +
+                    	"&<portlet:namespace/>reefId=" + item.toString() +
+                    	"&<portlet:namespace/>format=xls" +
+                    	"\">Raw Data</a>";
                     return downloadUrl;
                 }
             }
