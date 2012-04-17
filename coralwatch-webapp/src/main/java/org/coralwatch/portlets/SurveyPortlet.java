@@ -309,7 +309,7 @@ public class SurveyPortlet extends GenericPortlet {
         boolean singleSheet = (singleSheetParam != null && singleSheetParam.equals("true"));
         
         String fileName = fileNamePrefix + "-" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".xls";
-        response.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+        response.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
         response.setProperty(ResourceResponse.EXPIRATION_CACHE, "0");
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
 
