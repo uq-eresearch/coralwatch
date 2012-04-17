@@ -54,7 +54,7 @@ public class SurveyPortlet extends GenericPortlet {
     protected SurveyRecordDao surveyRecordDao;
     protected ReefDao reefDao;
     protected SurveyRatingDao surveyRatingDao;
-    private List<String> shapes = Arrays.asList("Branching", "Boulder", "Plate", "Soft");
+    private static List<String> shapes = Arrays.asList("Branching", "Boulder", "Plate", "Soft");
 
     @Override
     public void init() throws PortletException {
@@ -283,7 +283,7 @@ public class SurveyPortlet extends GenericPortlet {
         }
     }
     
-    protected void serveExportResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
+    protected static void serveExportResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
         AppUtil.clearCache();
         
         List<Survey> surveys = null;
@@ -330,7 +330,7 @@ public class SurveyPortlet extends GenericPortlet {
         workbook.write(response.getPortletOutputStream());
     }
 
-    private void writeSurveySheet(
+    private static void writeSurveySheet(
         HSSFWorkbook workbook,
         List<Survey> surveys,
         HSSFCellStyle dateStyle,
@@ -354,7 +354,7 @@ public class SurveyPortlet extends GenericPortlet {
         }
     }
 
-    private int addSurveyDataCells(HSSFRow row, Survey survey, HSSFCellStyle dateStyle, HSSFCellStyle timeStyle, int c) {
+    private static int addSurveyDataCells(HSSFRow row, Survey survey, HSSFCellStyle dateStyle, HSSFCellStyle timeStyle, int c) {
         Map<String, Long> shapeCounts = new HashMap<String, Long>();
         for (String shape : shapes) {
             shapeCounts.put(shape, 0l);
@@ -426,7 +426,7 @@ public class SurveyPortlet extends GenericPortlet {
         return c;
     }
     
-    private int addSurveyHeaderCells(HSSFRow row, int c) {
+    private static int addSurveyHeaderCells(HSSFRow row, int c) {
         row.createCell(c++).setCellValue(new HSSFRichTextString("Survey"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Creator"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Group Name"));
@@ -452,7 +452,7 @@ public class SurveyPortlet extends GenericPortlet {
         return c;
     }
 
-    private void writeSurveyRecordSheet(
+    private static void writeSurveyRecordSheet(
         HSSFWorkbook workbook,
         List<Survey> surveys,
         boolean includeSurveyColumns,
