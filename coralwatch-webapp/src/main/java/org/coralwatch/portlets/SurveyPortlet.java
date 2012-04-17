@@ -452,11 +452,13 @@ public class SurveyPortlet extends GenericPortlet {
         HSSFCellStyle timeStyle = workbook.createCellStyle();
         timeStyle.setDataFormat(workbook.createDataFormat().getFormat("HH:mm"));
         
-        if (!singleSheet) {
-            writeSurveySheet(workbook, surveys, dateStyle, timeStyle);
+        if (singleSheet) {
+            writeSurveyRecordSheet(workbook, surveys, true, dateStyle, timeStyle);
         }
-        writeSurveyRecordSheet(workbook, surveys, singleSheet, dateStyle, timeStyle);
-        
+        else {
+            writeSurveySheet(workbook, surveys, dateStyle, timeStyle);
+            writeSurveyRecordSheet(workbook, surveys, false, dateStyle, timeStyle);
+        }
         workbook.write(response.getPortletOutputStream());
     }
 
