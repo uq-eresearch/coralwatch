@@ -1,21 +1,31 @@
 package org.coralwatch.portlets;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Constants;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.GenericPortlet;
+import javax.portlet.PortletContext;
+import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequestDispatcher;
+import javax.portlet.PortletSession;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.KitRequest;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.util.AppUtil;
-import org.coralwatch.util.Emailer;
+import org.coralwatch.util.KitRequestUtil;
 
-import javax.mail.MessagingException;
-import javax.portlet.*;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Constants;
 
 public class KitRequestPortlet extends GenericPortlet {
 
@@ -106,36 +116,12 @@ public class KitRequestPortlet extends GenericPortlet {
             kitRequestDao.save(kitRequest);
             AppUtil.clearCache();
 
-            String message = 
-                "Dear " + kitRequest.getName() + "\n" +
-                "\n" +
-                "We have received your kit request. Your kit request details are below.\n" +
-                "\n" +
-                "Kit Type: " + kitRequest.getKitType() + "\n" +
-                "Language: " + kitRequest.getLanguage() + "\n" +
-                "Postal Address:\n" +
-                "\n" +
-                kitRequest.getAddressString() + "\n" +
-                kitRequest.getCountry() + "\n" +
-                "\n" +
-                "Notes:\n" +
-                "\n" +
-                ((kitRequest.getNotes() == null || kitRequest.getNotes().isEmpty()) ? "(none provided)" : kitRequest.getNotes()) + "\n" +
-                "\n" +
-                "We will send you an email when your request is dispatched.\n" +
-                "\n" +
-                "Regards,\n" +
-                "CoralWatch\n" +
-                "http://coralwatch.org";
-            try {
-                Emailer.sendEmail(user.getEmail(), "no-reply@coralwatch.org", "CoralWatch Kit Request", message);
-                actionResponse.setRenderParameter("successMsg", "We have received your kit request. We have sent you a confirmation email. Check your email in few minutes.");
-                actionResponse.setRenderParameter(Constants.CMD, Constants.PRINT);
-            } catch (MessagingException e) {
-                _log.fatal("Cannot send email for Password Reset request.");
-            }
-
-
+            KitRequestUtil.sendReceiptEmail(kitRequest);
+            actionResponse.setRenderParameter(
+                "successMsg",
+                "We have received your kit request. We have sent you a confirmation email. Check your email in few minutes."
+            );
+            actionResponse.setRenderParameter(Constants.CMD, Constants.PRINT);
         } else {
             actionRequest.setAttribute("errors", errors);
         }
