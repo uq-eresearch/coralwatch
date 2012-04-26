@@ -44,8 +44,15 @@ public class KitRequestPortlet extends GenericPortlet {
         PortletSession session = actionRequest.getPortletSession();
         List<String> errors = new ArrayList<String>();
 
-        String address = actionRequest.getParameter("address");
+        String name = actionRequest.getParameter("name");
+        String addressLine1 = actionRequest.getParameter("addressLine1");
+        String addressLine2 = actionRequest.getParameter("addressLine2");
+        String city = actionRequest.getParameter("city");
+        String state = actionRequest.getParameter("state");
+        String postcode = actionRequest.getParameter("postcode");
         String country = actionRequest.getParameter("country");
+        String phone = actionRequest.getParameter("phone");
+        String email = actionRequest.getParameter("email");
         String kitType = actionRequest.getParameter("kitType");
         String language = actionRequest.getParameter("language");
         String notes = actionRequest.getParameter("notes");
@@ -66,8 +73,17 @@ public class KitRequestPortlet extends GenericPortlet {
 //            errors.add("You must agree to the terms and conditions to submit a kit request.");
 //        }
 
-        if (address == null || address.isEmpty()) {
-            errors.add("No address was provided. Postal address must be supplied for kit request.");
+        if (name == null || name.isEmpty()) {
+            errors.add("Name must be provided.");
+        }
+        
+        if (
+            (addressLine1 == null || addressLine1.isEmpty()) ||
+            (city == null || city.isEmpty()) ||
+            (state == null || state.isEmpty()) ||
+            (postcode == null || postcode.isEmpty())
+        ) {
+            errors.add("Full address details not provided.");
         }
 
         if (country == null || country.isEmpty()) {
@@ -77,34 +93,34 @@ public class KitRequestPortlet extends GenericPortlet {
             KitRequest kitRequest = new KitRequest(user);
             kitRequest.setKitType(kitType);
             kitRequest.setLanguage(language);
-            kitRequest.setAddress(address);
+            kitRequest.setName(name);
+            kitRequest.setAddressLine1(addressLine1);
+            kitRequest.setAddressLine2(addressLine2);
+            kitRequest.setCity(city);
+            kitRequest.setState(state);
+            kitRequest.setPostcode(postcode);
             kitRequest.setCountry(country);
+            kitRequest.setPhone(phone);
+            kitRequest.setEmail(email);
             kitRequest.setNotes(notes);
             kitRequestDao.save(kitRequest);
             AppUtil.clearCache();
 
-            //send confirmation email
-            String name = user.getDisplayName();
-
-            if (user.getFirstName() != null && user.getLastName() != null) {
-                name = user.getFirstName() + " " + user.getLastName();
-            }
-
             String message = 
-                "Dear " + name + "\n" +
+                "Dear " + kitRequest.getName() + "\n" +
                 "\n" +
                 "We have received your kit request. Your kit request details are below.\n" +
                 "\n" +
-                "Kit Type: " + kitType + "\n" +
-                "Language: " + language + "\n" +
+                "Kit Type: " + kitRequest.getKitType() + "\n" +
+                "Language: " + kitRequest.getLanguage() + "\n" +
                 "Postal Address:\n" +
                 "\n" +
-                address + "\n" +
-                country + "\n" +
+                kitRequest.getAddressString() + "\n" +
+                kitRequest.getCountry() + "\n" +
                 "\n" +
                 "Notes:\n" +
                 "\n" +
-                ((notes == null || notes.isEmpty()) ? "(none provided)" : notes) + "\n" +
+                ((kitRequest.getNotes() == null || kitRequest.getNotes().isEmpty()) ? "(none provided)" : kitRequest.getNotes()) + "\n" +
                 "\n" +
                 "We will send you an email when your request is dispatched.\n" +
                 "\n" +

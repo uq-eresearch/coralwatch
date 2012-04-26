@@ -35,7 +35,6 @@
 //    String occupation = "";
     String positionDescription = "";
     String country = "";
-    String address = "";
     if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
 %>
 <script type="text/javascript">
@@ -62,8 +61,9 @@
     return true;
 </script>
 <%
+    UserImpl user = null;    
     if (cmd.equals(Constants.EDIT)) {
-        UserImpl user = userDao.getById(userId);
+        user = userDao.getById(userId);
         email = user.getEmail();
         displayName = user.getDisplayName();
         firstName = user.getFirstName();
@@ -72,7 +72,6 @@
 //            occupation = user.getOccupation();
         positionDescription = user.getPositionDescription();
         country = user.getCountry();
-        address = user.getAddress();
 %>
 <h2 style="margin-top:0;">Edit User Profile</h2>
 <br/>
@@ -80,9 +79,9 @@
 <p style="text-align:justify;">CoralWatch requires all members to provide real contact details to encourage
     authenticity of data. Your profile is protected from others. Your first and last names, email address, address and
     phone number are hidden from other members.</p>
-<input name="userId" type="hidden" value="<%= userId %>"/>
+<input name="userId" type="hidden" value="<%=userId%>"/>
 <%
-} else {
+    } else {
 %>
 <h2 style="margin-top:0;">Sign Up</h2>
 <br/>
@@ -98,10 +97,10 @@
 %>
 <div><span class="portlet-msg-error"><%=error%></span></div>
 <%
-        }
+    }
     }
 %>
-<input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
+<input name="<%=Constants.CMD%>" type="hidden" value="<%=HtmlUtil.escape(cmd)%>"/>
 <table>
     <tr>
         <td><label for="email">Email:</label></td>
@@ -131,7 +130,11 @@
                    value=""/></td>
     </tr>
     <tr>
-        <td><label for="password">Password <%if (cmd.equals(Constants.EDIT)) {%>(optional)<%}%>:</label></td>
+        <td><label for="password">Password <%
+            if (cmd.equals(Constants.EDIT)) {
+        %>(optional)<%
+            }
+        %>:</label></td>
         <td><input type="password" name="password" id="password"
                 <%if (cmd.equals(Constants.ADD)) {%>
                    required="true"
@@ -142,7 +145,11 @@
                    value=""/></td>
     </tr>
     <tr>
-        <td><label for="password2">Confirm Password <%if (cmd.equals(Constants.EDIT)) {%>(optional)<%}%>:</label>
+        <td><label for="password2">Confirm Password <%
+            if (cmd.equals(Constants.EDIT)) {
+        %>(optional)<%
+            }
+        %>:</label>
         </td>
         <td><input type="password"
                    name="password2"
@@ -216,14 +223,84 @@
         </td>
     </tr>
     <tr>
-        <td><label for="address">Address (excluding country):</label></td>
-        <td><textarea
-                   name="address"
-                   id="address"
-                   style="width: 300px; height: 100px;"
-                   dojoType="dijit.form.SimpleTextarea"
+        <td>
+            <label for="addressLine1">Address Line 1</label>
+        </td>
+        <td>
+            <input
+                   type="text"
+                   name="addressLine1"
+                   id="addressLine1"
+                   required="true"
+                   style="width: 300px;"
+                   dojoType="dijit.form.TextBox"
                    trim="true"
-                   ><%=address == null ? "" : address%></textarea></td>
+                   value="<%=user == null || user.getAddressLine1() == null ? "" :  user.getAddressLine1()%>" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="addressLine2">Address Line 2</label>
+        </td>
+        <td>
+            <input
+                   type="text"
+                   name="addressLine2"
+                   id="addressLine2"
+                   required="false"
+                   style="width: 300px;"
+                   dojoType="dijit.form.TextBox"
+                   trim="true"
+                   value="<%=user == null || user.getAddressLine2() == null ? "" :  user.getAddressLine2()%>" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="city">City / Town</label>
+        </td>
+        <td>
+            <input
+                   type="text"
+                   name="city"
+                   id="city"
+                   required="true"
+                   style="width: 300px;"
+                   dojoType="dijit.form.TextBox"
+                   trim="true"
+                   value="<%=user == null || user.getCity() == null ? "" :  user.getCity()%>" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="state">State / Province</label>
+        </td>
+        <td>
+            <input
+                   type="text"
+                   name="state"
+                   id="state"
+                   required="true"
+                   style="width: 300px;"
+                   dojoType="dijit.form.TextBox"
+                   trim="true"
+                   value="<%=user == null || user.getState() == null ? "" :  user.getState()%>" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="postcode">Postcode</label>
+        </td>
+        <td>
+            <input
+                   type="text"
+                   name="postcode"
+                   id="postcode"
+                   required="true"
+                   style="width: 300px;"
+                   dojoType="dijit.form.TextBox"
+                   trim="true"
+                   value="<%=user == null || user.getPostcode() == null ? "" :  user.getPostcode()%>" />
+        </td>
     </tr>
     <%
         }
@@ -247,7 +324,7 @@
                 if (cmd.equals(Constants.EDIT)) {
             %>
             <input type="button" value="Cancel"
-                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.VIEW %>" /><portlet:param name="userId" value="<%= String.valueOf(userId) %>" /></portlet:renderURL>';"/>
+                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%=Constants.CMD%>" value="<%=Constants.VIEW%>" /><portlet:param name="userId" value="<%=String.valueOf(userId)%>" /></portlet:renderURL>';"/>
             <%
                 }
             %>
@@ -265,7 +342,8 @@
     }
 %>
 </form>
-<% } else if (cmd.equals(Constants.RESET)) {
+<%
+    } else if (cmd.equals(Constants.RESET)) {
     String resetid = ParamUtil.getString(request, "resetid");
     if (resetid != null) {
         if (!resetid.equals(userDao.getById(userId).getPasswordResetId())) {
@@ -273,7 +351,7 @@
 <div><span class="portlet-msg-error">Your password reset link has expired. Request a new password reset link by clicking on Forgot Password link.</span>
 </div>
 <%
-} else {
+    } else {
 %>
 <script type="text/javascript">
     dojo.locale = "en";
@@ -289,7 +367,7 @@
 %>
 <div><span class="portlet-msg-error"><%=error%></span></div>
 <%
-        }
+    }
     }
 %>
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
@@ -300,9 +378,9 @@
         }
         return true;
     </script>
-    <input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
-    <input name="userId" type="hidden" value="<%= userId %>"/>
-    <input name="resetid" type="hidden" value="<%= resetid %>"/>
+    <input name="<%=Constants.CMD%>" type="hidden" value="<%=HtmlUtil.escape(cmd)%>"/>
+    <input name="userId" type="hidden" value="<%=userId%>"/>
+    <input name="resetid" type="hidden" value="<%=resetid%>"/>
     <table>
         <tr>
             <td><label for="resetpassword">New Password:</label></td>
@@ -345,7 +423,6 @@
     } else {
         user = userDao.getById(userId);
     }
-
 %>
 <script type="text/javascript">
     dojo.require("dojox.form.Rating");
@@ -353,9 +430,7 @@
     dojo.require("dijit.layout.TabContainer");
     dojo.require("dijit.Tooltip");
     dojo.require("dijit.form.Button");
-    <%
-        if (currentUser != null && !currentUser.equals(user)) {
-    %>
+    <%if (currentUser != null && !currentUser.equals(user)) {%>
     dojo.addOnLoad(function() {
         var widget = dijit.byId("connectRating");
         dojo.connect(widget, "onClick", function() {
@@ -373,9 +448,7 @@
             });
         });
     });
-    <%
-    }
-    %>
+    <%}%>
 </script>
 <h2 style="margin-top:0;">User Profile</h2>
 
@@ -384,7 +457,7 @@
     <table>
         <tr>
             <th>Display Name:</th>
-            <td><%= user.getDisplayName()%>
+            <td><%=user.getDisplayName()%>
             </td>
             <td rowspan="4" style="text-align:right">
                 <img src="<%=user.getGravatarUrl()%>" alt="<%=user.getDisplayName()%>"/>
@@ -403,12 +476,12 @@
         %>
         <tr>
             <th>Full Name:</th>
-            <td><%= (user.getFirstName() == null || user.getLastName() == null) ? "Not Set" : user.getFirstName() + " " + user.getLastName()%>
+            <td><%=(user.getFirstName() == null || user.getLastName() == null) ? "Not Set" : user.getFirstName() + " " + user.getLastName()%>
             </td>
         </tr>
         <tr>
             <th>Email:</th>
-            <td><a href="mailto:<%= user.getEmail()%>"><%= user.getEmail()%>
+            <td><a href="mailto:<%=user.getEmail()%>"><%=user.getEmail()%>
             </a></td>
         </tr>
         <%
@@ -416,12 +489,12 @@
         %>
         <tr>
             <th>Member since (d/m/y):</th>
-            <td><%= dateFormat.format(user.getRegistrationDate())%>
+            <td><%=dateFormat.format(user.getRegistrationDate())%>
             </td>
         </tr>
         <tr>
             <th>Position Description:</th>
-            <td><%= user.getPositionDescription() == null ? "Not Set" : user.getPositionDescription()%>
+            <td><%=user.getPositionDescription() == null ? "Not Set" : user.getPositionDescription()%>
             </td>
         </tr>
         <%
@@ -429,12 +502,12 @@
         %>
         <tr>
             <th>Phone:</th>
-            <td><%= user.getPhone() == null ? "Not Set" : user.getPhone()%>
+            <td><%=user.getPhone() == null ? "Not Set" : user.getPhone()%>
             </td>
         </tr>
         <tr>
             <th>Address:</th>
-            <td><%= user.getAddress() == null ? "Not Set" : user.getAddress().replaceAll("\\n", "<br />")%>
+            <td><%=user.getAddressString() == null ? "Not Set" : user.getAddressString().replaceAll("\\n", "<br />")%>
             </td>
         </tr>
         <%

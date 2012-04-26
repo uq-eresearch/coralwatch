@@ -157,7 +157,7 @@ public class ReputationService {
 
     private static Double getProfileCompletenesRating(UserImpl ratee) {
         Double score = 6.0;
-        String address = ratee.getAddress();
+        String address = ratee.getAddressString();
         String country = ratee.getCountry();
         String displayName = ratee.getDisplayName();
         String email = ratee.getEmail();

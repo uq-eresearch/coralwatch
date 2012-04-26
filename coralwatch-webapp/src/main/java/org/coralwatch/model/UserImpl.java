@@ -4,6 +4,7 @@ import au.edu.uq.itee.maenad.util.HashGenerator;
 import org.hibernate.validator.NotNull;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -36,16 +37,27 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     private String lastName;
 
-    @Column(length = 500)
-    private String address;
+    @Column(name="address", length = 500)
+    private String addressString;
+    
+    private String addressLine1;
+    
+    private String addressLine2;
+    
+    private String city;
+    
+    private String state;
+    
+    private String postcode;
+    
+    @Column(name="country", length = 256)
+    private String country;
 
     private String phone;
 
     private String occupation;
 
     private String positionDescription;
-
-    private String country;
 
     private String passwordHash;
 
@@ -127,12 +139,78 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
         this.id = id;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddressString() {
+        if (addressString != null) {
+            return addressString;
+        }
+        if (addressLine1 != null) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(addressLine1);
+            if (addressLine2 != null && !addressLine2.isEmpty()) {
+                builder.append("\n");
+                builder.append(addressLine2);
+            }
+            builder.append("\n");
+            builder.append(city);
+            builder.append("\n");
+            builder.append(state);
+            builder.append(" ");
+            builder.append(postcode);
+            return builder.toString();
+        }
+        return null;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddressString(String addressString) {
+        this.addressString = addressString;
+    }
+
+    public String getAddressLine1() {
+        return addressLine1;
+    }
+
+    public void setAddressLine1(String addressLine1) {
+        this.addressLine1 = addressLine1;
+    }
+
+    public String getAddressLine2() {
+        return addressLine2;
+    }
+
+    public void setAddressLine2(String addressLine2) {
+        this.addressLine2 = addressLine2;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getOccupation() {
@@ -149,14 +227,6 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     public void setPositionDescription(String positionDescription) {
         this.positionDescription = positionDescription;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public String getPasswordHash() {

@@ -88,18 +88,29 @@ public class UserPortlet extends GenericPortlet {
         String email2 = actionRequest.getParameter("email2");
         String password = actionRequest.getParameter("password");
         String password2 = actionRequest.getParameter("password2");
-        String country = actionRequest.getParameter("country");
         String displayName = actionRequest.getParameter("displayName");
         String firstName = actionRequest.getParameter("firstName");
         String lastName = actionRequest.getParameter("lastName");
+        String addressLine1 = actionRequest.getParameter("addressLine1");
+        String addressLine2 = actionRequest.getParameter("addressLine2");
+        String city = actionRequest.getParameter("city");
+        String state = actionRequest.getParameter("state");
+        String postcode = actionRequest.getParameter("postcode");
+        String country = actionRequest.getParameter("country");
         String phone = actionRequest.getParameter("phone");
         String positionDescription = actionRequest.getParameter("positionDescription");
-        String address = actionRequest.getParameter("address");
         long userId = ParamUtil.getLong(actionRequest, "userId");
 
         if (cmd.equals(Constants.ADD)) {
-            if ((email == null) || email.isEmpty() || (firstName == null) || firstName.isEmpty() || (lastName == null) || lastName.isEmpty() || (displayName == null) || displayName.isEmpty() || (password == null) || (country == null) || country.isEmpty()) {
-                errors.add("All fields are required.");
+            if (
+                (email == null || email.isEmpty()) ||
+                (firstName == null || firstName.isEmpty()) ||
+                (lastName == null || lastName.isEmpty()) ||
+                (displayName == null || displayName.isEmpty()) ||
+                (password == null) ||
+                (country == null || country.isEmpty())
+            ) {
+                errors.add("Please complete required fields.");
             } else {
                 if (!email.equals(email2)) {
                     errors.add("Confirm your email address.");
@@ -114,6 +125,11 @@ public class UserPortlet extends GenericPortlet {
                                 errors.add("An account with the same email already exists.");
                             } else {
                                 UserImpl userImpl = new UserImpl(displayName, email, BCrypt.hashpw(password, BCrypt.gensalt()), false);
+                                userImpl.setAddressLine1(addressLine1);
+                                userImpl.setAddressLine2(addressLine2);
+                                userImpl.setCity(city);
+                                userImpl.setState(state);
+                                userImpl.setPostcode(postcode);
                                 userImpl.setCountry(country);
                                 userImpl.setFirstName(firstName);
                                 userImpl.setLastName(lastName);
@@ -137,8 +153,19 @@ public class UserPortlet extends GenericPortlet {
                 actionRequest.setAttribute("errors", errors);
             }
         } else if (cmd.equals(Constants.EDIT)) {
-            if ((email == null) || email.isEmpty()) {
-                errors.add("Email is required.");
+            if (
+                (email == null || email.isEmpty()) ||
+                (firstName == null || firstName.isEmpty()) ||
+                (lastName == null || lastName.isEmpty()) ||
+                (displayName == null || displayName.isEmpty()) ||
+                (password == null) ||
+                (addressLine1 == null || addressLine1.isEmpty()) ||
+                (city == null || city.isEmpty()) ||
+                (state == null || state.isEmpty()) ||
+                (postcode == null || postcode.isEmpty()) ||
+                (country == null || country.isEmpty())
+            ) {
+                errors.add("Please complete required fields.");
             } else {
                 UserImpl user = userDao.getById(userId);
                 if (!email.equals(user.getEmail()) && !email.equals(email2)) {
@@ -148,34 +175,30 @@ public class UserPortlet extends GenericPortlet {
                     if (userByEmail != null && userByEmail.getId() != userId) {
                         errors.add("Email address is already used.");
                     } else {
-                        if (displayName == null || displayName.isEmpty()) {
-                            errors.add("Display name is required.");
-                        } else {
-                            if (country == null || country.isEmpty()) {
-                                errors.add("Country is required.");
-                            } else {
-                                if (password != null && password2 != null && password.length() >= 6 && password.equals(password2)) {
-                                    user.setPasswordHash(BCrypt.hashpw(password, BCrypt.gensalt()));
-                                }
-                                user.setEmail(email);
-                                user.setDisplayName(displayName);
-                                user.setCountry(country);
-                                user.setFirstName(firstName);
-                                user.setLastName(lastName);
+                        if (password != null && password2 != null && password.length() >= 6 && password.equals(password2)) {
+                            user.setPasswordHash(BCrypt.hashpw(password, BCrypt.gensalt()));
+                        }
+                        user.setEmail(email);
+                        user.setDisplayName(displayName);
+                        user.setFirstName(firstName);
+                        user.setLastName(lastName);
 //                                user.setOccupation(occupation);
-                                user.setPhone(phone);
-                                user.setPositionDescription(positionDescription);
-                                user.setAddress(address);
-                                userDao.update(user);
-                                AppUtil.clearCache();
-                                actionResponse.setRenderParameter("userId", String.valueOf(user.getId()));
-                                actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
-                                //reset user object stored on session
-                                UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
-                                if ((currentUser != null) && (currentUser.getId() == user.getId())) {
-                                    session.setAttribute("currentUser", user, PortletSession.APPLICATION_SCOPE);
-                                }
-                            }
+                        user.setPhone(phone);
+                        user.setPositionDescription(positionDescription);
+                        user.setAddressLine1(addressLine1);
+                        user.setAddressLine2(addressLine2);
+                        user.setCity(city);
+                        user.setState(state);
+                        user.setPostcode(postcode);
+                        user.setCountry(country);
+                        userDao.update(user);
+                        AppUtil.clearCache();
+                        actionResponse.setRenderParameter("userId", String.valueOf(user.getId()));
+                        actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
+                        //reset user object stored on session
+                        UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
+                        if ((currentUser != null) && (currentUser.getId() == user.getId())) {
+                            session.setAttribute("currentUser", user, PortletSession.APPLICATION_SCOPE);
                         }
                     }
 
