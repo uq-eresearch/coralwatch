@@ -146,7 +146,7 @@ public class KitRequest implements Serializable {
             builder.append(postcode);
             return builder.toString();
         }
-        return null;
+        return requester.getAddressString();
     }
 
     public void setAddressString(String addressString) {
@@ -154,7 +154,7 @@ public class KitRequest implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return (name != null) ? name : requester.getFullName(); 
     }
 
     public void setName(String name) {
@@ -202,7 +202,7 @@ public class KitRequest implements Serializable {
     }
 
     public String getCountry() {
-        return country;
+        return (country != null) ? country : requester.getCountry();
     }
 
     public void setCountry(String country) {
@@ -210,7 +210,7 @@ public class KitRequest implements Serializable {
     }
 
     public String getPhone() {
-        return phone;
+        return (phone != null) ? phone : requester.getPhone();
     }
 
     public void setPhone(String phone) {
@@ -218,7 +218,7 @@ public class KitRequest implements Serializable {
     }
 
     public String getEmail() {
-        return email;
+        return (email != null) ? email : requester.getEmail();
     }
 
     public void setEmail(String email) {
