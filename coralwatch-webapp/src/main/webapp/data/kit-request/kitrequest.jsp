@@ -40,40 +40,59 @@
     if (userKitRequests.size() > 0) {
 %>
 <div id="mykitrequest" dojoType="dijit.layout.ContentPane" title="My Chart Requests" style="width:670px; height:130ex">
-    <table class="coralwatch_list_table">
-        <tr>
-            <th>#</th>
-            <th>Date</th>
-            <th>Request</th>
-            <th>Language</th>
-            <th>Dispatched Date</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Country</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Notes</th>
-        </tr>
+    <ul>
         <%
             for (int i = 0; i < userKitRequests.size(); i++) {
         %>
-        <tr>
-            <td><%=(i + 1)%></td>
-            <td><%=dateFormat.format(userKitRequests.get(i).getRequestDate())%></td>
-            <td><%=userKitRequests.get(i).getKitType() == null ? "" : userKitRequests.get(i).getKitType()%></td>
-            <td><%=userKitRequests.get(i).getLanguage() == null ? "" : userKitRequests.get(i).getLanguage()%></td>
-            <td><%=userKitRequests.get(i).getDispatchdate() == null ? "Not Yet" : dateFormat.format(userKitRequests.get(i).getDispatchdate())%></td>
-            <td><%=userKitRequests.get(i).getName() == null ? "" : userKitRequests.get(i).getName()%></td>
-            <td><%=userKitRequests.get(i).getAddressString() == null ? "" : userKitRequests.get(i).getAddressString().replaceAll("\\n", "<br />")%></td>
-            <td><%=userKitRequests.get(i).getCountry() == null ? "" : userKitRequests.get(i).getCountry()%></td>
-            <td><%=userKitRequests.get(i).getPhone() == null ? "" : userKitRequests.get(i).getPhone()%></td>
-            <td><%=userKitRequests.get(i).getEmail() == null ? "" : userKitRequests.get(i).getEmail()%></td>
-            <td><%=userKitRequests.get(i).getNotes() == null ? "" : userKitRequests.get(i).getNotes()%></td>
-        </tr>
+        <li>
+            <span style="font-weight: bold;">
+                Request <%=(i + 1)%>
+                by <%=userKitRequests.get(i).getRequester().getFullName()%>
+	            on <%=dateFormat.format(userKitRequests.get(i).getRequestDate())%>
+            </span>
+            <table class="coralwatch_list_table" style="margin: 0.5em 0;">
+                <tr>
+                    <th style="width: 8em;">Requested</th>
+                    <td><%=userKitRequests.get(i).getKitType() == null ? "" : userKitRequests.get(i).getKitType()%></td>
+                </tr>
+                <tr>
+                    <th style="width: 8em;">Language</th>
+                    <td><%=userKitRequests.get(i).getLanguage() == null ? "" : userKitRequests.get(i).getLanguage()%></td>
+                </tr>
+                <tr>
+                    <th style="width: 8em;">Name</th>
+                    <td><%=userKitRequests.get(i).getName() == null ? "" : userKitRequests.get(i).getName()%></td>
+                </tr>
+                <tr>
+                    <th style="width: 8em;">Address</th>
+                    <td><%=userKitRequests.get(i).getAddressString() == null ? "" : userKitRequests.get(i).getAddressString().replaceAll("\\n", "<br />")%></td>
+                </tr>
+                <tr>
+                    <th style="width: 8em;">Country</th>
+                    <td><%=userKitRequests.get(i).getCountry() == null ? "" : userKitRequests.get(i).getCountry()%></td>
+                </tr>
+                <tr>
+                    <th style="width: 8em;">Phone</th>
+                    <td><%=userKitRequests.get(i).getPhone() == null ? "" : userKitRequests.get(i).getPhone()%></td>
+                </tr>
+                <tr>
+                    <th style="width: 8em;">Email</th>
+                    <td><%=userKitRequests.get(i).getEmail() == null ? "" : userKitRequests.get(i).getEmail()%></td>
+                </tr>
+                <tr>
+                    <th style="width: 8em;">Notes</th>
+                    <td><%=userKitRequests.get(i).getNotes() == null ? "" : userKitRequests.get(i).getNotes()%></td>
+                </tr>
+                <tr>
+                    <th style="width: 8em;">Dispatched</th>
+                    <td><%=userKitRequests.get(i).getDispatchdate() == null ? "Not Yet" : dateFormat.format(userKitRequests.get(i).getDispatchdate())%></td>
+                </tr>
+            </table>
+        </li>
         <%
             }
         %>
-    </table>
+    </ul>
 </div>
 <%
     }
@@ -345,49 +364,77 @@
         }
     }
 </script>
-<div id="allkitrequests" dojoType="dijit.layout.ContentPane" title="All Chart Requests"
-     style="width:670px; height:130ex">
-    <table class="coralwatch_list_table">
-        <tr>
-            <th>#</th>
-            <th>Requester</th>
-            <th>Name</th>
-            <th>Request</th>
-            <th>Language</th>
-            <th>Address</th>
-            <th>Country</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Notes</th>
-            <th>Dispatcher</th>
-            <th>Dispatch</th>
-        </tr>
+<div id="allkitrequests" dojoType="dijit.layout.ContentPane" title="All Chart Requests" style="width:670px; height:130ex">
+    <ul>
         <%
             for (int i = 0; i < kitRequests.size(); i++) {
         %>
-        <tr>
-            <td><%=(i + 1)%></td>
-            <td><%=kitRequests.get(i).getRequester().getDisplayName()%></td>
-            <td><%=kitRequests.get(i).getName() == null ? "" : kitRequests.get(i).getName()%></td>
-            <td><%=kitRequests.get(i).getKitType() == null ? "" : kitRequests.get(i).getKitType()%></td>
-            <td><%=kitRequests.get(i).getLanguage() == null ? "" : kitRequests.get(i).getLanguage()%></td>
-            <td><%=kitRequests.get(i).getAddressString() == null ? "" : kitRequests.get(i).getAddressString().replaceAll("\\n", "<br />")%></td>
-            <td><%=kitRequests.get(i).getCountry() == null ? "" : kitRequests.get(i).getCountry()%></td>
-            <td><%=kitRequests.get(i).getPhone() == null ? "" : kitRequests.get(i).getPhone()%></td>
-            <td><%=kitRequests.get(i).getEmail() == null ? "" : kitRequests.get(i).getEmail()%></td>
-            <td><%=kitRequests.get(i).getNotes() == null ? "" : kitRequests.get(i).getNotes()%></td>
-            <td id="dispatcher<%=kitRequests.get(i).getId()%>"><%=kitRequests.get(i).getDispatcher() == null ? "" : kitRequests.get(i).getDispatcher().getDisplayName()%></td>
-            <td id="button<%=kitRequests.get(i).getId()%>"><%if (kitRequests.get(i).getDispatchdate() == null) { %>
-                <button dojoType="dijit.form.Button" name="dispatch"
-                        onClick="dispatch('<%=kitRequests.get(i).getId()%>'); return false;">Dispatch
-                </button>
-                <%} else {%> <%=dateFormat.format(kitRequests.get(i).getDispatchdate())%><%}%>
-            </td>
-        </tr>
+        <li>
+            <span style="font-weight: bold;">
+                Request <%=(i + 1)%>
+                by <%=kitRequests.get(i).getRequester().getFullName()%>
+                on <%=dateFormat.format(kitRequests.get(i).getRequestDate())%>
+            </span>
+            <table class="coralwatch_list_table" style="margin: 0.5em 0;">
+	            <tr>
+	                <th style="width: 8em;">Requested</th>
+	                <td><%=kitRequests.get(i).getKitType() == null ? "" : kitRequests.get(i).getKitType()%></td>
+                </tr>
+	            <tr>
+	                <th style="width: 8em;">Language</th>
+	                <td><%=kitRequests.get(i).getLanguage() == null ? "" : kitRequests.get(i).getLanguage()%></td>
+	            </tr>
+	            <tr>
+                    <th style="width: 8em;">Name</th>
+                    <td><%=kitRequests.get(i).getName() == null ? "" : kitRequests.get(i).getName()%></td>
+                </tr>
+	            <tr>
+	                <th style="width: 8em;">Address</th>
+	                <td><%=kitRequests.get(i).getAddressString() == null ? "" : kitRequests.get(i).getAddressString().replaceAll("\\n", "<br />")%></td>
+                </tr>
+	            <tr>
+	                <th style="width: 8em;">Country</th>
+	                <td><%=kitRequests.get(i).getCountry() == null ? "" : kitRequests.get(i).getCountry()%></td>
+                </tr>
+	            <tr>
+	                <th style="width: 8em;">Phone</th>
+	                <td><%=kitRequests.get(i).getPhone() == null ? "" : kitRequests.get(i).getPhone()%></td>
+	            </tr>
+	            <tr>
+	                <th style="width: 8em;">Email</th>
+	                <td><%=kitRequests.get(i).getEmail() == null ? "" : kitRequests.get(i).getEmail()%></td>
+                </tr>
+	            <tr>
+	                <th style="width: 8em;">Notes</th>
+	                <td><%=kitRequests.get(i).getNotes() == null ? "" : kitRequests.get(i).getNotes()%></td>
+                </tr>
+	            <tr>
+	                <th style="width: 8em;">Dispatcher</th>
+	                <td id="dispatcher<%=kitRequests.get(i).getId()%>">
+	                    <%=kitRequests.get(i).getDispatcher() == null ? "" : kitRequests.get(i).getDispatcher().getDisplayName()%>
+	                </td>
+                </tr>
+	            <tr>
+	                <th style="width: 8em;">Dispatch</th>
+	                <td id="button<%=kitRequests.get(i).getId()%>">
+		                <%if (kitRequests.get(i).getDispatchdate() == null) { %>
+		                <button
+		                    name="dispatch"
+		                    dojoType="dijit.form.Button"
+		                    onClick="dispatch('<%=kitRequests.get(i).getId()%>'); return false;">
+		                    Dispatch
+		                </button>
+		                <%} else {%>
+		                <%=dateFormat.format(kitRequests.get(i).getDispatchdate())%>
+		                <%}%>
+	                </td>
+	            </tr>
+            </table>
+        </li>
         <%
             }
         %>
-    </table>
+    </ul>
 </div>
 <%
         }
