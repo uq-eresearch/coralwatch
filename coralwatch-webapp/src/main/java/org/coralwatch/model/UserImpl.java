@@ -37,6 +37,9 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     private String lastName;
 
+    // Do not set this field, decommissioned as part of Ticket #473 (Improve address entry for kit requests).
+    // Instead set these fields: addressLine1, addressLine2, city, state, postcode.
+    // See getter function below, which will first look in the new fields, but fall back on this one.
     @Column(name="address", length = 500)
     private String addressString;
     
@@ -129,6 +132,16 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+    
+    public String getFullName() {
+        if (firstName != null && lastName != null) {
+            return firstName + " " + lastName;
+        }
+        if (displayName != null) {
+            return displayName;
+        }
+        return null;
     }
 
     public long getId() {

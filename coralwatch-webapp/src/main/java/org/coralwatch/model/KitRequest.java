@@ -36,6 +36,9 @@ public class KitRequest implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dispatchdate;
 
+    // Do not set this field, decommissioned as part of Ticket #473 (Improve address entry for kit requests).
+    // Instead set these fields: addressLine1, addressLine2, city, state, postcode.
+    // See getter function below, which will first look in the new fields, but fall back on this one.
     @Column(name="address", length = 500)
     private String addressString;
     
@@ -72,7 +75,7 @@ public class KitRequest implements Serializable {
 
     public KitRequest(UserImpl requester) {
         this.requester = requester;
-        this.name = requester.getDisplayName();
+        this.name = requester.getFullName();
         this.addressLine1 = requester.getAddressLine1();
         this.addressLine2 = requester.getAddressLine2();
         this.city = requester.getCity();

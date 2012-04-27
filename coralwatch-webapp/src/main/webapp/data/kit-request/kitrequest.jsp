@@ -85,13 +85,6 @@
     <div><span class="portlet-msg-error">You must sign in to submit a chart request.</span></div>
     <%
         }
-            if (currentUser != null && (currentUser.getFirstName() == null || currentUser.getLastName() == null)) {
-    %>
-    <div><span class="portlet-msg-error">You must set your first and last names on your profile so we can address your request to you. Click <a
-            href="<%=renderRequest.getAttribute("userUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%=Constants.CMD%>=<%=Constants.VIEW%>&_userportlet_WAR_coralwatch_userId=<%=currentUser.getId()%>">here</a> to edit your profile.</span>
-    </div>
-    <%
-        }
     %>
     <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm"
           jsId="kitReqForm" id="kitReqForm">
@@ -105,16 +98,6 @@
             alert('You must sign in before you can submit a chart request.');
             return false;
             }
-            <%if (currentUser != null && (currentUser.getFirstName() == null || currentUser.getLastName() == null)) {%>
-            var isNameSet = false;
-            <%} else {%>
-            var isNameSet = true;
-            <%}%>
-            if(!isNameSet) {
-            alert('You must set your full name in your profile before you can submit a chart request.');
-            return false;
-            }
-
             if(!this.validate()){
             alert('Form contains invalid data. Please correct errors first.');
             return false;
@@ -176,7 +159,7 @@
                            style="width: 300px;"
                            dojoType="dijit.form.TextBox"
                            trim="true"
-                           value="<%=currentUser == null || currentUser.getDisplayName() == null ? "" :  currentUser.getDisplayName()%>" />
+                           value="<%=currentUser == null || currentUser.getFullName() == null ? "" :  currentUser.getFullName()%>" />
                 </td>
             </tr>
             <tr>
@@ -293,14 +276,14 @@
             </tr>
             <tr>
                 <th style="vertical-align: top; padding: 0.5em;">
-                    <label for="email">Email</label>
+                    <label for="email">Email <span style="color:#FF0000">*</span></label>
                 </th>
                 <td style="vertical-align: top;">
                     <input
                            type="text"
                            name="email"
                            id="email"
-                           required="false"
+                           required="true"
                            style="width: 300px;"
                            dojoType="dijit.form.TextBox"
                            trim="true"
@@ -368,11 +351,13 @@
         <tr>
             <th>#</th>
             <th>Requester</th>
-            <th>Full Name</th>
+            <th>Name</th>
             <th>Request</th>
             <th>Language</th>
             <th>Address</th>
             <th>Country</th>
+            <th>Phone</th>
+            <th>Email</th>
             <th>Notes</th>
             <th>Dispatcher</th>
             <th>Dispatch</th>
@@ -381,28 +366,17 @@
             for (int i = 0; i < kitRequests.size(); i++) {
         %>
         <tr>
-            <td><%=(i + 1)%>
-            </td>
-            <td><%=kitRequests.get(i).getRequester().getDisplayName()%>
-            </td>
-
-
-            <td><%=kitRequests.get(i).getRequester().getFirstName() == null && kitRequests.get(i).getRequester().getLastName() == null ? "" : kitRequests.get(i).getRequester().getFirstName() + " " + kitRequests.get(i).getRequester().getLastName()%>
-            </td>
-
-
-            <td><%=kitRequests.get(i).getKitType() == null ? "" : kitRequests.get(i).getKitType()%>
-            </td>
-            <td><%=kitRequests.get(i).getLanguage() == null ? "" : kitRequests.get(i).getLanguage()%>
-            </td>
-            <td><%=kitRequests.get(i).getAddressString() == null ? "" : kitRequests.get(i).getAddressString().replaceAll("\\n", "<br />")%>
-            </td>
-            <td><%=kitRequests.get(i).getCountry() == null ? "" : kitRequests.get(i).getCountry()%>
-            </td>
-            <td><%=kitRequests.get(i).getNotes() == null ? "" : kitRequests.get(i).getNotes()%>
-            </td>
-            <td id="dispatcher<%=kitRequests.get(i).getId()%>"><%=kitRequests.get(i).getDispatcher() == null ? "" : kitRequests.get(i).getDispatcher().getDisplayName()%>
-            </td>
+            <td><%=(i + 1)%></td>
+            <td><%=kitRequests.get(i).getRequester().getDisplayName()%></td>
+            <td><%=kitRequests.get(i).getName() == null ? "" : kitRequests.get(i).getName()%></td>
+            <td><%=kitRequests.get(i).getKitType() == null ? "" : kitRequests.get(i).getKitType()%></td>
+            <td><%=kitRequests.get(i).getLanguage() == null ? "" : kitRequests.get(i).getLanguage()%></td>
+            <td><%=kitRequests.get(i).getAddressString() == null ? "" : kitRequests.get(i).getAddressString().replaceAll("\\n", "<br />")%></td>
+            <td><%=kitRequests.get(i).getCountry() == null ? "" : kitRequests.get(i).getCountry()%></td>
+            <td><%=kitRequests.get(i).getPhone() == null ? "" : kitRequests.get(i).getPhone()%></td>
+            <td><%=kitRequests.get(i).getEmail() == null ? "" : kitRequests.get(i).getEmail()%></td>
+            <td><%=kitRequests.get(i).getNotes() == null ? "" : kitRequests.get(i).getNotes()%></td>
+            <td id="dispatcher<%=kitRequests.get(i).getId()%>"><%=kitRequests.get(i).getDispatcher() == null ? "" : kitRequests.get(i).getDispatcher().getDisplayName()%></td>
             <td id="button<%=kitRequests.get(i).getId()%>"><%if (kitRequests.get(i).getDispatchdate() == null) { %>
                 <button dojoType="dijit.form.Button" name="dispatch"
                         onClick="dispatch('<%=kitRequests.get(i).getId()%>'); return false;">Dispatch
