@@ -29,6 +29,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -154,15 +155,29 @@ public class UserPortlet extends GenericPortlet {
             }
         } else if (cmd.equals(Constants.EDIT)) {
             if (
+                (
+                    StringUtils.isNotBlank(addressLine1) ||
+                    StringUtils.isNotBlank(addressLine2) ||
+                    StringUtils.isNotBlank(city) ||
+                    StringUtils.isNotBlank(state) ||
+                    StringUtils.isNotBlank(postcode)
+                )
+                &&
+                (
+                    StringUtils.isBlank(addressLine1) ||
+                    StringUtils.isBlank(city) ||
+                    StringUtils.isBlank(state) ||
+                    StringUtils.isBlank(postcode)
+                )
+            ) {
+                errors.add("Addresses must include Address Line 1, City, State, and Postcode (or leave all blank).");
+            }
+            if (
                 (email == null || email.isEmpty()) ||
                 (firstName == null || firstName.isEmpty()) ||
                 (lastName == null || lastName.isEmpty()) ||
                 (displayName == null || displayName.isEmpty()) ||
                 (password == null) ||
-                (addressLine1 == null || addressLine1.isEmpty()) ||
-                (city == null || city.isEmpty()) ||
-                (state == null || state.isEmpty()) ||
-                (postcode == null || postcode.isEmpty()) ||
                 (country == null || country.isEmpty())
             ) {
                 errors.add("Please complete required fields.");
