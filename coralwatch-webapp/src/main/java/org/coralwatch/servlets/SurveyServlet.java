@@ -1,21 +1,10 @@
 package org.coralwatch.servlets;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.coralwatch.app.CoralwatchApplication;
-import org.coralwatch.dataaccess.ReefDao;
-import org.coralwatch.dataaccess.SurveyDao;
-import org.coralwatch.dataaccess.UserDao;
-import org.coralwatch.model.Reef;
-import org.coralwatch.model.Survey;
-import org.coralwatch.model.UserImpl;
-import org.coralwatch.util.AppUtil;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,11 +17,24 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.List;
-import java.util.Random;
+
+import org.coralwatch.app.CoralwatchApplication;
+import org.coralwatch.dataaccess.ReefDao;
+import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.dataaccess.UserDao;
+import org.coralwatch.model.Reef;
+import org.coralwatch.model.Survey;
+import org.coralwatch.model.UserImpl;
+import org.coralwatch.util.AppUtil;
+import org.hibernate.ScrollableResults;
+import org.json.JSONException;
+import org.json.JSONWriter;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 public class SurveyServlet extends HttpServlet {
 
@@ -48,45 +50,38 @@ public class SurveyServlet extends HttpServlet {
         if (format.equals("json")) {
             res.setContentType("application/json;charset=utf-8");
             PrintWriter out = res.getWriter();
-            JSONArray surveys = new JSONArray();
-            List<Survey> listOfSurveys = surveyDao.getAll();
-            int count = 0;
-            for (Survey srv : listOfSurveys) {
-                try {
-                    if (srv.getLatitude() != null && srv.getLongitude() != null) {
-                        JSONObject survey = new JSONObject();
-                        survey.putOpt("id", srv.getId());
-                        survey.putOpt("reef", srv.getReef().getName());
-                        String country = srv.getReef().getCountry();
-                        survey.putOpt("country", country == null || country.toLowerCase().startsWith("unknown") ? "" : country);
-                        survey.putOpt("latitude", srv.getLatitude());
-                        survey.putOpt("longitude", srv.getLongitude());
-                        survey.putOpt("records", surveyDao.getSurveyRecords(srv).size());
-
-                        //Rating stuff
-                        if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
-                            survey.putOpt("rating", rand.nextInt(6));
-                        }
-
-                        @SuppressWarnings("deprecation")
-                        String localeString = srv.getDate().toLocaleString();
-                        survey.putOpt("date", localeString);
-                        surveys.put(survey);
-                        count++;
-                    }
-                } catch (JSONException e) {
-                    LOGGER.fatal("Cannot create survey json object." + e.toString());
-                }
-            }
-            JSONObject data = new JSONObject();
-
+            JSONWriter writer = new JSONWriter(out);
+            ScrollableResults surveys = surveyDao.getSurveysIterator();
             try {
-                data.putOpt("count", count);
-                data.putOpt("surveys", surveys);
-            } catch (JSONException ex) {
-                LOGGER.fatal("Cannot create data json object." + ex.toString());
+                writer.array();
+                surveys.beforeFirst();
+                while (surveys.next()) {
+                    Survey survey = (Survey) surveys.get(0);
+                    try {
+                        if (survey.getLatitude() != null && survey.getLongitude() != null) {
+                            writer.object();
+                            writer.key("id");
+                            writer.value(survey.getId());
+                            writer.key("lat");
+                            writer.value(survey.getLatitude());
+                            writer.key("lng");
+                            writer.value(survey.getLongitude());
+                            @SuppressWarnings("deprecation")
+                            String localeString = survey.getDate().toLocaleString();
+                            writer.key("date");
+                            writer.value(localeString);
+                            writer.endObject();
+                        }
+                    }
+                    catch (JSONException e) {
+                        LOGGER.error("Exception creating survey JSON", e);
+                    }
+                }
+                writer.endArray();
             }
-            out.print(data);
+            catch (JSONException e) {
+                throw new ServletException("Exception creating surveys JSON", e);
+            }
         } else if (format.equals("xml")) {
             res.setContentType("text/xml;charset=utf-8");
             PrintWriter out = res.getWriter();

@@ -85,10 +85,23 @@
         }
     }
 
-    function newMarker(markerLocation, title, content, markerIcon) {
+    function newMarker(markerLocation, title, surveyId, markerIcon) {
         var marker = new GMarker(markerLocation, {title:title, icon:markerIcon});
         eventListeners.push(GEvent.addListener(marker, 'click', function() {
-            marker.openInfoWindowHtml(content);
+            dojo.xhrGet({
+                url: '<portlet:resourceURL id="survey"/>',
+                content: {
+                    <portlet:namespace/>format: 'html',
+                    <portlet:namespace/>id: surveyId,
+                },
+                handleAs: "text",
+                load: function(content) {
+                    marker.openInfoWindowHtml(content);
+                },
+                error: function(error) {
+                    marker.openInfoWindowHtml("Error opening survey details.");
+                }
+            });
         }));
         return marker;
     }
@@ -107,31 +120,18 @@
         var xhrArgs = {
             url: "<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/surveys?format=json")%>",
             handleAs: "json",
-            load: function(data) {
-                surveyList = data;
-                //Call the asynchronous xhrGet
-
-                var json = [];
+            load: function(surveys) {
                 var icon = new GIcon(G_DEFAULT_ICON);
 
-                var marker;
-                for (var i = 0; i < surveyList.surveys.length; i++) {
-                    var survey = surveyList.surveys[i];
-                    var baseUrl = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>";
-                    var piechartUrl = baseUrl + "/graph?type=survey&id=" + survey.id + "&chart=shapePie&width=256&height=256&labels=false&legend=true&titleSize=11";
-                    var coralcountchartUrl = baseUrl + "/graph?type=survey&id=" + survey.id + "&chart=coralCount&width=256&height=256&legend=false&titleSize=11";
-                    var numberOfRecs = parseInt(survey.records);
-                    var graphs = numberOfRecs <= 0 ? "" : "<br /><img src=\"" + piechartUrl + "\" alt=\"Shape Distribution\" width=\"256\" height=\"256\"/><img src=\"" + coralcountchartUrl + "\" alt=\"Shape Distribution\" width=\"256\" height=\"256\"/>";
-                    var content = "<b>" + survey.reef + " (" + survey.country + ")</b><br />- <a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + survey.id + "\">" + numberOfRecs + " Record(s)</a><br />- " + survey.date + graphs + "<br/><div dojoType='dojox.form.Rating' numStars='5' value='1'></div>";
-                    var title = "- " + survey.date;
-                    marker = newMarker(new GLatLng(survey.latitude, survey.longitude), title, content, icon);
+                for (var i = 0; i < surveys.length; i++) {
+                    var survey = surveys[i];
+                    var marker = newMarker(new GLatLng(survey.lat, survey.lng), survey.date, survey.id, icon);
                     markersArray.push(marker);
                 }
                 cluster.removeMarkers();
                 cluster.addMarkers(markersArray);
                 cluster.refresh(true);
                 map.savePosition();
-                json = [];
                 dialog.hide();
             },
             error: function(error) {
