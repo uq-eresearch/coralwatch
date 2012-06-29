@@ -1269,9 +1269,8 @@
 <%
     //If no cmd is given then display list of surveys
 } else {
-    //If a user is given then display only surveys created by this user and pass it is id to servlet
     long userId = ParamUtil.getLong(request, "userId");
-    long createdByUserId = -1;
+    Long createdByUserId = null;
     if (userId > 0) {
         createdByUserId = userId;
     }
@@ -1431,7 +1430,7 @@
 <br/>
 
 <div dojoType="dojox.data.XmlStore"
-     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/surveys?format=xml&createdByUserId=<%=createdByUserId%>"
+     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/surveys?format=xml<% if (createdByUserId != null) { %>&createdByUserId=<%=createdByUserId%><% } %>"
      jsId="surveyStore" label="title">
     <script type="dojo/method" event="onLoad">
         grid.setSortIndex(1, true);
