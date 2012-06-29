@@ -7,7 +7,9 @@ import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
+import org.coralwatch.model.UserImpl;
 import org.hibernate.CacheMode;
+import org.hibernate.Query;
 import org.hibernate.ScrollableResults;
 import org.hibernate.ejb.HibernateEntityManager;
 
@@ -72,5 +74,39 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             .setFetchSize(50)
             .setParameter("reefId", reef.getId())
             .scroll();
+    }
+    
+    @Override
+    public ScrollableResults getSurveysForDojo(Reef reef, UserImpl surveyCreator) {
+        HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
+        String queryString =
+            "SELECT\n" +
+            "    survey.creator.displayName,\n" +
+            "    survey.date,\n" +
+            "    survey.reef.name,\n" +
+            "    survey.reef.country,\n" +
+            "    count(surveyRecord),\n" +
+            "    survey.id\n" +
+            "FROM Survey survey\n" +
+            "JOIN survey.dataset as surveyRecord\n";
+        if (reef != null) {
+            queryString += "WHERE survey.reef.id = :reefId\n";
+        }
+        if (surveyCreator != null) {
+            queryString += ((reef != null) ? "AND" : "WHERE") + " survey.creator.id = :surveyCreatorId\n";
+        }
+        queryString += "GROUP BY survey.id, survey.date, survey.creator.displayName, survey.reef.name, survey.reef.country\n";
+        queryString += "ORDER BY survey.date DESC";
+        Query query = entityManager.getSession()
+            .createQuery(queryString)
+            .setCacheMode(CacheMode.IGNORE)
+            .setFetchSize(50);
+        if (reef != null) {
+            query.setParameter("reefId", reef.getId());
+        }
+        if (surveyCreator != null) {
+            query.setParameter("surveyCreatorId", reef.getId());
+        }
+        return query.scroll();
     }
 }

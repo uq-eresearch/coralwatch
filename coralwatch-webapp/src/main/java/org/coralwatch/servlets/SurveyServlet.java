@@ -2,7 +2,7 @@ package org.coralwatch.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.util.Date;
 import java.util.Random;
 
 import javax.servlet.ServletException;
@@ -77,52 +77,59 @@ public class SurveyServlet extends HttpServlet {
             res.setContentType("text/xml;charset=utf-8");
             PrintWriter out = res.getWriter();
             try {
-                List<Survey> listOfSurveys = null;
+                ScrollableResults results = null;
                 String createdByUserIdParam = req.getParameter("createdByUserId");
                 String reefIdParam = req.getParameter("reefId");
                 if (createdByUserIdParam != null) {
                     long createdByUserId = Long.valueOf(createdByUserIdParam);
                     UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
                     UserImpl surveyCreator = userDao.getById(createdByUserId);
-                    listOfSurveys = userDao.getSurveyEntriesCreated(surveyCreator);
+                    results = surveyDao.getSurveysForDojo(null, surveyCreator);
                 }
                 else if (reefIdParam != null) {
                     long reefId = Long.valueOf(reefIdParam);
                     ReefDao reefDao = CoralwatchApplication.getConfiguration().getReefDao();
                     Reef reef = reefDao.getById(reefId);
-                    listOfSurveys = reefDao.getSurveysByReef(reef);
+                    results = surveyDao.getSurveysForDojo(reef, null);
                 }
                 else {
-                    listOfSurveys = surveyDao.getAll();
+                    results = surveyDao.getSurveysForDojo(null, null);
                 }
 
                 XMLOutputFactory output = XMLOutputFactory.newInstance();
                 XMLStreamWriter writer = output.createXMLStreamWriter(out);
                 writer.writeStartDocument();
 
+                results.beforeFirst();
                 writer.writeStartElement("surveys");
-                for (Survey srv : listOfSurveys) {
+                while (results.next()) {
+                    String creatorDisplayName = (String) results.get(0);
+                    Date date = (Date) results.get(1);
+                    String reefName = (String) results.get(2);
+                    String country = (String) results.get(3);
+                    Number numSurveyRecords = (Number) results.get(4);
+                    Long surveyId = (Long) results.get(5);
+                    
                     writer.writeStartElement("survey");
 
                     writer.writeStartElement("surveyor");
-                    writer.writeCharacters(srv.getCreator().getDisplayName());
+                    writer.writeCharacters(creatorDisplayName);
                     writer.writeEndElement();
 
                     writer.writeStartElement("date");
-                    writer.writeCharacters(srv.getDate().getTime() + "");
+                    writer.writeCharacters(String.valueOf(date.getTime()));
                     writer.writeEndElement();
 
                     writer.writeStartElement("reef");
-                    writer.writeCharacters(srv.getReef().getName());
+                    writer.writeCharacters(reefName);
                     writer.writeEndElement();
 
                     writer.writeStartElement("country");
-                    String country = srv.getReef().getCountry();
                     writer.writeCharacters(country == null || country.toLowerCase().startsWith("unknown") ? "" : country);
                     writer.writeEndElement();
 
                     writer.writeStartElement("records");
-                    writer.writeCharacters(surveyDao.getSurveyRecords(srv).size() + "");
+                    writer.writeCharacters(String.valueOf(numSurveyRecords));
                     writer.writeEndElement();
 
                     if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
@@ -132,7 +139,7 @@ public class SurveyServlet extends HttpServlet {
                     }
 
                     writer.writeStartElement("view");
-                    writer.writeCharacters(srv.getId() + "");
+                    writer.writeCharacters(surveyId + "");
                     writer.writeEndElement();
 
                     writer.writeEndElement();

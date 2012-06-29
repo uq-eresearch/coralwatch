@@ -5,6 +5,7 @@ import java.util.List;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
+import org.coralwatch.model.UserImpl;
 import org.hibernate.ScrollableResults;
 
 import au.edu.uq.itee.maenad.dataaccess.Dao;
@@ -17,4 +18,5 @@ public interface SurveyDao extends Dao<Survey> {
     
     public ScrollableResults getSurveysIterator();
     public ScrollableResults getSurveysIterator(Reef reef);
+    public ScrollableResults getSurveysForDojo(Reef reef, UserImpl surveyCreator);
 }
