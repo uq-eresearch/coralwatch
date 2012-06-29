@@ -147,10 +147,8 @@ public class SurveyServlet extends HttpServlet {
                 writer.writeEndElement();
             }
             catch (Exception e) {
-                LOGGER.fatal("Cannot create survey xml list." + e.toString());
+                LOGGER.error("Exception creating survey XML", e);
             }
-
         }
     }
-
 }

@@ -105,7 +105,7 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             query.setParameter("reefId", reef.getId());
         }
         if (surveyCreator != null) {
-            query.setParameter("surveyCreatorId", reef.getId());
+            query.setParameter("surveyCreatorId", surveyCreator.getId());
         }
         return query.scroll();
     }
