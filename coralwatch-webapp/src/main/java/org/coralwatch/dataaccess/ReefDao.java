@@ -3,6 +3,7 @@ package org.coralwatch.dataaccess;
 import au.edu.uq.itee.maenad.dataaccess.Dao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
+import org.hibernate.ScrollableResults;
 
 import java.util.List;
 
@@ -16,5 +17,7 @@ public interface ReefDao extends Dao<Reef> {
     Reef getById(Long id);
 
     int count();
+
+    public ScrollableResults getReefsIterator();
 }
 

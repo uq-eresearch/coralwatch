@@ -5,6 +5,10 @@ import au.edu.uq.itee.maenad.dataaccess.jpa.JpaDao;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
+import org.hibernate.CacheMode;
+import org.hibernate.Query;
+import org.hibernate.ScrollableResults;
+import org.hibernate.ejb.HibernateEntityManager;
 
 import java.io.Serializable;
 import java.util.List;
@@ -71,4 +75,18 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao, Serializable {
             return 0;
         }
     }
+
+    @Override
+    public ScrollableResults getReefsIterator() {
+        HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
+        String queryStr = "select reef.id, reef.country, reef.name, count(survey.id) as surveys" +
+                " from reef left outer join survey on (reef.id = survey.reef_id)" +
+                " group by reef.id, reef.country, reef.name order by reef.country, reef.name;";
+        Query query = entityManager.getSession()
+            .createSQLQuery(queryStr)
+            .setCacheMode(CacheMode.IGNORE)
+            .setFetchSize(50);
+        return query.scroll();
+    }
+    
 }

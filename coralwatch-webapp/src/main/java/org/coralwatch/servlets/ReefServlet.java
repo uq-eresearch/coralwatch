@@ -1,17 +1,9 @@
 package org.coralwatch.servlets;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.coralwatch.app.CoralwatchApplication;
-import org.coralwatch.dataaccess.ReefDao;
-import org.coralwatch.model.Reef;
-import org.coralwatch.util.AppUtil;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,14 +16,25 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.List;
+
+import org.coralwatch.app.CoralwatchApplication;
+import org.coralwatch.dataaccess.ReefDao;
+import org.coralwatch.model.Reef;
+import org.coralwatch.util.AppUtil;
+import org.hibernate.ScrollableResults;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 public class ReefServlet extends HttpServlet {
 
-    private static Log LOGGER = LogFactoryUtil.getLog(SurveyServlet.class);
+    private static Log LOGGER = LogFactoryUtil.getLog(ReefServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -52,37 +55,41 @@ public class ReefServlet extends HttpServlet {
                 //adding a node after the last child node of the specified node.
                 doc.appendChild(root);
 
-                List<Reef> listOfReefs = reefDao.getAll();
+                ScrollableResults results = reefDao.getReefsIterator();
+                results.beforeFirst();
+                while (results.next()) {
+                    long reefId = ((Number) results.get(0)).longValue();
+                    String country = (String) results.get(1);
+                    String name = (String) results.get(2);
+                    long numSurveyRecords = ((Number) results.get(3)).longValue();
 
-                for (Reef reef : listOfReefs) {
-                    if (!reef.getName().toLowerCase().startsWith("unknown")) {
+                    if (!name.toLowerCase().startsWith("unknown")) {
                         Element reefNode = doc.createElement("reef");
                         root.appendChild(reefNode);
 
                         Element reefNameNode = doc.createElement("name");
                         reefNode.appendChild(reefNameNode);
-                        Text reefName = doc.createTextNode(reef.getName());
+                        Text reefName = doc.createTextNode(name);
                         reefNameNode.appendChild(reefName);
 
                         Element reefCountryNode = doc.createElement("country");
                         reefNode.appendChild(reefCountryNode);
-                        String country = reef.getCountry();
                         Text countryName = doc.createTextNode(country == null || country.toLowerCase().startsWith("unknown") ? "" : country);
                         reefCountryNode.appendChild(countryName);
 
                         Element surveysNode = doc.createElement("surveys");
                         reefNode.appendChild(surveysNode);
-                        Text surveys = doc.createTextNode(reefDao.getSurveysByReef(reef).size() + "");
+                        Text surveys = doc.createTextNode(Long.toString(numSurveyRecords));
                         surveysNode.appendChild(surveys);
 
                         Element viewNode = doc.createElement("view");
                         reefNode.appendChild(viewNode);
-                        Text view = doc.createTextNode(reef.getId() + "");
+                        Text view = doc.createTextNode(Long.toString(reefId));
                         viewNode.appendChild(view);
 
                         Element downloadNode = doc.createElement("download");
                         reefNode.appendChild(downloadNode);
-                        Text download = doc.createTextNode(reef.getId() + "");
+                        Text download = doc.createTextNode(Long.toString(reefId));
                         downloadNode.appendChild(download);
                     }
                 }
