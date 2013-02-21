@@ -18,4 +18,8 @@ public interface UserDao extends Dao<UserImpl> {
     UserImpl getById(Long id);
 
     Long getNumberOfSurveys(UserImpl user);
+
+    UserImpl getHighestContributor();
+    
+    int count();
 }

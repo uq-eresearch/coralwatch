@@ -1,22 +1,25 @@
 package org.coralwatch.portlets;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import java.io.IOException;
+
+import javax.portlet.GenericPortlet;
+import javax.portlet.PortletContext;
+import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequestDispatcher;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
-import org.coralwatch.model.Reef;
-import org.coralwatch.model.Survey;
-import org.coralwatch.model.SurveyRecord;
-import org.coralwatch.model.UserImpl;
 import org.coralwatch.services.ReputationService;
 import org.coralwatch.util.AppUtil;
 
-import javax.portlet.*;
-import java.io.IOException;
-import java.util.List;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 
 public class StatsUpdatePortlet extends GenericPortlet {
@@ -40,14 +43,10 @@ public class StatsUpdatePortlet extends GenericPortlet {
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         AppUtil.clearCache();
         PortletPreferences prefs = renderRequest.getPreferences();
-        List<UserImpl> users = userDao.getAll();
-        List<Reef> reefs = reefDao.getAll();
-        List<Survey> surveys = surveyDao.getAll();
-        List<SurveyRecord> records = surveyRecordDao.getAll();
-        renderRequest.setAttribute("users", users == null ? 0 : users.size());
-        renderRequest.setAttribute("reefs", reefs == null ? 0 : reefs.size());
-        renderRequest.setAttribute("surveys", surveys == null ? 0 : surveys.size());
-        renderRequest.setAttribute("records", records == null ? 0 : records.size());
+        renderRequest.setAttribute("users", userDao.count());
+        renderRequest.setAttribute("reefs", reefDao.count());
+        renderRequest.setAttribute("surveys", surveyDao.count());
+        renderRequest.setAttribute("records", surveyRecordDao.count());
         renderRequest.setAttribute("highestContributor", ReputationService.getHighestContributor());
         renderRequest.setAttribute("userUrl", prefs.getValue("userUrl", "user"));
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));

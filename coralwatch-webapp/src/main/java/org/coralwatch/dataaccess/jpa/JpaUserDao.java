@@ -1,14 +1,16 @@
 package org.coralwatch.dataaccess.jpa;
 
-import au.edu.uq.itee.maenad.dataaccess.jpa.EntityManagerSource;
-import au.edu.uq.itee.maenad.dataaccess.jpa.JpaDao;
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.NoResultException;
+
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
 
-import javax.persistence.NoResultException;
-import java.io.Serializable;
-import java.util.List;
+import au.edu.uq.itee.maenad.dataaccess.jpa.EntityManagerSource;
+import au.edu.uq.itee.maenad.dataaccess.jpa.JpaDao;
 
 public class JpaUserDao extends JpaDao<UserImpl> implements UserDao, Serializable {
 
@@ -71,4 +73,26 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao, Serializabl
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public UserImpl getHighestContributor() {
+        List<Object> result = (List<Object>)entityManagerSource.getEntityManager().createNativeQuery(
+            "select appuser.id from appuser, survey where appuser.id = survey.creator_id " +
+            "group by appuser.id order by count(*) desc, appuser.id limit 1;").getResultList();
+        if(result.isEmpty()) {
+            return null;
+        } else {
+            return getById(((Number)result.get(0)).longValue());
+        }
+    }
+
+    @Override
+    public int count() {
+        try {
+            return ((Long)entityManagerSource.getEntityManager().createQuery(
+                    "select count(*) from AppUser").getSingleResult()).intValue();
+        } catch(Exception e) {
+            return 0;
+        }
+    }
 }

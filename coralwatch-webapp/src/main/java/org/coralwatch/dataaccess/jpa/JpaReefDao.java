@@ -61,4 +61,14 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao, Serializable {
         return (Reef) resultList.get(0);
 
     }
+
+    @Override
+    public int count() {
+        try {
+            return ((Long)entityManagerSource.getEntityManager().createQuery(
+                    "select count(*) from Reef").getSingleResult()).intValue();
+        } catch(Exception e) {
+            return 0;
+        }
+    }
 }

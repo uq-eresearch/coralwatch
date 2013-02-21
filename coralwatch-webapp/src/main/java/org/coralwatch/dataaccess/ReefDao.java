@@ -14,5 +14,7 @@ public interface ReefDao extends Dao<Reef> {
     List<Survey> getSurveysByReef(Reef reef);
 
     Reef getById(Long id);
+
+    int count();
 }
 

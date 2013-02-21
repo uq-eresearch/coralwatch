@@ -200,16 +200,6 @@ public class ReputationService {
 
     public static UserImpl getHighestContributor() {
         UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
-        List<UserImpl> users = userDao.getAll();
-        UserImpl highestContributor = null;
-        long numberOfSurveys = 0;
-        for (UserImpl user : users) {
-            long userSurveys = userDao.getNumberOfSurveys(user);
-            if (userSurveys >= numberOfSurveys) {
-                highestContributor = user;
-                numberOfSurveys = userSurveys;
-            }
-        }
-        return highestContributor;
+        return userDao.getHighestContributor();
     }
 }

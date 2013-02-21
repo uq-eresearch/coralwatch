@@ -22,4 +22,14 @@ public class JpaSurveyRecordDao extends JpaDao<SurveyRecord> implements SurveyRe
         assert resultList.size() == 1 : "id should be unique";
         return (SurveyRecord) resultList.get(0);
     }
+
+    @Override
+    public int count() {
+        try {
+            return ((Long)entityManagerSource.getEntityManager().createQuery(
+                    "select count(*) from SurveyRecord").getSingleResult()).intValue();
+        } catch(Exception e) {
+            return 0;
+        }
+    }
 }

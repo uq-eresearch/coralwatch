@@ -109,4 +109,14 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
         }
         return query.scroll();
     }
+
+    @Override
+    public int count() {
+        try {
+            return ((Long)entityManagerSource.getEntityManager().createQuery(
+                    "select count(*) from Survey").getSingleResult()).intValue();
+        } catch(Exception e) {
+            return 0;
+        }
+    }
 }

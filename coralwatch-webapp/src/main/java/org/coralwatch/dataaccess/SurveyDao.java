@@ -19,4 +19,6 @@ public interface SurveyDao extends Dao<Survey> {
     public ScrollableResults getSurveysIterator();
     public ScrollableResults getSurveysIterator(Reef reef);
     public ScrollableResults getSurveysForDojo(Reef reef, UserImpl surveyCreator);
+
+    int count();
 }
