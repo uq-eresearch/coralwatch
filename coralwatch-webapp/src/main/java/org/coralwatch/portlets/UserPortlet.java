@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.portlet.ActionRequest;
@@ -300,6 +301,7 @@ public class UserPortlet extends GenericPortlet {
             } else {
                 listOfUsers = userDao.getAll();
             }
+            Map<Long, Long> surveys = userDao.getSurveyEntriesCreatedAll();
 
             for (UserImpl user : listOfUsers) {
                 if (!user.getDisplayName().toLowerCase().startsWith("unknown")) {
@@ -324,7 +326,11 @@ public class UserPortlet extends GenericPortlet {
 
                     Element surveysNode = doc.createElement("surveys");
                     userNode.appendChild(surveysNode);
-                    Text numberOfSurveys = doc.createTextNode(userDao.getSurveyEntriesCreated(user).size() + "");
+                    Long numOfSurveys = surveys.get(user.getId());
+                    if(numOfSurveys == null) {
+                        numOfSurveys = new Long(0);
+                    }
+                    Text numberOfSurveys = doc.createTextNode(numOfSurveys.toString());
                     surveysNode.appendChild(numberOfSurveys);
 
                     //Rating stuff

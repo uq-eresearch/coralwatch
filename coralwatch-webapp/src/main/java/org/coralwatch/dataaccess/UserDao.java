@@ -1,11 +1,13 @@
 package org.coralwatch.dataaccess;
 
 
-import au.edu.uq.itee.maenad.dataaccess.Dao;
+import java.util.List;
+import java.util.Map;
+
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
 
-import java.util.List;
+import au.edu.uq.itee.maenad.dataaccess.Dao;
 
 
 public interface UserDao extends Dao<UserImpl> {
@@ -22,4 +24,6 @@ public interface UserDao extends Dao<UserImpl> {
     UserImpl getHighestContributor();
     
     int count();
+    
+    Map<Long, Long> getSurveyEntriesCreatedAll();
 }

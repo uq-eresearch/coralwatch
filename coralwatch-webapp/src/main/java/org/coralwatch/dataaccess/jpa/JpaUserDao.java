@@ -1,7 +1,9 @@
 package org.coralwatch.dataaccess.jpa;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.NoResultException;
 
@@ -25,6 +27,22 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao, Serializabl
         return entityManagerSource.getEntityManager().createQuery("SELECT o FROM Survey o " +
                 "WHERE o.creator = :user " +
                 "ORDER BY o.id").setParameter("user", userImpl).getResultList();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<Long, Long> getSurveyEntriesCreatedAll() {
+        Map<Long, Long> result = new HashMap<Long, Long>();
+        List<Object[]> rows = (List<Object[]>)entityManagerSource.getEntityManager().createNativeQuery(
+                "select appuser.id, count(survey.id) as surveys from appuser left outer join" +
+                " survey on (appuser.id = survey.creator_id) group by appuser.id order by appuser.id;")
+            .getResultList();
+        for(Object[] row : rows) {
+            Long userId = ((Number)row[0]).longValue();
+            Long surveys = ((Number)row[1]).longValue();
+            result.put(userId, surveys);
+        }
+        return result;
     }
 
     @Override
