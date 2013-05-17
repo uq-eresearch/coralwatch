@@ -92,7 +92,7 @@
                 url: '<portlet:resourceURL id="survey"/>',
                 content: {
                     <portlet:namespace/>format: 'html',
-                    <portlet:namespace/>id: surveyId,
+                    <portlet:namespace/>id: surveyId
                 },
                 handleAs: "text",
                 load: function(content) {
