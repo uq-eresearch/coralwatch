@@ -1,5 +1,6 @@
 package org.coralwatch.portlets;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
@@ -7,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,12 +26,20 @@ import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
@@ -48,8 +58,10 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.util.PortalUtil;
 
 public class SurveyPortlet extends GenericPortlet {
     private static Log _log = LogFactoryUtil.getLog(SurveyPortlet.class);
@@ -74,6 +86,14 @@ public class SurveyPortlet extends GenericPortlet {
     @Override
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         AppUtil.clearCache();
+        String cmd = ParamUtil.getString(renderRequest, Constants.CMD);
+        PortletSession session = renderRequest.getPortletSession();
+        UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
+        if (cmd.equals("bulk_add") && ((currentUser == null) || !currentUser.isSuperUser())) {
+            List<String> errors = new ArrayList<String>();
+            errors.add("You must be admin to do bulk uploads");
+            renderRequest.setAttribute("errors", errors);
+        }
         renderRequest.setAttribute("surveyDao", surveyDao);
         renderRequest.setAttribute("userDao", userDao);
         renderRequest.setAttribute("surveyRatingDao", surveyRatingDao);
@@ -96,7 +116,17 @@ public class SurveyPortlet extends GenericPortlet {
         try {
             UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
             if (currentUser != null) {
-                if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
+                if (cmd.equals("bulk_add")) {
+                    if (currentUser.isSuperUser()) {
+                        processBulkUploadAction(actionRequest, actionResponse, cmd, currentUser, errors);
+                    } else {
+                        errors.add("You must be admin to do bulk uploads");
+                    }
+                    if (!errors.isEmpty()) {
+                        actionRequest.setAttribute("errors", errors);
+                        actionResponse.setRenderParameter(Constants.CMD, cmd);
+                    }
+                } else if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
                     String groupName = actionRequest.getParameter("groupName");
                     String participatingAs = actionRequest.getParameter("participatingAs");
                     String country = actionRequest.getParameter("country");
@@ -123,7 +153,7 @@ public class SurveyPortlet extends GenericPortlet {
                         lightCondition,
                         activity
                     );
-                    
+
                     Float latitude = ParamUtil.getFloat(actionRequest, "latitude");
                     Float longitude = ParamUtil.getFloat(actionRequest, "longitude");
 
@@ -223,8 +253,323 @@ public class SurveyPortlet extends GenericPortlet {
             actionResponse.setRenderParameter(Constants.CMD, cmd);
             _log.error("Submission error ", ex);
         }
+    }
 
+    private enum BulkImportColumns {
+        SURVEY_PERIOD("Survey Period", false),
+        ISLAND("Island", false),
+        SITE("Location/Site", true),
+        DATE("Date", true),
+        TIME("Time", true),
+        LATITUDE("Latitude", true),
+        LONGITUDE("Longitude", true),
+        BEARING("Bearing", false),
+        DEPTH("Depth (m)", false),
+        WATER_TEMPERATURE("Water Temp. (C)", false),
+        WEATHER("Weather", true),
+        NAME("Name", false),
+        FAMILY("Family", false),
+        CORAL_TYPE("Coral Type", true),
+        DARK("Dark", true),
+        LIGHT("Light", true);
 
+        private final String title;
+
+        private final boolean mandatory;
+
+        BulkImportColumns(String title, boolean mandatory) {
+            this.title = title;
+            this.mandatory = mandatory;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public boolean getMandatory() {
+            return mandatory;
+        }
+
+        public static List<BulkImportColumns> getMandatoryColumns() {
+            List<BulkImportColumns> mandatoryColumns = new ArrayList<BulkImportColumns>();
+            for (BulkImportColumns column : BulkImportColumns.values()) {
+                if (column.getMandatory()) {
+                    mandatoryColumns.add(column);
+                }
+            }
+            return mandatoryColumns;
+        }
+    }
+
+    private void processBulkUploadAction(
+        ActionRequest actionRequest,
+        ActionResponse actionResponse,
+        String cmd,
+        UserImpl currentUser,
+        List<String> errors
+    ) {
+        UploadPortletRequest uploadRequest = PortalUtil.getUploadPortletRequest(actionRequest);
+        try {
+            String groupName = uploadRequest.getParameter("groupName");
+            String participatingAs = uploadRequest.getParameter("participatingAs");
+            String country = uploadRequest.getParameter("country");
+            boolean isGpsDevice = ParamUtil.getBoolean(uploadRequest, "isGpsDevice");
+            String activity = uploadRequest.getParameter("activity");
+            String formComments = uploadRequest.getParameter("comments");
+
+            if (StringUtils.isBlank(groupName) || StringUtils.isBlank(participatingAs) ||
+                StringUtils.isBlank(country) || StringUtils.isBlank(activity)) {
+                errors.add("Group Name, Participating As, Country of Survey, and Activity are all required");
+                return;
+            }
+
+            String fieldName = "file";
+            File file = uploadRequest.getFile(fieldName);
+            Workbook workbook = null;
+            try {
+                workbook = WorkbookFactory.create(file);
+            }
+            catch (Exception e) {
+                errors.add("Could not read spreadsheet file (must be *.xls or *.xlsx)");
+                return;
+            }
+            Sheet sheet = null;
+            try {
+                sheet = workbook.getSheetAt(0);
+            }
+            catch (Exception e) {
+                errors.add("Could not find sheet inside spreadsheet");
+                return;
+            }
+            List<BulkImportColumns> mandatoryColumns = BulkImportColumns.getMandatoryColumns();
+            int headerRowIndex = -1;
+            EnumMap<BulkImportColumns, List<Integer>> columnIndicesMap =
+                new EnumMap<BulkImportColumns, List<Integer>>(BulkImportColumns.class);
+            for (Row row : sheet) {
+                columnIndicesMap.clear();
+                for (Cell cell : row) {
+                    String cellValue =
+                        (cell.getCellType() == Cell.CELL_TYPE_NUMERIC)
+                        ? String.valueOf(cell.getNumericCellValue())
+                        : cell.getStringCellValue().trim();
+                    for (BulkImportColumns column : BulkImportColumns.values()) {
+                        if (column.getTitle().equalsIgnoreCase(cellValue)) {
+                            List<Integer> columnIndices = columnIndicesMap.get(column);
+                            if (columnIndices == null) {
+                                columnIndices = new ArrayList<Integer>();
+                                columnIndicesMap.put(column, columnIndices);
+                            }
+                            columnIndices.add(cell.getColumnIndex());
+                        }
+                    }
+                }
+                if (columnIndicesMap.keySet().containsAll(mandatoryColumns)) {
+                    headerRowIndex = row.getRowNum();
+                    break;
+                }
+            }
+            if (headerRowIndex == -1) {
+                StringBuilder colNames = new StringBuilder();
+                for (int i = 0; i < mandatoryColumns.size(); i++) {
+                    colNames.append("\"").append(mandatoryColumns.get(i).getTitle()).append("\"");
+                    if (i < (mandatoryColumns.size() - 1)) {
+                        colNames.append(", ");
+                    }
+                }
+                errors.add("Could not find row with all mandatory columns: " + colNames + ".");
+                return;
+            }
+
+            List<Survey> previousSurveys = new ArrayList<Survey>();
+            for (int rowNum = headerRowIndex + 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+                try {
+                    Row row = sheet.getRow(rowNum);
+                    if (row == null) {
+                        continue;
+                    }
+                    EnumMap<BulkImportColumns, List<Object>> columnValuesMap =
+                            new EnumMap<BulkImportColumns, List<Object>>(BulkImportColumns.class);
+                    for (BulkImportColumns column : columnIndicesMap.keySet()) {
+                        List<Integer> columnIndices = columnIndicesMap.get(column);
+                        List<Object> columnValues = columnValuesMap.get(column);
+                        if (columnValues == null) {
+                            columnValues = new ArrayList<Object>();
+                            columnValuesMap.put(column, columnValues);
+                        }
+                        for (int columnIndex : columnIndices) {
+                            Cell cell = row.getCell(columnIndex);
+                            if (cell == null) {
+                                continue;
+                            }
+                            if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                                if (DateUtil.isCellDateFormatted(cell)) {
+                                    columnValues.add(cell.getDateCellValue());
+                                }
+                                else {
+                                    columnValues.add(cell.getNumericCellValue());
+                                }
+                            }
+                            else {
+                                columnValues.add(cell.getStringCellValue().trim());
+                            }
+                        }
+                        if (column.getMandatory() && columnValues.isEmpty()) {
+                            errors.add("Missing value for " + column.getTitle() + " on row " + (rowNum + 1));
+                        }
+                    }
+
+                    String reefName =
+                        columnValuesMap.get(BulkImportColumns.SITE).isEmpty() ? null :
+                        (String) columnValuesMap.get(BulkImportColumns.SITE).get(0);
+                    Float latitude =
+                        columnValuesMap.get(BulkImportColumns.LATITUDE).isEmpty() ? null :
+                        ((Double) columnValuesMap.get(BulkImportColumns.LATITUDE).get(0)).floatValue();
+                    Float longitude =
+                        columnValuesMap.get(BulkImportColumns.LONGITUDE).isEmpty() ? null :
+                        ((Double) columnValuesMap.get(BulkImportColumns.LONGITUDE).get(0)).floatValue();
+                    Date date =
+                        columnValuesMap.get(BulkImportColumns.DATE).isEmpty() ? null :
+                        (Date) columnValuesMap.get(BulkImportColumns.DATE).get(0);
+                    Date time =
+                        columnValuesMap.get(BulkImportColumns.TIME).isEmpty() ? null :
+                        (Date) columnValuesMap.get(BulkImportColumns.TIME).get(0);
+                    String weather =
+                        columnValuesMap.get(BulkImportColumns.WEATHER).isEmpty() ? null :
+                        (String) columnValuesMap.get(BulkImportColumns.WEATHER).get(0);
+                    Double depth =
+                        columnValuesMap.get(BulkImportColumns.DEPTH).isEmpty() ? null :
+                        (Double) columnValuesMap.get(BulkImportColumns.DEPTH).get(0);
+                    Double waterTemperature =
+                        columnValuesMap.get(BulkImportColumns.WATER_TEMPERATURE).isEmpty() ? null :
+                        (Double) columnValuesMap.get(BulkImportColumns.WATER_TEMPERATURE).get(0);
+                    String surveyPeriod =
+                        columnValuesMap.get(BulkImportColumns.SURVEY_PERIOD).isEmpty() ? null :
+                        (String) columnValuesMap.get(BulkImportColumns.SURVEY_PERIOD).get(0);
+                    String island =
+                        columnValuesMap.get(BulkImportColumns.ISLAND).isEmpty() ? null :
+                        (String) columnValuesMap.get(BulkImportColumns.ISLAND).get(0);
+                    List<Object> nameObjects = columnValuesMap.get(BulkImportColumns.NAME);
+                    Double bearing =
+                        columnValuesMap.get(BulkImportColumns.BEARING).isEmpty() ? null :
+                        (Double) columnValuesMap.get(BulkImportColumns.BEARING).get(0);
+                    String coralType =
+                        columnValuesMap.get(BulkImportColumns.CORAL_TYPE).isEmpty() ? null :
+                        (String) columnValuesMap.get(BulkImportColumns.CORAL_TYPE).get(0);
+                    String light =
+                        columnValuesMap.get(BulkImportColumns.LIGHT).isEmpty() ? null :
+                        (String) columnValuesMap.get(BulkImportColumns.LIGHT).get(0);
+                    String dark =
+                        columnValuesMap.get(BulkImportColumns.DARK).isEmpty() ? null :
+                        (String) columnValuesMap.get(BulkImportColumns.DARK).get(0);
+
+                    Survey survey = null;
+                    for (Survey previousSurvey : previousSurveys) {
+                        if (
+                            previousSurvey.getReef().getCountry().equals(country) &&
+                            previousSurvey.getReef().getName().equals(reefName) &&
+                            (date != null) && (previousSurvey.getDate().getTime() == date.getTime()) &&
+                            (time != null) && (previousSurvey.getTime().getTime() == time.getTime()) &&
+                            ObjectUtils.equals(previousSurvey.getDepth(), depth)
+                        ) {
+                            survey = previousSurvey;
+                            break;
+                        }
+                    }
+                    if (survey == null) {
+                        String lightCondition =
+                            (weather.equalsIgnoreCase("Full Sunshine") || weather.equalsIgnoreCase("Sunny")) ? "Full Sunshine" :
+                            (weather.equalsIgnoreCase("Cloudy") || weather.equalsIgnoreCase("Raining")) ? "Cloudy" :
+                            (weather.equalsIgnoreCase("Broken Cloud")) ? "Broken Cloud" :
+                            null;
+                        if (lightCondition == null) {
+                            errors.add(
+                                "Unrecognised weather value on row " + (rowNum + 1) + ": " +
+                                "should be Full Sunshine, Sunny, Cloudy, Rainy, or Broken Cloud"
+                            );
+                        }
+
+                        StringBuilder comments = new StringBuilder();
+                        if (surveyPeriod != null) {
+                            comments.append("Survey Period: " + surveyPeriod + "\n");
+                        }
+                        if (island != null) {
+                            comments.append("Island: " + island + "\n");
+                        }
+                        if ((nameObjects != null)) {
+                            List<String> nameStrings = new ArrayList<String>();
+                            for (Object nameObject : nameObjects) {
+                                if (StringUtils.isNotBlank((String) nameObject)) {
+                                    nameStrings.add(((String) nameObject).trim());
+                                }
+                            }
+                            if (!nameStrings.isEmpty()) {
+                                comments.append("Names: " + StringUtils.join(nameStrings, ", ") + "\n");
+                            }
+                        }
+                        if (bearing != null) {
+                            comments.append("Bearing: " + bearing + "\n");
+                        }
+                        if (StringUtils.isNotBlank(formComments)) {
+                            comments.append("\n");
+                            comments.append(formComments);
+                        }
+
+                        if (errors.isEmpty()) {
+                            Reef reef = reefDao.getReefByName(reefName);
+                            if (reef == null) {
+                                reef = new Reef(reefName, country);
+                                reefDao.save(reef);
+                            }
+                            survey = new Survey();
+                            survey.setCreator(currentUser);
+                            survey.setGroupName(groupName);
+                            survey.setParticipatingAs(participatingAs);
+                            survey.setReef(reef);
+                            survey.setQaState("Post Migration");
+                            survey.setLatitude(latitude);
+                            survey.setLongitude(longitude);
+                            survey.setGPSDevice(isGpsDevice);
+                            survey.setDate(date);
+                            survey.setTime(time);
+                            survey.setLightCondition(lightCondition);
+                            survey.setDepth(depth);
+                            survey.setWaterTemperature(waterTemperature);
+                            survey.setActivity(activity);
+                            survey.setComments(comments.toString());
+                            surveyDao.save(survey);
+                            previousSurveys.add(survey);
+                        }
+                    }
+                    if (errors.isEmpty()) {
+                        SurveyRecord record = new SurveyRecord();
+                        record.setSurvey(survey);
+                        record.setCoralType(coralType);
+                        record.setLightestLetter(light.charAt(0));
+                        record.setLightestNumber(Integer.valueOf(light.charAt(1)));
+                        record.setDarkestLetter(dark.charAt(0));
+                        record.setDarkestNumber(Integer.valueOf(dark.charAt(1)));
+                        surveyRecordDao.save(record);
+                    }
+                }
+                catch (Exception rowException) {
+                    String msg = "Exception processing row " + (rowNum + 1);
+                    _log.error(msg, rowException);
+                    errors.add(msg + ": " + rowException.toString());
+                }
+            }
+            if (!errors.isEmpty()) {
+                return;
+            }
+        }
+        catch (Exception e2) {
+            String msg = "Error processing bulk upload";
+            _log.error(msg, e2);
+            errors.add(msg);
+            return;
+        }
+        finally {
+            uploadRequest.cleanUp();
+        }
     }
 
     private void validateEmptyFields(
@@ -280,20 +625,20 @@ public class SurveyPortlet extends GenericPortlet {
             errors.add("Required field(s):" + fields);
         }
     }
-    
+
     @Override
     public void serveResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
         if (request.getResourceID().equals("export")) {
             serveExportResource(request, response);
         }
     }
-    
+
     protected static void serveExportResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
         AppUtil.clearCache();
-        
+
         ScrollableResults surveys = null;
         String fileNamePrefix = null;
-        
+
         String reefIdParam = request.getParameter("reefId");
         if (reefIdParam != null) {
             ReefDao reefDao = CoralwatchApplication.getConfiguration().getReefDao();
@@ -312,10 +657,10 @@ public class SurveyPortlet extends GenericPortlet {
             surveys = surveyDao.getSurveysIterator();
             fileNamePrefix = "surveys";
         }
-        
+
         String singleSheetParam = request.getParameter("singleSheet");
         boolean singleSheet = (singleSheetParam != null && singleSheetParam.equals("true"));
-        
+
         String fileNameBase = fileNamePrefix + "-" + new SimpleDateFormat("yyyyMMdd").format(new Date());
         String format = request.getParameter("format");
         if (format != null && format.equals("csv")) {
@@ -325,7 +670,7 @@ public class SurveyPortlet extends GenericPortlet {
             writeExcelWorkbook(fileNameBase, response, surveys, singleSheet);
         }
     }
-    
+
     private static void writeCSVStream(
         String fileNameBase,
         ResourceResponse response,
@@ -430,10 +775,10 @@ public class SurveyPortlet extends GenericPortlet {
             }
             writer.flush();
         }
-        
+
         writer.close();
     }
-    
+
     private static void writeExcelWorkbook(
         String fileNameBase,
         ResourceResponse response,
@@ -446,12 +791,12 @@ public class SurveyPortlet extends GenericPortlet {
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
 
         HSSFWorkbook workbook = new HSSFWorkbook();
-        
+
         HSSFCellStyle dateStyle = workbook.createCellStyle();
         dateStyle.setDataFormat(workbook.createDataFormat().getFormat("dd/MM/yyyy"));
         HSSFCellStyle timeStyle = workbook.createCellStyle();
         timeStyle.setDataFormat(workbook.createDataFormat().getFormat("HH:mm"));
-        
+
         if (singleSheet) {
             writeSurveyRecordSheet(workbook, surveys, true, dateStyle, timeStyle);
         }
@@ -559,7 +904,7 @@ public class SurveyPortlet extends GenericPortlet {
         row.createCell(c++).setCellValue((sumLight + sumDark) / (2d * numRecords));
         return c;
     }
-    
+
     private static int addSurveyHeaderCells(HSSFRow row, int c) {
         row.createCell(c++).setCellValue(new HSSFRichTextString("Survey"));
         row.createCell(c++).setCellValue(new HSSFRichTextString("Creator"));
@@ -656,7 +1001,7 @@ public class SurveyPortlet extends GenericPortlet {
             sheet.autoSizeColumn((short) c);
         }
     }
-    
+
     protected void include(String path, RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
 
         PortletContext portletContext = getPortletContext();

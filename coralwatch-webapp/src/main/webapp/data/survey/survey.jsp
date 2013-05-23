@@ -47,9 +47,20 @@
 
     long surveyId = 0;
     Survey survey = null;
+%>
+
+<% List<String> errors = (List<String>) renderRequest.getAttribute("errors"); %>
+<% if (errors != null && errors.size() > 0) { %>
+<%     for (String error : errors) { %>
+<div>
+    <span class="portlet-msg-error"><%= error %></span>
+</div>
+<%     } %>
+<% } %>
+
+<%
     if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
 //        if (currentUser != null) {
-        List<String> errors = (List<String>) renderRequest.getAttribute("errors");
 //    ReefDao reefDao = (ReefDao) renderRequest.getAttribute("reefDao");
         List<Reef> reefs = (List<Reef>) renderRequest.getAttribute("reefs");
         String groupName = "";
@@ -78,17 +89,23 @@
 <%
 } else if (cmd.equals(Constants.ADD)) {
 %>
+
+<% if (currentUser != null && currentUser.isSuperUser()) { %>
+<div style="float: right;">
+    <portlet:renderURL var="bulkUploadURL">
+        <portlet:param name="<%= Constants.CMD %>" value="bulk_add" />
+    </portlet:renderURL>
+    <a href="<%= bulkUploadURL %>">Bulk survey upload</a>
+</div>
+<% } %>
+
 <h2 style="margin-top:0;">Add New Survey</h2>
 <br/>
+
 <%
     }
-    if (errors != null && errors.size() > 0) {
-        for (String error : errors) {
 %>
-<div><span class="portlet-msg-error"><%=error%></span></div>
 <%
-        }
-    }
     if (currentUser == null) {
 %>
 <div><span class="portlet-msg-error">You must sign in to submit a survey.</span></div>
@@ -894,7 +911,7 @@
         </tr>
         <tr>
             <th>Comments:</th>
-            <td><%=survey.getComments() == null ? "" : survey.getComments()%>
+            <td><%=survey.getComments() == null ? "" : survey.getComments().replaceAll("\n", "<br />")%>
             </td>
         </tr>
         <tr>
@@ -1267,6 +1284,151 @@
 </div>
 </div>
 <%
+} else if (cmd.equals("bulk_add")) {
+%>
+<% if ((currentUser != null) && currentUser.isSuperUser()) { %>
+<h2 style="margin-top:0;">Bulk Survey Upload</h2>
+<br/>
+
+<form dojoType="dijit.form.Form" action="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= cmd %>" /></portlet:actionURL>" method="post" name="<portlet:namespace />fm" enctype="multipart/form-data">
+
+<script type="text/javascript">
+    dojo.addOnLoad(
+            function() {
+                dojo.byId("groupName").focus();
+            }
+            );
+</script>
+<script type="dojo/method" event="onSubmit">
+    if (!this.validate()) {
+        alert('Form contains invalid data. Please correct errors first.');
+        return false;
+    }
+    return true;
+</script>
+<input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
+<table>
+<tr>
+    <th><label for="file">Spreadsheet:</label></th>
+    <td>
+        <input
+            type="file"
+            id="file"
+            name="file"
+            required="true" />
+    </td>
+</tr>
+<tr>
+    <th><label for="groupName">Group Name:</label></th>
+    <td>
+        <table>
+        <tr>
+        <td style="padding: 0; vertical-align: middle;">
+        <input type="text"
+            id="groupName"
+            name="groupName"
+            required="true"
+            dojoType="dijit.form.ValidationTextBox"
+            regExp="...*"
+            invalidMessage="Enter the name of the group you are participating with"
+            value="" />
+        </td>
+        <td style="padding: 0; vertical-align: middle;">
+            e.g. EarthCheck, ReefCheck, OceansWatch.<br />
+            Enter your own name if you do not belong to a group.
+        </td>
+        </tr>
+        </table>
+    </td>
+</tr>
+<tr>
+    <th><label for="participatingAs">Participating As:</label></th>
+    <td><select name="participatingAs"
+                id="participatingAs"
+                dojoType="dijit.form.ComboBox"
+                required="true"
+                hasDownArrow="true"
+                value="">
+        <option selected="selected" value=""></option>
+        <option value="Dive Centre">Dive Centre</option>
+        <option value="Scientist">Scientist</option>
+        <option value="Conservation Group">Conservation Group</option>
+        <option value="School/University">School/University</option>
+        <option value="Tourist">Tourist</option>
+        <option value="Other">Other</option>
+    </select>
+    </td>
+</tr>
+<tr>
+    <th><label for="country">Country of Survey:</label></th>
+    <td>
+        <script type="text/javascript">
+            dojo.addOnLoad(function() {
+                dojo.connect(dijit.byId("country"), "onChange", function() {
+                    var country = dijit.byId("country").getValue();
+                    reefStore.url = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=json&country=" + country;
+                    reefStore.close();
+                });
+            });
+        </script>
+        <select name="country"
+                id="country"
+                dojoType="dijit.form.ComboBox"
+                required="true"
+                hasDownArrow="true"
+                value="">
+            <option selected="selected" value=""></option>
+            <jsp:include page="/include/countrylist.jsp"/>
+        </select>
+    </td>
+</tr>
+
+<tr>
+    <th><label for="activity">GPS Device:</label></th>
+    <td>
+        <input id="isGpsDevice" name="isGpsDevice"
+               dojoType="dijit.form.CheckBox"
+               value="">
+        <label for="isGpsDevice">I used a GPS Device</label>
+    </td>
+</tr>
+
+<tr>
+    <th><label for="activity">Activity:</label></th>
+    <td><select name="activity"
+                id="activity"
+                required="true"
+                dojoType="dijit.form.ComboBox"
+                hasDownArrow="true"
+                value="">
+        <option selected="selected" value=""></option>
+        <option value="Reef walking">Reef walking</option>
+        <option value="Snorkeling">Snorkeling</option>
+        <option value="Diving">Diving</option>
+    </select>
+    </td>
+    </td>
+</tr>
+<tr>
+    <th><label for="comments">Comments:</label></th>
+    <td><input type="text"
+               id="comments"
+               name="comments"
+               style="width:300px"
+               dojoType="dijit.form.Textarea"
+               trim="true"
+               maxLength="2000"
+               value=""/>
+    </td>
+</tr>
+<tr>
+    <td colspan="2"><input type="submit" name="submit" value="Submit"/></td>
+</tr>
+</table>
+</form>
+
+<% } %>
+<%
     //If no cmd is given then display list of surveys
 } else {
     long userId = ParamUtil.getLong(request, "userId");
@@ -1276,8 +1438,8 @@
     }
     if (currentUser != null) {
 %>
-<div align="right">
-    <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">New Survey</a>
+<div style="float: right;">
+    <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">New survey</a>
     <% if (currentUser != null && currentUser.isSuperUser()) { %>
         <portlet:resourceURL var="exportURL" id="export">
             <portlet:param name="singleSheet" value="true" />
