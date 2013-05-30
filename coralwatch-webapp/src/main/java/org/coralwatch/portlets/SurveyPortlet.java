@@ -501,7 +501,7 @@ public class SurveyPortlet extends GenericPortlet {
                         if ((nameObjects != null)) {
                             List<String> nameStrings = new ArrayList<String>();
                             for (Object nameObject : nameObjects) {
-                                if (StringUtils.isNotBlank((String) nameObject)) {
+                                if (StringUtils.isNotBlank((String) nameObject) && !((String) nameObject).equalsIgnoreCase("No name supplied")) {
                                     nameStrings.add(((String) nameObject).trim());
                                 }
                             }
