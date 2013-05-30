@@ -12,6 +12,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -380,6 +381,7 @@ public class SurveyPortlet extends GenericPortlet {
                 return;
             }
 
+            Pattern colorPattern = Pattern.compile("[BCDE][123456]");
             List<Survey> previousSurveys = new ArrayList<Survey>();
             for (int rowNum = headerRowIndex + 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                 try {
@@ -465,7 +467,6 @@ public class SurveyPortlet extends GenericPortlet {
                     Survey survey = null;
                     for (Survey previousSurvey : previousSurveys) {
                         if (
-                            previousSurvey.getReef().getCountry().equals(country) &&
                             previousSurvey.getReef().getName().equals(reefName) &&
                             (date != null) && (previousSurvey.getDate().getTime() == date.getTime()) &&
                             (time != null) && (previousSurvey.getTime().getTime() == time.getTime()) &&
@@ -540,14 +541,17 @@ public class SurveyPortlet extends GenericPortlet {
                             previousSurveys.add(survey);
                         }
                     }
+                    if (!colorPattern.matcher(light).matches() || !colorPattern.matcher(dark).matches()) {
+                        errors.add("Light and Dark values must be a letter (B, C, D, E) followed by a number (1-6)");
+                    }
                     if (errors.isEmpty()) {
                         SurveyRecord record = new SurveyRecord();
                         record.setSurvey(survey);
                         record.setCoralType(coralType);
                         record.setLightestLetter(light.charAt(0));
-                        record.setLightestNumber(Integer.valueOf(light.charAt(1)));
+                        record.setLightestNumber(Integer.parseInt(light.substring(1, 2)));
                         record.setDarkestLetter(dark.charAt(0));
-                        record.setDarkestNumber(Integer.valueOf(dark.charAt(1)));
+                        record.setDarkestNumber(Integer.parseInt(dark.substring(1, 2)));
                         surveyRecordDao.save(record);
                     }
                 }
