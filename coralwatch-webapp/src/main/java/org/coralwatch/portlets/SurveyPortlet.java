@@ -470,6 +470,8 @@ public class SurveyPortlet extends GenericPortlet {
                             previousSurvey.getReef().getName().equals(reefName) &&
                             (date != null) && (previousSurvey.getDate().getTime() == date.getTime()) &&
                             (time != null) && (previousSurvey.getTime().getTime() == time.getTime()) &&
+                            ObjectUtils.equals(previousSurvey.getLatitude(), latitude) &&
+                            ObjectUtils.equals(previousSurvey.getLongitude(), longitude) &&
                             ObjectUtils.equals(previousSurvey.getDepth(), depth)
                         ) {
                             survey = previousSurvey;
