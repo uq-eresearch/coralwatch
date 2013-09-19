@@ -63,35 +63,33 @@ public class ReefServlet extends HttpServlet {
                     String name = (String) results.get(2);
                     long numSurveyRecords = ((Number) results.get(3)).longValue();
 
-                    if (!name.toLowerCase().startsWith("unknown")) {
-                        Element reefNode = doc.createElement("reef");
-                        root.appendChild(reefNode);
+                    Element reefNode = doc.createElement("reef");
+                    root.appendChild(reefNode);
 
-                        Element reefNameNode = doc.createElement("name");
-                        reefNode.appendChild(reefNameNode);
-                        Text reefName = doc.createTextNode(name);
-                        reefNameNode.appendChild(reefName);
+                    Element reefNameNode = doc.createElement("name");
+                    reefNode.appendChild(reefNameNode);
+                    Text reefName = doc.createTextNode(name);
+                    reefNameNode.appendChild(reefName);
 
-                        Element reefCountryNode = doc.createElement("country");
-                        reefNode.appendChild(reefCountryNode);
-                        Text countryName = doc.createTextNode(country == null || country.toLowerCase().startsWith("unknown") ? "" : country);
-                        reefCountryNode.appendChild(countryName);
+                    Element reefCountryNode = doc.createElement("country");
+                    reefNode.appendChild(reefCountryNode);
+                    Text countryName = doc.createTextNode(country == null || country.toLowerCase().startsWith("unknown") ? "" : country);
+                    reefCountryNode.appendChild(countryName);
 
-                        Element surveysNode = doc.createElement("surveys");
-                        reefNode.appendChild(surveysNode);
-                        Text surveys = doc.createTextNode(Long.toString(numSurveyRecords));
-                        surveysNode.appendChild(surveys);
+                    Element surveysNode = doc.createElement("surveys");
+                    reefNode.appendChild(surveysNode);
+                    Text surveys = doc.createTextNode(Long.toString(numSurveyRecords));
+                    surveysNode.appendChild(surveys);
 
-                        Element viewNode = doc.createElement("view");
-                        reefNode.appendChild(viewNode);
-                        Text view = doc.createTextNode(Long.toString(reefId));
-                        viewNode.appendChild(view);
+                    Element viewNode = doc.createElement("view");
+                    reefNode.appendChild(viewNode);
+                    Text view = doc.createTextNode(Long.toString(reefId));
+                    viewNode.appendChild(view);
 
-                        Element downloadNode = doc.createElement("download");
-                        reefNode.appendChild(downloadNode);
-                        Text download = doc.createTextNode(Long.toString(reefId));
-                        downloadNode.appendChild(download);
-                    }
+                    Element downloadNode = doc.createElement("download");
+                    reefNode.appendChild(downloadNode);
+                    Text download = doc.createTextNode(Long.toString(reefId));
+                    downloadNode.appendChild(download);
                 }
 
                 //TransformerFactory instance is used to create Transformer objects.
@@ -125,17 +123,15 @@ public class ReefServlet extends HttpServlet {
             }
             if (listOfReefs != null && listOfReefs.size() > 0) {
                 for (Reef reef : listOfReefs) {
-                    if (!reef.getName().toLowerCase().startsWith("unknown")) {
-                        try {
-                            JSONObject rf = new JSONObject();
-                            rf.putOpt("id", reef.getId());
-                            rf.putOpt("name", reef.getName());
-                            String reefCountry = reef.getCountry();
-                            rf.putOpt("country", reefCountry == null || reefCountry.toLowerCase().startsWith("unknown") ? "" : reefCountry);
-                            reefs.put(rf);
-                        } catch (JSONException e) {
-                            LOGGER.fatal("Cannot create reef json object." + e.toString());
-                        }
+                    try {
+                        JSONObject rf = new JSONObject();
+                        rf.putOpt("id", reef.getId());
+                        rf.putOpt("name", reef.getName());
+                        String reefCountry = reef.getCountry();
+                        rf.putOpt("country", reefCountry == null || reefCountry.toLowerCase().startsWith("unknown") ? "" : reefCountry);
+                        reefs.put(rf);
+                    } catch (JSONException e) {
+                        LOGGER.fatal("Cannot create reef json object." + e.toString());
                     }
                 }
             }
