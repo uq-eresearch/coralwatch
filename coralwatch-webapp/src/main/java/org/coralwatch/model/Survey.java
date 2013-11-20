@@ -1,18 +1,53 @@
 package org.coralwatch.model;
 
-import org.hibernate.validator.NotNull;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.validator.NotNull;
 
 
 @Entity
 public class Survey implements Serializable {
 
     private static final long serialVersionUID = 1;
+
+    public static enum ReviewState {
+        UNREVIEWED("Unreviewed", "red"),
+        UNDER_REVIEW("Under review", "yellow"),
+        REVIEWED("Reviewed", "green");
+
+        private final String text;
+        private final String colour;
+
+        ReviewState(String text, String colour) {
+            this.text = text;
+            this.colour = colour;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public String getColour() {
+            return colour;
+        }
+    };
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -60,7 +95,7 @@ public class Survey implements Serializable {
 
     @NotNull
     private String activity;
-    
+
     private Double depth;
 
 //    @NotNull
@@ -82,6 +117,10 @@ public class Survey implements Serializable {
      * from the old version of the Coralwatch website, which had hardly any data validation.
      */
     private String qaState;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="reviewstate", nullable=false)
+    private ReviewState reviewState;
 
     public Survey() {
         dateSubmitted = new Date();
@@ -257,6 +296,14 @@ public class Survey implements Serializable {
 
     public String getQaState() {
         return qaState;
+    }
+
+    public ReviewState getReviewState() {
+        return reviewState;
+    }
+
+    public void setReviewState(ReviewState reviewState) {
+        this.reviewState = reviewState;
     }
 
     @Override

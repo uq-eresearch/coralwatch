@@ -140,6 +140,10 @@ public class SurveyPortlet extends GenericPortlet {
                     String lightCondition = actionRequest.getParameter("lightCondition");
                     String activity = actionRequest.getParameter("activity");
                     String comments = actionRequest.getParameter("comments");
+                    Survey.ReviewState reviewState = null;
+                    if (currentUser.isSuperUser() && cmd.equals(Constants.EDIT)) {
+                        reviewState = Survey.ReviewState.valueOf(actionRequest.getParameter("reviewState"));
+                    }
 
                     validateEmptyFields(
                         errors,
@@ -198,6 +202,7 @@ public class SurveyPortlet extends GenericPortlet {
                             survey.setWaterTemperature(waterTemperature);
                             survey.setActivity(activity);
                             survey.setComments(comments);
+                            survey.setReviewState(Survey.ReviewState.UNREVIEWED);
                             surveyDao.save(survey);
                             _log.info("Added survey");
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
@@ -219,6 +224,9 @@ public class SurveyPortlet extends GenericPortlet {
                             survey.setWaterTemperature(waterTemperature);
                             survey.setActivity(activity);
                             survey.setComments(comments);
+                            if (currentUser.isSuperUser()) {
+                                survey.setReviewState(reviewState);
+                            }
                             surveyDao.update(survey);
                             _log.info("Edited survey");
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
@@ -539,6 +547,7 @@ public class SurveyPortlet extends GenericPortlet {
                             survey.setWaterTemperature(waterTemperature);
                             survey.setActivity(activity);
                             survey.setComments(comments.toString());
+                            survey.setReviewState(Survey.ReviewState.UNREVIEWED);
                             surveyDao.save(survey);
                             previousSurveys.add(survey);
                         }

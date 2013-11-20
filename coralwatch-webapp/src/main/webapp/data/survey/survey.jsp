@@ -746,6 +746,19 @@
                value="<%=comments == null ? "" : comments%>"/>
     </td>
 </tr>
+<% if ((currentUser != null) && currentUser.isSuperUser() && cmd.equals(Constants.EDIT)) { %>
+<tr>
+    <th><label for="reviewState">Review:</label></th>
+    <td>
+        <% for (Survey.ReviewState reviewState : Survey.ReviewState.values()) { %>
+        <label style="padding-right: 5px;">
+            <input type="radio" name="reviewState" value="<%= reviewState.name() %>" <% if (survey.getReviewState() == reviewState) { %>checked="checked"<% } %> />
+            <%= reviewState.getText() %>
+        </label>
+        <% } %>
+    </td>
+</tr>
+<% } %>
 <tr>
     <td colspan="2"><input type="submit" name="submit"
                            value="<%=cmd.equals(Constants.ADD) ? "Submit" : "Save"%>"/>
@@ -970,6 +983,15 @@
             <td><%=survey.getDateModified() == null ? "" : survey.getDateModified()%>
             </td>
         </tr>
+        <% if ((currentUser != null) && currentUser.isSuperUser()) { %>
+        <tr>
+            <th>Review:</th>
+            <td>
+                <img src="<%= renderRequest.getContextPath() %>/icon/timemap/<%= survey.getReviewState().getColour() %>-circle.png" />
+                <%= survey.getReviewState().getText() %>
+            </td>
+        </tr>
+        <% } %>
         <%
             if (currentUser != null && (currentUser.equals(survey.getCreator()) || currentUser.isSuperUser())) {
         %>
@@ -1546,6 +1568,29 @@
                     return viewURL;
                 }
             }
+            <% if ((currentUser != null) && currentUser.isSuperUser()) { %>
+            , {
+                field: "reviewState",
+                name: "Review",
+                width: 5,
+                formatter: function(item) {
+                    var reviewStateColour = null;
+                    var reviewStateText = null;
+                    <% for (Survey.ReviewState reviewState : Survey.ReviewState.values()) { %>
+                    if (item == '<%= reviewState.name() %>') {
+                        reviewStateColour = '<%= reviewState.getColour() %>';
+                        reviewStateText = '<%= reviewState.getText() %>';
+                    }
+                    <% } %>
+                    if (reviewStateColour && reviewStateText) {
+                        return '<img src="<%= renderRequest.getContextPath() %>/icon/timemap/' + reviewStateColour + '-circle.png" title="' + reviewStateText + '" />';
+                    }
+                    else {
+                        return '';
+                    }
+                }
+            }
+            <% } %>
         ]
     ];
 </script>

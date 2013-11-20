@@ -75,7 +75,7 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             .setParameter("reefId", reef.getId())
             .scroll();
     }
-    
+
     @Override
     public ScrollableResults getSurveysForDojo(Reef reef, UserImpl surveyCreator) {
         HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
@@ -86,7 +86,8 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             "    survey.reef.name,\n" +
             "    survey.reef.country,\n" +
             "    count(surveyRecord),\n" +
-            "    survey.id\n" +
+            "    survey.id,\n" +
+            "    survey.reviewState\n" +
             "FROM Survey survey\n" +
             "JOIN survey.dataset as surveyRecord\n";
         if (reef != null) {

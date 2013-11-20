@@ -109,7 +109,8 @@ public class SurveyServlet extends HttpServlet {
                     String country = (String) results.get(3);
                     Number numSurveyRecords = (Number) results.get(4);
                     Long surveyId = (Long) results.get(5);
-                    
+                    Survey.ReviewState reviewState = (Survey.ReviewState) results.get(6);
+
                     writer.writeStartElement("survey");
 
                     writer.writeStartElement("surveyor");
@@ -140,6 +141,10 @@ public class SurveyServlet extends HttpServlet {
 
                     writer.writeStartElement("view");
                     writer.writeCharacters(surveyId + "");
+                    writer.writeEndElement();
+
+                    writer.writeStartElement("reviewState");
+                    writer.writeCharacters(reviewState.name());
                     writer.writeEndElement();
 
                     writer.writeEndElement();

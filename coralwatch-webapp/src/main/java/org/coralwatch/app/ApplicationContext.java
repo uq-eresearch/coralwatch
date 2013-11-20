@@ -1,23 +1,48 @@
 package org.coralwatch.app;
 
-import au.edu.uq.itee.maenad.dataaccess.Dao;
-import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
-import au.edu.uq.itee.maenad.util.BCrypt;
-import org.coralwatch.dataaccess.*;
-import org.coralwatch.dataaccess.jpa.*;
-import org.coralwatch.model.*;
-import org.restlet.service.ConnectorService;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
+import org.coralwatch.dataaccess.KitRequestDao;
+import org.coralwatch.dataaccess.ReefDao;
+import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.dataaccess.SurveyRatingDao;
+import org.coralwatch.dataaccess.SurveyRecordDao;
+import org.coralwatch.dataaccess.UserDao;
+import org.coralwatch.dataaccess.UserRatingDao;
+import org.coralwatch.dataaccess.UserReputationProfileDao;
+import org.coralwatch.dataaccess.jpa.JpaConnectorService;
+import org.coralwatch.dataaccess.jpa.JpaKitRequestDao;
+import org.coralwatch.dataaccess.jpa.JpaReefDao;
+import org.coralwatch.dataaccess.jpa.JpaSurveyDao;
+import org.coralwatch.dataaccess.jpa.JpaSurveyRatingDao;
+import org.coralwatch.dataaccess.jpa.JpaSurveyRecordDao;
+import org.coralwatch.dataaccess.jpa.JpaUserDao;
+import org.coralwatch.dataaccess.jpa.JpaUserRatingDao;
+import org.coralwatch.dataaccess.jpa.JpaUserReputationProfileDao;
+import org.coralwatch.model.Reef;
+import org.coralwatch.model.Survey;
+import org.coralwatch.model.SurveyRecord;
+import org.coralwatch.model.UserImpl;
+import org.coralwatch.model.UserRating;
+import org.restlet.service.ConnectorService;
+
+import au.edu.uq.itee.maenad.dataaccess.Dao;
+import au.edu.uq.itee.maenad.restlet.errorhandling.InitializationException;
+import au.edu.uq.itee.maenad.util.BCrypt;
 
 
 public class ApplicationContext implements Configuration, ServletContextListener {
@@ -86,6 +111,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         final String persistenceUnitName = getProperty(properties, "persistenceUnitName");
         emf = Persistence.createEntityManagerFactory(persistenceUnitName);
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            @Override
             public void run() {
                 emf.close();
             }
@@ -244,6 +270,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         survey.setWaterTemperature(rand.nextInt(25) + 1 + 1.0);
         survey.setTotalRatingValue(rand.nextInt(5) + 1);
         survey.setNumberOfRatings(rand.nextInt(100) + 1);
+        survey.setReviewState(Survey.ReviewState.UNREVIEWED);
         return survey;
     }
 
@@ -327,6 +354,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         return isTestSetup;
     }
 
+    @Override
     public boolean isRatingSetup() {
         return isRatingSetup;
     }
