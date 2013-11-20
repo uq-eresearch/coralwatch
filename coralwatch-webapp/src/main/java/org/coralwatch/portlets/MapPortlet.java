@@ -9,6 +9,7 @@ import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequestDispatcher;
+import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
@@ -19,6 +20,7 @@ import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.Survey;
+import org.coralwatch.model.UserImpl;
 import org.coralwatch.util.AppUtil;
 
 import com.liferay.portal.kernel.log.Log;
@@ -49,15 +51,16 @@ public class MapPortlet extends GenericPortlet {
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
         include(viewJSP, renderRequest, renderResponse);
     }
-    
+
     @Override
     public void serveResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
         if (request.getResourceID().equals("survey")) {
             serveSurveyResource(request, response);
         }
     }
-    
+
     private void serveSurveyResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
+        UserImpl currentUser = (UserImpl) request.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
         Survey survey = surveyDao.getById(Long.valueOf(request.getParameter("id")));
         String baseUrl = request.getContextPath();
         String piechartUrl = baseUrl + "/graph?type=survey&id=" + survey.getId() + "&chart=shapePie&width=256&height=256&labels=false&legend=true&titleSize=11";
@@ -68,20 +71,22 @@ public class MapPortlet extends GenericPortlet {
         if ((country == null) || country.toLowerCase().startsWith("unknown")) {
             country = "";
         }
-        String content =
-            "<b>" + survey.getReef().getName() + " (" + country + ")</b>" +
-            "<br />" +
-            "- <a href=\"" + request.getPreferences().getValue("surveyUrl", "survey") +
+        response.getWriter().println("<b>" + survey.getReef().getName() + " (" + country + ")</b><br />");
+        if ((currentUser != null) && currentUser.isSuperUser()) {
+            String reviewStateImgUrl = request.getContextPath() + "/icon/timemap/" + survey.getReviewState().getColour() + "-circle.png";
+            response.getWriter().println("<div style=\"float: right;\">");
+            response.getWriter().println("<img src=\"" + reviewStateImgUrl + "\" />");
+            response.getWriter().println(survey.getReviewState().getText());
+            response.getWriter().println("</div>");
+        }
+        String surveyUrl =
+            request.getPreferences().getValue("surveyUrl", "survey") +
             "?p_p_id=surveyportlet_WAR_coralwatch" +
             "&_surveyportlet_WAR_coralwatch_" + Constants.CMD + "=" + Constants.VIEW +
-            "&_surveyportlet_WAR_coralwatch_surveyId=" + survey.getId() + "\">" +
-            numberOfRecs + " Record(s)" +
-            "</a>" +
-            "<br />" +
-            "- " + survey.getDate().toLocaleString() + graphs +
-            "<br />" +
-            "<div dojoType='dojox.form.Rating' numStars='5' value='1'></div>";
-        response.getWriter().print(content); 
+            "&_surveyportlet_WAR_coralwatch_surveyId=" + survey.getId();
+        response.getWriter().println("- <a href=\"" + surveyUrl + "\">" + numberOfRecs + " Record(s)</a><br />");
+        response.getWriter().println("- " + survey.getDate().toLocaleString() + graphs + "<br />");
+        response.getWriter().println("<div dojoType='dojox.form.Rating' numStars='5' value='1'></div>");
     }
 
     @Override
