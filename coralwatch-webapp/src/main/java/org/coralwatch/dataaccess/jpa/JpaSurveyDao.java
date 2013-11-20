@@ -96,7 +96,7 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
         if (surveyCreator != null) {
             queryString += ((reef != null) ? "AND" : "WHERE") + " survey.creator.id = :surveyCreatorId\n";
         }
-        queryString += "GROUP BY survey.id, survey.date, survey.creator.displayName, survey.reef.name, survey.reef.country\n";
+        queryString += "GROUP BY survey.id, survey.date, survey.reviewState, survey.creator.displayName, survey.reef.name, survey.reef.country\n";
         queryString += "ORDER BY survey.date DESC";
         Query query = entityManager.getSession()
             .createQuery(queryString)
