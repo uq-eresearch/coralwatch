@@ -20,16 +20,6 @@
         <url-pattern>/graph/*</url-pattern>
     </servlet-mapping>
 
-    <servlet id="surveyServlet">
-        <servlet-name>surveys</servlet-name>
-        <servlet-class>org.coralwatch.servlets.SurveyServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>surveys</servlet-name>
-        <url-pattern>/surveys/*</url-pattern>
-    </servlet-mapping>
-
     <servlet id="reefServlet">
         <servlet-name>reefs</servlet-name>
         <servlet-class>org.coralwatch.servlets.ReefServlet</servlet-class>

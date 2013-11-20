@@ -1636,8 +1636,14 @@
 </div>
 <br/>
 
+<portlet:resourceURL var="listURL" id="list">
+    <portlet:param name="format" value="xml" />
+    <% if (createdByUserId != null) { %>
+    <portlet:param name="createdByUserId" value="<%= String.valueOf(createdByUserId) %>" />
+    <% } %>
+</portlet:resourceURL>
 <div dojoType="dojox.data.XmlStore"
-     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/surveys?format=xml<% if (createdByUserId != null) { %>&createdByUserId=<%=createdByUserId%><% } %>"
+     url="<%= listURL %>"
      jsId="surveyStore" label="title">
     <script type="dojo/method" event="onLoad">
         grid.setSortIndex(1, true);

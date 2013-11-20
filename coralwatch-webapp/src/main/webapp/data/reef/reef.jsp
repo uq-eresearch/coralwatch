@@ -3,6 +3,8 @@
 <%@ page import="org.coralwatch.dataaccess.ReefDao" %>
 <%@ page import="org.coralwatch.model.Reef" %>
 <%@ page import="org.coralwatch.model.Survey" %>
+<%@ page import="org.coralwatch.model.UserImpl" %>
+<%@ page import="javax.portlet.PortletSession" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
@@ -10,7 +12,7 @@
 <portlet:defineObjects/>
 
 <%
-    //    UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
+    UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
     ReefDao reefDao = (ReefDao) renderRequest.getAttribute("reefDao");
     String cmd = ParamUtil.getString(request, Constants.CMD);
     if (cmd.equals(Constants.VIEW)) {
@@ -128,7 +130,7 @@
                     {
                         field: "records",
                         name: "Records",
-                        width: 10,
+                        width: 5,
                         formatter: function(item) {
                             return Number(item.toString());
                         }
@@ -136,20 +138,47 @@
                     {
                         field: "view",
                         name: "View",
-                        width: 10,
+                        width: 9,
                         formatter: function(item) {
                             var viewURL = "<a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + item.toString() + "\">More info</a>";
                             return viewURL;
                         }
                     }
+                    <% if ((currentUser != null) && currentUser.isSuperUser()) { %>
+                    , {
+                        field: "reviewState",
+                        name: "Review",
+                        width: 5,
+                        formatter: function(item) {
+                            var reviewStateColour = null;
+                            var reviewStateText = null;
+                            <% for (Survey.ReviewState reviewState : Survey.ReviewState.values()) { %>
+                            if (item == '<%= reviewState.name() %>') {
+                                reviewStateColour = '<%= reviewState.getColour() %>';
+                                reviewStateText = '<%= reviewState.getText() %>';
+                            }
+                            <% } %>
+                            if (reviewStateColour && reviewStateText) {
+                                return '<img src="<%= renderRequest.getContextPath() %>/icon/timemap/' + reviewStateColour + '-circle.png" title="' + reviewStateText + '" />';
+                            }
+                            else {
+                                return '';
+                            }
+                        }
+                    }
+                    <% } %>
                 ]
             ];
         </script>
+        <liferay-portlet:resourceURL var="resourceURL" portletName="surveyportlet_WAR_coralwatch">
+            <liferay-portlet:param name="format" value="xml" />
+            <liferay-portlet:param name="reefId" value="<%= String.valueOf(reefId) %>" />
+        </liferay-portlet:resourceURL>
         <div dojoType="dojox.data.XmlStore"
-             url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/surveys?format=xml&reefId=<%=reefId%>"
+             url="<%= resourceURL %>&p_p_resource_id=list"
              jsId="surveyStore" label="title">
         </div>
-        <div id="surveygrid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
+        <div id="surveygrid" style="width: 653px; height: 600px;" dojoType="dojox.grid.DataGrid"
              store="surveyStore" structure="layoutSurveys" query="{}" rowsPerPage="40">
         </div>
     </div>

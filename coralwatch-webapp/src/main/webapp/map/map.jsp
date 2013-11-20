@@ -2,6 +2,7 @@
 <%@ page import="org.coralwatch.model.Reef" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
+<%@ taglib prefix="liferay-portlet" uri="http://liferay.com/tld/portlet" %>
 
 <portlet:defineObjects/>
 <%
@@ -118,7 +119,10 @@
         }
         eventListeners = [];
         var xhrArgs = {
-            url: "<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/surveys?format=json")%>",
+            <liferay-portlet:resourceURL var="resourceURL" portletName="surveyportlet_WAR_coralwatch">
+                <liferay-portlet:param name="format" value="json" />
+            </liferay-portlet:resourceURL>
+            url: "<%= resourceURL %>&p_p_resource_id=list",
             handleAs: "json",
             load: function(surveys) {
                 var icon = new GIcon(G_DEFAULT_ICON);
