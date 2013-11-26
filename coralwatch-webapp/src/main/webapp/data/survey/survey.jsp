@@ -579,7 +579,7 @@
                name="date"
                required="true"
                isDate="true"
-               value="<%=cmd.equals(Constants.EDIT) ? dateFormat.format(survey.getDate()) : ""%>"
+               value="<%=(cmd.equals(Constants.EDIT) && (survey.getDate() != null)) ? dateFormat.format(survey.getDate()) : ""%>"
                dojoType="dijit.form.DateTextBox"
                constraints="{datePattern: 'dd/MM/yyyy', min:'2000-01-01'}"
                lang="en-au"
@@ -596,7 +596,7 @@
                clickableIncrement="T00:15:00"
                visibleIncrement="T00:15:00"
                visibleRange="T03:00:00"
-               value="<%=cmd.equals(Constants.EDIT) ? timeFormat.format(survey.getTime()) : ""%>"
+               value="<%=(cmd.equals(Constants.EDIT) && (survey.getTime() != null)) ? timeFormat.format(survey.getTime()) : ""%>"
                required="true"
                dojoType="dijit.form.TimeTextBox"/>
     </td>
