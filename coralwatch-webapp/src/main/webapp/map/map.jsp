@@ -11,6 +11,10 @@
 <jsp:include page="map-head.jsp"/>
 <script src="/coralwatch/js/markerclusterer_compiled.js"></script>
 <script>
+mmap = {};
+function triggerMClick(mid) {
+  google.maps.event.trigger(mmap[mid], 'click');
+}
 function initialize() {
   var mapProp = {
     center:new google.maps.LatLng(25.799891, 15.468750),
@@ -36,7 +40,9 @@ function initialize() {
                     position:new google.maps.LatLng(survey.lat,survey.lng),
                     map: map,
                     id: survey.id,
+                    title: survey.date
                 });
+                mmap[marker.id] = marker;
                 google.maps.event.addListener(marker, 'click', (function(marker, i) {
                     return function() {
                         dojo.xhrGet({
@@ -59,7 +65,18 @@ function initialize() {
                 })(marker, i));
                 markers.push(marker);
             }
-            var markerCluster = new MarkerClusterer(map, markers);
+            markerCluster = new MarkerClusterer(map, markers, {
+              zoomOnClick: false,
+            });
+            google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
+              var html = '<div style="height:300px; overflow:auto;"><h4>' + cluster.getMarkers().length + ' Surveys:</h4>';
+              for (var i = 0; i < cluster.getMarkers().length; i++) {
+                html += '<a href="javascript:void(0)" onclick="triggerMClick('+cluster.getMarkers()[i].id+')">' + cluster.getMarkers()[i].title.replace(/\s/g, '&nbsp;') + '</a><br/>';
+              }
+              html += '</div>';
+              infowindow.setContent(html);
+              infowindow.open(map, cluster.getMarkers()[0]);
+            });
             dialog.hide();
         },
         error: function(error) {
