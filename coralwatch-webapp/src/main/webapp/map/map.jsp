@@ -12,6 +12,7 @@
 <script src="/coralwatch/js/markerclusterer_compiled.js"></script>
 <script>
 mmap = {};
+var dialog;
 function triggerMClick(mid) {
   google.maps.event.trigger(mmap[mid], 'click');
 }
@@ -21,7 +22,7 @@ function initialize() {
     zoom:2,
     mapTypeId:google.maps.MapTypeId.HYBRID
   };
-  map=new google.maps.Map(document.getElementById("map"),mapProp);
+  map=new google.maps.Map(document.getElementById("mapDiv"),mapProp);
   var infowindow = new google.maps.InfoWindow();
   google.maps.event.addListener(map, 'zoom_changed', function() {
     infowindow.close();
@@ -66,7 +67,7 @@ function initialize() {
                 markers.push(marker);
             }
             markerCluster = new MarkerClusterer(map, markers, {
-              zoomOnClick: false,
+              zoomOnClick: false
             });
             google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
               var html = '<div style="height:300px; overflow:auto;"><h4>' + cluster.getMarkers().length + ' Surveys:</h4>';
@@ -77,24 +78,25 @@ function initialize() {
               infowindow.setContent(html);
               infowindow.open(map, cluster.getMarkers()[0]);
             });
-            dialog.hide();
+            //dialog.hide();
         },
         error: function(error) {
             targetNode.innerHTML = "An unexpected error occurred: " + error;
         }
   }
   var deferred = dojo.xhrGet(xhrArgs);
-  var dialog;
+/*
   dojo.addOnLoad(function() {
-    dialog = dijit.byId("dialog");
+    dialog = dijit.byId("dialogDiv");
     dialog.titleBar.style.display = 'none';
     dialog.show();
   });
+*/
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 
-<div id="map" style="height: 650px; border: 2px solid #333333"></div>
-<div id="dialog" dojoType="dijit.Dialog" title="loading..." style="display:none;" align="center">
+<div id="mapDiv" style="height: 650px; border: 2px solid #333333"></div>
+<div id="dialogDiv" dojoType="dijit.Dialog" title="loading..." style="display:none;" align="center">
     <h3 style="text-align:center;">Loading surveys...</h3>
 </div>

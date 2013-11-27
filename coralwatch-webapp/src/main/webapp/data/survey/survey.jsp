@@ -36,6 +36,30 @@
     dojo.require("dojo.data.ItemFileReadStore");
 </script>
 
+<script>
+function googleMap(eId) {
+    var mapDiv = dojo.byId(eId);
+    var mapProp = {
+        center:new google.maps.LatLng(0,0),
+        zoom:1,
+        mapTypeId:google.maps.MapTypeId.HYBRID
+    };
+    map=new google.maps.Map(mapDiv,mapProp);
+    marker=new google.maps.Marker({
+      position:new google.maps.LatLng(0,0),
+      map: map,
+      visible: false
+    });
+    google.maps.event.addListener(map, "click", function(event) {
+        marker.setPosition(event.latLng);
+        marker.setTitle(event.latLng.toString());
+        marker.setVisible(true);
+        dijit.byId("latitudeDeg1").setValue(event.latLng.lat().toFixed(6));
+        dijit.byId("longitudeDeg1").setValue(event.latLng.lng().toFixed(6));
+    });
+}
+</script>
+
 <%
     UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
     SurveyDao surveyDao = (SurveyDao) renderRequest.getAttribute("surveyDao");
@@ -292,27 +316,7 @@
                     function showMap() {
                         var dialog = dijit.byId("mapDialog");
                         dialog.show();
-                        if (GBrowserIsCompatible()) {
-                            var mapDiv = dojo.byId("ieMap");
-                            var map = new GMap2(mapDiv);
-                            map.setCenter(new GLatLng(0, 0), 1);
-                            map.enableScrollWheelZoom();
-                            map.enableContinuousZoom();
-                            map.addControl(new GLargeMapControl3D());
-                            map.addControl(new GMapTypeControl());
-                            map.addMapType(G_PHYSICAL_MAP);
-                            map.setMapType(G_HYBRID_MAP);
-                            map.removeMapType(G_SATELLITE_MAP);
-                            map.getContainer().style.overflow = "hidden";
-                            GEvent.addListener(map, 'click', function(overlay, latlng) {
-                                dijit.byId("latitudeDeg1").setValue(latlng.lat().toFixed(6));
-                                dijit.byId("longitudeDeg1").setValue(latlng.lng().toFixed(6));
-                                onChangePositionDeg('latitudeDeg1');
-                                onChangePositionDeg('longitudeDeg1');
-                            });
-                        } else {
-                            alert("Sorry, the Google Maps API is not compatible with this browser");
-                        }
+                        googleMap('ieMap');
                     }
                 </script>
                 <a href="#" onclick="showMap(); return false;">Without GPS Device</a>
@@ -323,27 +327,7 @@
                     <div dojoType="dijit.TooltipDialog">
                         <div id="locatorMap" style="width: 470px; height: 320px;">
                             <script type="text/javascript">
-                                if (GBrowserIsCompatible()) {
-                                    var mapDiv = dojo.byId("locatorMap");
-                                    var map = new GMap2(mapDiv);
-                                    map.setCenter(new GLatLng(0, 0), 1);
-                                    map.enableScrollWheelZoom();
-                                    map.enableContinuousZoom();
-                                    map.addControl(new GLargeMapControl3D());
-                                    map.addControl(new GMapTypeControl());
-                                    map.addMapType(G_PHYSICAL_MAP);
-                                    map.setMapType(G_HYBRID_MAP);
-                                    map.removeMapType(G_SATELLITE_MAP);
-                                    map.getContainer().style.overflow = "hidden";
-                                    GEvent.addListener(map, 'click', function(overlay, latlng) {
-                                        dijit.byId("latitudeDeg1").setValue(latlng.lat().toFixed(6));
-                                        dijit.byId("longitudeDeg1").setValue(latlng.lng().toFixed(6));
-                                        onChangePositionDeg('latitudeDeg1');
-                                        onChangePositionDeg('longitudeDeg1');
-                                    });
-                                } else {
-                                    alert("Sorry, the Google Maps API is not compatible with this browser");
-                                }
+                                google.maps.event.addDomListener(window, 'load', googleMap('locatorMap'));
                             </script>
                         </div>
                     </div>
@@ -1282,20 +1266,20 @@
         if (survey.getLatitude() != null && survey.getLongitude() != null) {
     %>
     <jsp:include page="../../map/google-map-key.jsp"/>
-    <div id="map" style="width: 640px; height: 53ex">
+    <div id="mDiv" style="width: 640px; height: 53ex">
         <script type="text/javascript">
-            if (GBrowserIsCompatible()) {
-                var mavDiv = dojo.byId("map");
-                var map = new GMap2(mavDiv);
-                map.setMapType(G_HYBRID_MAP);
-                map.addControl(new GSmallMapControl());
-                map.addControl(new GMapTypeControl());
-                map.addControl(new GOverviewMapControl());
-                var center = new GLatLng(<%=survey.getLatitude()%>, <%=survey.getLongitude()%>);
-                var marker = new GMarker(center);
-                map.setCenter(center, 5);
-                map.addOverlay(marker);
-            }
+            var mapDiv = dojo.byId("mDiv");
+            var center = new google.maps.LatLng(<%=survey.getLatitude()%>, <%=survey.getLongitude()%>);
+            var mapProp = {
+                center:center,
+                zoom:5,
+                mapTypeId:google.maps.MapTypeId.HYBRID
+            };
+            map=new google.maps.Map(mapDiv,mapProp);
+            var marker=new google.maps.Marker({
+                position:center,
+                map: map
+            });
         </script>
     </div>
     <%
