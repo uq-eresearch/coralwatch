@@ -10,9 +10,9 @@
 %>
 <jsp:include page="map-head.jsp"/>
 <script src="/coralwatch/js/markerclusterer_compiled.js"></script>
+<!--[if IE]><script type="text/javascript">window['isIE'] = true;</script><![endif]-->
 <script>
 mmap = {};
-var dialog;
 function triggerMClick(mid) {
   google.maps.event.trigger(mmap[mid], 'click');
 }
@@ -78,20 +78,22 @@ function initialize() {
               infowindow.setContent(html);
               infowindow.open(map, cluster.getMarkers()[0]);
             });
-            //dialog.hide();
+            if(!window.isIE) {
+              dialog.hide();
+            }
         },
         error: function(error) {
             targetNode.innerHTML = "An unexpected error occurred: " + error;
         }
   }
   var deferred = dojo.xhrGet(xhrArgs);
-/*
-  dojo.addOnLoad(function() {
-    dialog = dijit.byId("dialogDiv");
-    dialog.titleBar.style.display = 'none';
-    dialog.show();
-  });
-*/
+  if(!window.isIE) {
+    dojo.addOnLoad(function() {
+      dialog = dijit.byId("dialogDiv");
+      dialog.titleBar.style.display = 'none';
+      dialog.show();
+    });
+  }
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 </script>
