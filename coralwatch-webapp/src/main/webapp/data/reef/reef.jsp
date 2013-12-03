@@ -186,40 +186,50 @@
         <%
             List<Survey> surveys = reefDao.getSurveysByReef(reef);
             if (surveys != null && surveys.size() > 0) {
-//        if (byReef.getLatitude() != null && survey.getLongitude() != null) {
         %>
         <jsp:include page="../../map/google-map-key.jsp"/>
         <div id="map" style="width: 640px; height: 53ex">
             <script type="text/javascript">
-                if (GBrowserIsCompatible()) {
-                    var mavDiv = dojo.byId("map");
-                    var map = new GMap2(mavDiv);
-                    map.setMapType(G_HYBRID_MAP);
-                    map.addControl(new GSmallMapControl());
-                    map.addControl(new GMapTypeControl());
-                    map.addControl(new GOverviewMapControl());
-                    map.setCenter(new GLatLng(25.799891, 15.468750), 2);
-                <%
-                for (Survey srv : surveys) {
-                    if (srv.getLatitude() != null && srv.getLongitude() != null) {
-                %>
-                    map.setCenter(new GLatLng(<%=srv.getLatitude()%>, <%=srv.getLongitude()%>), 5);
-                <%
-                    break;
+                var mapDiv = dojo.byId("map");
+                var map = new google.maps.Map(mapDiv, {
+                    center: new google.maps.LatLng(25.799891, 15.468750),
+                    zoom: 2,
+                    mapTypeId: google.maps.MapTypeId.HYBRID,
+                    mapTypeControl: true,
+                    overviewMapControl: true,
+                    zoomControl: true,
+                    zoomControlOptions: {
+                        style: google.maps.ZoomControlStyle.SMALL
                     }
-                }
-                %>
-                    //                    map.setCenter(center, 5);
+                });
+
                 <%
-                for(Survey srv : surveys) {
-                    if (srv.getLatitude() != null && srv.getLongitude() != null){
+                    // If we can find a survey with a lat/lng, center map at that point
+                    for (Survey srv : surveys) {
+                        if (srv.getLatitude() != null && srv.getLatitude() >= -90 && srv.getLatitude() <= 90 &&
+                            srv.getLongitude() != null && srv.getLongitude() >= -180 && srv.getLongitude() <= 180) {
                 %>
-                    map.addOverlay(new GMarker(new GLatLng(<%=srv.getLatitude()%>, <%=srv.getLongitude()%>)));
+                map.setCenter(new google.maps.LatLng(<%=srv.getLatitude()%>, <%=srv.getLongitude()%>));
                 <%
+                            break;
+                        }
                     }
-                }
                 %>
-                }
+
+                <%
+                    // Add a map marker for each survey that has a lat/long
+                    for(Survey srv : surveys) {
+                        if (srv.getLatitude() != null && srv.getLatitude() >= -90 && srv.getLatitude() <= 90 &&
+                            srv.getLongitude() != null && srv.getLongitude() >= -180 && srv.getLongitude() <= 180) {
+                %>
+                new google.maps.Marker({
+                    position: new google.maps.LatLng(<%=srv.getLatitude()%>, <%=srv.getLongitude()%>),
+                    map: map
+                });
+                <%
+                        }
+                    }
+                %>
             </script>
         </div>
         <%
