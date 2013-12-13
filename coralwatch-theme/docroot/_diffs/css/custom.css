@@ -126,16 +126,12 @@ li ul {
 }
 
 .logo .current-community {
-    background: url(../images/dock/my_places_public.png) no-repeat 15px 50%;
-    border-left: 1px solid #D3DADD;
-    color: #D3DADD;
+    color: #BEC6C9;
     display: block;
-    float: left;
     font-size: 0.8em;
     font-weight: bold;
-    margin: 0 0 0 20px;
-    padding: 20px;
-    padding-left: 40px;
+    margin: 5px 0 0 0;
+    text-align: center;
 }
 
 .guest-community .logo .current-community {
@@ -143,7 +139,9 @@ li ul {
 }
 
 .private-page .logo .current-community {
-    background-image: url(../images/dock/my_places_private.png);
+    background: url(../images/dock/my_places_private.png) no-repeat 15px 50%;
+    border-left: 1px solid #D3DADD;
+    float: left;
 }
 
 /* ---------- Main navigation ---------- */
@@ -151,7 +149,10 @@ li ul {
     background: #EEEEEE none repeat scroll 0 0;
     border-top: 1px solid #BFBFBF;
     font-weight: bold;
-    padding: 5px;
+    margin: 0 0 0 20px;
+    padding: 20px;
+    padding-left: 40px;
+    text-align: start;
 }
 
 .coralwatch-input-stretched {
