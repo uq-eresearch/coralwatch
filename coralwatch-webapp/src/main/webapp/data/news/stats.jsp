@@ -32,8 +32,4 @@
                 href="<%=baseUrl+"/"+renderRequest.getAttribute("userUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=<%=highestContributor.getId()%>"><%= highestContributor.getDisplayName()%>
         </a></li>
     </ul>
-    <div align="center">
-        <img alt="Coralwatch Updates"
-             src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/image/stats_updates.png")%>"/>
-    </div>
 </div>
