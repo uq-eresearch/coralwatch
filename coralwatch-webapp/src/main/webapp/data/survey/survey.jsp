@@ -37,12 +37,17 @@
 </script>
 
 <script>
+var marker;
 function googleMap(eId) {
     var mapDiv = dojo.byId(eId);
     var mapProp = {
-        center:new google.maps.LatLng(0,0),
-        zoom:1,
-        mapTypeId:google.maps.MapTypeId.HYBRID
+        center: new google.maps.LatLng(0, 0),
+        zoom: 1,
+        mapTypeId: google.maps.MapTypeId.HYBRID,
+        // Since the map is always draggable, this effectively sets the cursor.
+        // The intention of the crosshair is to indicate the map is clickable
+        // rather than draggable, but this achieves the same result.
+        draggableCursor: 'crosshair'
     };
     map=new google.maps.Map(mapDiv,mapProp);
     marker=new google.maps.Marker({
@@ -51,12 +56,29 @@ function googleMap(eId) {
       visible: false
     });
     google.maps.event.addListener(map, "click", function(event) {
-        marker.setPosition(event.latLng);
-        marker.setTitle(event.latLng.toString());
-        marker.setVisible(true);
         dijit.byId("latitudeDeg1").setValue(event.latLng.lat().toFixed(6));
         dijit.byId("longitudeDeg1").setValue(event.latLng.lng().toFixed(6));
+        dijit.byId('mainTabContainer').selectChild('tabDeg');
+        onChangePositionDeg("latitudeDeg1");
+        onChangePositionDeg("longitudeDeg1");
     });
+}
+function positionMarker() {
+    var lat = dijit.byId("latitude").getValue();
+    var lng = dijit.byId("longitude").getValue();
+    if (isNaN(lat) || isNaN(lng)) {
+        marker.setVisible(false);
+    }
+    else {
+        var latLng = new google.maps.LatLng(lat, lng);
+        map.setCenter(latLng);
+        if (map.getZoom() < 10) {
+            map.setZoom(10);
+        }
+        marker.setPosition(latLng);
+        marker.setTitle(latLng.toString());
+        marker.setVisible(true);
+    }
 }
 </script>
 
@@ -174,7 +196,6 @@ function googleMap(eId) {
     }
     return true;
 </script>
-<%--<div id="locatorMap" style="width: 470px; height: 320px;"></div>--%>
 <input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
 <table>
 <%
@@ -204,7 +225,7 @@ function googleMap(eId) {
             invalidMessage="Enter the name of the group you are participating with"
             value="<%=groupName == null ? "" : groupName%>" />
         </td>
-        <td style="padding: 0; vertical-align: middle;">
+        <td style="width: 320px; padding: 0; vertical-align: middle;">
             e.g. EarthCheck, ReefCheck, OceansWatch.<br />
             Enter your own name if you do not belong to a group.
         </td>
@@ -233,29 +254,45 @@ function googleMap(eId) {
 <tr>
     <th><label for="country">Country of Survey:</label></th>
     <td>
-        <script type="text/javascript">
-            dojo.addOnLoad(function() {
-                dojo.connect(dijit.byId("country"), "onChange", function() {
-                    var country = dijit.byId("country").getValue();
-                    reefStore.url = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=json&country=" + country;
-                    reefStore.close();
+        <table>
+        <tr>
+        <td style="padding: 0; vertical-align: middle;">
+            <script type="text/javascript">
+                dojo.addOnLoad(function() {
+                    dojo.connect(dijit.byId("country"), "onChange", function() {
+                        var country = dijit.byId("country").getValue();
+                        reefStore.url = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=json&country=" + country;
+                        reefStore.close();
+                    });
                 });
-            });
-        </script>
-        <select name="country"
-                id="country"
-                dojoType="dijit.form.ComboBox"
-                required="true"
-                hasDownArrow="true"
-                value="<%=country == null ? "" : country%>">
-            <option selected="selected" value=""></option>
-            <jsp:include page="/include/countrylist.jsp"/>
-        </select>
+            </script>
+            <select name="country"
+                    id="country"
+                    dojoType="dijit.form.ComboBox"
+                    required="true"
+                    hasDownArrow="true"
+                    value="<%=country == null ? "" : country%>">
+                <option selected="selected" value=""></option>
+                <jsp:include page="/include/countrylist.jsp"/>
+            </select>
+        </td>
+        <td style="width: 320px; padding: 0; vertical-align: middle;">
+            Please note: this is the country in which you collected the data, not the country you live in.
+        </td>
+        </tr>
+        </table>
     </td>
 </tr>
 <tr>
-    <th><label for="reefName">Reef Name:</label></th>
+    <th style="vertical-align: top; padding: 0.5em;">
+        <label for="reefName">Reef Name:</label>
+    </th>
     <td>
+        <p style="width: 480px;">
+            Before entering your reef and dive site details, check if they are already listed on the drop down menu.
+            If not, record the location (such as island or bay) followed by the reef or dive site.
+            Example: Heron Island - Pam's Point. 
+        </p>
         <%
             String reefServletUrl = "/reefs?format=json&country=all";
         %>
@@ -264,14 +301,19 @@ function googleMap(eId) {
              url="<%=renderResponse.encodeURL(renderRequest.getContextPath() + reefServletUrl)%>">
         </div>
         <input dojoType="dijit.form.ComboBox" value="<%=reefName == null ? "" : reefName%>" store="reefStore"
-               searchAttr="name" name="reefName" id="reefName">
+               searchAttr="name" name="reefName" id="reefName" style="width: 360px;">
     </td>
 </tr>
 <tr>
-<th>
+<th style="vertical-align: top; padding: 0.5em;">
     <label>Position:</label>
 </th>
 <td>
+<p style="width: 480px;">
+    If you used a GPS device, you can enter your survey's coordinates directly.
+    Otherwise, click on the map below to select your survey's location.
+    Please make sure you zoom in to confirm the exact location.
+</p>
 <input type="text"
        id="latitude"
        name="latitude"
@@ -290,8 +332,8 @@ function googleMap(eId) {
        constraints="{places:'0,6',round:-1,min:-180,max:360}"
        trim="true"
        value="<%=cmd.equals(Constants.EDIT) ? survey.getLongitude() : ""%>"/>
-<div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:40em;height:30ex">
-<div id="tabDeg" dojoType="dijit.layout.ContentPane" title="Degrees" style="width:40em;height:30ex;">
+<div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:480px;height:115px">
+<div id="tabDeg" dojoType="dijit.layout.ContentPane" title="Degrees" style="width:480px;height:115px;">
     <table>
         <tr>
             <th style="width: 72px;">
@@ -308,31 +350,6 @@ function googleMap(eId) {
                        onChange="onChangePositionDeg('latitudeDeg1');"
                        invalidMessage="Enter a valid latitude value rounded to six decimal places."
                        value="<%=cmd.equals(Constants.EDIT) ? survey.getLatitude() : ""%>"/>
-                <%
-                    String userAgent = request.getHeader("user-agent");
-                    if (userAgent.indexOf("MSIE") > -1) {
-                %>
-                <script type="text/javascript">
-                    function showMap() {
-                        var dialog = dijit.byId("mapDialog");
-                        dialog.show();
-                        googleMap('ieMap');
-                    }
-                </script>
-                <a href="#" onclick="showMap(); return false;">Without GPS Device</a>
-                <%
-                } else {
-                %>
-                <div id="locator" dojoType="dijit.form.DropDownButton" label="Without GPS Device">
-                    <div dojoType="dijit.TooltipDialog">
-                        <div id="locatorMap" style="width: 470px; height: 320px;">
-                            <script type="text/javascript">
-                                google.maps.event.addDomListener(window, 'load', googleMap('locatorMap'));
-                            </script>
-                        </div>
-                    </div>
-                </div>
-                <%}%>
             </td>
         </tr>
         <tr>
@@ -356,17 +373,9 @@ function googleMap(eId) {
                 <label for="isGpsDevice">I used a GPS Device</label>
             </td>
         </tr>
-        <tr>
-            <td></td>
-            <td>If no GPS device used, click on "Without GPS Device" to use a map locator to estimate
-                your survey location by double clicking on the map to zoom in one level at a time to find your location.
-                Then close the map.
-            </td>
-        </tr>
     </table>
-
 </div>
-<div id="tabDegMin" dojoType="dijit.layout.ContentPane" title="Degrees/Minutes" style="width:40em;height:20ex;">
+<div id="tabDegMin" dojoType="dijit.layout.ContentPane" title="Degrees/Minutes" style="width:480px;height:115px;">
     <table>
         <tr>
             <th style="width: 72px;">
@@ -448,7 +457,7 @@ function googleMap(eId) {
         </tr>
     </table>
 </div>
-<div id="tabDegMinSec" dojoType="dijit.layout.ContentPane" title="Degrees/Minutes/Seconds" style="width:40em;height:20ex;">
+<div id="tabDegMinSec" dojoType="dijit.layout.ContentPane" title="Degrees/Minutes/Seconds" style="width:480px;height:115px;">
     <table>
         <tr>
             <th style="width: 72px;">
@@ -553,6 +562,11 @@ function googleMap(eId) {
     </table>
 </div>
 </div>
+<div id="locatorMap" style="margin: 1em 0; width: 480px; height: 320px;">
+</div>
+<script type="text/javascript">
+    google.maps.event.addDomListener(window, 'load', googleMap('locatorMap'));
+</script>
 </td>
 </tr>
 <tr>
@@ -1330,15 +1344,15 @@ function googleMap(eId) {
         <table>
         <tr>
         <td style="padding: 0; vertical-align: middle;">
-        <input type="text"
-            id="groupName"
-            name="groupName"
-            required="true"
-            dojoType="dijit.form.ValidationTextBox"
-            regExp="...*"
-            invalidMessage="Enter the name of the group you are participating with"
-            value="" />
-        </td>
+            <input type="text"
+                id="groupName"
+                name="groupName"
+                required="true"
+                dojoType="dijit.form.ValidationTextBox"
+                regExp="...*"
+                invalidMessage="Enter the name of the group you are participating with"
+                value="" />
+            </td>
         <td style="padding: 0; vertical-align: middle;">
             e.g. EarthCheck, ReefCheck, OceansWatch.<br />
             Enter your own name if you do not belong to a group.
@@ -1368,24 +1382,33 @@ function googleMap(eId) {
 <tr>
     <th><label for="country">Country of Survey:</label></th>
     <td>
-        <script type="text/javascript">
-            dojo.addOnLoad(function() {
-                dojo.connect(dijit.byId("country"), "onChange", function() {
-                    var country = dijit.byId("country").getValue();
-                    reefStore.url = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=json&country=" + country;
-                    reefStore.close();
+        <table>
+        <tr>
+        <td style="padding: 0; vertical-align: middle;">
+            <script type="text/javascript">
+                dojo.addOnLoad(function() {
+                    dojo.connect(dijit.byId("country"), "onChange", function() {
+                        var country = dijit.byId("country").getValue();
+                        reefStore.url = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=json&country=" + country;
+                        reefStore.close();
+                    });
                 });
-            });
-        </script>
-        <select name="country"
-                id="country"
-                dojoType="dijit.form.ComboBox"
-                required="true"
-                hasDownArrow="true"
-                value="">
-            <option selected="selected" value=""></option>
-            <jsp:include page="/include/countrylist.jsp"/>
-        </select>
+            </script>
+            <select name="country"
+                    id="country"
+                    dojoType="dijit.form.ComboBox"
+                    required="true"
+                    hasDownArrow="true"
+                    value="">
+                <option selected="selected" value=""></option>
+                <jsp:include page="/include/countrylist.jsp"/>
+            </select>
+        </td>
+        <td style="padding: 0; vertical-align: middle;">
+            Please note: this is the country in which you collected the data, not the country you live in.
+        </td>
+        </tr>
+        </table>
     </td>
 </tr>
 
@@ -1639,7 +1662,3 @@ function googleMap(eId) {
 <%
     }
 %>
-<div id="mapDialog" dojoType="dijit.Dialog" title="Without GPS Dvice"
-     style="width: 470px; height: 320px; display:none;">
-    <div id="ieMap" style="height: 275px;"></div>
-</div>

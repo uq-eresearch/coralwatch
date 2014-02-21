@@ -8,9 +8,12 @@ function updatePositionFromDeg(fieldNamePrefix) {
     if (isNaN(dijit.byId(fieldNamePrefix + "Deg1").getValue())) {
         dijit.byId(fieldNamePrefix).setValue(Number.NaN);
     }
-    var deg1 = dijit.byId(fieldNamePrefix + "Deg1").getValue();
-    var deg = (deg1 > 180) ? (deg1 - 360) : deg1;
-    dijit.byId(fieldNamePrefix).setValue(deg);
+    else {
+        var deg1 = dijit.byId(fieldNamePrefix + "Deg1").getValue();
+        var deg = (deg1 > 180) ? (deg1 - 360) : deg1;
+        dijit.byId(fieldNamePrefix).setValue(deg);
+    }
+    positionMarker();
 }
 
 function updatePositionFromDegMin(fieldNamePrefix, dirPos, dirNeg) {
@@ -21,11 +24,14 @@ function updatePositionFromDegMin(fieldNamePrefix, dirPos, dirNeg) {
     ) {
         dijit.byId(fieldNamePrefix).setValue(Number.NaN);
     }
-    var deg2 = parseInt(dijit.byId(fieldNamePrefix + "Deg2").getValue());
-    var min2 = dijit.byId(fieldNamePrefix + "Min2").getValue();
-    var dir2 = dijit.byId(fieldNamePrefix + "Dir2").getValue();
-    var deg = (dir2 == dirPos ? 1 : -1) * (deg2 + min2 / 60);
-    dijit.byId(fieldNamePrefix).setValue(deg);
+    else {
+        var deg2 = parseInt(dijit.byId(fieldNamePrefix + "Deg2").getValue());
+        var min2 = dijit.byId(fieldNamePrefix + "Min2").getValue();
+        var dir2 = dijit.byId(fieldNamePrefix + "Dir2").getValue();
+        var deg = (dir2 == dirPos ? 1 : -1) * (deg2 + min2 / 60);
+        dijit.byId(fieldNamePrefix).setValue(deg);
+    }
+    positionMarker();
 }
 
 function updatePositionFromDegMinSec(fieldNamePrefix, dirPos, dirNeg) {
@@ -37,12 +43,15 @@ function updatePositionFromDegMinSec(fieldNamePrefix, dirPos, dirNeg) {
     ) {
         dijit.byId(fieldNamePrefix).setValue(Number.NaN);
     }
-    var deg3 = parseInt(dijit.byId(fieldNamePrefix + "Deg3").getValue());
-    var min3 = parseInt(dijit.byId(fieldNamePrefix + "Min3").getValue());
-    var sec3 = parseInt(dijit.byId(fieldNamePrefix + "Sec3").getValue());
-    var dir3 = dijit.byId(fieldNamePrefix + "Dir3").getValue();
-    var deg = (dir3 == dirPos ? 1 : -1) * (deg3 + min3 / 60 + sec3 / 3600);
-    dijit.byId(fieldNamePrefix).setValue(deg);
+    else {
+        var deg3 = parseInt(dijit.byId(fieldNamePrefix + "Deg3").getValue());
+        var min3 = parseInt(dijit.byId(fieldNamePrefix + "Min3").getValue());
+        var sec3 = parseInt(dijit.byId(fieldNamePrefix + "Sec3").getValue());
+        var dir3 = dijit.byId(fieldNamePrefix + "Dir3").getValue();
+        var deg = (dir3 == dirPos ? 1 : -1) * (deg3 + min3 / 60 + sec3 / 3600);
+        dijit.byId(fieldNamePrefix).setValue(deg);
+    }
+    positionMarker();
 }
 
 function onChangePositionDeg(fieldId) {
@@ -71,7 +80,11 @@ function onChangePositionDeg(fieldId) {
 }
 
 function onChangePositionDegMin(fieldId) {
-    if (isNaN(dijit.byId(fieldId).getValue()) || (dijit.byId(fieldId).getValue() == "")) {
+    if (
+        (fieldId.match(/^.*Deg2$/) && isNaN(dijit.byId(fieldId).getValue())) ||
+        (fieldId.match(/^.*Min2$/) && isNaN(dijit.byId(fieldId).getValue())) ||
+        (fieldId.match(/^.*Dir2$/) && (dijit.byId(fieldId).getValue() === ""))
+    ) {
         return;
     }
     
@@ -92,7 +105,12 @@ function onChangePositionDegMin(fieldId) {
 }
 
 function onChangePositionDegMinSec(fieldId) {
-    if (isNaN(dijit.byId(fieldId).getValue()) || (dijit.byId(fieldId).getValue() == "")) {
+    if (
+        (fieldId.match(/^.*Deg3$/) && isNaN(dijit.byId(fieldId).getValue())) ||
+        (fieldId.match(/^.*Min3$/) && isNaN(dijit.byId(fieldId).getValue())) ||
+        (fieldId.match(/^.*Sec3$/) && isNaN(dijit.byId(fieldId).getValue())) ||
+        (fieldId.match(/^.*Dir3$/) && (dijit.byId(fieldId).getValue() === ""))
+    ) {
         return;
     }
     
