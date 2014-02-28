@@ -494,9 +494,18 @@ public class SurveyPortlet extends GenericPortlet {
                     }
                     if (survey == null) {
                         String lightCondition =
-                            (weather.equalsIgnoreCase("Full Sunshine") || weather.equalsIgnoreCase("Sunny")) ? "Full Sunshine" :
-                            (weather.equalsIgnoreCase("Cloudy") || weather.equalsIgnoreCase("Raining")) ? "Cloudy" :
-                            (weather.equalsIgnoreCase("Broken Cloud")) ? "Broken Cloud" :
+                            (
+                                weather.equalsIgnoreCase("Full Sunshine") ||
+                                weather.equalsIgnoreCase("Full Sun") ||
+                                weather.equalsIgnoreCase("Sunny")
+                            ) ? "Full Sunshine" :
+                            (
+                                weather.equalsIgnoreCase("Cloudy") ||
+                                weather.equalsIgnoreCase("Raining")
+                            ) ? "Cloudy" :
+                            (
+                                weather.equalsIgnoreCase("Broken Cloud")
+                            ) ? "Broken Cloud" :
                             null;
                         if (lightCondition == null) {
                             errors.add(
