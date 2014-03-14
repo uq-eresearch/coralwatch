@@ -124,13 +124,23 @@ public class SurveyPortlet extends GenericPortlet {
             UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
             if (currentUser != null) {
                 if (cmd.equals("bulk_add")) {
+                    UploadPortletRequest uploadRequest = PortalUtil.getUploadPortletRequest(actionRequest);
                     if (currentUser.isSuperUser()) {
-                        processBulkUploadAction(actionRequest, actionResponse, cmd, currentUser, errors);
+                        String type = uploadRequest.getParameter("type");
+                        if (ObjectUtils.equals(type, "standard")) {
+                            processStandardBulkUploadAction(uploadRequest, actionResponse, cmd, currentUser, errors);
+                        }
+                        else if (ObjectUtils.equals(type, "surg")) {
+                            processSURGBulkUploadAction(uploadRequest, actionResponse, cmd, currentUser, errors);
+                        }
+                        else {
+                            errors.add("Unrecognised spreadsheet type: " + String.valueOf(type));
+                        }
                     } else {
                         errors.add("You must be admin to do bulk uploads");
                     }
                     if (!errors.isEmpty()) {
-                        actionRequest.setAttribute("errors", errors);
+                        uploadRequest.setAttribute("errors", errors);
                         actionResponse.setRenderParameter(Constants.CMD, cmd);
                     }
                 } else if (cmd.equals(Constants.ADD) || cmd.equals(Constants.EDIT)) {
@@ -269,30 +279,33 @@ public class SurveyPortlet extends GenericPortlet {
             _log.error("Submission error ", ex);
         }
     }
-
-    private enum BulkImportColumns {
-        SURVEY_PERIOD("Survey Period", false),
-        ISLAND("Island", false),
-        SITE("Location/Site", true),
-        DATE("Date", true),
-        TIME("Time", true),
+    
+    private enum StandardBulkImportColumns {
+        GROUP_NAME("Group Name", true),
+        PARTICIPATING_AS("Participating as", true),
+        COUNTRY("Country of Survey", true),
+        REEF_NAME("Reef Name", true),
+        IS_GPS_DEVICE("I used a GPS", true),
         LATITUDE("Latitude", true),
         LONGITUDE("Longitude", true),
-        BEARING("Bearing", false),
-        DEPTH("Depth (m)", false),
-        WATER_TEMPERATURE("Water Temp. (C)", false),
-        WEATHER("Weather", true),
-        NAME("Name", false),
-        FAMILY("Family", false),
+        DATE("Observation Date", true),
+        TIME("Time", true),
+        LIGHT_CONDITION("Light condition", true),
+        DEPTH_METRES("Depth (m)", false),
+        DEPTH_FEET("Depth (feet)", false),
+        WATER_TEMPERATURE_C("Water Temp. (C)", false),
+        WATER_TEMPERATURE_F("Water Temp. (F)", false),
+        ACTIVITY("Activity", true),
         CORAL_TYPE("Coral Type", true),
+        LIGHT("Light", true),
         DARK("Dark", true),
-        LIGHT("Light", true);
+        COMMENTS("Comments", false);
 
         private final String title;
 
         private final boolean mandatory;
 
-        BulkImportColumns(String title, boolean mandatory) {
+        StandardBulkImportColumns(String title, boolean mandatory) {
             this.title = title;
             this.mandatory = mandatory;
         }
@@ -305,9 +318,9 @@ public class SurveyPortlet extends GenericPortlet {
             return mandatory;
         }
 
-        public static List<BulkImportColumns> getMandatoryColumns() {
-            List<BulkImportColumns> mandatoryColumns = new ArrayList<BulkImportColumns>();
-            for (BulkImportColumns column : BulkImportColumns.values()) {
+        public static List<StandardBulkImportColumns> getMandatoryColumns() {
+            List<StandardBulkImportColumns> mandatoryColumns = new ArrayList<StandardBulkImportColumns>();
+            for (StandardBulkImportColumns column : StandardBulkImportColumns.values()) {
                 if (column.getMandatory()) {
                     mandatoryColumns.add(column);
                 }
@@ -315,29 +328,39 @@ public class SurveyPortlet extends GenericPortlet {
             return mandatoryColumns;
         }
     }
-
-    private void processBulkUploadAction(
-        ActionRequest actionRequest,
+    
+    private <T> T getColumnValue(
+        EnumMap<StandardBulkImportColumns, List<Object>> columnValuesMap,
+        StandardBulkImportColumns column,
+        Class<T> clazz
+    ) {
+        List<Object> values = columnValuesMap.get(column);
+        if ((values == null) || values.isEmpty()) {
+            return null;
+        }
+        Object value = values.get(0);
+        if (String.class.isInstance(value) && StringUtils.isBlank(String.valueOf(value))) {
+            return null;
+        }
+        if (clazz.isInstance(value)) {
+            return clazz.cast(value);
+        }
+        throw new RuntimeException(
+            "Expected " + clazz.getSimpleName() + " " +
+            "for " + column.getTitle() + " " +
+            "but got " + value.getClass().getSimpleName() + " " +
+            "\"" + String.valueOf(value) + "\""
+        );
+    }
+    
+    private void processStandardBulkUploadAction(
+        UploadPortletRequest uploadRequest,
         ActionResponse actionResponse,
         String cmd,
         UserImpl currentUser,
         List<String> errors
     ) {
-        UploadPortletRequest uploadRequest = PortalUtil.getUploadPortletRequest(actionRequest);
         try {
-            String groupName = uploadRequest.getParameter("groupName");
-            String participatingAs = uploadRequest.getParameter("participatingAs");
-            String country = uploadRequest.getParameter("country");
-            boolean isGpsDevice = ParamUtil.getBoolean(uploadRequest, "isGpsDevice");
-            String activity = uploadRequest.getParameter("activity");
-            String formComments = uploadRequest.getParameter("comments");
-
-            if (StringUtils.isBlank(groupName) || StringUtils.isBlank(participatingAs) ||
-                StringUtils.isBlank(country) || StringUtils.isBlank(activity)) {
-                errors.add("Group Name, Participating As, Country of Survey, and Activity are all required");
-                return;
-            }
-
             String fieldName = "file";
             File file = uploadRequest.getFile(fieldName);
             Workbook workbook = null;
@@ -356,10 +379,10 @@ public class SurveyPortlet extends GenericPortlet {
                 errors.add("Could not find sheet inside spreadsheet");
                 return;
             }
-            List<BulkImportColumns> mandatoryColumns = BulkImportColumns.getMandatoryColumns();
+            List<StandardBulkImportColumns> mandatoryColumns = StandardBulkImportColumns.getMandatoryColumns();
             int headerRowIndex = -1;
-            EnumMap<BulkImportColumns, List<Integer>> columnIndicesMap =
-                new EnumMap<BulkImportColumns, List<Integer>>(BulkImportColumns.class);
+            EnumMap<StandardBulkImportColumns, List<Integer>> columnIndicesMap =
+                new EnumMap<StandardBulkImportColumns, List<Integer>>(StandardBulkImportColumns.class);
             for (Row row : sheet) {
                 columnIndicesMap.clear();
                 for (Cell cell : row) {
@@ -367,7 +390,7 @@ public class SurveyPortlet extends GenericPortlet {
                         (cell.getCellType() == Cell.CELL_TYPE_NUMERIC)
                         ? String.valueOf(cell.getNumericCellValue())
                         : cell.getStringCellValue().trim();
-                    for (BulkImportColumns column : BulkImportColumns.values()) {
+                    for (StandardBulkImportColumns column : StandardBulkImportColumns.values()) {
                         if (column.getTitle().equalsIgnoreCase(cellValue)) {
                             List<Integer> columnIndices = columnIndicesMap.get(column);
                             if (columnIndices == null) {
@@ -403,9 +426,295 @@ public class SurveyPortlet extends GenericPortlet {
                     if (row == null) {
                         continue;
                     }
-                    EnumMap<BulkImportColumns, List<Object>> columnValuesMap =
-                            new EnumMap<BulkImportColumns, List<Object>>(BulkImportColumns.class);
-                    for (BulkImportColumns column : columnIndicesMap.keySet()) {
+                    EnumMap<StandardBulkImportColumns, List<Object>> columnValuesMap =
+                            new EnumMap<StandardBulkImportColumns, List<Object>>(StandardBulkImportColumns.class);
+                    for (StandardBulkImportColumns column : columnIndicesMap.keySet()) {
+                        List<Integer> columnIndices = columnIndicesMap.get(column);
+                        List<Object> columnValues = columnValuesMap.get(column);
+                        if (columnValues == null) {
+                            columnValues = new ArrayList<Object>();
+                            columnValuesMap.put(column, columnValues);
+                        }
+                        for (int columnIndex : columnIndices) {
+                            Cell cell = row.getCell(columnIndex);
+                            if (cell == null) {
+                                continue;
+                            }
+                            if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                                if (DateUtil.isCellDateFormatted(cell)) {
+                                    columnValues.add(cell.getDateCellValue());
+                                }
+                                else {
+                                    columnValues.add(cell.getNumericCellValue());
+                                }
+                            }
+                            else {
+                                columnValues.add(cell.getStringCellValue().trim());
+                            }
+                        }
+                        if (column.getMandatory() && columnValues.isEmpty()) {
+                            errors.add("Missing value for " + column.getTitle() + " on row " + (rowNum + 1));
+                        }
+                    }
+
+                    String groupName = getColumnValue(columnValuesMap, StandardBulkImportColumns.GROUP_NAME, String.class);
+                    String participatingAs = getColumnValue(columnValuesMap, StandardBulkImportColumns.PARTICIPATING_AS, String.class);
+                    String country = getColumnValue(columnValuesMap, StandardBulkImportColumns.COUNTRY, String.class);
+                    String reefName = getColumnValue(columnValuesMap, StandardBulkImportColumns.REEF_NAME, String.class);
+                    String isGpsDeviceString = getColumnValue(columnValuesMap, StandardBulkImportColumns.IS_GPS_DEVICE, String.class);
+                    Double latitude = getColumnValue(columnValuesMap, StandardBulkImportColumns.LATITUDE, Double.class);
+                    Double longitude = getColumnValue(columnValuesMap, StandardBulkImportColumns.LONGITUDE, Double.class);
+                    Date date = getColumnValue(columnValuesMap, StandardBulkImportColumns.DATE, Date.class);
+                    Date time = getColumnValue(columnValuesMap, StandardBulkImportColumns.TIME, Date.class);
+                    String lightCondition = getColumnValue(columnValuesMap, StandardBulkImportColumns.LIGHT_CONDITION, String.class);
+                    Double depthMetres = getColumnValue(columnValuesMap, StandardBulkImportColumns.DEPTH_METRES, Double.class);
+                    Double depthFeet = getColumnValue(columnValuesMap, StandardBulkImportColumns.DEPTH_FEET, Double.class);
+                    Double waterTemperatureC = getColumnValue(columnValuesMap, StandardBulkImportColumns.WATER_TEMPERATURE_C, Double.class);
+                    Double waterTemperatureF = getColumnValue(columnValuesMap, StandardBulkImportColumns.WATER_TEMPERATURE_F, Double.class);
+                    String activity = getColumnValue(columnValuesMap, StandardBulkImportColumns.ACTIVITY, String.class);
+                    String coralType = getColumnValue(columnValuesMap, StandardBulkImportColumns.CORAL_TYPE, String.class);
+                    String light = getColumnValue(columnValuesMap, StandardBulkImportColumns.LIGHT, String.class);
+                    String dark = getColumnValue(columnValuesMap, StandardBulkImportColumns.DARK, String.class);
+                    String comments = getColumnValue(columnValuesMap, StandardBulkImportColumns.COMMENTS, String.class);
+
+                    if (!(StringUtils.equalsIgnoreCase(isGpsDeviceString, "yes") || StringUtils.equalsIgnoreCase(isGpsDeviceString, "no"))) {
+                        errors.add(StandardBulkImportColumns.IS_GPS_DEVICE.getTitle() + " must be either 'yes' or 'no'");
+                    }
+                    boolean isGpsDevice = StringUtils.equalsIgnoreCase(isGpsDeviceString, "yes");
+                    
+                    if ((depthMetres == null) && (depthFeet == null)) {
+                        errors.add("Depth must be provided either in metres or feet");
+                    }
+                    else if (depthMetres == null) {
+                        depthMetres = depthFeet * 0.3048;
+                    }
+
+                    Survey survey = null;
+                    for (Survey previousSurvey : previousSurveys) {
+                        if (
+                            previousSurvey.getReef().getName().equals(reefName) &&
+                            (date != null) && (previousSurvey.getDate().getTime() == date.getTime()) &&
+                            (time != null) && (previousSurvey.getTime().getTime() == time.getTime()) &&
+                            ObjectUtils.equals(previousSurvey.getLatitude(), latitude) &&
+                            ObjectUtils.equals(previousSurvey.getLongitude(), longitude) &&
+                            ObjectUtils.equals(previousSurvey.getDepth(), depthMetres)
+                        ) {
+                            survey = previousSurvey;
+                            break;
+                        }
+                    }
+                    if (survey == null) {
+                        if (lightCondition == null) {
+                            errors.add(
+                                "Unrecognised weather value on row " + (rowNum + 1) + ": " +
+                                "should be Full Sunshine, Sunny, Cloudy, Rainy, or Broken Cloud"
+                            );
+                        }
+
+                        if ((waterTemperatureC == null) && (waterTemperatureF == null)) {
+                            errors.add("Water temperature must be provided either in C or F");
+                        }
+                        else if (waterTemperatureC == null) {
+                            waterTemperatureC = 100 / (212 - 32) * (waterTemperatureF - 32);
+                        }
+
+                        if (errors.isEmpty()) {
+                            Reef reef = reefDao.getReefByName(reefName);
+                            if (reef == null) {
+                                reef = new Reef(reefName, country);
+                                reefDao.save(reef);
+                            }
+                            survey = new Survey();
+                            survey.setCreator(currentUser);
+                            survey.setGroupName(groupName);
+                            survey.setParticipatingAs(participatingAs);
+                            survey.setReef(reef);
+                            survey.setQaState("Post Migration");
+                            survey.setLatitude(latitude.floatValue());
+                            survey.setLongitude(longitude.floatValue());
+                            survey.setGPSDevice(isGpsDevice);
+                            survey.setDate(date);
+                            survey.setTime(time);
+                            survey.setLightCondition(lightCondition);
+                            survey.setDepth(depthMetres);
+                            survey.setWaterTemperature(waterTemperatureC);
+                            survey.setActivity(activity);
+                            survey.setComments(comments);
+                            survey.setReviewState(Survey.ReviewState.UNREVIEWED);
+                            surveyDao.save(survey);
+                            previousSurveys.add(survey);
+                        }
+                    }
+                    if (!colorPattern.matcher(light).matches() || !colorPattern.matcher(dark).matches()) {
+                        errors.add("Light and Dark values must be a letter (B, C, D, E) followed by a number (1-6)");
+                    }
+                    if (errors.isEmpty()) {
+                        SurveyRecord record = new SurveyRecord();
+                        record.setSurvey(survey);
+                        record.setCoralType(coralType);
+                        record.setLightestLetter(light.charAt(0));
+                        record.setLightestNumber(Integer.parseInt(light.substring(1, 2)));
+                        record.setDarkestLetter(dark.charAt(0));
+                        record.setDarkestNumber(Integer.parseInt(dark.substring(1, 2)));
+                        surveyRecordDao.save(record);
+                    }
+                }
+                catch (Exception rowException) {
+                    String msg = "Exception processing row " + (rowNum + 1);
+                    _log.error(msg, rowException);
+                    errors.add(msg + ": " + rowException.toString());
+                }
+            }
+            if (!errors.isEmpty()) {
+                return;
+            }
+        }
+        catch (Exception e2) {
+            String msg = "Error processing bulk upload";
+            _log.error(msg, e2);
+            errors.add(msg);
+            return;
+        }
+        finally {
+            uploadRequest.cleanUp();
+        }
+    }
+
+    private enum SURGBulkImportColumns {
+        SURVEY_PERIOD("Survey Period", false),
+        ISLAND("Island", false),
+        SITE("Location/Site", true),
+        DATE("Date", true),
+        TIME("Time", true),
+        LATITUDE("Latitude", true),
+        LONGITUDE("Longitude", true),
+        BEARING("Bearing", false),
+        DEPTH("Depth (m)", false),
+        WATER_TEMPERATURE("Water Temp. (C)", false),
+        WEATHER("Weather", true),
+        NAME("Name", false),
+        FAMILY("Family", false),
+        CORAL_TYPE("Coral Type", true),
+        DARK("Dark", true),
+        LIGHT("Light", true);
+
+        private final String title;
+
+        private final boolean mandatory;
+
+        SURGBulkImportColumns(String title, boolean mandatory) {
+            this.title = title;
+            this.mandatory = mandatory;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public boolean getMandatory() {
+            return mandatory;
+        }
+
+        public static List<SURGBulkImportColumns> getMandatoryColumns() {
+            List<SURGBulkImportColumns> mandatoryColumns = new ArrayList<SURGBulkImportColumns>();
+            for (SURGBulkImportColumns column : SURGBulkImportColumns.values()) {
+                if (column.getMandatory()) {
+                    mandatoryColumns.add(column);
+                }
+            }
+            return mandatoryColumns;
+        }
+    }
+
+    private void processSURGBulkUploadAction(
+        UploadPortletRequest uploadRequest,
+        ActionResponse actionResponse,
+        String cmd,
+        UserImpl currentUser,
+        List<String> errors
+    ) {
+        try {
+            String groupName = uploadRequest.getParameter("groupName");
+            String participatingAs = uploadRequest.getParameter("participatingAs");
+            String country = uploadRequest.getParameter("country");
+            boolean isGpsDevice = ParamUtil.getBoolean(uploadRequest, "isGpsDevice");
+            String activity = uploadRequest.getParameter("activity");
+            String formComments = uploadRequest.getParameter("comments");
+
+            if (StringUtils.isBlank(groupName) || StringUtils.isBlank(participatingAs) ||
+                StringUtils.isBlank(country) || StringUtils.isBlank(activity)) {
+                errors.add("Group Name, Participating As, Country of Survey, and Activity are all required");
+                return;
+            }
+
+            String fieldName = "file";
+            File file = uploadRequest.getFile(fieldName);
+            Workbook workbook = null;
+            try {
+                workbook = WorkbookFactory.create(file);
+            }
+            catch (Exception e) {
+                errors.add("Could not read spreadsheet file (must be *.xls or *.xlsx)");
+                return;
+            }
+            Sheet sheet = null;
+            try {
+                sheet = workbook.getSheetAt(0);
+            }
+            catch (Exception e) {
+                errors.add("Could not find sheet inside spreadsheet");
+                return;
+            }
+            List<SURGBulkImportColumns> mandatoryColumns = SURGBulkImportColumns.getMandatoryColumns();
+            int headerRowIndex = -1;
+            EnumMap<SURGBulkImportColumns, List<Integer>> columnIndicesMap =
+                new EnumMap<SURGBulkImportColumns, List<Integer>>(SURGBulkImportColumns.class);
+            for (Row row : sheet) {
+                columnIndicesMap.clear();
+                for (Cell cell : row) {
+                    String cellValue =
+                        (cell.getCellType() == Cell.CELL_TYPE_NUMERIC)
+                        ? String.valueOf(cell.getNumericCellValue())
+                        : cell.getStringCellValue().trim();
+                    for (SURGBulkImportColumns column : SURGBulkImportColumns.values()) {
+                        if (column.getTitle().equalsIgnoreCase(cellValue)) {
+                            List<Integer> columnIndices = columnIndicesMap.get(column);
+                            if (columnIndices == null) {
+                                columnIndices = new ArrayList<Integer>();
+                                columnIndicesMap.put(column, columnIndices);
+                            }
+                            columnIndices.add(cell.getColumnIndex());
+                        }
+                    }
+                }
+                if (columnIndicesMap.keySet().containsAll(mandatoryColumns)) {
+                    headerRowIndex = row.getRowNum();
+                    break;
+                }
+            }
+            if (headerRowIndex == -1) {
+                StringBuilder colNames = new StringBuilder();
+                for (int i = 0; i < mandatoryColumns.size(); i++) {
+                    colNames.append("\"").append(mandatoryColumns.get(i).getTitle()).append("\"");
+                    if (i < (mandatoryColumns.size() - 1)) {
+                        colNames.append(", ");
+                    }
+                }
+                errors.add("Could not find row with all mandatory columns: " + colNames + ".");
+                return;
+            }
+
+            Pattern colorPattern = Pattern.compile("[BCDE][123456]");
+            List<Survey> previousSurveys = new ArrayList<Survey>();
+            for (int rowNum = headerRowIndex + 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+                try {
+                    Row row = sheet.getRow(rowNum);
+                    if (row == null) {
+                        continue;
+                    }
+                    EnumMap<SURGBulkImportColumns, List<Object>> columnValuesMap =
+                            new EnumMap<SURGBulkImportColumns, List<Object>>(SURGBulkImportColumns.class);
+                    for (SURGBulkImportColumns column : columnIndicesMap.keySet()) {
                         List<Integer> columnIndices = columnIndicesMap.get(column);
                         List<Object> columnValues = columnValuesMap.get(column);
                         if (columnValues == null) {
@@ -435,48 +744,48 @@ public class SurveyPortlet extends GenericPortlet {
                     }
 
                     String reefName =
-                        columnValuesMap.get(BulkImportColumns.SITE).isEmpty() ? null :
-                        (String) columnValuesMap.get(BulkImportColumns.SITE).get(0);
+                        columnValuesMap.get(SURGBulkImportColumns.SITE).isEmpty() ? null :
+                        (String) columnValuesMap.get(SURGBulkImportColumns.SITE).get(0);
                     Float latitude =
-                        columnValuesMap.get(BulkImportColumns.LATITUDE).isEmpty() ? null :
-                        ((Double) columnValuesMap.get(BulkImportColumns.LATITUDE).get(0)).floatValue();
+                        columnValuesMap.get(SURGBulkImportColumns.LATITUDE).isEmpty() ? null :
+                        ((Double) columnValuesMap.get(SURGBulkImportColumns.LATITUDE).get(0)).floatValue();
                     Float longitude =
-                        columnValuesMap.get(BulkImportColumns.LONGITUDE).isEmpty() ? null :
-                        ((Double) columnValuesMap.get(BulkImportColumns.LONGITUDE).get(0)).floatValue();
+                        columnValuesMap.get(SURGBulkImportColumns.LONGITUDE).isEmpty() ? null :
+                        ((Double) columnValuesMap.get(SURGBulkImportColumns.LONGITUDE).get(0)).floatValue();
                     Date date =
-                        columnValuesMap.get(BulkImportColumns.DATE).isEmpty() ? null :
-                        (Date) columnValuesMap.get(BulkImportColumns.DATE).get(0);
+                        columnValuesMap.get(SURGBulkImportColumns.DATE).isEmpty() ? null :
+                        (Date) columnValuesMap.get(SURGBulkImportColumns.DATE).get(0);
                     Date time =
-                        columnValuesMap.get(BulkImportColumns.TIME).isEmpty() ? null :
-                        (Date) columnValuesMap.get(BulkImportColumns.TIME).get(0);
+                        columnValuesMap.get(SURGBulkImportColumns.TIME).isEmpty() ? null :
+                        (Date) columnValuesMap.get(SURGBulkImportColumns.TIME).get(0);
                     String weather =
-                        columnValuesMap.get(BulkImportColumns.WEATHER).isEmpty() ? null :
-                        (String) columnValuesMap.get(BulkImportColumns.WEATHER).get(0);
+                        columnValuesMap.get(SURGBulkImportColumns.WEATHER).isEmpty() ? null :
+                        (String) columnValuesMap.get(SURGBulkImportColumns.WEATHER).get(0);
                     Double depth =
-                        columnValuesMap.get(BulkImportColumns.DEPTH).isEmpty() ? null :
-                        (Double) columnValuesMap.get(BulkImportColumns.DEPTH).get(0);
+                        columnValuesMap.get(SURGBulkImportColumns.DEPTH).isEmpty() ? null :
+                        (Double) columnValuesMap.get(SURGBulkImportColumns.DEPTH).get(0);
                     Double waterTemperature =
-                        columnValuesMap.get(BulkImportColumns.WATER_TEMPERATURE).isEmpty() ? null :
-                        (Double) columnValuesMap.get(BulkImportColumns.WATER_TEMPERATURE).get(0);
+                        columnValuesMap.get(SURGBulkImportColumns.WATER_TEMPERATURE).isEmpty() ? null :
+                        (Double) columnValuesMap.get(SURGBulkImportColumns.WATER_TEMPERATURE).get(0);
                     String surveyPeriod =
-                        columnValuesMap.get(BulkImportColumns.SURVEY_PERIOD).isEmpty() ? null :
-                        (String) columnValuesMap.get(BulkImportColumns.SURVEY_PERIOD).get(0);
+                        columnValuesMap.get(SURGBulkImportColumns.SURVEY_PERIOD).isEmpty() ? null :
+                        (String) columnValuesMap.get(SURGBulkImportColumns.SURVEY_PERIOD).get(0);
                     String island =
-                        columnValuesMap.get(BulkImportColumns.ISLAND).isEmpty() ? null :
-                        (String) columnValuesMap.get(BulkImportColumns.ISLAND).get(0);
-                    List<Object> nameObjects = columnValuesMap.get(BulkImportColumns.NAME);
+                        columnValuesMap.get(SURGBulkImportColumns.ISLAND).isEmpty() ? null :
+                        (String) columnValuesMap.get(SURGBulkImportColumns.ISLAND).get(0);
+                    List<Object> nameObjects = columnValuesMap.get(SURGBulkImportColumns.NAME);
                     Double bearing =
-                        columnValuesMap.get(BulkImportColumns.BEARING).isEmpty() ? null :
-                        (Double) columnValuesMap.get(BulkImportColumns.BEARING).get(0);
+                        columnValuesMap.get(SURGBulkImportColumns.BEARING).isEmpty() ? null :
+                        (Double) columnValuesMap.get(SURGBulkImportColumns.BEARING).get(0);
                     String coralType =
-                        columnValuesMap.get(BulkImportColumns.CORAL_TYPE).isEmpty() ? null :
-                        (String) columnValuesMap.get(BulkImportColumns.CORAL_TYPE).get(0);
+                        columnValuesMap.get(SURGBulkImportColumns.CORAL_TYPE).isEmpty() ? null :
+                        (String) columnValuesMap.get(SURGBulkImportColumns.CORAL_TYPE).get(0);
                     String light =
-                        columnValuesMap.get(BulkImportColumns.LIGHT).isEmpty() ? null :
-                        (String) columnValuesMap.get(BulkImportColumns.LIGHT).get(0);
+                        columnValuesMap.get(SURGBulkImportColumns.LIGHT).isEmpty() ? null :
+                        (String) columnValuesMap.get(SURGBulkImportColumns.LIGHT).get(0);
                     String dark =
-                        columnValuesMap.get(BulkImportColumns.DARK).isEmpty() ? null :
-                        (String) columnValuesMap.get(BulkImportColumns.DARK).get(0);
+                        columnValuesMap.get(SURGBulkImportColumns.DARK).isEmpty() ? null :
+                        (String) columnValuesMap.get(SURGBulkImportColumns.DARK).get(0);
 
                     Survey survey = null;
                     for (Survey previousSurvey : previousSurveys) {

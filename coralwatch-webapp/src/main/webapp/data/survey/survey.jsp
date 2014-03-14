@@ -1308,17 +1308,43 @@ function positionMarker() {
 %>
 <% if ((currentUser != null) && currentUser.isSuperUser()) { %>
 <h2 style="margin-top:0;">Bulk Survey Upload</h2>
-<br/>
 
+<div dojoType="dijit.layout.TabContainer" style="width:680px; height:60ex;">
+<div id="standardPane" dojoType="dijit.layout.ContentPane" title="Standard">
 <form dojoType="dijit.form.Form" action="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= cmd %>" /></portlet:actionURL>" method="post" name="<portlet:namespace />fm" enctype="multipart/form-data">
-
-<script type="text/javascript">
-    dojo.addOnLoad(
-            function() {
-                dojo.byId("groupName").focus();
-            }
-            );
+<script type="dojo/method" event="onSubmit">
+    if (!this.validate()) {
+        alert('Form contains invalid data. Please correct errors first.');
+        return false;
+    }
+    return true;
 </script>
+<script type="text/javascript">
+    dojo.addOnLoad(function() {
+        dojo.byId("groupName").focus();
+    });
+</script>
+<input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
+<input name="type" type="hidden" value="standard"/>
+<table>
+<tr>
+    <th style="width: 120px;"><label for="file">Spreadsheet:</label></th>
+    <td>
+        <input
+            type="file"
+            id="file"
+            name="file"
+            required="true" />
+    </td>
+</tr>
+<tr>
+    <td colspan="2"><input type="submit" name="submit" value="Submit"/></td>
+</tr>
+</table>
+</form>
+</div>
+<div id="surgPane" dojoType="dijit.layout.ContentPane" title="SURG">
+<form dojoType="dijit.form.Form" action="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= cmd %>" /></portlet:actionURL>" method="post" name="<portlet:namespace />fm" enctype="multipart/form-data">
 <script type="dojo/method" event="onSubmit">
     if (!this.validate()) {
         alert('Form contains invalid data. Please correct errors first.');
@@ -1327,9 +1353,10 @@ function positionMarker() {
     return true;
 </script>
 <input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
+<input name="type" type="hidden" value="surg"/>
 <table>
 <tr>
-    <th><label for="file">Spreadsheet:</label></th>
+    <th style="width: 120px;"><label for="file">Spreadsheet:</label></th>
     <td>
         <input
             type="file"
@@ -1455,6 +1482,8 @@ function positionMarker() {
 </tr>
 </table>
 </form>
+</div>
+</div>
 
 <% } %>
 <%
