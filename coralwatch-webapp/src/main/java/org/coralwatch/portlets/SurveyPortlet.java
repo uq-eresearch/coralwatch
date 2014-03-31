@@ -462,8 +462,10 @@ public class SurveyPortlet extends GenericPortlet {
                     String country = getColumnValue(columnValuesMap, StandardBulkImportColumns.COUNTRY, String.class);
                     String reefName = getColumnValue(columnValuesMap, StandardBulkImportColumns.REEF_NAME, String.class);
                     String isGpsDeviceString = getColumnValue(columnValuesMap, StandardBulkImportColumns.IS_GPS_DEVICE, String.class);
-                    Double latitude = getColumnValue(columnValuesMap, StandardBulkImportColumns.LATITUDE, Double.class);
-                    Double longitude = getColumnValue(columnValuesMap, StandardBulkImportColumns.LONGITUDE, Double.class);
+                    Double latitudeDouble = getColumnValue(columnValuesMap, StandardBulkImportColumns.LATITUDE, Double.class);
+                    Float latitude = (latitudeDouble != null) ? latitudeDouble.floatValue() : null;
+                    Double longitudeDouble = getColumnValue(columnValuesMap, StandardBulkImportColumns.LONGITUDE, Double.class);
+                    Float longitude = (longitudeDouble != null) ? longitudeDouble.floatValue() : null;
                     Date date = getColumnValue(columnValuesMap, StandardBulkImportColumns.DATE, Date.class);
                     Date time = getColumnValue(columnValuesMap, StandardBulkImportColumns.TIME, Date.class);
                     String lightCondition = getColumnValue(columnValuesMap, StandardBulkImportColumns.LIGHT_CONDITION, String.class);
