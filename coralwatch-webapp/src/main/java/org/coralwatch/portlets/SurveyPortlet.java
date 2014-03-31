@@ -418,7 +418,7 @@ public class SurveyPortlet extends GenericPortlet {
                 return;
             }
 
-            Pattern colorPattern = Pattern.compile("[BCDE][123456]");
+            Pattern colorPattern = Pattern.compile("(?i)[BCDE][123456]");
             List<Survey> previousSurveys = new ArrayList<Survey>();
             for (int rowNum = headerRowIndex + 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                 try {
@@ -548,15 +548,18 @@ public class SurveyPortlet extends GenericPortlet {
                         }
                     }
                     if (!colorPattern.matcher(light).matches() || !colorPattern.matcher(dark).matches()) {
-                        errors.add("Light and Dark values must be a letter (B, C, D, E) followed by a number (1-6)");
+                        errors.add(
+                            "Unrecognised Light/Dark value on row " + (rowNum + 1) + ": " +
+                            "should be be a letter (B, C, D, E) followed by a number (1-6)"
+                        );
                     }
                     if (errors.isEmpty()) {
                         SurveyRecord record = new SurveyRecord();
                         record.setSurvey(survey);
                         record.setCoralType(coralType);
-                        record.setLightestLetter(light.charAt(0));
+                        record.setLightestLetter(Character.toUpperCase(light.charAt(0)));
                         record.setLightestNumber(Integer.parseInt(light.substring(1, 2)));
-                        record.setDarkestLetter(dark.charAt(0));
+                        record.setDarkestLetter(Character.toUpperCase(dark.charAt(0)));
                         record.setDarkestNumber(Integer.parseInt(dark.substring(1, 2)));
                         surveyRecordDao.save(record);
                     }
@@ -706,7 +709,7 @@ public class SurveyPortlet extends GenericPortlet {
                 return;
             }
 
-            Pattern colorPattern = Pattern.compile("[BCDE][123456]");
+            Pattern colorPattern = Pattern.compile("(?i)[BCDE][123456]");
             List<Survey> previousSurveys = new ArrayList<Survey>();
             for (int rowNum = headerRowIndex + 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                 try {
@@ -879,15 +882,18 @@ public class SurveyPortlet extends GenericPortlet {
                         }
                     }
                     if (!colorPattern.matcher(light).matches() || !colorPattern.matcher(dark).matches()) {
-                        errors.add("Light and Dark values must be a letter (B, C, D, E) followed by a number (1-6)");
+                        errors.add(
+                            "Unrecognised Light/Dark value on row " + (rowNum + 1) + ": " +
+                            "should be be a letter (B, C, D, E) followed by a number (1-6)"
+                        );
                     }
                     if (errors.isEmpty()) {
                         SurveyRecord record = new SurveyRecord();
                         record.setSurvey(survey);
                         record.setCoralType(coralType);
-                        record.setLightestLetter(light.charAt(0));
+                        record.setLightestLetter(Character.toUpperCase(light.charAt(0)));
                         record.setLightestNumber(Integer.parseInt(light.substring(1, 2)));
-                        record.setDarkestLetter(dark.charAt(0));
+                        record.setDarkestLetter(Character.toUpperCase(dark.charAt(0)));
                         record.setDarkestNumber(Integer.parseInt(dark.substring(1, 2)));
                         surveyRecordDao.save(record);
                     }
