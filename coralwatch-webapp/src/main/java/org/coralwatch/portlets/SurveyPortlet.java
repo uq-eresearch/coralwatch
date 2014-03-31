@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.GenericPortlet;
@@ -51,6 +53,7 @@ import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRatingDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
+import org.coralwatch.dataaccess.jpa.JpaConnectorService;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
@@ -360,7 +363,12 @@ public class SurveyPortlet extends GenericPortlet {
         UserImpl currentUser,
         List<String> errors
     ) {
+        JpaConnectorService jpaConnectorService = CoralwatchApplication.getConfiguration().getJpaConnectorService();
+        EntityManager entityManager = jpaConnectorService.getEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
+            transaction.begin();
+
             String fieldName = "file";
             File file = uploadRequest.getFile(fieldName);
             Workbook workbook = null;
@@ -581,6 +589,16 @@ public class SurveyPortlet extends GenericPortlet {
             return;
         }
         finally {
+            if (errors.isEmpty()) {
+                _log.info("Committing standard bulk upload transaction");
+                transaction.commit();
+            }
+            else {
+                _log.info("Rolling back standard bulk upload transaction");
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
             uploadRequest.cleanUp();
         }
     }
