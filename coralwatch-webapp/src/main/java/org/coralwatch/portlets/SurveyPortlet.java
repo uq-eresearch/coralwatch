@@ -558,7 +558,7 @@ public class SurveyPortlet extends GenericPortlet {
                     if (!colorPattern.matcher(light).matches() || !colorPattern.matcher(dark).matches()) {
                         errors.add(
                             "Unrecognised Light/Dark value on row " + (rowNum + 1) + ": " +
-                            "should be be a letter (B, C, D, E) followed by a number (1-6)"
+                            "should be a letter (B, C, D, E) followed by a number (1-6)"
                         );
                     }
                     if (errors.isEmpty()) {
@@ -902,7 +902,7 @@ public class SurveyPortlet extends GenericPortlet {
                     if (!colorPattern.matcher(light).matches() || !colorPattern.matcher(dark).matches()) {
                         errors.add(
                             "Unrecognised Light/Dark value on row " + (rowNum + 1) + ": " +
-                            "should be be a letter (B, C, D, E) followed by a number (1-6)"
+                            "should be a letter (B, C, D, E) followed by a number (1-6)"
                         );
                     }
                     if (errors.isEmpty()) {
