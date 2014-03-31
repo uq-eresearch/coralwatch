@@ -656,7 +656,12 @@ public class SurveyPortlet extends GenericPortlet {
         UserImpl currentUser,
         List<String> errors
     ) {
+        JpaConnectorService jpaConnectorService = CoralwatchApplication.getConfiguration().getJpaConnectorService();
+        EntityManager entityManager = jpaConnectorService.getEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
+            transaction.begin();
+
             String groupName = uploadRequest.getParameter("groupName");
             String participatingAs = uploadRequest.getParameter("participatingAs");
             String country = uploadRequest.getParameter("country");
@@ -933,6 +938,16 @@ public class SurveyPortlet extends GenericPortlet {
             return;
         }
         finally {
+            if (errors.isEmpty()) {
+                _log.info("Committing standard bulk upload transaction");
+                transaction.commit();
+            }
+            else {
+                _log.info("Rolling back standard bulk upload transaction");
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
             uploadRequest.cleanUp();
         }
     }
