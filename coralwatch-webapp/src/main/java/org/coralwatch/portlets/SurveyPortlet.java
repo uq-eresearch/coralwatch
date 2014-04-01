@@ -488,7 +488,7 @@ public class SurveyPortlet extends GenericPortlet {
                     String comments = getColumnValue(columnValuesMap, StandardBulkImportColumns.COMMENTS, String.class);
 
                     if (!(StringUtils.equalsIgnoreCase(isGpsDeviceString, "yes") || StringUtils.equalsIgnoreCase(isGpsDeviceString, "no"))) {
-                        errors.add(StandardBulkImportColumns.IS_GPS_DEVICE.getTitle() + " must be either 'yes' or 'no'");
+                        errors.add(StandardBulkImportColumns.IS_GPS_DEVICE.getTitle() + " must be either 'Yes' or 'No'");
                     }
                     boolean isGpsDevice = StringUtils.equalsIgnoreCase(isGpsDeviceString, "yes");
                     
