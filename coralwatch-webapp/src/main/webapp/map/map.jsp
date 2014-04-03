@@ -70,10 +70,21 @@ function initialize() {
               zoomOnClick: false
             });
             google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
-              var html = '<div style="height:300px; overflow:auto;"><h4>' + cluster.getMarkers().length + ' Surveys:</h4>';
+              var surveyUrlPrefix =
+                '<%=renderRequest.getAttribute("surveyUrl")%>' +
+                '?p_p_id=surveyportlet_WAR_coralwatch' +
+                '&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>' +
+                '&_surveyportlet_WAR_coralwatch_surveyId=';
+              var html = '<div style="width: 240px; height:300px; overflow: auto;">';
+              html += '<h4>' + cluster.getMarkers().length + ' Surveys:</h4>';
+              html += '<ul>';
               for (var i = 0; i < cluster.getMarkers().length; i++) {
-                html += '<a href="javascript:void(0)" onclick="triggerMarkerClick('+cluster.getMarkers()[i].id+')">' + cluster.getMarkers()[i].title.replace(/\s/g, '&nbsp;') + '</a><br/>';
+                html += '<li>';
+                html += '<a href="javascript:void(0)" onclick="triggerMarkerClick('+cluster.getMarkers()[i].id+')">' + cluster.getMarkers()[i].title.replace(/\s/g, '&nbsp;') + '</a> ';
+                html += '<a href="' + surveyUrlPrefix + cluster.getMarkers()[i].id + '">(link)</a>';
+                html += '</li>';
               }
+              html += '</ul>';
               html += '</div>';
               infowindow.setContent(html);
               infowindow.open(map, cluster.getMarkers()[0]);
