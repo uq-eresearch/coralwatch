@@ -2,6 +2,7 @@
 <%@ page import="com.liferay.portal.kernel.util.Constants" %>
 <%@ page import="com.liferay.portal.kernel.util.HtmlUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
+<%@ page import="com.liferay.portal.util.PortalUtil" %>
 <%@ page import="org.coralwatch.model.UserImpl" %>
 <%@ page import="javax.portlet.PortletSession" %>
 <%@ page import="java.util.List" %>
@@ -91,6 +92,7 @@
             }
         }
     %>
+    <input type="hidden" name="loginReferer" value="<%= PortalUtil.getCurrentURL(renderRequest) %>" />
     <table>
         <tr>
             <td>Email:</td>

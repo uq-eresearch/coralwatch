@@ -1,10 +1,13 @@
 package org.coralwatch.portlets;
 
 import au.edu.uq.itee.maenad.util.BCrypt;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
+
+import org.apache.commons.lang.StringUtils;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.UserImpl;
@@ -13,6 +16,7 @@ import org.coralwatch.util.Emailer;
 
 import javax.mail.MessagingException;
 import javax.portlet.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +109,12 @@ public class LoginPortlet extends GenericPortlet {
                 }
             }
             actionRequest.setAttribute("errors", errors);
+            if (errors.isEmpty()) {
+                String loginReferer = actionRequest.getParameter("loginReferer");
+                if (StringUtils.isNotBlank(loginReferer)) {
+                    actionResponse.sendRedirect(loginReferer);
+                }
+            }
         }
     }
 
