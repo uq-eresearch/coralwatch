@@ -434,6 +434,7 @@ public class SurveyPortlet extends GenericPortlet {
                     if (row == null) {
                         continue;
                     }
+                    boolean rowEmpty = true;
                     EnumMap<StandardBulkImportColumns, List<Object>> columnValuesMap =
                             new EnumMap<StandardBulkImportColumns, List<Object>>(StandardBulkImportColumns.class);
                     for (StandardBulkImportColumns column : columnIndicesMap.keySet()) {
@@ -447,6 +448,9 @@ public class SurveyPortlet extends GenericPortlet {
                             Cell cell = row.getCell(columnIndex);
                             if (cell == null) {
                                 continue;
+                            }
+                            if (cell.getCellType() != Cell.CELL_TYPE_BLANK) {
+                                rowEmpty = false;
                             }
                             if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
                                 if (DateUtil.isCellDateFormatted(cell)) {
@@ -463,6 +467,9 @@ public class SurveyPortlet extends GenericPortlet {
                         if (column.getMandatory() && columnValues.isEmpty()) {
                             errors.add("Missing value for " + column.getTitle() + " on row " + (rowNum + 1));
                         }
+                    }
+                    if (rowEmpty) {
+                        continue;
                     }
 
                     String groupName = getColumnValue(columnValuesMap, StandardBulkImportColumns.GROUP_NAME, String.class);
