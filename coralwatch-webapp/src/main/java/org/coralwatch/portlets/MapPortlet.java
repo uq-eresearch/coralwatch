@@ -1,6 +1,7 @@
 package org.coralwatch.portlets;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -85,7 +86,8 @@ public class MapPortlet extends GenericPortlet {
             "&_surveyportlet_WAR_coralwatch_" + Constants.CMD + "=" + Constants.VIEW +
             "&_surveyportlet_WAR_coralwatch_surveyId=" + survey.getId();
         response.getWriter().println("- <a href=\"" + surveyUrl + "\">" + numberOfRecs + " Record(s)</a><br />");
-        response.getWriter().println("- " + survey.getDate().toLocaleString() + graphs + "<br />");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+        response.getWriter().println("- " + dateFormat.format(survey.getDate()) + graphs + "<br />");
         response.getWriter().println("<div dojoType='dojox.form.Rating' numStars='5' value='1'></div>");
     }
 
