@@ -77,9 +77,9 @@ public class LoginPortlet extends GenericPortlet {
                     String baseUrl = CoralwatchApplication.getConfiguration().getBaseUrl();
                     //Send activation link
                     String line1 = "Dear " + user.getDisplayName() + "\n\n";
-                    String line2 = "A request has been initiated to reset your password at http://coralwatch.org. To proceed with the request click in the link below." + "\n\n";
+                    String line2 = "A request has been initiated to reset your password at http://coralwatch.org/. To proceed with the request click in the link below." + "\n\n";
                     String line3 = baseUrl + "/" + userPageUrl + "?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_cmd=reset&_userportlet_WAR_coralwatch_userId=" + user.getId() + "&_userportlet_WAR_coralwatch_resetid=" + passwordResetId;
-                    String line4 = "\n\nRegards,\nCoralWatch\nhttp://coralwatch.org";
+                    String line4 = "\n\nRegards,\nCoralWatch\nhttp://coralwatch.org/";
                     String message = line1 + line2 + line3 + line4;
                     try {
                         Emailer.sendEmail(user.getEmail(), "no-reply@coralwatch.org", "Password Reset Request", message);
