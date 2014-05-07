@@ -26,7 +26,7 @@
               "dojox": "//ajax.googleapis.com/ajax/libs/dojo/1.4.0/dojox"
             }
         };
-    </script> 
+    </script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/dojo/1.4.0/dojo/dojo.xd.js"></script>
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.4.0/dojox/grid/resources/Grid.css">
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.4.0/dojox/grid/resources/tundraGrid.css">
