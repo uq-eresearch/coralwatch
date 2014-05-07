@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +80,6 @@ public class PlotService {
         put("Soft", new Color(248, 148, 34));
     }};
 
-    @SuppressWarnings("deprecation")
     // we don't want to use Calendar
     public static JFreeChart createTimelinePlot(final List<Survey> surveys, boolean legend, int titleSize) {
         class DataPoint {
@@ -92,10 +93,10 @@ public class PlotService {
             if (survey.getDate() == null) {
                 continue;
             }
-            int year = survey.getDate().getYear();
-            //int month = ((survey.getDate().getMonth()-1)/3)*3 +1;
-            int month = survey.getDate().getMonth();
-            Date datePoint = new Date(year, month, 1);
+            GregorianCalendar calendar = new GregorianCalendar();
+            calendar.setTime(survey.getDate());
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            Date datePoint = calendar.getTime();
             DataPoint dataPoint = data.get(datePoint);
             if (dataPoint == null) {
                 dataPoint = new DataPoint();

@@ -1050,10 +1050,8 @@ public class SurveyPortlet extends GenericPortlet {
                             writer.value(survey.getLatitude());
                             writer.key("lng");
                             writer.value(survey.getLongitude());
-                            @SuppressWarnings("deprecation")
-                            String localeString = survey.getDate().toLocaleString();
                             writer.key("date");
-                            writer.value(localeString);
+                            writer.value(survey.getDate().getTime());
                             writer.endObject();
                         }
                     }

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
@@ -258,8 +259,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
             survey.setLatitude(new Float(-11 - rand.nextInt(20) - rand.nextDouble()));
             survey.setLongitude(new Float(154 + rand.nextInt(10) + rand.nextDouble()));
         }
-        @SuppressWarnings("deprecation")
-        Date date = new Date(2000 + rand.nextInt(11) - 1900, rand.nextInt(12), rand.nextInt(30));
+        Date date = (new GregorianCalendar(2000 + rand.nextInt(11), rand.nextInt(12), rand.nextInt(30))).getTime();
         survey.setDate(date);
         survey.setTime(date);
         survey.setDateSubmitted(new Date());
