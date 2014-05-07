@@ -66,7 +66,7 @@ public class SurveyApiServlet extends HttpServlet {
             errors.add("Invalid date value: must match " + dateParamFormat.toPattern() + ".");
         }
         String timeParam = request.getParameter("time");
-        SimpleDateFormat timeParamFormat = new SimpleDateFormat("'T'HH:mm:ss");
+        SimpleDateFormat timeParamFormat = new SimpleDateFormat("HH:mm");
         Date time = null;
         try {
             time = (timeParam != null) ? timeParamFormat.parse(timeParam) : null;
