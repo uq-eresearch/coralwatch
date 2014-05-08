@@ -54,6 +54,9 @@ public class ApiServlet extends HttpServlet {
         else if ((groups = getMatch(pathInfo, "^/survey/([0-9]+)/record/([0-9]+)$")) != null) {
             handler = new SurveyRecordApiHandler(Long.parseLong(groups[1]));
         }
+        else if ((groups = getMatch(pathInfo, "^/reef$")) != null) {
+            handler = new ReefListApiHandler();
+        }
         if (handler == null) {
             response.setStatus(404);
             return;
