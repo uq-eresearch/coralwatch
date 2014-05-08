@@ -34,7 +34,6 @@ public class ApiServlet extends HttpServlet {
 
     private void dispatch(String methodName, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
-        System.err.println("Got pathInfo: " + pathInfo);
         Object handler = null;
         String[] groups = null;
         if ((groups = getMatch(pathInfo, "^/login$")) != null) {
@@ -49,7 +48,12 @@ public class ApiServlet extends HttpServlet {
         else if ((groups = getMatch(pathInfo, "^/survey/([0-9]+)$")) != null) {
             handler = new SurveyApiHandler(Long.parseLong(groups[0]));
         }
-        System.err.println(String.format("Got handler: %s", handler));
+        else if ((groups = getMatch(pathInfo, "^/survey/([0-9]+)/record$")) != null) {
+            handler = new SurveyRecordListApiHandler(Long.parseLong(groups[0]));
+        }
+        else if ((groups = getMatch(pathInfo, "^/survey/([0-9]+)/record/([0-9]+)$")) != null) {
+            handler = new SurveyRecordApiHandler(Long.parseLong(groups[1]));
+        }
         if (handler == null) {
             response.setStatus(404);
             return;

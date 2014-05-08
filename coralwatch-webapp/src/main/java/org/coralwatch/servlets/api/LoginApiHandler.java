@@ -29,14 +29,14 @@ public class LoginApiHandler {
         String password = request.getParameter("password");
         List<String> errors = new ArrayList<String>();
         UserImpl currentUser = doLogin(email, password, errors);
-        if (currentUser != null) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute("currentUser", currentUser);
-            response.setStatus(204);
+        if (currentUser == null) {
+            ApiServletUtils.writeErrorResponse(response, 400, errors);
+            return;
         }
-        else {
-            ApiServletUtils.writeErrorResponse(response, errors);
-        }
+        
+        HttpSession session = request.getSession(true);
+        session.setAttribute("currentUser", currentUser);
+        response.setStatus(204);
     }
 
     private UserImpl doLogin(String email, String password, List<String> errors) {

@@ -10,7 +10,6 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.coralwatch.app.CoralwatchApplication;
@@ -19,8 +18,7 @@ import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
-import org.json.JSONException;
-import org.json.JSONWriter;
+import org.coralwatch.util.AppUtil;
 
 // TODO: Remove code duplication from SurveyPortlet
 public class SurveyListApiHandler {
@@ -33,12 +31,12 @@ public class SurveyListApiHandler {
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        UserImpl currentUser = (session != null) ? (UserImpl) session.getAttribute("currentUser") : null;
         List<String> errors = new ArrayList<String>();
+
+        UserImpl currentUser = AppUtil.getCurrentUser(request);
         if (currentUser == null) {
             errors.add("You must be signed in to submit a survey.");
-            ApiServletUtils.writeErrorResponse(response, errors);
+            ApiServletUtils.writeErrorResponse(response, 403, errors);
             return;
         }
 
@@ -127,57 +125,37 @@ public class SurveyListApiHandler {
             }
         }
 
-        if (errors.isEmpty()) {
-            Reef reef = reefDao.getReefByName(reefName);
-            if (reef == null) {
-                reef = new Reef(reefName, country);
-                reefDao.save(reef);
-            }
-            Survey survey = new Survey();
-            survey.setCreator(currentUser);
-            survey.setGroupName(groupName);
-            survey.setParticipatingAs(participatingAs);
-            survey.setReef(reef);
-            survey.setQaState("Post Migration");
-            survey.setLatitude(latitude);
-            survey.setLongitude(longitude);
-            survey.setGPSDevice(isGpsDevice);
-            survey.setDate(date);
-            survey.setTime(time);
-            survey.setLightCondition(lightCondition);
-            survey.setDepth(depth);
-            survey.setWaterTemperature(waterTemperature);
-            survey.setActivity(activity);
-            survey.setComments(comments);
-            survey.setReviewState(Survey.ReviewState.UNREVIEWED);
-            surveyDao.save(survey);
-
-            writeSuccessResponse(response, survey);
+        if (!errors.isEmpty()) {
+            ApiServletUtils.writeErrorResponse(response, 400, errors);
+            return;
         }
-        else {
-            ApiServletUtils.writeErrorResponse(response, errors);
-        }
-    }
 
-    private void writeSuccessResponse(HttpServletResponse response, Survey survey) throws IOException {
+        Reef reef = reefDao.getReefByName(reefName);
+        if (reef == null) {
+            reef = new Reef(reefName, country);
+            reefDao.save(reef);
+        }
+        Survey survey = new Survey();
+        survey.setCreator(currentUser);
+        survey.setGroupName(groupName);
+        survey.setParticipatingAs(participatingAs);
+        survey.setReef(reef);
+        survey.setQaState("Post Migration");
+        survey.setLatitude(latitude);
+        survey.setLongitude(longitude);
+        survey.setGPSDevice(isGpsDevice);
+        survey.setDate(date);
+        survey.setTime(time);
+        survey.setLightCondition(lightCondition);
+        survey.setDepth(depth);
+        survey.setWaterTemperature(waterTemperature);
+        survey.setActivity(activity);
+        survey.setComments(comments);
+        survey.setReviewState(Survey.ReviewState.UNREVIEWED);
+        surveyDao.save(survey);
+
         response.setStatus(201);
-        response.setHeader("Location", "/coralwatch/api/survey/" + survey.getId());
-        JSONWriter writer = new JSONWriter(response.getWriter());
-        try {
-            writer.object();
-            String surveyUrl = String.format(
-                "/web/guest/survey" +
-                "?p_p_id=surveyportlet_WAR_coralwatch" +
-                "&_surveyportlet_WAR_coralwatch_cmd=view" +
-                "&_surveyportlet_WAR_coralwatch_surveyId=%d",
-                survey.getId()
-            );
-            writer.key("portalUrl").value(surveyUrl);
-            writer.endObject();
-        }
-        catch (JSONException e) {
-            throw new IOException(e);
-        }
+        response.setHeader("Location", String.format("/coralwatch/api/survey/%d", survey.getId()));
     }
 
     private void validateEmptyFields(

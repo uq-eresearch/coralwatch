@@ -9,8 +9,8 @@ import org.json.JSONException;
 import org.json.JSONWriter;
 
 public class ApiServletUtils {
-    public static void writeErrorResponse(HttpServletResponse response, List<String> errors) throws IOException {
-        response.setStatus(200);
+    public static void writeErrorResponse(HttpServletResponse response, int statusCode, List<String> errors) throws IOException {
+        response.setStatus(statusCode);
         JSONWriter writer = new JSONWriter(response.getWriter());
         try {
             writer.object();

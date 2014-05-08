@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.model.Survey;
+import org.coralwatch.model.SurveyRecord;
 import org.json.JSONException;
 import org.json.JSONWriter;
 
@@ -32,7 +33,7 @@ public class SurveyApiHandler {
         JSONWriter writer = new JSONWriter(response.getWriter());
         try {
             writer.object();
-            writer.key("id").value(survey.getId());
+            writer.key("url").value(String.format("/coralwatch/api/survey/%d", + survey.getId()));
             writer.key("groupName").value(survey.getGroupName());
             writer.key("participatingAs").value(survey.getParticipatingAs());
             writer.key("country").value(survey.getReef().getCountry());
@@ -46,6 +47,19 @@ public class SurveyApiHandler {
             writer.key("waterTemperature").value(survey.getWaterTemperature());
             writer.key("activity").value(survey.getActivity());
             writer.key("comments").value(survey.getComments());
+            writer.key("records");
+            writer.array();
+            for (SurveyRecord surveyRecord : survey.getDataset()) {
+                SurveyRecordApiHandler.writeSurveyRecord(surveyRecord, writer);
+            }
+            writer.endArray();
+            writer.key("portalUrl").value(String.format(
+                "/web/guest/survey" +
+                "?p_p_id=surveyportlet_WAR_coralwatch" +
+                "&_surveyportlet_WAR_coralwatch_cmd=view" +
+                "&_surveyportlet_WAR_coralwatch_surveyId=%d",
+                survey.getId()
+            ));
             writer.endObject();
         }
         catch (JSONException e) {
