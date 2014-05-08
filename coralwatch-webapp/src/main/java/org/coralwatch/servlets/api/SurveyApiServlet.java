@@ -86,8 +86,8 @@ public class SurveyApiServlet extends HttpServlet {
             reefName,
             latitudeStr,
             longitudeStr,
-            date,
-            time,
+            dateParam,
+            timeParam,
             lightCondition,
             activity
         );
@@ -193,8 +193,8 @@ public class SurveyApiServlet extends HttpServlet {
         String reefName,
         String latitudeStr,
         String longitudeStr,
-        Date date,
-        Date time,
+        String date,
+        String time,
         String lightCondition,
         String activity
     ) {
@@ -217,10 +217,10 @@ public class SurveyApiServlet extends HttpServlet {
         if (longitudeStr == null || longitudeStr.trim().isEmpty()) {
             emptyFields.add("Longitude");
         }
-        if (date == null || date.toString().trim().isEmpty()) {
+        if (date == null || date.trim().isEmpty()) {
             emptyFields.add("Date");
         }
-        if (time == null || time.toString().trim().isEmpty()) {
+        if (time == null || time.trim().isEmpty()) {
             emptyFields.add("Time");
         }
         if (lightCondition == null || lightCondition.trim().isEmpty()) {
