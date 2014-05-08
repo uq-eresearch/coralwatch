@@ -28,6 +28,8 @@ public class SurveyRecordApiHandler {
             response.setStatus(404);
             return;
         }
+        response.setStatus(200);
+        response.setContentType("application/json");
         JSONWriter writer = new JSONWriter(response.getWriter());
         try {
             writeSurveyRecord(surveyRecord, writer);
@@ -35,7 +37,6 @@ public class SurveyRecordApiHandler {
         catch (JSONException e) {
             throw new IOException(e);
         }
-        response.setStatus(200);
     }
 
     public static void writeSurveyRecord(SurveyRecord surveyRecord, JSONWriter writer) throws JSONException {

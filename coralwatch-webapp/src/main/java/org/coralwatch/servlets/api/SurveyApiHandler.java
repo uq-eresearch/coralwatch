@@ -30,6 +30,8 @@ public class SurveyApiHandler {
             response.setStatus(404);
             return;
         }
+        response.setStatus(200);
+        response.setContentType("application/json");
         JSONWriter writer = new JSONWriter(response.getWriter());
         try {
             writer.object();
@@ -65,6 +67,5 @@ public class SurveyApiHandler {
         catch (JSONException e) {
             throw new IOException(e);
         }
-        response.setStatus(200);
     }
 }

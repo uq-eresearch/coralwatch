@@ -11,6 +11,7 @@ import org.json.JSONWriter;
 public class ApiServletUtils {
     public static void writeErrorResponse(HttpServletResponse response, int statusCode, List<String> errors) throws IOException {
         response.setStatus(statusCode);
+        response.setContentType("application/json");
         JSONWriter writer = new JSONWriter(response.getWriter());
         try {
             writer.object();

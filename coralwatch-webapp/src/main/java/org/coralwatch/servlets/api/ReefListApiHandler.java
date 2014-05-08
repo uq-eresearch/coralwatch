@@ -22,6 +22,8 @@ public class ReefListApiHandler {
     
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Reef> reefs = reefDao.getAll();
+        response.setStatus(200);
+        response.setContentType("application/json");
         JSONWriter writer = new JSONWriter(response.getWriter());
         try {
             writer.array();
@@ -36,6 +38,5 @@ public class ReefListApiHandler {
         catch (JSONException e) {
             throw new IOException(e);
         }
-        response.setStatus(200);
     }
 }
