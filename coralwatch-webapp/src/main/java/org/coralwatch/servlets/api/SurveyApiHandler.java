@@ -38,8 +38,18 @@ public class SurveyApiHandler {
             writer.key("url").value(String.format("/coralwatch/api/survey/%d", + survey.getId()));
             writer.key("groupName").value(survey.getGroupName());
             writer.key("participatingAs").value(survey.getParticipatingAs());
+            writer.key("reef");
+            writer.object();
+            writer.key("name").value(survey.getReef().getName());
             writer.key("country").value(survey.getReef().getCountry());
-            writer.key("reefName").value(survey.getReef().getName());
+            writer.key("portalUrl").value(String.format(
+                "/web/guest/reef" +
+                "?p_p_id=reefportlet_WAR_coralwatch" +
+                "&_reefportlet_WAR_coralwatch_cmd=view" +
+                "&_reefportlet_WAR_coralwatch_reefId=%d",
+                survey.getReef().getId()
+            ));
+            writer.endObject();
             writer.key("latitude").value(survey.getLatitude());
             writer.key("longitude").value(survey.getLongitude());
             writer.key("date").value((new SimpleDateFormat("yyyy-MM-dd")).format(survey.getDate()));
