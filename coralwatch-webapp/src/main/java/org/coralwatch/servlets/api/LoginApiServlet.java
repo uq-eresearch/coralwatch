@@ -35,7 +35,7 @@ public class LoginApiServlet extends HttpServlet {
         if (currentUser != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute("currentUser", currentUser);
-            ApiServletUtils.writeEmptySuccessResponse(response);
+            response.setStatus(204);
         }
         else {
             ApiServletUtils.writeErrorResponse(response, errors);

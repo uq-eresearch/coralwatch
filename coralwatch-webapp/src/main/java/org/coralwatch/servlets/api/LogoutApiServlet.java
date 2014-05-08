@@ -16,6 +16,6 @@ public class LogoutApiServlet extends HttpServlet {
         if (session != null) {
             session.removeAttribute("currentUser");
         }
-        ApiServletUtils.writeEmptySuccessResponse(response);
+        response.setStatus(204);
     }
 }

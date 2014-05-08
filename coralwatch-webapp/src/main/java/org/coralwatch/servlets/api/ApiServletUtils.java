@@ -9,18 +9,6 @@ import org.json.JSONException;
 import org.json.JSONWriter;
 
 public class ApiServletUtils {
-    public static void writeEmptySuccessResponse(HttpServletResponse response) throws IOException {
-        response.setStatus(200);
-        JSONWriter writer = new JSONWriter(response.getWriter());
-        try {
-            writer.object();
-            writer.endObject();
-        }
-        catch (JSONException e) {
-            throw new IOException(e);
-        }
-    }
-
     public static void writeErrorResponse(HttpServletResponse response, List<String> errors) throws IOException {
         response.setStatus(200);
         JSONWriter writer = new JSONWriter(response.getWriter());
