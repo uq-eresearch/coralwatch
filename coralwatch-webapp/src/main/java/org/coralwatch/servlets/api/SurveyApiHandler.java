@@ -1,6 +1,7 @@
 package org.coralwatch.servlets.api;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,17 @@ public class SurveyApiHandler {
             writer.key("id").value(survey.getId());
             writer.key("groupName").value(survey.getGroupName());
             writer.key("participatingAs").value(survey.getParticipatingAs());
-            // TODO: Add other Survey attributes to JSON serialisations.
+            writer.key("country").value(survey.getReef().getCountry());
+            writer.key("reefName").value(survey.getReef().getName());
+            writer.key("latitude").value(survey.getLatitude());
+            writer.key("longitude").value(survey.getLongitude());
+            writer.key("date").value((new SimpleDateFormat("yyyy-MM-dd")).format(survey.getDate()));
+            writer.key("time").value((new SimpleDateFormat("HH:mm")).format(survey.getTime()));
+            writer.key("lightCondition").value(survey.getLightCondition());
+            writer.key("depth").value(survey.getDepth());
+            writer.key("waterTemperature").value(survey.getWaterTemperature());
+            writer.key("activity").value(survey.getActivity());
+            writer.key("comments").value(survey.getComments());
             writer.endObject();
         }
         catch (JSONException e) {
