@@ -2,6 +2,9 @@ package org.coralwatch.servlets.api;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,22 +34,29 @@ public class ApiServlet extends HttpServlet {
 
     private void dispatch(String methodName, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
-        Class<?> handlerClass =
-            pathInfo.matches("^/login$") ? LoginApiHandler.class :
-            pathInfo.matches("^/logout$") ? LogoutApiHandler.class :
-            pathInfo.matches("^/survey$") ? SurveyApiHandler.class :
-            null;
-        if (handlerClass == null) {
+        System.err.println("Got pathInfo: " + pathInfo);
+        Object handler = null;
+        String[] groups = null;
+        if ((groups = getMatch(pathInfo, "^/login$")) != null) {
+            handler = new LoginApiHandler();
+        }
+        else if ((groups = getMatch(pathInfo, "^/logout$")) != null) {
+            handler = new LogoutApiHandler();
+        }
+        else if ((groups = getMatch(pathInfo, "^/survey$")) != null) {
+            handler = new SurveyListApiHandler();
+        }
+        else if ((groups = getMatch(pathInfo, "^/survey/([0-9]+)$")) != null) {
+            handler = new SurveyApiHandler(Long.parseLong(groups[0]));
+        }
+        System.err.println(String.format("Got handler: %s", handler));
+        if (handler == null) {
             response.setStatus(404);
             return;
         }
         try {
-            Object handler = handlerClass.getConstructor().newInstance();
-            handlerClass.getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class).invoke(handler, request, response);
-        }
-        catch (InstantiationException e) {
-            response.setStatus(404);
-            return;
+            Method method = handler.getClass().getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
+            method.invoke(handler, request, response);
         }
         catch (NoSuchMethodException e) {
             response.setStatus(405);
@@ -58,5 +68,18 @@ public class ApiServlet extends HttpServlet {
         catch (IllegalAccessException e) {
             throw new ServletException(e);
         }
+    }
+    
+    private String[] getMatch(String input, String regex) {
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(input);
+        if (!m.matches()) {
+            return null;
+        }
+        String[] groups = new String[m.groupCount()];
+        for (int i = 0; i < m.groupCount(); i++) {
+            groups[i] = m.group(i + 1);
+        }
+        return groups;
     }
 }
