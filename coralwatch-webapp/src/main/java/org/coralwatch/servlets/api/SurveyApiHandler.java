@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,7 +16,6 @@ import org.apache.commons.lang.StringUtils;
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
-import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
@@ -25,20 +23,16 @@ import org.json.JSONException;
 import org.json.JSONWriter;
 
 // TODO: Remove code duplication from SurveyPortlet
-public class SurveyApiServlet extends HttpServlet {
-    protected SurveyDao surveyDao;
-    protected SurveyRecordDao surveyRecordDao;
-    protected ReefDao reefDao;
+public class SurveyApiHandler {
+    private SurveyDao surveyDao;
+    private ReefDao reefDao;
 
-    @Override
-    public void init() throws ServletException {
+    public SurveyApiHandler() {
         surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
-        surveyRecordDao = CoralwatchApplication.getConfiguration().getSurveyRecordDao();
         reefDao = CoralwatchApplication.getConfiguration().getReefDao();
     }
-    
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         UserImpl currentUser = (session != null) ? (UserImpl) session.getAttribute("currentUser") : null;
         List<String> errors = new ArrayList<String>();
@@ -166,7 +160,8 @@ public class SurveyApiServlet extends HttpServlet {
     }
 
     private void writeSuccessResponse(HttpServletResponse response, Survey survey) throws IOException {
-        response.setStatus(200);
+        response.setStatus(201);
+        response.setHeader("Location", "/coralwatch/api/survey/" + survey.getId());
         JSONWriter writer = new JSONWriter(response.getWriter());
         try {
             writer.object();

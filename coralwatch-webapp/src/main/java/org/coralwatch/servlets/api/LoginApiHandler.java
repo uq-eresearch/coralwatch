@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,16 +17,14 @@ import org.coralwatch.model.UserImpl;
 import au.edu.uq.itee.maenad.util.BCrypt;
 
 // TODO: Remove code duplication from LoginPortlet
-public class LoginApiServlet extends HttpServlet {
-    protected UserDao userDao;
+public class LoginApiHandler {
+    private UserDao userDao;
 
-    @Override
-    public void init() throws ServletException {
+    public LoginApiHandler() {
         userDao = CoralwatchApplication.getConfiguration().getUserDao();
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         List<String> errors = new ArrayList<String>();

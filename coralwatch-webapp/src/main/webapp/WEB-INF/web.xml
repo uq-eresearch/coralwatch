@@ -71,30 +71,12 @@
     </servlet-mapping>
     
     <servlet>
-        <servlet-name>login-api</servlet-name>
-        <servlet-class>org.coralwatch.servlets.api.LoginApiServlet</servlet-class>
+        <servlet-name>api</servlet-name>
+        <servlet-class>org.coralwatch.servlets.api.ApiServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>login-api</servlet-name>
-        <url-pattern>/api/login</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>logout-api</servlet-name>
-        <servlet-class>org.coralwatch.servlets.api.LogoutApiServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>logout-api</servlet-name>
-        <url-pattern>/api/logout</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>survey-api</servlet-name>
-        <servlet-class>org.coralwatch.servlets.api.SurveyApiServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>survey-api</servlet-name>
-        <url-pattern>/api/survey</url-pattern>
+        <servlet-name>api</servlet-name>
+        <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 </web-app>
