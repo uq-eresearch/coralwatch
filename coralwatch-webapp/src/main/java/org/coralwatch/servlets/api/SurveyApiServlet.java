@@ -177,7 +177,7 @@ public class SurveyApiServlet extends HttpServlet {
                 "&_surveyportlet_WAR_coralwatch_surveyId=%d",
                 survey.getId()
             );
-            writer.key("location").value(surveyUrl);
+            writer.key("portalUrl").value(surveyUrl);
             writer.endObject();
         }
         catch (JSONException e) {
