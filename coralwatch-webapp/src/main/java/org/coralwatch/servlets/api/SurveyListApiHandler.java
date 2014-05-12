@@ -204,11 +204,7 @@ public class SurveyListApiHandler {
         }
 
         if (!emptyFields.isEmpty()) {
-            String fields = "";
-            for (String field : emptyFields) {
-                fields = fields + " " + field;
-            }
-            errors.add("Required field(s):" + fields + ".");
+            errors.add("Required fields: " + StringUtils.join(emptyFields, ", ") + ".");
         }
     }
 }

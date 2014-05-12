@@ -42,6 +42,12 @@ public class ApiServlet extends HttpServlet {
         else if ((groups = getMatch(pathInfo, "^/logout$")) != null) {
             handler = new LogoutApiHandler();
         }
+        else if ((groups = getMatch(pathInfo, "^/user$")) != null) {
+            handler = new UserListApiHandler();
+        }
+        else if ((groups = getMatch(pathInfo, "^/user/([0-9]+)$")) != null) {
+            handler = new UserApiHandler(Long.parseLong(groups[0]));
+        }
         else if ((groups = getMatch(pathInfo, "^/survey$")) != null) {
             handler = new SurveyListApiHandler();
         }

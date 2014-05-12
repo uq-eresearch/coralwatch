@@ -18,4 +18,9 @@ public class AppUtil {
         HttpSession session = request.getSession(false);
         return (session != null) ? (UserImpl) session.getAttribute("currentUser") : null;
     }
+
+    public static void setCurrentUser(HttpServletRequest request, UserImpl user) {
+        HttpSession session = request.getSession(true);
+        session.setAttribute("currentUser", user);
+    }
 }
