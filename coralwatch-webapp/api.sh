@@ -4,7 +4,7 @@
 # Either set BASE_URL below or provide site URL as a command-line parameter.
 # Note: the provided base URL should not contain a trailing slash.
 
-BASE_URL='http://coralwatch-uat.metadata.net'
+BASE_URL='https://coralwatch-uat.metadata.net'
 if [[ -n "$1" ]]; then BASE_URL="$1"; fi
 
 function heading
@@ -129,7 +129,7 @@ function trace
   curl_ -X GET "${BASE_URL}${surveyUrl}"
   
   heading "Read list of reefs in CoralWatch"
-  curl_ -X GET "${BASE_URL}/coralwatch/api/reef" | head -n 40
+  curl_ -X GET "${BASE_URL}/coralwatch/api/reef"
   
   echo # ensure line cleared after output of last request
 }
