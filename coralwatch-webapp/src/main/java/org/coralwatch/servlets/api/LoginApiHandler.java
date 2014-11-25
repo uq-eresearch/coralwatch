@@ -36,7 +36,8 @@ public class LoginApiHandler {
         
         HttpSession session = request.getSession(true);
         session.setAttribute("currentUser", currentUser);
-        response.setStatus(204);
+        response.setStatus(200);
+        response.getWriter().write(Long.toString(currentUser.getId()));
     }
 
     private UserImpl doLogin(String email, String password, List<String> errors) {
