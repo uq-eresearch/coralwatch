@@ -36,6 +36,30 @@
     dojo.require("dojo.data.ItemFileReadStore");
 </script>
 
+<script type="text/javascript">
+  dojo.addOnLoad(function() {
+    dojo.connect(dijit.byId("reefName"), "onChange", function() {
+      var reef = dijit.byId("reefName").getValue();
+      dojo.xhrGet({
+        url: '<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/api/reeflocation',
+        handleAs: "json",
+        content: {
+          reef: reef
+        },
+        load: function(latlng) {
+          if(latlng && latlng.lat && latlng.lng) {
+            dijit.byId("latitudeDeg1").setValue(latlng.lat);
+            dijit.byId("longitudeDeg1").setValue(latlng.lng);
+          }
+        },
+        error: function() {
+          console.log('reeflocation call failed')
+        }
+      });
+    });
+  });
+</script>
+
 <script>
 var marker;
 function googleMap(eId) {

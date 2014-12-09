@@ -62,6 +62,8 @@ public class ApiServlet extends HttpServlet {
         }
         else if ((groups = getMatch(pathInfo, "^/reef$")) != null) {
             handler = new ReefListApiHandler();
+        } else if((groups = getMatch(pathInfo, "^/reeflocation$")) != null) {
+          handler = new ReefLocationApiHandler();
         }
         if (handler == null) {
             response.setStatus(404);

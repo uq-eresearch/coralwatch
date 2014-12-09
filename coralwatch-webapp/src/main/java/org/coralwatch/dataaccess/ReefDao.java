@@ -12,6 +12,9 @@ public interface ReefDao extends Dao<Reef> {
 
     List<Reef> getReefsByCountry(String country);
 
+    List<Reef> getReefsWithSurvey();
+    List<Reef> getReefsWithSurvey(String country);
+
     List<Survey> getSurveysByReef(Reef reef);
 
     Reef getById(Long id);

@@ -117,9 +117,9 @@ public class ReefServlet extends HttpServlet {
             JSONArray reefs = new JSONArray();
             List<Reef> listOfReefs;
             if (country.equals("all")) {
-                listOfReefs = reefDao.getAll();
+                listOfReefs = reefDao.getReefsWithSurvey();
             } else {
-                listOfReefs = reefDao.getReefsByCountry(country);
+                listOfReefs = reefDao.getReefsWithSurvey(country);
             }
             if (listOfReefs != null && listOfReefs.size() > 0) {
                 for (Reef reef : listOfReefs) {
