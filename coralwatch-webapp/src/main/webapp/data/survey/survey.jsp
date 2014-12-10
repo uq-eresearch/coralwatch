@@ -60,6 +60,87 @@
   });
 </script>
 
+<%
+    UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
+    SurveyDao surveyDao = (SurveyDao) renderRequest.getAttribute("surveyDao");
+    String cmd = ParamUtil.getString(request, Constants.CMD);
+    DateFormat dateFormatDisplay = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    DateFormat timeFormat = new SimpleDateFormat("'T'HH:mm");
+    DateFormat timeFormatDisplay = new SimpleDateFormat("HH:mm");
+
+    long surveyId = 0;
+    Survey survey = null;
+%>
+
+<script>
+function submitCheck() {
+  var isLoggedIn = <%=Boolean.valueOf(currentUser != null).toString()%>;
+  if(!isLoggedIn) {
+    alert('You must sign in before you can add or edit a survey.');
+    return false;
+  }
+  var newSurveyForm = dijit.byId('newSurveyForm');
+  if(newSurveyForm && !newSurveyForm.validate()){
+    alert('Form contains invalid data. Please correct errors first.');
+    return false;
+  }
+  return true;
+}
+
+function submitNewSurveyForm() {
+  var newSurveyForm = dijit.byId('newSurveyForm');
+  if(newSurveyForm) {
+    newSurveyForm.submit();
+  }
+}
+
+dojo.addOnLoad(function() {
+  dojo.connect(dijit.byId("confirmLocationDialog"), 'onShow', function(e) {
+    initConfirmLocationMap(
+        dijit.byId("latitudeDeg1").getValue(), dijit.byId("longitudeDeg1").getValue());
+  });
+  dojo.connect(dojo.byId('btnSubmit'), "onclick", function(e) {
+    if(submitCheck()) {
+      var confirmLocationDialog = dijit.byId("confirmLocationDialog");
+      if(confirmLocationDialog) {
+        confirmLocationDialog.show();
+      } else {
+        submitNewSurveyForm();
+      }
+    }
+  });
+});
+</script>
+
+<div style="display:none;" dojoType="dijit.Dialog" id="confirmLocationDialog" 
+    title="Please confirm that this was the location of your survey">
+  <div class="dijitDialogPaneContentArea">
+    <script type="text/javascript">
+      function initConfirmLocationMap(lat, lng) {
+        var surveyLocation = new google.maps.LatLng(lat, lng);
+        var mapOptions = {
+          center: surveyLocation,
+          zoom: 6, 
+          mapTypeId: google.maps.MapTypeId.HYBRID
+        };
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        var marker = new google.maps.Marker({
+          position: surveyLocation,
+          map: map
+        })
+      }
+    </script>
+    <div id="map-canvas" style="height: 400px; width: 400px; margin: 0; padding: 0;"></div>
+  </div>
+  <div style="margin-top:6px;" class="dijitDialogPaneActionBar">
+    <button dojoType="dijit.form.Button" type="button"
+        onClick="submitNewSurveyForm()">Confirm and submit</button>
+    <button dojoType="dijit.form.Button" type="button"
+        onClick="dijit.byId('confirmLocationDialog').hide();">Go back and change location</button>
+  </div>
+</div>
+
 <script>
 var marker;
 function googleMap(eId) {
@@ -105,19 +186,6 @@ function positionMarker() {
     }
 }
 </script>
-
-<%
-    UserImpl currentUser = (UserImpl) renderRequest.getPortletSession().getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
-    SurveyDao surveyDao = (SurveyDao) renderRequest.getAttribute("surveyDao");
-    String cmd = ParamUtil.getString(request, Constants.CMD);
-    DateFormat dateFormatDisplay = new SimpleDateFormat("dd/MM/yyyy");
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    DateFormat timeFormat = new SimpleDateFormat("'T'HH:mm");
-    DateFormat timeFormatDisplay = new SimpleDateFormat("HH:mm");
-
-    long surveyId = 0;
-    Survey survey = null;
-%>
 
 <% List<String> errors = (List<String>) renderRequest.getAttribute("errors"); %>
 <% if (errors != null && errors.size() > 0) { %>
@@ -183,7 +251,7 @@ function positionMarker() {
     }
 %>
 
-<form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
+<form id="newSurveyForm" dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
 
 <jsp:include page="/map/google-map-key.jsp"/>
 
@@ -198,28 +266,11 @@ function positionMarker() {
             }
             );
 </script>
+
 <script type="dojo/method" event="onSubmit">
-    <%
-        if (currentUser != null) {
-    %>
-    var isLoggedIn = true;
-    <%
-    } else {
-    %>
-    var isLoggedIn = false;
-    <%
-        }
-    %>
-    if(!isLoggedIn) {
-    alert('You must sign in before you can add or edit a survey.');
-    return false;
-    }
-    if(!this.validate()){
-    alert('Form contains invalid data. Please correct errors first.');
-    return false;
-    }
-    return true;
+  return true;
 </script>
+
 <input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(cmd) %>"/>
 <table>
 <%
@@ -782,8 +833,7 @@ function positionMarker() {
 </tr>
 <% } %>
 <tr>
-    <td colspan="2"><input type="submit" name="submit"
-                           value="<%=cmd.equals(Constants.ADD) ? "Submit" : "Save"%>"/>
+    <td colspan="2"><input id="btnSubmit" type="button" value="<%=cmd.equals(Constants.ADD) ? "Submit" : "Save"%>" />
         <%
             if (cmd.equals(Constants.EDIT)) {
         %>
