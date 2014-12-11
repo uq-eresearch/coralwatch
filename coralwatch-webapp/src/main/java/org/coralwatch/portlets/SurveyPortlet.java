@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.portlet.ActionRequest;
@@ -59,6 +60,7 @@ import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
 import org.coralwatch.model.UserImpl;
 import org.coralwatch.util.AppUtil;
+import org.coralwatch.util.Emailer;
 import org.hibernate.ScrollableResults;
 import org.json.JSONException;
 import org.json.JSONWriter;
@@ -226,6 +228,7 @@ public class SurveyPortlet extends GenericPortlet {
                             _log.info("Added survey");
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                             actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
+                            sendNewSurveyEmail(currentUser);
                         } else if (cmd.equals(Constants.EDIT)) {
                             long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
                             Survey survey = surveyDao.getById(suveyId);
@@ -283,6 +286,14 @@ public class SurveyPortlet extends GenericPortlet {
         }
     }
     
+    private void sendNewSurveyEmail(UserImpl currentUser) {
+      try {
+        Emailer.sendNewSurveyEmail(currentUser.getEmail());
+      } catch(Exception e) {
+        _log.warn("sending of new survey email failed", e);
+      }
+    }
+
     private enum StandardBulkImportColumns {
         GROUP_NAME("Group Name", true),
         PARTICIPATING_AS("Participating as", true),
