@@ -2,7 +2,6 @@ package org.coralwatch.app;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -66,48 +65,10 @@ public class ApplicationContext implements Configuration, ServletContextListener
 
 
     public ApplicationContext() throws InitializationException {
-        Properties properties = new Properties();
-        InputStream resourceAsStream = null;
-        try {
-            resourceAsStream = ApplicationContext.class.getResourceAsStream("/coralwatch.properties");
-            if (resourceAsStream == null) {
-                throw new InitializationException("Configuration file not found, please ensure " +
-                        "there is a 'ehmp.properties' on the classpath");
-            }
-            properties.load(resourceAsStream);
-        } catch (IOException ex) {
-            throw new InitializationException("Failed to load configuration properties", ex);
-        } finally {
-            if (resourceAsStream != null) {
-                try {
-                    resourceAsStream.close();
-                } catch (IOException ex) {
-                    // so what?
-                }
-            }
-        }
-        // try to load additional developer-specific settings
-        File devPropertiesFile = new File("local/coralwatch.properties");
-        if (devPropertiesFile.isFile()) {
-            InputStream fileInputStream = null;
-            try {
-                fileInputStream = new FileInputStream(devPropertiesFile);
-                properties.load(fileInputStream);
-            } catch (FileNotFoundException ex) {
-                // should never happen since we checked before
-            } catch (IOException ex) {
-                throw new InitializationException("Failed to load development configuration properties", ex);
-            } finally {
-                if (fileInputStream != null) {
-                    try {
-                        fileInputStream.close();
-                    } catch (IOException ex) {
-                        // so what?
-                    }
-                }
-            }
-
-        }
+      Properties properties = new Properties();
+      loadCp(properties, "/coralwatch.properties");
+      loadFile(properties, "/etc/coralwatch.properties");
+      loadFile(properties,"local/coralwatch.properties");
 
         final String persistenceUnitName = getProperty(properties, "persistenceUnitName");
         emf = Persistence.createEntityManagerFactory(persistenceUnitName);
@@ -139,6 +100,40 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.baseUrl = getProperty(properties, "baseUrl", null);
         this.isTestSetup = Boolean.valueOf(getProperty(properties, "testMode", "false"));
         this.isRatingSetup = Boolean.valueOf(getProperty(properties, "ratingOn", "false"));
+    }
+
+    private void load(Properties properties, InputStream in) throws InitializationException {
+      try {
+        if (in == null) {
+          throw new InitializationException("Configuration file not found");
+        }
+        properties.load(in);
+      } catch (IOException ex) {
+        throw new InitializationException("Failed to load configuration properties", ex);
+      } finally {
+        if(in != null) {
+          try {in.close();} catch (IOException ex) {}
+        }
+      }
+    }
+
+    private void loadCp(Properties properties, String name) throws InitializationException {
+      try {
+        load(properties, ApplicationContext.class.getResourceAsStream(name));
+      } catch(InitializationException e) {
+        throw new InitializationException(String.format("failed to load configuration from"
+            + " classpath properties file %s", name), e);
+      }
+    }
+
+    private void loadFile(Properties properties, String name) {
+      final File f = new File(name);
+      try {
+        load(properties, new FileInputStream(f));
+      } catch(Exception e) {
+        System.out.println(String.format("failed to load optional configuration file from %s",
+            f.getAbsolutePath()));
+      }
     }
 
     /**
