@@ -77,7 +77,6 @@
 function submitCheck() {
   var isLoggedIn = <%=Boolean.valueOf(currentUser != null).toString()%>;
   if(!isLoggedIn) {
-    alert('You must sign in before you can add or edit a survey.');
     return false;
   }
   var newSurveyForm = dijit.byId('newSurveyForm');
