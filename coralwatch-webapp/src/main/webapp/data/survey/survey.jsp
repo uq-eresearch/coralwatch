@@ -113,7 +113,7 @@ dojo.addOnLoad(function() {
 </script>
 
 <div style="display:none;" dojoType="dijit.Dialog" id="confirmLocationDialog" 
-    title="Please confirm that this was the location of your survey">
+    title="Please zoom in and confirm that this was the location of your survey">
   <div class="dijitDialogPaneContentArea">
     <script type="text/javascript">
       function initConfirmLocationMap(lat, lng) {
