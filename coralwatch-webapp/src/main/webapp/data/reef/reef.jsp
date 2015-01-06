@@ -20,6 +20,7 @@
         Reef reef = reefDao.getById(reefId);
 
 %>
+
 <script type="text/javascript">
     dojo.require("dijit.layout.ContentPane");
     dojo.require("dijit.layout.TabContainer");
@@ -244,6 +245,48 @@
 } else {
 %>
 <h2 style="margin-top:0;">All Reefs</h2>
+
+<%
+  if((currentUser != null) && currentUser.isSuperUser()) {
+%>
+<div dojoType="dijit.form.Button">
+    Remove Selected Reefs (only reefs with 0 surveys can be deleted this way)
+  <script type="dojo/method" event="onClick" args="evt">
+// Get all selected items from the Grid:
+var items = reefgrid.selection.getSelected();
+reefStore._getDeleteUrl = function(item) {
+  if(item && item.element) {
+    var xml = jQuery(item.element);
+    if(xml) {
+      var id = xml.find('delete').text();
+      if(id) {
+        return '/coralwatch/reefs?id='+id
+      }
+    }
+  }
+  return '/coralwatch/reefs?id=';
+};
+if (items.length) {
+    // Iterate through the list of selected items.
+    // The current item is available in the variable
+    // "selectedItem" within the following function:
+    dojo.forEach(items, function(selectedItem) {
+        if (selectedItem !== null) {
+            // Delete the item from the data store:
+            reefStore.deleteItem(selectedItem);
+        } // end if
+    }); // end forEach
+  reefStore.save({onComplete: function() {
+    // the grid does not seem to get updated so just reload this page as a workaround.
+    location.reload(false);
+  }});
+} // end if
+  </script>
+</div>
+<%
+  }
+%>
+
 <script>
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.data.XmlStore");

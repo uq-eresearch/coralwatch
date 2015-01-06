@@ -19,7 +19,9 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.coralwatch.app.CoralwatchApplication;
 import org.coralwatch.dataaccess.ReefDao;
+import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.model.Reef;
+import org.coralwatch.model.UserImpl;
 import org.coralwatch.util.AppUtil;
 import org.hibernate.ScrollableResults;
 import org.json.JSONArray;
@@ -35,6 +37,42 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 public class ReefServlet extends HttpServlet {
 
     private static Log LOGGER = LogFactoryUtil.getLog(ReefServlet.class);
+
+    private Long asLong(String s) {
+      try {
+        return new Long(s);
+      } catch(Exception e) {
+        return null;
+      }
+    }
+
+    @Override 
+    protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+      UserImpl currentUser = AppUtil.getCurrentUser(req);
+      if((currentUser != null) && currentUser.isSuperUser()) {
+        Long reefId = asLong(req.getParameter("id"));
+        if(reefId != null) {
+          ReefDao reefDao = CoralwatchApplication.getConfiguration().getReefDao();
+          SurveyDao sDao = CoralwatchApplication.getConfiguration().getSurveyDao();
+          Reef reef = reefDao.getById(reefId);
+          if(reef != null) {
+            ScrollableResults sr = sDao.getSurveysIterator(reef);
+            try {
+              // only allow to delete the reef if it has no surveys attached to it
+              if(!sr.next()) {
+                reefDao.delete(reef);
+              }
+            } finally {
+              if(sr != null) {sr.close();}
+            }
+          }
+        }
+        res.setStatus(HttpServletResponse.SC_OK);
+      } else {
+        System.out.println("only admins can delete reefs");
+        res.sendError(HttpServletResponse.SC_FORBIDDEN);
+      }
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -90,6 +128,12 @@ public class ReefServlet extends HttpServlet {
                     reefNode.appendChild(downloadNode);
                     Text download = doc.createTextNode(Long.toString(reefId));
                     downloadNode.appendChild(download);
+
+                    if(numSurveyRecords == 0) {
+                      Element deleteNode = doc.createElement("delete");
+                      reefNode.appendChild(deleteNode);
+                      deleteNode.appendChild(doc.createTextNode(Long.toString(reefId)));
+                    }
                 }
 
                 //TransformerFactory instance is used to create Transformer objects.
