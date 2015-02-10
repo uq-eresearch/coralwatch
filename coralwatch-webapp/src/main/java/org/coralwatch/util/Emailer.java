@@ -17,6 +17,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.coralwatch.app.CoralwatchApplication;
 
 import com.liferay.portal.kernel.log.Log;
@@ -76,10 +77,15 @@ public class Emailer {
       return imagePart;
     }
 
-    public static void sendNewSurveyEmail(String to) throws IOException, MessagingException {
+    public static void sendNewSurveyEmail(String to,
+        String surveyId) throws IOException, MessagingException {
       MimeMultipart content = new MimeMultipart("related");
       MimeBodyPart htmlPart = new MimeBodyPart();
-      htmlPart.setText(emailContent(), "UTF-8", "html");
+      String cnt = emailContent();
+      cnt = StringUtils.replace(cnt, "<surveyid>", surveyId);
+      cnt = StringUtils.replace(cnt, "<baseurl>",
+          CoralwatchApplication.getConfiguration().getBaseUrl());
+      htmlPart.setText(cnt, "UTF-8", "html");
       content.addBodyPart(htmlPart);
       content.addBodyPart(inlineImage("logo.png", "image/png", "logo"));
       content.addBodyPart(inlineImage("facebook.jpeg", "image/jpeg", "fb"));

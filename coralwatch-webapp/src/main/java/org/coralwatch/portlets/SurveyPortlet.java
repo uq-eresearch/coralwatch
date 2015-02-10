@@ -227,7 +227,7 @@ public class SurveyPortlet extends GenericPortlet {
                             _log.info("Added survey");
                             actionResponse.setRenderParameter("surveyId", String.valueOf(survey.getId()));
                             actionResponse.setRenderParameter(Constants.CMD, Constants.VIEW);
-                            sendNewSurveyEmail(currentUser);
+                            sendNewSurveyEmail(currentUser, String.valueOf(survey.getId()));
                         } else if (cmd.equals(Constants.EDIT)) {
                             long suveyId = ParamUtil.getLong(actionRequest, "surveyId");
                             Survey survey = surveyDao.getById(suveyId);
@@ -285,9 +285,9 @@ public class SurveyPortlet extends GenericPortlet {
         }
     }
     
-    private void sendNewSurveyEmail(UserImpl currentUser) {
+    private void sendNewSurveyEmail(UserImpl currentUser, String surveyId) {
       try {
-        Emailer.sendNewSurveyEmail(currentUser.getEmail());
+        Emailer.sendNewSurveyEmail(currentUser.getEmail(), surveyId);
       } catch(Exception e) {
         _log.warn("sending of new survey email failed", e);
       }
