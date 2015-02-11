@@ -21,4 +21,6 @@ public interface SurveyDao extends Dao<Survey> {
     public ScrollableResults getSurveysForDojo(Reef reef, UserImpl surveyCreator);
 
     int count();
+
+    List<Survey> missingElevation();
 }

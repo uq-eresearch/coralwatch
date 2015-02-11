@@ -33,6 +33,7 @@ import org.coralwatch.dataaccess.jpa.JpaSurveyRecordDao;
 import org.coralwatch.dataaccess.jpa.JpaUserDao;
 import org.coralwatch.dataaccess.jpa.JpaUserRatingDao;
 import org.coralwatch.dataaccess.jpa.JpaUserReputationProfileDao;
+import org.coralwatch.elevation.Elevation;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.SurveyRecord;
@@ -100,6 +101,12 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.baseUrl = getProperty(properties, "baseUrl", null);
         this.isTestSetup = Boolean.valueOf(getProperty(properties, "testMode", "false"));
         this.isRatingSetup = Boolean.valueOf(getProperty(properties, "ratingOn", "false"));
+        
+        if(Boolean.valueOf(getProperty(properties, "elevation_update", "false"))) {
+          Elevation.start(getProperty(properties, "elevation_update_api_key", true), surveyDao);
+        } else {
+          System.out.println("elevation update service is disabled");
+        }
     }
 
     private void load(Properties properties, InputStream in) throws InitializationException {
@@ -386,6 +393,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         try {
+          Elevation.stop();
             emf.close();
             connectorService.stop();
         } catch (Exception ex) {

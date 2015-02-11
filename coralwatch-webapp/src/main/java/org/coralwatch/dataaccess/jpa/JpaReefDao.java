@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.coralwatch.dataaccess.Location;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
@@ -95,19 +96,46 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao, Serializable {
       return entityManagerSource.getEntityManager().createNativeQuery(query, clas);
     }
 
+    private Query nativeQuery(String query) {
+      return entityManagerSource.getEntityManager().createNativeQuery(query);
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public List<Reef> getReefsWithSurvey() {
       return nativeQuery("SELECT DISTINCT r.* FROM reef r JOIN survey s on"
-          + " r.id = s.reef_id ORDER BY r.country, r.name", Reef.class).getResultList();
+          + " r.id = s.reef_id WHERE s.datemodified is not null and s.latitude is not null and"
+          + " s.longitude is not null and s.latitude between -90.0 and 90.0 and"
+          + " s.longitude between -180.0 and 180.0 and (s.elevation is null OR s.elevation < 10.0 )"
+          + " ORDER BY r.country, r.name", Reef.class).getResultList();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Reef> getReefsWithSurvey(String country) {
       return nativeQuery("SELECT DISTINCT r.* FROM reef r JOIN survey s on"
-          + " r.id = s.reef_id WHERE country = ? ORDER BY r.country, r.name",
+          + " r.id = s.reef_id WHERE s.datemodified is not null and s.latitude is not null and"
+          + " s.longitude is not null and s.latitude between -90.0 and 90.0 and"
+          + " s.longitude between -180.0 and 180.0 and (s.elevation is null OR s.elevation < 10.0 )"
+          + " and country = ? ORDER BY r.country, r.name",
           Reef.class).setParameter(1, country).getResultList();
+    }
+
+    @Override
+    public Location getReefLocation(String reefname) {
+      try {
+        Object[] o = (Object[])nativeQuery("select s.latitude, s.longitude, s.datemodified from survey s"
+            + " join reef r on s.reef_id = r.id where r.name = ? and s.latitude is not null"
+            + " and s.longitude is not null and s.latitude between -90.0 and 90.0 and"
+            + " s.longitude between -180.0 and 180.0 and (s.elevation is null OR s.elevation < 10.0 )"
+            + " order by s.datemodified DESC").setParameter(1, reefname).setMaxResults(1).getSingleResult();
+        if((o != null) && (o.length > 1) && (o[0] instanceof Number) && (o[1] instanceof Number)) {
+          return new Location(((Number)o[0]).doubleValue(), ((Number)o[1]).doubleValue());
+        }
+      } catch(Exception e) {
+        //e.printStackTrace();
+      }
+      return null;
     }
 
 }

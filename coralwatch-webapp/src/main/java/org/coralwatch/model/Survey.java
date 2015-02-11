@@ -122,6 +122,12 @@ public class Survey implements Serializable {
     @Column(name="reviewstate", nullable=false)
     private ReviewState reviewState;
 
+    @Column(name="elevation", nullable=true)
+    private Double elevation;
+
+    @Column(name="elevation_status", nullable=true)
+    private String elevationStatus;
+
     public Survey() {
         dateSubmitted = new Date();
         dateModified = new Date();
@@ -304,6 +310,22 @@ public class Survey implements Serializable {
 
     public void setReviewState(ReviewState reviewState) {
         this.reviewState = reviewState;
+    }
+
+    public Double getElevation() {
+      return elevation;
+    }
+
+    public void setElevation(Double elevation) {
+      this.elevation = elevation;
+    }
+
+    public String getElevationStatus() {
+      return elevationStatus;
+    }
+
+    public void setElevationStatus(String elevationStatus) {
+      this.elevationStatus = elevationStatus;
     }
 
     @Override

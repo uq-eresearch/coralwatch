@@ -120,4 +120,11 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             return 0;
         }
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Survey> missingElevation() {
+      return entityManagerSource.getEntityManager().createQuery(
+          "SELECT o FROM Survey o WHERE o.elevation is null AND o.elevationStatus is null ").getResultList();
+    }
 }
