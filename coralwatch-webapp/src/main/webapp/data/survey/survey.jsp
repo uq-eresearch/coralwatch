@@ -47,7 +47,10 @@
           reef: reef
         },
         load: function(latlng) {
-          if(latlng && latlng.lat && latlng.lng) {
+          function isNumber(obj) {
+            return (obj - parseFloat( obj ) + 1) >= 0;
+          }
+          if(latlng && isNumber(latlng.lat) && isNumber(latlng.lng)) {
             dijit.byId("latitudeDeg1").setValue(latlng.lat);
             dijit.byId("longitudeDeg1").setValue(latlng.lng);
           }
