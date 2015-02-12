@@ -4,8 +4,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
@@ -27,7 +29,18 @@ public class Elevation {
 
   private static Thread thread;
 
+  private static class CacheEntry {
+    double elevation;
+    double resolution;
+    public CacheEntry(double elevation, double resolution) {
+      this.elevation = elevation;
+      this.resolution = resolution;
+    }
+  }
+
   private volatile boolean run = true;
+
+  private Map<String, CacheEntry> ecache = new HashMap<String, CacheEntry>();
 
   private static class PreparedCall {
     String url;
@@ -67,6 +80,14 @@ public class Elevation {
         break;
       }
       Survey survey = work.removeFirst();
+      CacheEntry cached = ecache.get(cacheKey(survey));
+      if(cached != null) {
+        survey.setElevation(cached.elevation);
+        survey.setElevationResolution(cached.resolution);
+        survey.setElevationStatus("ok");
+        surveyDao.save(survey);
+        continue;
+      }
       Float lat = survey.getLatitude();
       Float lng = survey.getLongitude();
       if((lat != null) && (lng != null) && (lat >= -90.0) &&
@@ -85,6 +106,10 @@ public class Elevation {
       sb.append("key="+apiKey);
     }
     return new PreparedCall(sb.toString(), included, work);
+  }
+
+  private String cacheKey(Survey survey) {
+    return survey.getLatitude()+"/"+survey.getLongitude();
   }
 
   private void elevationCall(String targetURL, List<Survey> surveys) {
@@ -108,8 +133,11 @@ public class Elevation {
           Survey survey = surveys.get(i);
           JSONObject result = results.getJSONObject(i);
           double elevation = result.getDouble("elevation");
+          double resolution = result.getDouble("resolution");
+          ecache.put(cacheKey(survey), new CacheEntry(elevation, resolution));
           survey.setElevation(elevation);
           survey.setElevationStatus(status);
+          survey.setElevationResolution(resolution);
           surveyDao.save(survey);
         }
       }
