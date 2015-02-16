@@ -13,6 +13,7 @@ import java.util.UUID;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.coralwatch.dataaccess.SurveyDao;
+import org.coralwatch.dataaccess.jpa.EntityManagerThreadLocal;
 import org.coralwatch.model.Survey;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -57,10 +58,13 @@ public class Elevation {
   private final String apiKey;
 
   private final SurveyDao surveyDao;
+  
+  private final EntityManagerThreadLocal emtl;
 
-  private Elevation(String apiKey, SurveyDao surveyDao) {
+  private Elevation(String apiKey, SurveyDao surveyDao, EntityManagerThreadLocal emtl) {
     this.apiKey = apiKey;
     this.surveyDao = surveyDao;
+    this.emtl = emtl;
   }
 
   private boolean urlSizeOk(String url) {
@@ -188,7 +192,8 @@ public class Elevation {
         if(!run) {
           break;
         }
-        try {Thread.sleep(1000 * 60);} catch (InterruptedException e) {}
+        emtl.closeEntityManager();
+        try {Thread.sleep(1000);} catch (InterruptedException e) {}
       } catch(Throwable t) {
         t.printStackTrace();
       }
@@ -196,9 +201,10 @@ public class Elevation {
     System.out.println("elevation service exiting "+uuid);
   }
 
-  public synchronized static void start(String apiKey, SurveyDao surveyDao) {
+  public synchronized static void start(String apiKey, SurveyDao surveyDao,
+      EntityManagerThreadLocal emtl) {
     if(INSTANCE == null) {
-      INSTANCE = new Elevation(apiKey, surveyDao);
+      INSTANCE = new Elevation(apiKey, surveyDao, emtl);
       thread = new Thread(new Runnable() {
         @Override
         public void run() {

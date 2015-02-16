@@ -24,6 +24,7 @@ import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.dataaccess.UserRatingDao;
 import org.coralwatch.dataaccess.UserReputationProfileDao;
+import org.coralwatch.dataaccess.jpa.EntityManagerThreadLocal;
 import org.coralwatch.dataaccess.jpa.JpaConnectorService;
 import org.coralwatch.dataaccess.jpa.JpaKitRequestDao;
 import org.coralwatch.dataaccess.jpa.JpaReefDao;
@@ -79,7 +80,8 @@ public class ApplicationContext implements Configuration, ServletContextListener
                 emf.close();
             }
         }));
-        this.connectorService = new JpaConnectorService(emf);
+        EntityManagerThreadLocal emtl = new EntityManagerThreadLocal(emf);
+        this.connectorService = new JpaConnectorService(emtl);
         this.surveyDao = new JpaSurveyDao(this.connectorService);
         this.kitRequestDao = new JpaKitRequestDao(this.connectorService);
         this.reefDao = new JpaReefDao(this.connectorService);
@@ -103,7 +105,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
         this.isRatingSetup = Boolean.valueOf(getProperty(properties, "ratingOn", "false"));
         
         if(Boolean.valueOf(getProperty(properties, "elevation_update", "false"))) {
-          Elevation.start(getProperty(properties, "elevation_update_api_key", true), surveyDao);
+          Elevation.start(getProperty(properties, "elevation_update_api_key", true), surveyDao, emtl);
         } else {
           System.out.println("elevation update service is disabled");
         }

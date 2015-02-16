@@ -1,43 +1,34 @@
 package org.coralwatch.dataaccess.jpa;
 
-import au.edu.uq.itee.maenad.dataaccess.jpa.EntityManagerSource;
+import java.io.Serializable;
+
+import javax.persistence.EntityManager;
+
 import org.restlet.resource.Representation;
 import org.restlet.service.ConnectorService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import java.io.Serializable;
+import au.edu.uq.itee.maenad.dataaccess.jpa.EntityManagerSource;
 
 
 public class JpaConnectorService extends ConnectorService implements EntityManagerSource , Serializable {
 
-    private final EntityManagerFactory emf;
-    private final ThreadLocal<EntityManager> entityManagerTL = new ThreadLocal<EntityManager>();
+    private final EntityManagerThreadLocal emtl;
 
-    public JpaConnectorService(EntityManagerFactory emf) {
-        this.emf = emf;
+    public JpaConnectorService(EntityManagerThreadLocal emtl) {
+        this.emtl = emtl;
     }
 
     public EntityManager getEntityManager() {
-        // we lazily initialize in case the entity manager is not actually needed
-        // by a request
-        EntityManager entityManager = entityManagerTL.get();
-        if (entityManager == null) {
-            entityManager = emf.createEntityManager();
-            entityManagerTL.set(entityManager);
-        }
-        return entityManager;
+      return emtl.getOrCreateEntityManager();
     }
 
     @Override
     public void afterSend(Representation entity) {
-        EntityManager entityManager = entityManagerTL.get();
-        if (entityManager != null) {
-            entityManagerTL.remove();
-            assert entityManager.isOpen() :
-                    "Entity manager should only be closed here but must have been closed elsewhere";
-            entityManager.close();
-        }
+      try {
+        emtl.closeEntityManager();
+      } finally {
         super.afterSend(entity);
+      }
     }
+
 }
