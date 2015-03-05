@@ -107,7 +107,7 @@ public class Elevation {
       }
     }
     if(StringUtils.isNotBlank(apiKey)) {
-      sb.append("key="+apiKey);
+      sb.append("&key="+apiKey);
     }
     return new PreparedCall(sb.toString(), included, work);
   }
