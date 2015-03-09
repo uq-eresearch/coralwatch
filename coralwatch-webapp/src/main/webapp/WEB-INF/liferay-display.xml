@@ -11,5 +11,6 @@
         <portlet id="reef-portlet"/>
         <portlet id="user-portlet"/>
         <portlet id="survey-portlet"/>
+        <portlet id="bleaching-risk-portlet"/>
     </category>
 </display>

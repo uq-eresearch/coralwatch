@@ -1,8 +1,10 @@
 package org.coralwatch.dataaccess.jpa;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
@@ -126,5 +128,28 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
     public List<Survey> missingElevation() {
       return entityManagerSource.getEntityManager().createQuery(
           "SELECT o FROM Survey o WHERE o.elevation is null AND o.elevationStatus is null ").getResultList();
+    }
+
+    private String sql(final String name) {
+      InputStream in = null;
+      try {
+        in = this.getClass().getClassLoader().getResourceAsStream(
+            String.format("/org/coralwatch/sql/%s.sql", name));
+        if(in == null) {
+          throw new RuntimeException("named query %s not found");
+        }
+        return IOUtils.toString(in);
+      } catch(Exception e) {
+        throw new RuntimeException(String.format("failed to load query %s", name));
+      } finally {
+        if(in != null) {
+          try {in.close();} catch (Exception e) {}
+        }
+      }
+    }
+
+    public Object bleachingRisk() {
+      return entityManagerSource.getEntityManager().createNativeQuery(
+          sql("bleaching-risk")).getResultList();
     }
 }
