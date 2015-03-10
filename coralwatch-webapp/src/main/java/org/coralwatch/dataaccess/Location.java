@@ -3,21 +3,21 @@ package org.coralwatch.dataaccess;
 
 public class Location {
 
-  private final double latitude;
+  private final double lat;
 
-  private final double longitude;
+  private final double lng;
 
   public Location(double latitude, double longitude) {
-    this.latitude = latitude;
-    this.longitude = longitude;
+    this.lat = latitude;
+    this.lng = longitude;
   }
 
   public double getLatitude() {
-    return latitude;
+    return lat;
   }
 
   public double getLongitude() {
-    return longitude;
+    return lng;
   }
 
 }

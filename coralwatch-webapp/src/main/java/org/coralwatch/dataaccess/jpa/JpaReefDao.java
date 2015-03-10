@@ -138,4 +138,12 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao, Serializable {
       return null;
     }
 
+    public List<?> getAllReefLocations() {
+      return nativeQuery("select distinct on (r.name) r.name, r.country, s.latitude, s.longitude from"
+          + " survey s join reef r on s.reef_id = r.id where s.latitude is not null and s.longitude "
+          + "is not null and s.latitude between -90.0 and 90.0 and s.longitude between -180.0 and"
+          + " 180.0 and (s.elevation is null OR s.elevation < 10.0 )"
+          + " order by r.name, s.datemodified DESC").getResultList();
+    }
+
 }

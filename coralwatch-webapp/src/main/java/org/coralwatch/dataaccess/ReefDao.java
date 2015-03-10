@@ -24,5 +24,7 @@ public interface ReefDao extends Dao<Reef> {
     public ScrollableResults getReefsIterator();
 
     Location getReefLocation(String reefname);
+
+    List<?> getAllReefLocations();
 }
 
