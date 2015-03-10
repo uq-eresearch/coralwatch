@@ -27,5 +27,5 @@ from survey s
 where 
   ((csoft is null) or ((csoft/ctotal) < 0.3)) and
   ((cdarkest/ctotal) > 0.0465) and
-  s.date > '2012-01-01'
+  s.date > (now() - interval '6 months')
 order by s.date desc
