@@ -26,10 +26,11 @@ public class ReefLocationApiHandler {
     } else {
       final String json = gson.toJson(rdao.getAllReefLocations());
       final String etag = String.format("%08x", json.hashCode());
+      response.setContentType("application/json; charset=utf-8");
+      response.setHeader("ETag", etag);
       if(StringUtils.equals(etag, request.getHeader("If-None-Match"))) {
         response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
       } else {
-        response.setHeader("ETag", etag);
         response.getWriter().write(json);
       }
     }

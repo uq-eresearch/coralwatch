@@ -5,12 +5,8 @@
 <%@ taglib prefix="liferay-portlet" uri="http://liferay.com/tld/portlet" %>
 
 <portlet:defineObjects/>
-<%
-    List<Reef> reefs = (List<Reef>) renderRequest.getAttribute("reefs");
-%>
 <jsp:include page="map-head.jsp"/>
 <script src="/coralwatch/js/markerclusterer_compiled.js"></script>
-<!--[if IE]><script type="text/javascript">window['isIE'] = true;</script><![endif]-->
 <script>
 markerById = {};
 function triggerMarkerClick(markerId) {
@@ -28,11 +24,9 @@ function initialize() {
     infowindow.close();
   });
   var xhrArgs = {
-        <liferay-portlet:resourceURL var="resourceURL" portletName="surveyportlet_WAR_coralwatch">
-            <liferay-portlet:param name="format" value="json" />
-        </liferay-portlet:resourceURL>
-        url: "<%= resourceURL %>&p_p_resource_id=list",
+        url: "/coralwatch/api/survey-location",
         handleAs: "json",
+        sync: false,
         load: function(surveys) {
             var markers = [];
             for (var i = 0; i < surveys.length; i++) {
@@ -41,7 +35,7 @@ function initialize() {
                     position:new google.maps.LatLng(survey.lat,survey.lng),
                     map: map,
                     id: survey.id,
-                    title: survey.date
+                    title: String(survey.date)
                 });
                 markerById[marker.id] = marker;
                 google.maps.event.addListener(marker, 'click', (function(marker, i) {
@@ -89,27 +83,14 @@ function initialize() {
               infowindow.setContent(html);
               infowindow.open(map, cluster.getMarkers()[0]);
             });
-            if(!window.isIE) {
-              dialog.hide();
-            }
         },
         error: function(error) {
-            targetNode.innerHTML = "An unexpected error occurred: " + error;
+          console.error('error loading surveys %o', error);
         }
   }
   var deferred = dojo.xhrGet(xhrArgs);
-  if(!window.isIE) {
-    dojo.addOnLoad(function() {
-      dialog = dijit.byId("dialogDiv");
-      dialog.titleBar.style.display = 'none';
-      dialog.show();
-    });
-  }
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 
 <div id="mapDiv" style="height: 650px; border: 2px solid #333333"></div>
-<div id="dialogDiv" dojoType="dijit.Dialog" title="loading..." style="display:none;" align="center">
-    <h3 style="text-align:center;">Loading surveys...</h3>
-</div>
