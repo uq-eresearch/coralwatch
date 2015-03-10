@@ -24,10 +24,9 @@ public class ReefLocationApiHandler {
         response.getWriter().write(gson.toJson(new Object()));
       }
     } else {
-      String json = gson.toJson(rdao.getAllReefLocations());
-      String etag = Integer.toHexString(Math.abs(json.hashCode())).toLowerCase();
-      String ifNoneMatch = request.getHeader("If-None-Match");
-      if(StringUtils.equals(etag, ifNoneMatch)) {
+      final String json = gson.toJson(rdao.getAllReefLocations());
+      final String etag = String.format("%08x", json.hashCode());
+      if(StringUtils.equals(etag, request.getHeader("If-None-Match"))) {
         response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
       } else {
         response.setHeader("ETag", etag);
@@ -35,5 +34,4 @@ public class ReefLocationApiHandler {
       }
     }
   }
-
 }
