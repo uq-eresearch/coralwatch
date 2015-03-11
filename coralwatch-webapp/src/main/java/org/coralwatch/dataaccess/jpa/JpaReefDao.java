@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.coralwatch.dataaccess.Location;
 import org.coralwatch.dataaccess.ReefDao;
+import org.coralwatch.dataaccess.ReefLocation;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
 import org.hibernate.CacheMode;
@@ -15,6 +15,8 @@ import org.hibernate.ejb.HibernateEntityManager;
 
 import au.edu.uq.itee.maenad.dataaccess.jpa.EntityManagerSource;
 import au.edu.uq.itee.maenad.dataaccess.jpa.JpaDao;
+
+import com.google.common.collect.Lists;
 
 public class JpaReefDao extends JpaDao<Reef> implements ReefDao, Serializable {
     public JpaReefDao(EntityManagerSource entityManagerSource) {
@@ -121,29 +123,46 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao, Serializable {
           Reef.class).setParameter(1, country).getResultList();
     }
 
-    @Override
-    public Location getReefLocation(String reefname) {
-      try {
-        Object[] o = (Object[])nativeQuery("select s.latitude, s.longitude, s.datemodified from survey s"
-            + " join reef r on s.reef_id = r.id where r.name = ? and s.latitude is not null"
-            + " and s.longitude is not null and s.latitude between -90.0 and 90.0 and"
-            + " s.longitude between -180.0 and 180.0 and (s.elevation is null OR s.elevation < 10.0 )"
-            + " order by s.datemodified DESC").setParameter(1, reefname).setMaxResults(1).getSingleResult();
-        if((o != null) && (o.length > 1) && (o[0] instanceof Number) && (o[1] instanceof Number)) {
-          return new Location(((Number)o[0]).doubleValue(), ((Number)o[1]).doubleValue());
+    private ReefLocation of(Object o) {
+      if(o instanceof Object[] ) {
+        Object[] oa = (Object[])o;
+        if(oa.length == 4 && (oa[0] instanceof String) && (oa[1] instanceof String) &&
+            (oa[2] instanceof Number) && (oa[3] instanceof Number)) {
+          return new ReefLocation(oa[0].toString(), oa[1].toString(),
+              ((Number)oa[2]).doubleValue(), ((Number)oa[3]).doubleValue());
         }
-      } catch(Exception e) {
-        //e.printStackTrace();
       }
       return null;
     }
 
-    public List<?> getAllReefLocations() {
-      return nativeQuery("select distinct on (r.name) r.name, r.country, s.latitude, s.longitude from"
+    @Override
+    public ReefLocation getReefLocation(String reefname) {
+      try {
+        Object[] o = (Object[])nativeQuery("select r.name, r.country, s.latitude, s.longitude " +
+            "from survey s join reef r on s.reef_id = r.id where r.name = ? and s.latitude is not null" +
+            " and s.longitude is not null and s.latitude between -90.0 and 90.0 and" +
+            " s.longitude between -180.0 and 180.0 and (s.elevation is null OR s.elevation < 10.0 )" +
+            " order by s.datemodified DESC").setParameter(1, reefname).setMaxResults(1).getSingleResult();
+        return of(o);
+      } catch(Exception e) {
+        return null;
+      }
+    }
+
+    public List<ReefLocation> getAllReefLocations() {
+      List<?> l = nativeQuery("select distinct on (r.name) r.name, r.country, s.latitude, s.longitude from"
           + " survey s join reef r on s.reef_id = r.id where s.latitude is not null and s.longitude "
           + "is not null and s.latitude between -90.0 and 90.0 and s.longitude between -180.0 and"
           + " 180.0 and (s.elevation is null OR s.elevation < 10.0 )"
           + " order by r.name, s.datemodified DESC").getResultList();
+      List<ReefLocation> locations = Lists.newArrayList();
+      for(Object o : l) {
+        ReefLocation rl = of(o);
+        if(o != null) {
+          locations.add(rl);
+        }
+      }
+      return locations;
     }
 
 }
