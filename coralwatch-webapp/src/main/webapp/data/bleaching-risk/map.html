@@ -1,0 +1,101 @@
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+<script src="/coralwatch/js/markerclusterer_compiled.js"></script>
+<script>
+
+var markerById = {};
+var map;
+var infowindow;
+var markers = [];
+
+function triggerMarkerClick(markerId) {
+  google.maps.event.trigger(markerById[markerId], 'click');
+}
+
+function initialize() {
+  var mapProp = {
+    center:new google.maps.LatLng(25.799891, 15.468750),
+    zoom:2,
+    mapTypeId:google.maps.MapTypeId.HYBRID
+  };
+  map=new google.maps.Map(document.getElementById("mapDiv"),mapProp);
+  infowindow = new google.maps.InfoWindow();
+  google.maps.event.addListener(map, 'zoom_changed', function() {
+    infowindow.close();
+  });
+  var xhrArgs = {
+    url: "/coralwatch/api/bleaching-risk",
+    handleAs: "json",
+    sync: false,
+    load: function(surveys) {
+      for (var i = 0; i < surveys.length; i++) {
+        var survey = {
+          id : surveys[i][0],
+          date: surveys[i][4],
+          lat: surveys[i][6],
+          lng: surveys[i][7]
+        }
+        var marker=new google.maps.Marker({
+          position:new google.maps.LatLng(survey.lat,survey.lng),
+          map: map,
+          id: survey.id,
+          title: String(survey.date)
+        });
+        markerById[marker.id] = marker;
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+          return function() {
+            dojo.xhrGet({
+              url: '/web/guest/map?p_p_id=mapportlet_WAR_coralwatch&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=survey&p_p_cacheability=cacheLevelPage&p_p_col_id=column-1&p_p_col_count=1',
+              content: {
+                  _mapportlet_WAR_coralwatch_format: 'html',
+                  _mapportlet_WAR_coralwatch_id: marker.id
+                },
+                handleAs: "text",
+                load: function(content) {
+                    infowindow.setContent(content);
+                    infowindow.open(map, marker);
+                },
+                error: function(error) {
+                    infowindow.setContent("Error opening survey details.");
+                    infowindow.open(map, marker);
+                }
+            });
+        }})(marker, i));
+        markers.push(marker);
+      }
+      markerCluster = new MarkerClusterer(map, markers, {
+        zoomOnClick: false
+      });
+      google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
+        var surveyUrlPrefix =
+          'survey' +
+          '?p_p_id=surveyportlet_WAR_coralwatch' +
+          '&_surveyportlet_WAR_coralwatch_cmd=view' +
+          '&_surveyportlet_WAR_coralwatch_surveyId=';
+        var html = '<div style="width: 240px; height:300px; overflow: auto;">';
+        html += '<h4>' + cluster.getMarkers().length + ' Surveys:</h4>';
+        html += '<ul>';
+        for (var i = 0; i < cluster.getMarkers().length; i++) {
+          html += '<li>';
+          html += '<a href="javascript:void(0)" onclick="triggerMarkerClick('+cluster.getMarkers()[i].id+')">' + cluster.getMarkers()[i].title.replace(/\s/g, '&nbsp;') + '</a> ';
+          html += '<a href="' + surveyUrlPrefix + cluster.getMarkers()[i].id + '">(link)</a>';
+          html += '</li>';
+        }
+        html += '</ul>';
+        html += '</div>';
+        infowindow.setContent(html);
+        infowindow.setPosition(cluster.getMarkers()[0].position);
+        infowindow.setMap(map);
+      });
+    },
+    error: function(error) {
+      console.error('error loading surveys %o', error);
+    }
+  }
+  var deferred = dojo.xhrGet(xhrArgs);
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+
+<div id="mapDiv" style="height: 650px; border: 2px solid #333333"></div>

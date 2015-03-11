@@ -12,5 +12,6 @@
         <portlet id="user-portlet"/>
         <portlet id="survey-portlet"/>
         <portlet id="bleaching-risk-portlet"/>
+        <portlet id="bleaching-risk-map-portlet"/>
     </category>
 </display>

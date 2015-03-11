@@ -67,6 +67,12 @@
         <instanceable>false</instanceable>
         <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
     </portlet>
+    <portlet>
+        <portlet-name>bleaching-risk-map-portlet</portlet-name>
+        <icon>/icon/icon.png</icon>
+        <instanceable>false</instanceable>
+        <header-portlet-css>/css/coralwatch-portlets.css</header-portlet-css>
+    </portlet>
     <role-mapper>
         <role-name>administrator</role-name>
         <role-link>Administrator</role-link>

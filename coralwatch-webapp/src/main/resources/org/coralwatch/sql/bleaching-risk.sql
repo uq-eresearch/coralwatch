@@ -16,6 +16,8 @@ select
   trim(r.name) as "reef",
   trim(u.displayname) as "surveyor",
   s.date, m.ctotal as "records",
+  s.latitude,
+  s.longitude,
   csoft/ctotal as "soft coral ratio",
   cdarkest, cdarkest/ctotal as "darkest score ratio"
 from survey s
