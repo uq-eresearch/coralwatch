@@ -24,6 +24,7 @@ public interface SurveyDao extends Dao<Survey> {
 
     List<Survey> missingElevation();
 
-    Object bleachingRisk();
+    Object bleachingRiskAll();
+    Object bleachingRiskCurrent();
 
 }
