@@ -13,13 +13,6 @@ function triggerMarkerClick(markerId) {
   google.maps.event.trigger(markerById[markerId], 'click');
 }
 
-function addControl(map, id, clickHandler) {
-  var bt = jQuery('#'+id);
-  bt.click(clickHandler);
-  map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(bt[0]);
-  bt.show();
-}
-
 function initMarkers(all) {
   var url = '/coralwatch/api/bleaching-risk';
   if(all) {
@@ -103,18 +96,15 @@ function initMarkers(all) {
 }
 
 function initialize() {
+  jQuery('input:radio[name="rd1"]').change(function() {
+    initMarkers(jQuery(this).val() === 'all');
+  });
   var mapProp = {
     center:new google.maps.LatLng(25.799891, 15.468750),
     zoom:2,
     mapTypeId:google.maps.MapTypeId.HYBRID
   };
   map=new google.maps.Map(document.getElementById("mapDiv"),mapProp);
-  addControl(map, 'btAll', function() {
-    initMarkers(true);
-  });
-  addControl(map, 'btCurrent', function() {
-    initMarkers(false);
-  });
   infowindow = new google.maps.InfoWindow();
   google.maps.event.addListener(map, 'zoom_changed', function() {
     infowindow.close();
@@ -124,36 +114,10 @@ function initialize() {
 google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 
-<style>
-.controlUI {
-  background-color: #fff;
-  border: 2px solid #fff;
-  border-radius: 3px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.3);
-  cursor: pointer;
-  margin-bottom: 10px;
-  margin-right: 10px;
-  text-align: center;
-  width: 75px;
-}
-
-.controlText {
-  color: rgb(25,25,25);
-  font-famility: sans-serif;
-  font-size: 12px;
-  line-height: 38px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.hidden {
-  display: none;
-}
-</style>
-
-<h2 style="margin-top:0px;">This map shows surveys that have been classified as a 'bleaching risk'.</h2>
+<h2 style="margin-top:0px;display:inline;">This map shows surveys that have been classified as a 'bleaching risk'.</h2>
+<div style="display:inline;margin-left:20px;">
+<label><input type="radio" name="rd1" value="all">All</label>
+<label><input type="radio" name="rd1" value="current" checked>Current (from the past 12 months)</label>
+</div>
 <div id="mapDiv" style="height: 650px; border: 2px solid #333333"></div>
-
-<div id="btAll" class="hidden"><div class="controlUI"><div class="controlText">All</div></div></div>
-<div id="btCurrent" class="hidden"><div class="controlUI"><div class="controlText">Current</div></div></div>
 
