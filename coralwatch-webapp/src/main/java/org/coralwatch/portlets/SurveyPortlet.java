@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -358,6 +359,12 @@ public class SurveyPortlet extends GenericPortlet {
         if (clazz.isInstance(value)) {
             return clazz.cast(value);
         }
+        if((clazz == Date.class) && (value instanceof String)) {
+          Date guessed = guessDate((String)value);
+          if(guessed != null) {
+            return clazz.cast(guessed);
+          }
+        }
         throw new RuntimeException(
             "Expected " + clazz.getSimpleName() + " " +
             "for " + column.getTitle() + " " +
@@ -365,7 +372,22 @@ public class SurveyPortlet extends GenericPortlet {
             "\"" + String.valueOf(value) + "\""
         );
     }
-    
+
+    private Date guessDate(String s) {
+      if(StringUtils.isBlank(s)) {
+        return null;
+      }
+      try {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.parse(s);
+      } catch(ParseException e) {}
+      try {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        return sdf.parse(s);
+      } catch(ParseException e) {}
+      return null;
+    }
+
     private void processStandardBulkUploadAction(
         UploadPortletRequest uploadRequest,
         ActionResponse actionResponse,
