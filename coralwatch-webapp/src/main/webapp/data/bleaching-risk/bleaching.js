@@ -1,3 +1,16 @@
+(function($) {
+  $.QueryString = (function(a) {
+    if (a === "") return {};
+    var b = {};
+    for (var i = 0; i < a.length; ++i) {
+      var p=a[i].split('=');
+      if (p.length != 2) continue;
+      b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return b;
+  })(window.location.search.substr(1).split('&'));
+})(jQuery);
+
 dojo.locale = "en";
 dojo.require("dojox.grid.DataGrid");
 dojo.require("dojo.data.ItemFileReadStore");
@@ -78,8 +91,25 @@ dojo.addOnLoad(function() {
   brStore.comparatorMap.reef = cmpIgnoreCase;
   brStore.comparatorMap.surveyor = cmpIgnoreCase;
   brStore.comparatorMap.date = cmpDate;
+  var url = '/coralwatch/api/bleaching-risk';
+  if(jQuery.QueryString.current === 'false') {
+    url = url + '?all=all';
+    jQuery("#rdSince").attr('checked', 'checked');
+  } else {
+    jQuery("#rdCurrent").attr('checked', 'checked');
+  }
+  jQuery("input[name='rd1']" ).change(function() {
+    var val = jQuery(this).val();
+    var url;
+    if(window.location.href.indexOf('?') >= 0) {
+      url = window.location.href.substring(0, window.location.href.indexOf('?'));
+    } else {
+      url = window.location.href;
+    }
+    window.location.href = url + (val === 'all'?'?current=false':'?current=true');
+  });
   dojo.xhrGet({
-    url: '/coralwatch/api/bleaching-risk',
+    url: url,
     handleAs: 'json',
     load: function(data) {
       data.forEach(function(survey) {

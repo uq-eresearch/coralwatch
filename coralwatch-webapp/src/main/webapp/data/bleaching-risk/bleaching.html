@@ -13,6 +13,10 @@ CoralWatch surveys, or inform your local reef management group so additional inv
 be carried out to determine if a true bleaching event is occurring.</p>
 
 <div style="width: 680px; height: 500px;">
+  <div>
+  <label><input id="rdSince" type="radio" name="rd1" value="all" style="margin-right:6px;">Since 2002</label>
+  <label><input id="rdCurrent" type="radio" name="rd1" value="current" style="margin-right:6px;margin-left:6px">Current (from the past 12 months)</label>
+  </div>
   <div dojoType="dojo.data.ItemFileWriteStore" jsId="brStore" data="brData">
   </div>
   <div id="grid" dojoType="dojox.grid.DataGrid" jsId="brGrid" store="brStore" structure="brLayout" queryOptions="{}" query="{}" rowsPerPage="250">
