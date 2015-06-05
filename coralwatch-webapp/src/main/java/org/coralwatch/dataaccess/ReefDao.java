@@ -19,7 +19,7 @@ public interface ReefDao extends Dao<Reef> {
 
     Reef getById(Long id);
 
-    int count();
+    int count(String country);
 
     public ScrollableResults getReefsIterator();
 

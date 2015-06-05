@@ -43,11 +43,12 @@ public class StatsUpdatePortlet extends GenericPortlet {
     public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         AppUtil.clearCache();
         PortletPreferences prefs = renderRequest.getPreferences();
-        renderRequest.setAttribute("users", userDao.count());
-        renderRequest.setAttribute("reefs", reefDao.count());
-        renderRequest.setAttribute("surveys", surveyDao.count());
-        renderRequest.setAttribute("records", surveyRecordDao.count());
-        renderRequest.setAttribute("highestContributor", ReputationService.getHighestContributor());
+        String country = prefs.getValue("country", "");
+        renderRequest.setAttribute("users", userDao.count(country));
+        renderRequest.setAttribute("reefs", reefDao.count(country));
+        renderRequest.setAttribute("surveys", surveyDao.count(country));
+        renderRequest.setAttribute("records", surveyRecordDao.count(country));
+        renderRequest.setAttribute("highestContributor", ReputationService.getHighestContributor(country));
         renderRequest.setAttribute("userUrl", prefs.getValue("userUrl", "user"));
         renderRequest.setAttribute("surveyUrl", prefs.getValue("surveyUrl", "survey"));
         renderRequest.setAttribute("reefUrl", prefs.getValue("reefUrl", "reef"));

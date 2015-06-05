@@ -12,9 +12,12 @@
     <br/>
     Survey Page Path: <input name="<portlet:namespace />surveyUrl" type="text"
                              value="<%=renderRequest.getAttribute("surveyUrl")%>"/>
-    <b/>
+    <br/>
     Reef Page Path: <input name="<portlet:namespace />reefUrl" type="text"
                            value="<%=renderRequest.getAttribute("reefUrl")%>"/>
+    <br/>
+    Limit stats to Country: <input name="<portlet:namespace />country" type="text"
+                           value="<%=renderRequest.getAttribute("country")%>"/>
     <br/>
     <input type="button" value="Save" onClick="submitForm(document.<portlet:namespace />fm);"/>
 </form>

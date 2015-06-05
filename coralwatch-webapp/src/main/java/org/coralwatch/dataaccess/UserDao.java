@@ -22,8 +22,9 @@ public interface UserDao extends Dao<UserImpl> {
     Long getNumberOfSurveys(UserImpl user);
 
     UserImpl getHighestContributor();
+    UserImpl getHighestContributor(String country);
     
-    int count();
+    int count(String country);
     
     Map<Long, Long> getSurveyEntriesCreatedAll();
 }

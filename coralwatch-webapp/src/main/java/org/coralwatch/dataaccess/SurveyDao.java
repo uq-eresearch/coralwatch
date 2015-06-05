@@ -20,7 +20,7 @@ public interface SurveyDao extends Dao<Survey> {
     public ScrollableResults getSurveysIterator(Reef reef);
     public ScrollableResults getSurveysForDojo(Reef reef, UserImpl surveyCreator);
 
-    int count();
+    int count(String country);
 
     List<Survey> missingElevation();
 

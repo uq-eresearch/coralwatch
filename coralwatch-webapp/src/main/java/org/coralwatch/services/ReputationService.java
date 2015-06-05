@@ -191,15 +191,15 @@ public class ReputationService {
         UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
         //Amount of data rating is calculated based on the number surveys contributed by this user compared to
         //The number of surveys contributed by the highest contributor in the system
-        UserImpl highestContributor = getHighestContributor();
+        UserImpl highestContributor = getHighestContributor(null);
         double highestNumberOfSurveys = userDao.getNumberOfSurveys(highestContributor).doubleValue();
         double userNumberOfSurveys = userDao.getNumberOfSurveys(ratee).doubleValue();
         score = ((userNumberOfSurveys / highestNumberOfSurveys) * Constants.STAR_RATING_MAX_VALUE);
         return score;
     }
 
-    public static UserImpl getHighestContributor() {
+    public static UserImpl getHighestContributor(String country) {
         UserDao userDao = CoralwatchApplication.getConfiguration().getUserDao();
-        return userDao.getHighestContributor();
+        return userDao.getHighestContributor(country);
     }
 }

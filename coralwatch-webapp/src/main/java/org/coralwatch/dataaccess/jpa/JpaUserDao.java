@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.persistence.NoResultException;
 
+import org.apache.commons.lang.StringUtils;
 import org.coralwatch.dataaccess.UserDao;
 import org.coralwatch.model.Survey;
 import org.coralwatch.model.UserImpl;
@@ -91,26 +92,50 @@ public class JpaUserDao extends JpaDao<UserImpl> implements UserDao, Serializabl
         }
     }
 
+    @Override
+    public UserImpl getHighestContributor(String country) {
+      if(StringUtils.isNotBlank(country)) {
+        try {
+          Number userId = (Number)entityManagerSource.getEntityManager().createNativeQuery(
+              "select survey.creator_id from survey inner join reef on survey.reef_id = reef.id" +
+              " where reef.country = ? group by survey.creator_id order by count(survey.id) desc"
+              ).setParameter(1, country).setMaxResults(1).getSingleResult();
+          return userId != null?getById(userId.longValue()):null;
+        } catch(Exception e) {
+          e.printStackTrace();
+          return null;
+        }
+      } else {
+        return getHighestContributor();
+      }
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public UserImpl getHighestContributor() {
-        List<Object> result = (List<Object>)entityManagerSource.getEntityManager().createNativeQuery(
-            "select appuser.id from appuser, survey where appuser.id = survey.creator_id " +
-            "group by appuser.id order by count(*) desc, appuser.id limit 1;").getResultList();
-        if(result.isEmpty()) {
-            return null;
-        } else {
-            return getById(((Number)result.get(0)).longValue());
-        }
+      List<Object> result = (List<Object>)entityManagerSource.getEntityManager().createNativeQuery(
+          "select appuser.id from appuser, survey where appuser.id = survey.creator_id " +
+          "group by appuser.id order by count(*) desc, appuser.id limit 1;").getResultList();
+      if(result.isEmpty()) {
+        return null;
+      } else {
+        return getById(((Number)result.get(0)).longValue());
+      }
     }
 
     @Override
-    public int count() {
-        try {
-            return ((Long)entityManagerSource.getEntityManager().createQuery(
-                    "select count(*) from AppUser").getSingleResult()).intValue();
-        } catch(Exception e) {
-            return 0;
+    public int count(String country) {
+      try {
+        if(StringUtils.isBlank(country)) {
+          return ((Long)entityManagerSource.getEntityManager().createQuery(
+              "select count(id) from AppUser").getSingleResult()).intValue();
+        } else {
+          return ((Long)entityManagerSource.getEntityManager().createQuery(
+              "select count(id) from AppUser where country = ?").setParameter(
+                  1, country).getSingleResult()).intValue();
         }
+      } catch(Exception e) {
+        return 0;
+      }
     }
 }

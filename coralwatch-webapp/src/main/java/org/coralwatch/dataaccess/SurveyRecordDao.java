@@ -6,5 +6,5 @@ import org.coralwatch.model.SurveyRecord;
 public interface SurveyRecordDao extends Dao<SurveyRecord> {
     SurveyRecord getById(Long id);
     
-    int count();
+    int count(String country);
 }

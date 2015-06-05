@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.model.Reef;
 import org.coralwatch.model.Survey;
@@ -114,13 +115,20 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
     }
 
     @Override
-    public int count() {
-        try {
-            return ((Long)entityManagerSource.getEntityManager().createQuery(
-                    "select count(*) from Survey").getSingleResult()).intValue();
-        } catch(Exception e) {
-            return 0;
+    public int count(String country) {
+      try {
+        if(StringUtils.isBlank(country)) {
+          return ((Number)entityManagerSource.getEntityManager().createQuery(
+              "select count(id) from Survey").getSingleResult()).intValue();
+        } else {
+          return ((Number)entityManagerSource.getEntityManager().createNativeQuery(
+              "select count(survey.id) from Survey inner join reef on survey.reef_id = reef.id "
+              + "where reef.country = ?").setParameter(1, country).getSingleResult()).intValue();
         }
+      } catch(Exception e) {
+        e.printStackTrace();
+        return 0;
+      }
     }
 
     @SuppressWarnings("unchecked")

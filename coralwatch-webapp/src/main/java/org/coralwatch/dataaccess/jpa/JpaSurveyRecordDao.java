@@ -2,6 +2,8 @@ package org.coralwatch.dataaccess.jpa;
 
 import au.edu.uq.itee.maenad.dataaccess.jpa.EntityManagerSource;
 import au.edu.uq.itee.maenad.dataaccess.jpa.JpaDao;
+
+import org.apache.commons.lang.StringUtils;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 import org.coralwatch.model.SurveyRecord;
 
@@ -24,12 +26,20 @@ public class JpaSurveyRecordDao extends JpaDao<SurveyRecord> implements SurveyRe
     }
 
     @Override
-    public int count() {
-        try {
-            return ((Long)entityManagerSource.getEntityManager().createQuery(
-                    "select count(*) from SurveyRecord").getSingleResult()).intValue();
-        } catch(Exception e) {
-            return 0;
+    public int count(String country) {
+      try {
+        if(StringUtils.isBlank(country)) {
+          return ((Number)entityManagerSource.getEntityManager().createQuery(
+              "select count(id) from SurveyRecord").getSingleResult()).intValue();
+        } else {
+          return ((Number)entityManagerSource.getEntityManager().createNativeQuery(
+              "select count(surveyrecord.id) from surveyrecord inner join survey on" +
+              " survey.id = surveyrecord.survey_id inner join reef on survey.reef_id = reef.id" +
+              " where reef.country = ?").setParameter(1, country).getSingleResult()).intValue();
         }
+      } catch(Exception e) {
+        e.printStackTrace();
+        return 0;
+      }
     }
 }

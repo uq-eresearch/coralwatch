@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang.StringUtils;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.ReefLocation;
 import org.coralwatch.model.Reef;
@@ -72,13 +73,19 @@ public class JpaReefDao extends JpaDao<Reef> implements ReefDao, Serializable {
     }
 
     @Override
-    public int count() {
-        try {
-            return ((Long)entityManagerSource.getEntityManager().createQuery(
-                    "select count(*) from Reef").getSingleResult()).intValue();
-        } catch(Exception e) {
-            return 0;
+    public int count(String country) {
+      try {
+        if(StringUtils.isBlank(country)) {
+          return ((Long)entityManagerSource.getEntityManager().createQuery(
+              "select count(id) from Reef").getSingleResult()).intValue();
+        } else {
+          return ((Long)entityManagerSource.getEntityManager().createQuery(
+              "select count(id) from Reef where country = ?").setParameter(
+                  1, country).getSingleResult()).intValue();
         }
+      } catch(Exception e) {
+        return 0;
+      }
     }
 
     @Override
