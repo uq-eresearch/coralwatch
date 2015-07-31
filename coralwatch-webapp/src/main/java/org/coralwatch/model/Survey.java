@@ -107,6 +107,8 @@ public class Survey implements Serializable {
     private double totalRatingValue;
     private long numberOfRatings;
 
+    private String br_mailed;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey", fetch = FetchType.LAZY)
     private List<SurveyRecord> dataset = new ArrayList<SurveyRecord>();
 
@@ -337,6 +339,14 @@ public class Survey implements Serializable {
 
     public void setElevationResolution(Double elevationResolution) {
       this.elevationResolution = elevationResolution;
+    }
+
+    public String getBr_mailed() {
+      return br_mailed;
+    }
+
+    public void setBr_mailed(String br_mailed) {
+      this.br_mailed = br_mailed;
     }
 
     @Override

@@ -19,6 +19,7 @@ import javax.mail.util.ByteArrayDataSource;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.coralwatch.app.CoralwatchApplication;
+import org.coralwatch.model.Survey;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -56,8 +57,8 @@ public class Emailer {
       return Emailer.class.getResourceAsStream("/org/coralwatch/newsurveyemail/"+name);
     }
 
-    private static String emailContent() throws IOException {
-      return IOUtils.toString(getResource("email.html"));
+    private static String emailContent(String name) throws IOException {
+      return IOUtils.toString(getResource(name));
     }
 
     private static DataSource getImage(String name, String mimetype) throws IOException {
@@ -81,7 +82,7 @@ public class Emailer {
         String surveyId) throws IOException, MessagingException {
       MimeMultipart content = new MimeMultipart("related");
       MimeBodyPart htmlPart = new MimeBodyPart();
-      String cnt = emailContent();
+      String cnt = emailContent("email.html");
       cnt = StringUtils.replace(cnt, "<surveyid>", surveyId);
       cnt = StringUtils.replace(cnt, "<baseurl>",
           CoralwatchApplication.getConfiguration().getBaseUrl());
@@ -92,6 +93,21 @@ public class Emailer {
       content.addBodyPart(inlineImage("twitter.jpeg", "image/jpeg", "tw"));
       MimeMessage message = newMsg(to,
           "CoralWatch <no-reply@coralwatch.org>", "Thanks for your data");
+      message.setContent(content);
+      send(message);
+    }
+
+    public static void sendBleachingRiskEmail(Survey s) throws IOException, MessagingException {
+      MimeMultipart content = new MimeMultipart("related");
+      MimeBodyPart htmlPart = new MimeBodyPart();
+      String cnt = emailContent("bleachingrisk.html");
+      htmlPart.setText(cnt, "UTF-8", "html");
+      content.addBodyPart(htmlPart);
+      content.addBodyPart(inlineImage("logo.png", "image/png", "logo"));
+      content.addBodyPart(inlineImage("facebook.jpeg", "image/jpeg", "fb"));
+      content.addBodyPart(inlineImage("twitter.jpeg", "image/jpeg", "tw"));
+      MimeMessage message = newMsg(s.getCreator().getEmail(),
+          "CoralWatch <no-reply@coralwatch.org>", "Bleaching risk");
       message.setContent(content);
       send(message);
     }

@@ -16,6 +16,7 @@ import javax.persistence.Persistence;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.coralwatch.bleachingrisk.BleachingRiskMailer;
 import org.coralwatch.dataaccess.KitRequestDao;
 import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
@@ -109,6 +110,13 @@ public class ApplicationContext implements Configuration, ServletContextListener
         } else {
           System.out.println("elevation update service is disabled");
         }
+
+        if(Boolean.valueOf(getProperty(properties, "bleaching_risk_mailer", "false"))) {
+          BleachingRiskMailer.start(surveyDao, emtl);
+        } else {
+          System.out.println("bleaching risk mailer service is disabled");
+        }
+
     }
 
     private void load(Properties properties, InputStream in) throws InitializationException {
@@ -396,6 +404,7 @@ public class ApplicationContext implements Configuration, ServletContextListener
     public void contextDestroyed(ServletContextEvent sce) {
         try {
           Elevation.stop();
+          BleachingRiskMailer.stop();
             emf.close();
             connectorService.stop();
         } catch (Exception ex) {
