@@ -13,7 +13,11 @@
     String baseUrl = CoralwatchApplication.getConfiguration().getBaseUrl();
 %>
 <div>
-    <h3 style="margin-top:0;">Coralwatch up-to-date</h3>
+    <h3 style="text-align: left;">
+      <span style="font-size: large;">
+        <span style="color: rgb(0, 128, 128);">&nbsp;Coralwatch up-to-date</span>
+      </span>
+    </h3>
     <ul>
         <li>
             <a href="<%=baseUrl+"/"+renderRequest.getAttribute("userUrl")%>?p_p_id=reefportlet_WAR_coralwatch"><%=users%>
