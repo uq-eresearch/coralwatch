@@ -101,6 +101,9 @@ public class Emailer {
       MimeMultipart content = new MimeMultipart("related");
       MimeBodyPart htmlPart = new MimeBodyPart();
       String cnt = emailContent("bleachingrisk.html");
+      cnt = StringUtils.replace(cnt, "<surveyid>", Long.toString(s.getId()));
+      cnt = StringUtils.replace(cnt, "<baseurl>",
+          CoralwatchApplication.getConfiguration().getBaseUrl());
       htmlPart.setText(cnt, "UTF-8", "html");
       content.addBodyPart(htmlPart);
       content.addBodyPart(inlineImage("logo.png", "image/png", "logo"));
