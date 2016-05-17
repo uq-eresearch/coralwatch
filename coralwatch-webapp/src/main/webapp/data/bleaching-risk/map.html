@@ -1,6 +1,6 @@
 <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 
-<script src="/coralwatch/js/markerclusterer_compiled.js"></script>
+<script src="/coralwatch/js/markerclusterer/markerclusterer.js"></script>
 <script>
 
 var markerById = {};
@@ -28,7 +28,11 @@ function initMarkers(all) {
       if(markerCluster) {
         markerCluster.clearMarkers();
       } else {
-        markerCluster = new MarkerClusterer(map, [], {zoomOnClick: false});
+        markerCluster = new MarkerClusterer(map, [], {
+          zoomOnClick: false,
+          imagePath: '/coralwatch/js/markerclusterer/images/m'
+          }
+        );
       }
       for (var i = 0; i < surveys.length; i++) {
         var survey = {

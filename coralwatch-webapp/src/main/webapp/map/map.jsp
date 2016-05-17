@@ -6,7 +6,7 @@
 
 <portlet:defineObjects/>
 <jsp:include page="map-head.jsp"/>
-<script src="/coralwatch/js/markerclusterer_compiled.js"></script>
+<script src="/coralwatch/js/markerclusterer/markerclusterer.js"></script>
 <script>
 markerById = {};
 function triggerMarkerClick(markerId) {
@@ -61,7 +61,8 @@ function initialize() {
                 markers.push(marker);
             }
             markerCluster = new MarkerClusterer(map, markers, {
-              zoomOnClick: false
+              zoomOnClick: false,
+              imagePath: '/coralwatch/js/markerclusterer/images/m'
             });
             google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
               var surveyUrlPrefix =
