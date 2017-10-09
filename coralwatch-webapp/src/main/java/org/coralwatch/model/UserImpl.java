@@ -106,7 +106,7 @@ public class UserImpl implements au.edu.uq.itee.maenad.restlet.auth.User, Serial
             gravatarUrl = null;
         } else {
             String emailHash = HashGenerator.createMD5Hash(getEmail());
-            gravatarUrl = "http://www.gravatar.com/avatar/" + emailHash + "?s=80&d=" + GRAVATAR_FALLBACK;
+            gravatarUrl = "https://www.gravatar.com/avatar/" + emailHash + "?s=80&d=" + GRAVATAR_FALLBACK;
         }
     }
 
