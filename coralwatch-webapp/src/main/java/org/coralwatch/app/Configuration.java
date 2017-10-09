@@ -9,8 +9,6 @@ import java.util.Properties;
 
 public interface Configuration {
 
-    int getHttpPort();
-
     ConnectorService getConnectorService();
 
     UserDao getUserDao();

@@ -50,7 +50,6 @@ import au.edu.uq.itee.maenad.util.BCrypt;
 
 public class ApplicationContext implements Configuration, ServletContextListener {
     private final EntityManagerFactory emf;
-    private final int httpPort;
     private final String baseUrl;
     private final JpaConnectorService connectorService;
     private final UserDao userDao;
@@ -100,7 +99,6 @@ public class ApplicationContext implements Configuration, ServletContextListener
         String submissionEmailServer = getProperty(properties, "emailServer");
         this.submissionEmailConfig.setProperty("mail.smtp.host", submissionEmailServer);
 
-        this.httpPort = Integer.valueOf(getProperty(properties, "httpPort", "8181"));
         this.baseUrl = getProperty(properties, "baseUrl", null);
         this.isTestSetup = Boolean.valueOf(getProperty(properties, "testMode", "false"));
         this.isRatingSetup = Boolean.valueOf(getProperty(properties, "ratingOn", "false"));
@@ -294,11 +292,6 @@ public class ApplicationContext implements Configuration, ServletContextListener
             SurveyRecord record = new SurveyRecord(survey, coralType[rand.nextInt(4)], letters[rand.nextInt(4)], rand.nextInt(6) + 1, letters[rand.nextInt(4)], rand.nextInt(6) + 1);
             surveyRecordDao.save(record);
         }
-    }
-
-    @Override
-    public int getHttpPort() {
-        return httpPort;
     }
 
     @Override
