@@ -1,1 +1,1 @@
-<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpTwPxie1D7vNa_1rqVKwI8qEV3rofLeg"></script>
