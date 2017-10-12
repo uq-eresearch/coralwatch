@@ -4,3 +4,7 @@ services:
   - docker
 before_install:
   - cd coralwatch-webapp
+after_success:
+  - ./build_docker.sh
+  - sudo docker save coralwatch > coralwatch.docker
+  - xz coralwatch.docker
