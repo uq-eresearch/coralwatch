@@ -1,12 +1,15 @@
 #!/bin/bash
 set -e
 
-mvn clean package
-mkdir target/docker
-wget -P target/docker https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/liferay.tar.gz
-wget -P target/docker https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/setenv.sh
-cp Dockerfile target/docker
-cp target/coralwatch.war target/docker
-( cd target/docker && docker build -t coralwatch . )
-
-
+CORALWATCH_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DOCKER_DIR=${1:-$CORALWATCH_DIR/target/docker}
+rm -rf $DOCKER_DIR
+mkdir -p $DOCKER_DIR
+if [ ! -f $CORALWATCH_DIR/target/coralwatch.war ]; then
+  mvn -f $CORALWATCH_DIR/pom.xml clean package
+fi
+wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/liferay.tar.gz
+wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/setenv.sh
+cp $CORALWATCH_DIR/Dockerfile $DOCKER_DIR
+cp $CORALWATCH_DIR/target/coralwatch.war $DOCKER_DIR
+( cd $DOCKER_DIR && docker build -t coralwatch . )
