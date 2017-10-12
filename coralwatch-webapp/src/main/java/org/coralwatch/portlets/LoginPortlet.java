@@ -86,7 +86,7 @@ public class LoginPortlet extends GenericPortlet {
                         actionResponse.setRenderParameter("successMsg", "We have emailed you a password reset link. Check your email in few minutes.");
                         actionResponse.setRenderParameter(Constants.CMD, Constants.PRINT);
                     } catch (MessagingException e) {
-                        _log.fatal("Cannot send email for Password Reset request.");
+                        _log.fatal("Cannot send email for Password Reset request.", e);
                     }
                 }
             }

@@ -96,10 +96,10 @@ public class ApplicationContext implements Configuration, ServletContextListener
         }
 
         this.submissionEmailConfig = new Properties();
-        String submissionEmailServer = getProperty(properties, "emailServer");
+        String submissionEmailServer = System.getProperty("coralwatch.smtp.host");
         this.submissionEmailConfig.setProperty("mail.smtp.host", submissionEmailServer);
 
-        this.baseUrl = getProperty(properties, "baseUrl", null);
+        this.baseUrl = System.getProperty("coralwatch.baseurl");
         this.isTestSetup = Boolean.valueOf(getProperty(properties, "testMode", "false"));
         this.isRatingSetup = Boolean.valueOf(getProperty(properties, "ratingOn", "false"));
         
