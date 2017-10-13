@@ -1370,6 +1370,14 @@ function positionMarker() {
                 position:center,
                 map: map
             });
+            dojo.addOnLoad(function() {
+              var tabs = dijit.byId('surveyDetailsContainer');
+              dojo.connect(tabs, '_transition', function(np, op) {
+                if(np.id === 'mapTab') {
+                  google.maps.event.trigger(map, 'resize');
+                }
+              });
+            });
         </script>
     </div>
     <%
