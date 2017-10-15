@@ -8,6 +8,7 @@ after_success:
   - ./build_docker.sh
   - sudo docker save coralwatch > coralwatch.docker
 before_deploy:
+  - xz --verbose coralwatch.docker
   - curl -sOL https://github.com/uq-eresearch/backup2swift/releases/download/0.1.1/backup2swift
   - chmod +x backup2swift
   - openssl aes-256-cbc -K $encrypted_d2b4cbe3dd39_key -iv $encrypted_d2b4cbe3dd39_iv -in ../container-upload.json.enc -out container-upload.json -d
