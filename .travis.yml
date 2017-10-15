@@ -17,4 +17,4 @@ deploy:
   script: ../deploy_to_container.sh
   skip_cleanup: true
   on:
-    branch: travis-ci
+    branch: master
