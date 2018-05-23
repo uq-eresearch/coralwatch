@@ -23,8 +23,8 @@ RUN chown -R liferay:liferay /opt/liferay
 
 USER liferay
 
-CMD ["/bin/bash", "/opt/liferay/tomcat-6.0.18/bin/coralwatch.sh"]
 
-WORKDIR /opt/liferay/tomcat-6.0.18/bin
 
-EXPOSE 8080
+WORKDIR /opt/liferay/tomcat-6.0.18/webapps
+
+
