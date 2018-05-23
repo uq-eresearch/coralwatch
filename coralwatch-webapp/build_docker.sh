@@ -16,8 +16,8 @@ wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5
 wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/jdk1.6.0_29.tar.gz
 wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/coralwatch.sh
 
-cp $CORALWATCH_WEBAPP/Dockerfile $DOCKER_DIR
-cp $CORALWATCH_WEBAPP/target/coralwatch.war $DOCKER_DIR
+echo cp $CORALWATCH_WEBAPP/Dockerfile $DOCKER_DIR
+echo cp $CORALWATCH_WEBAPP/target/coralwatch.war $DOCKER_DIR
 cp -R $CORALWATCH_DIR/coralwatch-theme $DOCKER_DIR/coralwatch-theme
 
 ls -la $DOCKER_DIR/coralwatch-theme
