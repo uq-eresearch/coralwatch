@@ -9,7 +9,6 @@ ENV JAVA_HOME=/opt/jdk1.6.0_29
 
 ADD liferay.tar.gz /opt
 
-RUN mkdir -p /opt/liferay/tomcat-6.0.18/webapps/temp-theme
 COPY coralwatch-theme/ /opt/liferay/tomcat-6.0.18/webapps/temp-theme/
 
 
