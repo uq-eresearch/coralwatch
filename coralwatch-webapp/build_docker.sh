@@ -18,11 +18,4 @@ wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5
 cp $CORALWATCH_DIR/Dockerfile $DOCKER_DIR
 cp $CORALWATCH_DIR/target/coralwatch.war $DOCKER_DIR
 
-cd $CORALWATCH_DIR
-cd ..
-ls -la
-
-ls -la $DOCKER_DIR
-ls -la $DOCKER_DIR/coralwatch-theme
-ls -la $DOCKER_DIR/coralwatch-theme/
-ls -la $DOCKER_DIR/coralwatch-theme/templates
+( cd $DOCKER_DIR && docker build -t coralwatch . )
