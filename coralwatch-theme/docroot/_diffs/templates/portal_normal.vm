@@ -3,7 +3,7 @@
 
     #parse ($init)
 
-<html dir="#language ("lang.dir")" xmlns="http://www.w3.org/1999/xhtml">
+<html dir="#language ('lang.dir')" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>$the_title - $company_name</title>
@@ -31,13 +31,14 @@
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.4.0/dojox/grid/resources/Grid.css">
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.4.0/dojox/grid/resources/tundraGrid.css">
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.4.0/dojox/form/resources/Rating.css">
+
     <style type="text/css">
         .dojoxGrid table {
             margin: 0;
         }
     </style>
-    <script type="text/javascript">
 
+    <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-16789464-1']);
         _gaq.push(['_trackPageview']);
@@ -50,58 +51,97 @@
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-
     </script>
+
+#if ($datamodule)
+    <script type="text/javascript">
+        document.cookie = "datamodule=true";
+
+        function iframeResize() {
+            if (window.parent !== null) {
+                var height = document.body.scrollHeight;
+                window.parent.postMessage(height, "*");
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        html, body { overflow: hidden !important; }
+        body { background: none !important; }
+        #banner { display: none !important; }
+        #navigation { display: none !important; }
+        #content-wrapper { width: 100%; }
+        #content-wrapper table tbody tr #column-1 { width: 20% !important; }
+        #content-wrapper table tbody tr #column-1 form table tbody tr td { width: initial; }
+        #footer { display: none !important; }
+        iframe { display: none !important; }
+    </style>
+#end
+
 </head>
+
+#if ($datamodule)
+<body class="$css_class tundra" onload="iframeResize()">
+
+    <div id="wrapper">
+        $theme.include($content_include)
+    </div>
+
+</body>
+#else
 
 <body class="$css_class tundra">
 
     $theme.include($top_messages_include)
 
-<div id="wrapper">
-    <div id="banner">
-        <h1 class="logo">
-            <a class="png" href="$company_url">$company_name</a>
+    <div id="wrapper">
+        <div id="banner">
+            <h1 class="logo">
+                <a class="png" href="$company_url">$company_name</a>
 
-			<span class="current-community">
-                $community_name
-            </span>
-        </h1>
-        <!--[if IE 6]>
-        <div style="border: 3px solid #ff0000; background-color: #ffff99;">
-            Unfortunately we are not able to provide the full experience of this site in your browser. Upgrade to a
-            newer version. <a href="http://www.bringdownie6.com/">More...</a>
-        </div>
-        <![endif]-->
-        #parse ("$full_templates_path/dock.vm")
-
-        #if ($update_available_url)
-            <div class="popup-alert-notice">
-                <a class="update-available"
-                   href="$update_available_url">#language ("updates-are-available-for-liferay")</a>
+                <span class="current-community">
+                    $community_name
+                </span>
+            </h1>
+            <!--[if IE 6]>
+            <div style="border: 3px solid #ff0000; background-color: #ffff99;">
+                Unfortunately we are not able to provide the full experience of this site in your browser. Upgrade to a
+                newer version. <a href="http://www.bringdownie6.com/">More...</a>
             </div>
+            <![endif]-->
+            #parse ("$full_templates_path/dock.vm")
+
+            #if ($update_available_url)
+                <div class="popup-alert-notice">
+                    <a class="update-available"
+                       href="$update_available_url">#language ("updates-are-available-for-liferay")</a>
+                </div>
+            #end
+        </div>
+
+        #if ($has_navigation)
+            #parse ("$full_templates_path/navigation.vm")
         #end
+
+        #if ($selectable)
+            $theme.include($content_include)
+        #else
+            $portletDisplay.recycle()
+
+            $portletDisplay.setTitle($the_title)
+
+            $theme.wrapPortlet("portlet.vm", $content_include)
+        #end
+
+        <div id="footer"></div>
     </div>
 
-    #if ($has_navigation)
-        #parse ("$full_templates_path/navigation.vm")
-    #end
-
-    #if ($selectable)
-        $theme.include($content_include)
-    #else
-        $portletDisplay.recycle()
-
-        $portletDisplay.setTitle($the_title)
-
-        $theme.wrapPortlet("portlet.vm", $content_include)
-    #end
-
-    <div id="footer"></div>
-</div>
-
 </body>
+#end
 
+#if ($datamodule)
+#else
     $theme.include($bottom_include)
+#end
 
 </html>
