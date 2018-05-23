@@ -9,6 +9,8 @@ ENV JAVA_HOME=/opt/jdk1.6.0_29
 
 ADD liferay.tar.gz /opt
 
+ADD coralwatch.war /opt/liferay
+
 ADD coralwatch.sh /opt/liferay/tomcat-6.0.18/bin
 
 ADD setenv.sh /opt/liferay/tomcat-6.0.18/bin/setenv.sh
@@ -19,8 +21,8 @@ RUN chown -R liferay:liferay /opt/liferay
 
 USER liferay
 
+CMD ["/bin/bash", "/opt/liferay/tomcat-6.0.18/bin/coralwatch.sh"]
 
+WORKDIR /opt/liferay/tomcat-6.0.18/bin
 
-WORKDIR /opt/liferay/tomcat-6.0.18/webapps
-
-
+EXPOSE 8080
