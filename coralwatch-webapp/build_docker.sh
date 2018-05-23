@@ -8,7 +8,7 @@ CORALWATCH_DIR="$( dirname "$CORALWATCH_WEBAPP" )"
 rm -rf $DOCKER_DIR
 mkdir -p $DOCKER_DIR
 if [ ! -f $CORALWATCH_WEBAPP/target/coralwatch.war ]; then
-  mvn -f $CORALWATCH_WEBAPP/pom.xml clean package
+  echo mvn -f $CORALWATCH_WEBAPP/pom.xml clean package
 fi
 
 wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/liferay.tar.gz
