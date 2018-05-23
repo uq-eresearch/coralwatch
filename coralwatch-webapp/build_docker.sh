@@ -3,6 +3,7 @@ set -e
 
 CORALWATCH_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DOCKER_DIR=${1:-$CORALWATCH_DIR/target/docker}
+CORALWATCH_THEME="$( dirname "$CORALWATCH_DIR" )"
 
 rm -rf $DOCKER_DIR
 mkdir -p $DOCKER_DIR
@@ -17,5 +18,6 @@ wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5
 
 cp $CORALWATCH_DIR/Dockerfile $DOCKER_DIR
 cp $CORALWATCH_DIR/target/coralwatch.war $DOCKER_DIR
+cp -R $CORALWATCH_THEME $DOCKER_DIR/coralwatch-theme
 
-( cd $DOCKER_DIR && docker build -t coralwatch . )
+ls -la $DOCKER_DIR/coralwatch-theme
