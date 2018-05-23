@@ -20,6 +20,4 @@ cp $CORALWATCH_WEBAPP/Dockerfile $DOCKER_DIR
 echo cp $CORALWATCH_WEBAPP/target/coralwatch.war $DOCKER_DIR
 cp -R $CORALWATCH_DIR/coralwatch-theme/docroot/_diffs $DOCKER_DIR/coralwatch-theme
 
-ls -la $DOCKER_DIR/coralwatch-theme
-
-echo ( cd $DOCKER_DIR && docker build -t coralwatch . )
+( cd $DOCKER_DIR && docker build -t coralwatch . )
