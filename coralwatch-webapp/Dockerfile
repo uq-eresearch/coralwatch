@@ -12,7 +12,7 @@ ADD liferay.tar.gz /opt
 RUN mkdir -p /opt/liferay/tomcat-6.0.18/webapps/temp-theme
 COPY coralwatch-theme/ /opt/liferay/tomcat-6.0.18/webapps/temp-theme/
 
-ADD coralwatch.war /opt/liferay
+
 
 ADD coralwatch.sh /opt/liferay/tomcat-6.0.18/bin
 
