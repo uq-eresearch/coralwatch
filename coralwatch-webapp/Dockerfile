@@ -9,6 +9,7 @@ ENV JAVA_HOME=/opt/jdk1.6.0_29
 
 ADD liferay.tar.gz /opt
 ADD coralwatch-theme_diffs.tar.gz /opt/liferay/tomcat-6.0.18/webapps
+RUN ls -la /opt/liferay/tomcat-6.0.18/webapps
 
 ADD coralwatch.war /opt/liferay
 
