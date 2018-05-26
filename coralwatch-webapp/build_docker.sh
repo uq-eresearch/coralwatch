@@ -22,4 +22,8 @@ curl https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f
 cp -R $CORALWATCH_DIR/coralwatch-theme/docroot/_diffs/* $DOCKER_DIR/liferay/tomcat-6.0.18/webapps/coralwatch-theme
 tar -zcvf $DOCKER_DIR/liferay.tar.gz $DOCKER_DIR/liferay
 
-( cd $DOCKER_DIR && docker build -t coralwatch . )
+ls -la $DOCKER_DIR
+ls -la $DOCKER_DIR/liferay
+ls -la $DOCKER_DIR/liferay//tomcat-6.0.18
+
+echo ( cd $DOCKER_DIR && docker build -t coralwatch . )
