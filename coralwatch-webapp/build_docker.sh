@@ -24,4 +24,4 @@ sudo ls -la /download
 cp $CORALWATCH_WEBAPP/Dockerfile $DOCKER_DIR
 cp $CORALWATCH_WEBAPP/target/coralwatch.war $DOCKER_DIR
 
-( cd $DOCKER_DIR && docker build -t coralwatch . )
+echo ( cd $DOCKER_DIR && docker build -t coralwatch . )
