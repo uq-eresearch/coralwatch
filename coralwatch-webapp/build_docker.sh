@@ -18,9 +18,9 @@ wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5
 cp $CORALWATCH_WEBAPP/Dockerfile $DOCKER_DIR
 cp $CORALWATCH_WEBAPP/target/coralwatch.war $DOCKER_DIR
 
-curl https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/liferay.tar.gz | tar xz --directory=$DOCKER_DIR
-cp -R $CORALWATCH_DIR/coralwatch-theme/docroot/_diffs/* $DOCKER_DIR/liferay/tomcat-6.0.18/webapps/coralwatch-theme
-tar -zcvf $DOCKER_DIR/liferay.tar.gz $DOCKER_DIR/liferay
+curl https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/liferay.tar.gz | sudo tar xz --directory=$DOCKER_DIR
+sudo cp -R $CORALWATCH_DIR/coralwatch-theme/docroot/_diffs/* $DOCKER_DIR/liferay/tomcat-6.0.18/webapps/coralwatch-theme
+sudo tar -zcvf $DOCKER_DIR/liferay.tar.gz $DOCKER_DIR/liferay
 
 ls -la $DOCKER_DIR
 ls -la $DOCKER_DIR/liferay
