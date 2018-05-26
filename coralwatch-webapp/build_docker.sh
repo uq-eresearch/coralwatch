@@ -16,7 +16,7 @@ wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5
 wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/coralwatch.sh
 
 wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/liferay.tar.gz
-sudo cp /download/coralwatch-theme_diffs.tar.gz $DOCKER_DIR
+tar -cvf - $CORALWATCH_DIR/coralwatch-theme/docroot/_diffs/* > $DOCKER_DIR/coralwatch-theme_diffs.tar
 
 cp $CORALWATCH_WEBAPP/Dockerfile $DOCKER_DIR
 echo cp $CORALWATCH_WEBAPP/target/coralwatch.war $DOCKER_DIR
