@@ -7,7 +7,7 @@ ADD jdk1.6.0_29.tar.gz /opt
 
 ENV JAVA_HOME=/opt/jdk1.6.0_29
 
-ADD liferay.tar.gz /optt
+ADD liferay /opt
 
 ADD coralwatch.war /opt/liferay
 
