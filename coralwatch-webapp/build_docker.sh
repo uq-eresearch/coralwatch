@@ -11,7 +11,7 @@ if [ ! -f $CORALWATCH_WEBAPP/target/coralwatch.war ]; then
   mvn -f $CORALWATCH_WEBAPP/pom.xml clean package
 fi
 
-sudo curl https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/liferay.tar.gz | sudo tar xz --directory=$DOCKER_DIR
+curl https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/liferay.tar.gz | tar xz --directory=$DOCKER_DIR
 wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/setenv.sh
 wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/jdk1.6.0_29.tar.gz
 wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/coralwatch.sh
