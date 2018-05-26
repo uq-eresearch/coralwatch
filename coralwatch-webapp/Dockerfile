@@ -21,7 +21,7 @@ RUN mkdir -p /opt/liferay/tomcat-6.0.18/temp
 
 RUN chown -R liferay:liferay /opt/liferay
 
-RUN cp -R /opt/coralwatch-theme_diffs/* /opt/liferay/tomcat-6.0.18/webapps/coralwatch-theme/
+RUN cp -R /opt/_diffs/* /opt/liferay/tomcat-6.0.18/webapps/coralwatch-theme/
 
 USER liferay
 
