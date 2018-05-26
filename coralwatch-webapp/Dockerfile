@@ -11,6 +11,8 @@ ADD liferay.tar.gz /opt
 
 ADD coralwatch-theme_diffs.tar /opt
 
+RUN cp -R /opt/_diffs/* /opt/liferay/tomcat-6.0.18/webapps/coralwatch-theme/
+
 ADD coralwatch.war /opt/liferay
 
 ADD coralwatch.sh /opt/liferay/tomcat-6.0.18/bin
@@ -20,8 +22,6 @@ ADD setenv.sh /opt/liferay/tomcat-6.0.18/bin/setenv.sh
 RUN mkdir -p /opt/liferay/tomcat-6.0.18/temp
 
 RUN chown -R liferay:liferay /opt/liferay
-
-RUN cp -R /opt/_diffs/* /opt/liferay/tomcat-6.0.18/webapps/coralwatch-theme/
 
 USER liferay
 
