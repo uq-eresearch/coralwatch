@@ -10,6 +10,7 @@ ENV JAVA_HOME=/opt/jdk1.6.0_29
 COPY liferay /opt
 
 ADD coralwatch.war /opt/liferay
+RUN ls -la /opt/liferay
 
 ADD coralwatch.sh /opt/liferay/tomcat-6.0.18/bin
 
