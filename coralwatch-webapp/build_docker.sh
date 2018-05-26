@@ -4,6 +4,7 @@ set -e
 CORALWATCH_WEBAPP="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DOCKER_DIR=${1:-$CORALWATCH_WEBAPP/target/docker}
 CORALWATCH_DIR="$( dirname "$CORALWATCH_WEBAPP" )"
+CURRENT_DIR=$(pwd)
 
 rm -rf $DOCKER_DIR
 mkdir -p $DOCKER_DIR
@@ -16,9 +17,8 @@ wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5
 wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/coralwatch.sh
 
 wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/liferay.tar.gz
-echo $CORALWATCH_WEBAPP
 cd $CORALWATCH_DIR/coralwatch-theme/docroot
-tar -cvf - _diffs/* > $DOCKER_DIR/coralwatch-theme_diffs.tar
+tar -cvf - _diffs/* > $CURRENT_DIR/$DOCKER_DIR/coralwatch-theme_diffs.tar
 
 cp $CORALWATCH_WEBAPP/Dockerfile $DOCKER_DIR
 echo cp $CORALWATCH_WEBAPP/target/coralwatch.war $DOCKER_DIR
