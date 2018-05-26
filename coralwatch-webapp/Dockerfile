@@ -11,8 +11,6 @@ ADD liferay.tar.gz /opt
 
 ADD coralwatch.war /opt/liferay
 
-RUN ls -la /opt/liferay
-
 ADD coralwatch.sh /opt/liferay/tomcat-6.0.18/bin
 
 ADD setenv.sh /opt/liferay/tomcat-6.0.18/bin/setenv.sh
