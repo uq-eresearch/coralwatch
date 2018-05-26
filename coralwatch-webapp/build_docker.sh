@@ -19,6 +19,6 @@ wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5
 sudo cp /download/coralwatch-theme_diffs.tar.gz $DOCKER_DIR
 
 cp $CORALWATCH_WEBAPP/Dockerfile $DOCKER_DIR
-cp $CORALWATCH_WEBAPP/target/coralwatch.war $DOCKER_DIR
+echo cp $CORALWATCH_WEBAPP/target/coralwatch.war $DOCKER_DIR
 
 echo ( cd $DOCKER_DIR && docker build -t coralwatch . )
