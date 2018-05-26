@@ -1,6 +1,7 @@
 FROM ubuntu:xenial
 
-RUN addgroup --system --gid 500 liferay && \adduser --system --uid 500 --gid 500 liferay
+RUN addgroup --system --gid 500 liferay && \
+	adduser --system --uid 500 --gid 500 liferay
 
 ADD jdk1.6.0_29.tar.gz /opt
 
