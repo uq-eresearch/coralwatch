@@ -9,7 +9,7 @@ CURRENT_DIR=$(pwd)
 rm -rf $DOCKER_DIR
 mkdir -p $DOCKER_DIR
 if [ ! -f $CORALWATCH_WEBAPP/target/coralwatch.war ]; then
-  echo mvn -f $CORALWATCH_WEBAPP/pom.xml clean package
+  mvn -f $CORALWATCH_WEBAPP/pom.xml clean package
 fi
 
 wget -P $DOCKER_DIR https://swift.rc.nectar.org.au:8888/v1/AUTH_96387d3104434db5bdd0a74e17e503f5/docker/setenv.sh
@@ -22,6 +22,6 @@ tar -cvf - _diffs/* > $CURRENT_DIR/$DOCKER_DIR/coralwatch-theme_diffs.tar
 cd $CURRENT_DIR
 
 cp $CORALWATCH_WEBAPP/Dockerfile $DOCKER_DIR
-echo cp $CORALWATCH_WEBAPP/target/coralwatch.war $DOCKER_DIR
+cp $CORALWATCH_WEBAPP/target/coralwatch.war $DOCKER_DIR
 
 ( cd $DOCKER_DIR && docker build -t coralwatch . )
