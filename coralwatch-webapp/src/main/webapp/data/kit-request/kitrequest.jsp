@@ -141,7 +141,7 @@
 	                </select>
                 </td>
                 <td rowspan="5">
-                    <a onclick="getCookie('datamodule') ? postToParent({action: 'routeTo', data: 'monitoring/'}) : window.location.href = window.location.origin + '/web/guest/monitoring-products'">
+                    <a href="#" onclick="getCookie('datamodule') ? postToParent({action: 'routeTo', data: 'monitoring/'}) : window.location.href = window.location.origin + '/web/guest/monitoring-products'">
                     <img alt="Chart request" src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/image/chart_request.jpeg")%>"/>
                     </a>
                 </td>
@@ -327,7 +327,7 @@
             </tr>
             <tr>
                 <th></th>
-                <td><span style="color:#FF0000">*</span> You can download the Do It Yourself Kit from <a onclick="getCookie('datamodule') ? postToParent({action: 'routeTo', data: 'monitoring/'}) : window.location.href = window.location.origin + '/web/guest/monitoring-products'">here</a> and request the chart only
+                <td><span style="color:#FF0000">*</span> You can download the Do It Yourself Kit from <a href="#" onclick="getCookie('datamodule') ? postToParent({action: 'routeTo', data: 'monitoring/'}) : window.location.href = window.location.origin + '/web/guest/monitoring-products'">here</a> and request the chart only
                     to be mailed to you. If you cannot print the material, you should email <a href="mailto:info@coralwatch.org">info@coralwatch.org</a> to request it to be mailed to you.
                     If you would like to order multiple charts or other Coralwatch materials, you can download an order form
                     <a href="<%=renderRequest.getAttribute("orderFormUrl")%>">here</a>.
