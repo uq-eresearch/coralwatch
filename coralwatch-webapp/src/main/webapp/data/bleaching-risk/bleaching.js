@@ -41,9 +41,7 @@ var brLayout = [[{
   name: 'View',
   width: 10,
   formatter: function(id) {
-    return '<a href="/web/guest/survey?p_p_id=surveyportlet_WAR_coralwatch&'+
-      '_surveyportlet_WAR_coralwatch_cmd=view&_surveyportlet_WAR_coralwatch_surveyId='+
-      id+'">More Info</a>';
+    return '<a href="/web/guest/survey?p_p_id=surveyportlet_WAR_coralwatch&' + '_surveyportlet_WAR_coralwatch_cmd=view&_surveyportlet_WAR_coralwatch_surveyId=' + id + '">More Info</a>';
   }
 },]];
 
@@ -106,8 +104,9 @@ dojo.addOnLoad(function() {
     } else {
       url = window.location.href;
     }
-    window.location.href = url + (val === 'all'?'?current=false':'?current=true');
+    window.location.href = url + (val === 'all' ? '?current=false' : '?current=true');
   });
+
   dojo.xhrGet({
     url: url,
     handleAs: 'json',
