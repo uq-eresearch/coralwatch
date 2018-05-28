@@ -19,19 +19,19 @@ dojo.require("dojo.data.ItemFileWriteStore");
 var brLayout = [[{
   field: 'country',
   name: 'Country',
-  width: 10
+  width: 15
 },{
   field: 'reef',
   name: 'Reef',
-  width: 10
+  width: 17
 },{
   field: 'surveyor',
   name: 'Surveyor',
-  width: 10
+  width: 13
 },{
   field: 'date',
   name: 'Date',
-  width: 10
+  width: 8
 },{
   field: 'records',
   name: 'Records',
@@ -39,11 +39,9 @@ var brLayout = [[{
 },{
   field: 'view',
   name: 'View',
-  width: 10,
+  width: 5,
   formatter: function(id) {
-    return '<a href="/web/guest/survey?p_p_id=surveyportlet_WAR_coralwatch&'+
-      '_surveyportlet_WAR_coralwatch_cmd=view&_surveyportlet_WAR_coralwatch_surveyId='+
-      id+'">More Info</a>';
+    return '<a href="/web/guest/survey?p_p_id=surveyportlet_WAR_coralwatch&' + '_surveyportlet_WAR_coralwatch_cmd=view&_surveyportlet_WAR_coralwatch_surveyId=' + id + '">More Info</a>';
   }
 },]];
 
@@ -106,8 +104,9 @@ dojo.addOnLoad(function() {
     } else {
       url = window.location.href;
     }
-    window.location.href = url + (val === 'all'?'?current=false':'?current=true');
+    window.location.href = url + (val === 'all' ? '?current=false' : '?current=true');
   });
+
   dojo.xhrGet({
     url: url,
     handleAs: 'json',

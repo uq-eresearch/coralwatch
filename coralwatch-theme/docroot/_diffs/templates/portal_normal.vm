@@ -53,15 +53,32 @@
         })();
     </script>
 
+    <script type="text/javascript">
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+            }
+            return false; // cookie not found
+        }
+    </script>
+
 #if ($datamodule)
     <script type="text/javascript">
         document.cookie = "datamodule=true";
 
+        function postToParent(message) {
+            if (window.parent !== null) window.parent.postMessage(JSON.stringify(message), "*");
+        }
+
         function iframeResize() {
-            if (window.parent !== null) {
-                var height = document.body.scrollHeight;
-                window.parent.postMessage(height, "*");
-            }
+            postToParent({action: 'resizeHeight', data: document.body.scrollHeight});
         }
     </script>
 

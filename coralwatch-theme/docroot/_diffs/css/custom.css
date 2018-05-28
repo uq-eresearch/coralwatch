@@ -149,10 +149,7 @@ li ul {
     background: #EEEEEE none repeat scroll 0 0;
     border-top: 1px solid #BFBFBF;
     font-weight: bold;
-    margin: 0 0 0 20px;
-    padding: 20px;
-    padding-left: 40px;
-    text-align: start;
+    padding: 5px;
 }
 
 .coralwatch-input-stretched {
