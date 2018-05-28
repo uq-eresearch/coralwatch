@@ -12,6 +12,8 @@
           content="CoralWatch is an organisation built on a research project at the University of Queensland, Brisbane, Australia. We have developed a cheap, simple, non-invasive method for the monitoring of coral bleaching, and assessment of coral health. Our Coral Health Chart is basically a series of sample colours, with variation in brightness representing different stages of bleaching/recovery, based on controlled experiments."/>
     <meta name="keyword"
           content="coralwatch, coral, feef, monitoring, bleaching, The University of Queensland, Brisbane, Australia"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     $theme.include($top_head_include)
 
     <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/dojo/1.4.0/dijit/themes/tundra/tundra.css"/>
