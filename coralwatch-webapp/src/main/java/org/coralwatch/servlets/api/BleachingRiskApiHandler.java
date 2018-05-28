@@ -18,7 +18,7 @@ public class BleachingRiskApiHandler {
         StringUtils.equalsIgnoreCase(request.getParameter("all"), "all") ? sdao.bleachingRiskAll() :
        (StringUtils.equalsIgnoreCase(request.getParameter("past"), "48m") ? sdao.bleachingRiskPast48Months() :
        (StringUtils.equalsIgnoreCase(request.getParameter("past"), "12m") ? sdao.bleachingRiskPast12Months() :
-       {StringUtils.equalsIgnoreCase(request.getParameter("past"), "3m") ? sdao.bleachingRiskPast3Months() :
+       (StringUtils.equalsIgnoreCase(request.getParameter("past"), "3m") ? sdao.bleachingRiskPast3Months() :
         sdao.bleachingRiskCurrent() )))
     ));
   }
