@@ -26,6 +26,9 @@ public interface SurveyDao extends Dao<Survey> {
 
     Object bleachingRiskAll();
     Object bleachingRiskCurrent();
+    Object bleachingRiskPast48Months();
+    Object bleachingRiskPast12Months();
+    Object bleachingRiskPast3Months();
+    
     List<Survey> bleachingRiskMailer();
-
 }
