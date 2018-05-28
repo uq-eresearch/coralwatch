@@ -15,7 +15,12 @@ public class BleachingRiskApiHandler {
     response.setContentType("application/json; charset=UTF-8");
     SurveyDao sdao = CoralwatchApplication.getConfiguration().getSurveyDao();
     response.getWriter().write(new Gson().toJson(
-        StringUtils.equalsIgnoreCase(request.getParameter("all"), "all")?
-        sdao.bleachingRiskAll():sdao.bleachingRiskCurrent()));
+        StringUtils.equalsIgnoreCase(request.getParameter("all"), "all") ? sdao.bleachingRiskAll() :
+       (StringUtils.equalsIgnoreCase(request.getParameter("past"), "48m") ? sdao.bleachingRiskPast48Months() :
+       (StringUtils.equalsIgnoreCase(request.getParameter("past"), "12m") ? sdao.bleachingRiskPast12Months() :
+       {StringUtils.equalsIgnoreCase(request.getParameter("past"), "3m") ? sdao.bleachingRiskPast3Months() :
+        sdao.bleachingRiskCurrent() )))
+    ));
   }
 }
+        
