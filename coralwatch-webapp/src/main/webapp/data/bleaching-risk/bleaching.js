@@ -19,27 +19,27 @@ dojo.require("dojo.data.ItemFileWriteStore");
 var brLayout = [[{
   field: 'country',
   name: 'Country',
-  width: 15
+  width: '140px'
 },{
   field: 'reef',
   name: 'Reef',
-  width: 17
+  width: '180px'
 },{
   field: 'surveyor',
   name: 'Surveyor',
-  width: 13
+  width: '130px'
 },{
   field: 'date',
   name: 'Date',
-  width: 8
+  width: '75px'
 },{
   field: 'records',
   name: 'Records',
-  width: 5
+  width: '55px'
 },{
   field: 'view',
   name: 'View',
-  width: 5,
+  width: '55px',
   formatter: function(id) {
     return '<a href="/web/guest/survey?p_p_id=surveyportlet_WAR_coralwatch&' + '_surveyportlet_WAR_coralwatch_cmd=view&_surveyportlet_WAR_coralwatch_surveyId=' + id + '">More Info</a>';
   }
