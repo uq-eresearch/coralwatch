@@ -90,25 +90,31 @@ dojo.addOnLoad(function() {
   brStore.comparatorMap.surveyor = cmpIgnoreCase;
   brStore.comparatorMap.date = cmpDate;
   var url = '/coralwatch/api/bleaching-risk';
-  if(jQuery.QueryString.current === 'false') {
-    url = url + '?all=all';
-    jQuery("#rdSince").attr('checked', 'checked');
+  var param;
+
+  if (jQuery.QueryString.all === 'all') {
+    param = 'all=all';
+    jQuery("#rdAll").attr('checked', 'checked');
+
+  } else if (jQuery.QueryString.past === '48m') {
+    param = 'past=48m';
+    jQuery("#rdPast48m").attr('checked', 'checked');
+
+  } else if (jQuery.QueryString.past === '12m') {
+    param = 'past=12m';
+    jQuery("#rdPast12m").attr('checked', 'checked');
+
+  } else if (jQuery.QueryString.past === '3m') {
+    param = 'past=3m';
+    jQuery("#rdPast3m").attr('checked', 'checked');
+
   } else {
-    jQuery("#rdCurrent").attr('checked', 'checked');
+    param = 'past=3m';
+    jQuery("#rdPast3m").attr('checked', 'checked');
   }
-  jQuery("input[name='rd1']" ).change(function() {
-    var val = jQuery(this).val();
-    var url;
-    if(window.location.href.indexOf('?') >= 0) {
-      url = window.location.href.substring(0, window.location.href.indexOf('?'));
-    } else {
-      url = window.location.href;
-    }
-    window.location.href = url + (val === 'all' ? '?current=false' : '?current=true');
-  });
 
   dojo.xhrGet({
-    url: url,
+    url: url + '?' + param,
     handleAs: 'json',
     load: function(data) {
       data.forEach(function(survey) {
@@ -127,4 +133,20 @@ dojo.addOnLoad(function() {
       console.error('loading bleaching risk data failed %o', e);
     }
   });
+
+  jQuery("input[name='rd1']" ).change(function() {
+    var val = jQuery(this).val();
+
+    var url = window.location.href;
+    if (window.location.href.indexOf('?') >= 0) url = window.location.href.substring(0, window.location.href.indexOf('?'));
+
+    var param = 'past=3m';
+    if (jQuery.QueryString.all === 'all') param = 'all=all';
+    else if (jQuery.QueryString.past === '48m') param = 'past=48m';
+    else if (jQuery.QueryString.past === '12m') param = 'past=12m';
+    else if (jQuery.QueryString.past === '3m') param = 'past=3m';
+
+    window.location.href = url + '?' + param;
+  });
+
 });
