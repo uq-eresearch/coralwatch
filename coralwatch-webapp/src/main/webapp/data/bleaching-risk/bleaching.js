@@ -140,10 +140,10 @@ dojo.addOnLoad(function() {
     var url = window.location.href;
     if (window.location.href.indexOf('?') >= 0) url = window.location.href.substring(0, window.location.href.indexOf('?'));
 
-    if (jQuery.QueryString.all === 'all') url += '?all=all';
-    else if (jQuery.QueryString.past === '48m') url += '?past=48m';
-    else if (jQuery.QueryString.past === '12m') url += '?past=12m';
-    else if (jQuery.QueryString.past === '3m') url += '?past=3m';
+    if (val === 'all') url += '?all=all';
+    else if (val === '48m') url += '?past=48m';
+    else if (val === '12m') url += '?past=12m';
+    else if (val === '3m') url += '?past=3m';
     else url += '?past=3m';
 
     window.location.href = url;
