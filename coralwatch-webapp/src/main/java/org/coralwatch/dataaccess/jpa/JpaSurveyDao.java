@@ -166,6 +166,21 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
           sql("bleaching-risk-current")).getResultList();
     }
 
+    public Object bleachingRiskPast48Months() {
+        return entityManagerSource.getEntityManager().createNativeQuery(
+                sql("bleaching-risk-past-48-months")).getResultList();
+    }
+
+    public Object bleachingRiskPast12Months() {
+        return entityManagerSource.getEntityManager().createNativeQuery(
+                sql("bleaching-risk-past-12-months")).getResultList();
+    }
+
+    public Object bleachingRiskPast3Months() {
+        return entityManagerSource.getEntityManager().createNativeQuery(
+                sql("bleaching-risk-past-3-months")).getResultList();
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public List<Survey> bleachingRiskMailer() {
