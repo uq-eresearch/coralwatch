@@ -85,11 +85,12 @@
     </script>
 
     <style type="text/css">
-        html, body { overflow: hidden; }
+        html, body { overflow-x: auto; overflow-y: hidden !important; }
         body { background: none !important; }
         #banner { display: none !important; }
         #navigation { display: none !important; }
         #content-wrapper { width: 100%; }
+        #content-wrapper table tbody tr #column-1 { width: 20%; }
         #content-wrapper table tbody tr #column-1 form table tbody tr td { width: initial; }
         #footer { display: none !important; }
         iframe { display: none !important; }
