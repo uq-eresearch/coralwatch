@@ -17,6 +17,7 @@ import org.coralwatch.dataaccess.ReefDao;
 import org.coralwatch.dataaccess.SurveyDao;
 import org.coralwatch.dataaccess.SurveyRecordDao;
 
+import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONWriter;
 
