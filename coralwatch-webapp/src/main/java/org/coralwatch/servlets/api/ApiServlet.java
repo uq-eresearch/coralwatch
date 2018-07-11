@@ -62,14 +62,21 @@ public class ApiServlet extends HttpServlet {
         }
         else if ((groups = getMatch(pathInfo, "^/reef$")) != null) {
             handler = new ReefListApiHandler();
-        } else if((groups = getMatch(pathInfo, "^/reeflocation$")) != null) {
-          handler = new ReefLocationApiHandler();
-        } else if((groups = getMatch(pathInfo, "^/bleaching-risk/?$")) != null) {
-          handler = new BleachingRiskApiHandler();
-        } else if((groups = getMatch(pathInfo, "^/survey-location/?$")) != null) {
-          handler = new SurveyLocationApiHandler();
-        } else if((groups = getMatch(pathInfo, "^/countries/?$")) != null) {
-          handler = new CountriesApiHandler();
+        }
+        else if((groups = getMatch(pathInfo, "^/reeflocation$")) != null) {
+            handler = new ReefLocationApiHandler();
+        }
+        else if((groups = getMatch(pathInfo, "^/bleaching-risk/?$")) != null) {
+            handler = new BleachingRiskApiHandler();
+        }
+        else if((groups = getMatch(pathInfo, "^/survey-location/?$")) != null) {
+            handler = new SurveyLocationApiHandler();
+        }
+        else if((groups = getMatch(pathInfo, "^/countries/?$")) != null) {
+            handler = new CountriesApiHandler();
+        }
+        else if((groups = getMatch(pathInfo, "^/stats/?$")) != null) {
+            handler = new StatsApiHandler();
         }
         if (handler == null) {
             response.setStatus(404);
