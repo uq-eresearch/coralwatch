@@ -48,22 +48,22 @@ public class StatsApiHandler {
         response.setContentType("application/json; charset=UTF-8");
 
         if ( StringUtils.equalsIgnoreCase(request.getParameter("value"), "users") ) {
-            response.getWriter().write(new Gson().toJson(users));
+            response.getWriter().write(users);
         }
         else if ( StringUtils.equalsIgnoreCase(request.getParameter("value"), "reefs") ) {
-            response.getWriter().write(new Gson().toJson(reefs));
+            response.getWriter().write(reefs);
         }
         else if ( StringUtils.equalsIgnoreCase(request.getParameter("value"), "surveys") ) {
-            response.getWriter().write(new Gson().toJson(surveys));
+            response.getWriter().write(surveys);
         }
         else if ( StringUtils.equalsIgnoreCase(request.getParameter("value"), "records") ) {
-            response.getWriter().write(new Gson().toJson(records));
+            response.getWriter().write(records);
         }
         else if ( StringUtils.equalsIgnoreCase(request.getParameter("value"), "baseUrl") ) {
-            response.getWriter().write(new Gson().toJson(baseUrl));
+            response.getWriter().write(baseUrl);
         }
         else if ( StringUtils.equalsIgnoreCase(request.getParameter("value"), "highestContributor") ) {
-            response.getWriter().write(new Gson().toJson(highestContributor.getDisplayName()));
+            response.getWriter().write(highestContributor.getDisplayName());
         }
         else {
             // Will return a JSON object with all the stats values
