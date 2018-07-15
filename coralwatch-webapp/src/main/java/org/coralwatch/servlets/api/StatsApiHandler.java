@@ -48,16 +48,16 @@ public class StatsApiHandler {
         response.setContentType("application/json; charset=UTF-8");
 
         if ( StringUtils.equalsIgnoreCase(request.getParameter("value"), "users") ) {
-            response.getWriter().write(users);
+            response.getWriter().write(new Gson().toJson(users));
         }
         else if ( StringUtils.equalsIgnoreCase(request.getParameter("value"), "reefs") ) {
-            response.getWriter().write(reefs);
+            response.getWriter().write(new Gson().toJson(reefs));
         }
         else if ( StringUtils.equalsIgnoreCase(request.getParameter("value"), "surveys") ) {
-            response.getWriter().write(surveys);
+            response.getWriter().write(new Gson().toJson(surveys));
         }
         else if ( StringUtils.equalsIgnoreCase(request.getParameter("value"), "records") ) {
-            response.getWriter().write(records);
+            response.getWriter().write(new Gson().toJson(records));
         }
         else if ( StringUtils.equalsIgnoreCase(request.getParameter("value"), "baseUrl") ) {
             response.getWriter().write(baseUrl);
