@@ -1722,6 +1722,7 @@ function positionMarker() {
             alert('Enter a search key word.');
             return false;
             } else {
+            grid.queryOptions = {ignoreCase: true};
             grid.filter({
             surveyor: "*" + dijit.byId("surveyorFilterField").getValue() + "*",
             reef: "*" + dijit.byId("reefFilterField").getValue() + "*",
