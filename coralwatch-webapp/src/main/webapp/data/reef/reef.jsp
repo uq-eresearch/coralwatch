@@ -390,8 +390,8 @@ if (items.length) {
                                                      style="width:100px;"
                                                      dojoType="dijit.form.TextBox"
                                                      trim="true"
-                                                     value=""/><input type="submit" name="submit" value="Filter"/>
-        Filter is case sensitive
+                                                     value=""/><input type="submit" name="submit" value="search"/>
+        search is case sensitive
     </form>
 </div>
 <br/>
