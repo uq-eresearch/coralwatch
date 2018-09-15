@@ -32,15 +32,16 @@
         return true;
     </script>
 
-    <%
-        if (currentUser == null) {
-            if (cmd.equals(Constants.RESET)) {
+<%
+if (currentUser == null) {
+    if (cmd.equals(Constants.RESET)) {
+%>
 
-    %>
     <h2>Reset Password</h2>
 
     <p>Enter your email address to send you a reset password link.</p>
     <input name="<%= Constants.CMD %>" type="hidden" value="<%= HtmlUtil.escape(Constants.RESET) %>"/>
+
     <table>
         <tr>
             <td><label for="email">Email:</label></td>
@@ -50,7 +51,8 @@
                        regExp="[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]{2,6}"
                        trim="true"
                        invalidMessage="Enter a valid email address."
-                       value=""/></td>
+                       value=""/>
+            </td>
         </tr>
         <tr>
             <td><label for="email2">Confirm Email:</label></td>
@@ -60,38 +62,48 @@
                        validator="return this.getValue() == dijit.byId('email').getValue()"
                        trim="true"
                        invalidMessage="Re-enter your email address."
-                       value=""/></td>
+                       value=""/>
+            </td>
         </tr>
         <tr>
             <td><input type="submit" name="submit" value="Submit"/></td>
-            <td><a style="color:#F9911F;"
-                   href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.ADD %>">Sign
-                Up</a> | <a style="color:#F9911F;" href="<portlet:renderURL></portlet:renderURL>">Sign In</a></td>
+            <td>
+                <a style="color:#F9911F;" href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.ADD %>">Sign Up</a> |
+                <a style="color:#F9911F;" href="<portlet:renderURL></portlet:renderURL>">Sign In</a>
+            </td>
         </tr>
     </table>
-    <%
+
+<%
     } else if (cmd.equals(Constants.PRINT)) {
         String successMsg = ParamUtil.getString(request, "successMsg");
-    %>
-    <div class="portlet-msg-success"><%=successMsg%>
-    </div>
+%>
+
+    <div class="portlet-msg-success"><%=successMsg%></div>
     <br/>
-    <a style="color:#F9911F;"
-       href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.ADD %>">Sign
-        Up</a> | <a style="color:#F9911F;" href="<portlet:renderURL></portlet:renderURL>">Sign In</a>
-    <%
+    <a style="color:#F9911F;" href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.ADD %>">Sign Up</a> |
+    <a style="color:#F9911F;" href="<portlet:renderURL></portlet:renderURL>">Sign In</a>
+
+<%
     } else {
-    %>
+%>
+
     <h2>Member's Sign In</h2>
-    <%
-        if (errors != null && errors.size() > 0) {
-            for (String error : errors) {
-    %>
-    <div><span class="portlet-msg-error"><%=error%></span></div>
-    <%
-            }
+
+<%
+    if (errors != null && errors.size() > 0) {
+        for (String error : errors) {
+%>
+
+    <div>
+        <span class="portlet-msg-error"><%=error%></span>
+    </div>
+
+<%
         }
-    %>
+    }
+%>
+
     <input type="hidden" name="loginReferer" value="<%= PortalUtil.getCurrentURL(renderRequest) %>" />
     <table>
         <tr>
@@ -103,7 +115,8 @@
                        required="true"
                        regExp="[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]{2,6}"
                        trim="true"
-                       invalidMessage="Enter a valid email address."/></td>
+                       invalidMessage="Enter a valid email address."/>
+           </td>
         </tr>
         <tr>
             <td>Password:</td>
@@ -112,27 +125,32 @@
                        id="signinPassword"
                        required="true"
                        dojoType="dijit.form.ValidationTextBox"
-                       invalidMessage="Please enter a password"/></td>
+                       invalidMessage="Please enter a password"/>
+           </td>
         </tr>
         <tr>
-            <td><input type="submit" name="signin" value="Sign In"/></td>
             <td>
-                <a style="color:#F9911F;"
-                   href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.ADD %>">Sign
-                    Up</a> | <a style="color:#F9911F;"
-                                href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.RESET %>" /></portlet:renderURL>">Forgot
-                Password?</a></td>
+                <input type="submit" name="signin" value="Sign In"/>
+            </td>
+            <td>
+                <a style="color:#F9911F;" href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.ADD %>">Sign Up</a> |
+                <a style="color:#F9911F;" href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.RESET %>" /></portlet:renderURL>">Forgot Password?</a>
+            </td>
         </tr>
     </table>
-    <%
-        }
-    } else {
-    %>
-    <span>You are logged in as <a
-            href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=<%=currentUser.getId()%>"><%= currentUser.getDisplayName()%>
-    </a> | <a
-            href="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DEACTIVATE %>" /></portlet:actionURL>">Logout</a></span>
-    <%
-        }
-    %>
+
+<%
+    }
+} else {
+%>
+
+    <span>You are logged in as
+        <a href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=<%=currentUser.getId()%>"><%= currentUser.getDisplayName()%></a> |
+        <a href="<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DEACTIVATE %>" /></portlet:actionURL>">Logout</a>
+    </span>
+
+<%
+    }
+%>
+
 </form>
