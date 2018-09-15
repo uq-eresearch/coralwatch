@@ -41,7 +41,11 @@ var brLayout = [[{
   name: 'View',
   width: '55px',
   formatter: function(id) {
-    return '<a href="/web/guest/survey?p_p_id=surveyportlet_WAR_coralwatch&' + '_surveyportlet_WAR_coralwatch_cmd=view&_surveyportlet_WAR_coralwatch_surveyId=' + id + '">More Info</a>';
+    var datamodule = getCookie('datamodule');
+    var url = window.location.origin + "/web/guest/survey?p_p_id=surveyportlet_WAR_coralwatch&" + "_surveyportlet_WAR_coralwatch_cmd=view&_surveyportlet_WAR_coralwatch_surveyId=" + id;
+    if (datamodule) return '<a target="popup" href="' + url + '" onclick="window.open(\'' + url + '\',\'popup\',\'width=682,height=644\'); return false;">More Info</a>';
+    else return '<a target="_blank" href="' + url + '">More Info</a>';
+    //return '<a target="popup" href="/web/guest/survey?p_p_id=surveyportlet_WAR_coralwatch&' + '_surveyportlet_WAR_coralwatch_cmd=view&_surveyportlet_WAR_coralwatch_surveyId=' + id + '">More Info</a>';
   }
 },]];
 
