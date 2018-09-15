@@ -371,6 +371,7 @@ if (items.length) {
             alert('Enter a search key word.');
             return false;
             } else {
+            reefgrid.queryOptions = {ignoreCase: true};
             reefgrid.filter({
             name: "*" + dijit.byId("reefFilterField").getValue() + "*",
             country: "*" + dijit.byId("countryFilterField").getValue() + "*"
