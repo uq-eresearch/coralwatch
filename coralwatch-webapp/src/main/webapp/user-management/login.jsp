@@ -128,7 +128,6 @@
         }
     } else {
     %>
-    <h2>Current User</h2>
     <span>You are logged in as <a
             href="<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=<%=currentUser.getId()%>"><%= currentUser.getDisplayName()%>
     </a> | <a
