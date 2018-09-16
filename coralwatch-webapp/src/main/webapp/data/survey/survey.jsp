@@ -885,11 +885,7 @@ function positionMarker() {
 <%
     }
 %>
-<div align="right">
-    <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">Add
-        New
-        Survey</a>
-</div>
+<!--<div align="right"><a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">Add New Survey</a></div>-->
 <h2 style="margin-top:0;">Survey Details</h2>
 <br/>
 
@@ -906,8 +902,7 @@ function positionMarker() {
                 <%
                     if (survey.getCreator().getGravatarUrl() != null) {
                 %>
-                <div style="float:right;"><a href=""><img src="<%=survey.getCreator().getGravatarUrl()%>"
-                                                          alt="<%=survey.getCreator().getDisplayName()%>"/></a><br/>
+                <div style="float:right;"><a href=""><img src="<%=survey.getCreator().getGravatarUrl()%>" alt="<%=survey.getCreator().getDisplayName()%>"/></a><br/>
                 </div>
                 <%
                     }
@@ -1623,6 +1618,8 @@ function positionMarker() {
         });
     };
 
+    var datamodule = getCookie('datamodule');
+    
     var layoutSurveys = [
         [
 
@@ -1684,8 +1681,12 @@ function positionMarker() {
                 name: "View",
                 width: 10,
                 formatter: function(item) {
-                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + item.toString() + "\">More info</a>";
-                    return viewURL;
+                    var url = window.location.origin + '<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=' + item.toString();
+                    if (datamodule) return '<a target="popup" href="' + url + '" onclick="window.open(\'' + url + '\',\'popup\',\'width=682,height=644\'); return false;">More Info</a>';
+                    else return '<a target="_blank" href="' + url + '">More Info</a>';
+
+                    //var viewURL = "<a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + item.toString() + "\">More info</a>";
+                    //return viewURL;
                 }
             }
             <% if ((currentUser != null) && currentUser.isSuperUser()) { %>
