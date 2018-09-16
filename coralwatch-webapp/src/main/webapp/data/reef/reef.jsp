@@ -94,6 +94,9 @@
                     locale: "en"
                 });
             };
+            
+            var datamodule = getCookie('datamodule');
+            
             var layoutSurveys = [
                 [
 
@@ -141,8 +144,12 @@
                         name: "View",
                         width: 9,
                         formatter: function(item) {
-                            var viewURL = "<a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + item.toString() + "\">More info</a>";
-                            return viewURL;
+                            var url = window.location.origin + '<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=' + item.toString();
+                            if (datamodule) return '<a target="popup" href="' + url + '" onclick="window.open(\'' + url + '\',\'popup\',\'width=682,height=644\'); return false;">More Info</a>';
+                            else return '<a target="_blank" href="' + url + '">More Info</a>';
+
+                            //var viewURL = "<a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + item.toString() + "\">More info</a>";
+                            //return viewURL;
                         }
                     }
                     <% if ((currentUser != null) && currentUser.isSuperUser()) { %>
@@ -311,6 +318,9 @@ if (items.length) {
         };
         //        reefgrid.setSortIndex(0, true);
     });
+    
+    var datamodule = getCookie('datamodule');
+    
     var layoutReefs = [
         [
             {
@@ -342,8 +352,12 @@ if (items.length) {
                 name: "View",
                 width: 10,
                 formatter: function(item) {
-                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("reefUrl")%>?p_p_id=reefportlet_WAR_coralwatch&_reefportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_reefportlet_WAR_coralwatch_reefId=" + item.toString() + "\">Graphs</a>";
-                    return viewURL;
+                    var url = window.location.origin + '<%=renderRequest.getAttribute("reefUrl")%>?p_p_id=reefportlet_WAR_coralwatch&_reefportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_reefportlet_WAR_coralwatch_reefId=' + item.toString();
+                    if (datamodule) return '<a target="popup" href="' + url + '" onclick="window.open(\'' + url + '\',\'popup\',\'width=682,height=644\'); return false;">Graphs</a>';
+                    else return '<a target="_blank" href="' + url + '">Graphs</a>';
+ 
+                    //var viewURL = "<a href=\"<%=renderRequest.getAttribute("reefUrl")%>?p_p_id=reefportlet_WAR_coralwatch&_reefportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_reefportlet_WAR_coralwatch_reefId=" + item.toString() + "\">Graphs</a>";
+                    //return viewURL;
                 }
             },
             {
