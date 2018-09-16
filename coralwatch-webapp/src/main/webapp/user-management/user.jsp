@@ -748,6 +748,8 @@
             locale: "en"
         });
     };
+    
+    var datamodule = getCookie('datamodule');
 
     var layoutMembers = [
         [
@@ -803,8 +805,12 @@
                 name: "View",
                 width: 10,
                 formatter: function(item) {
-                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=" + item.toString() + "\">Profile</a>";
-                    return viewURL;
+                    var url = window.location.origin + '/web/guest/<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=' + item.toString();
+                    if (datamodule) return '<a target="popup" href="' + url + '" onclick="window.open(\'' + url + '\',\'popup\',\'width=682,height=644\'); return false;">Profile</a>';
+                    else return '<a target="_blank" href="' + url + '">Profile</a>';
+                    
+                    //var viewURL = "<a href=\"<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=" + item.toString() + "\">Profile</a>";
+                    //return viewURL;
                 }
             }
         ]
@@ -841,7 +847,7 @@
                                                 style="width:100px;"
                                                 dojoType="dijit.form.TextBox"
                                                 trim="true"
-                                                value=""/><input type="submit" name="submit" value="Filter"/> Filter is
+                                                value=""/><input type="submit" name="submit" value="Search"/> search is
         case sensitive
     </form>
 </div>
