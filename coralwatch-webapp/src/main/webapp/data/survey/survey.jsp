@@ -1752,8 +1752,7 @@ function positionMarker() {
                                                                                  trim="true"
                                                                                  value=""/><input type="submit"
                                                                                                   name="submit"
-                                                                                                  value="Filter"/>
-        search is case sensitive
+                                                                                                  value="Search"/>search is case sensitive
     </form>
 </div>
 <br/>
