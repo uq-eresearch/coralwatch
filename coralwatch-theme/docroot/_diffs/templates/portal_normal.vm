@@ -85,7 +85,7 @@
     </script>
 
     <style type="text/css">
-        html, body { overflow-x: auto; overflow-y: hidden !important; }
+        html, body { overflow-x: auto; overflow-y: auto; }
         body { background: none !important; }
         #banner { display: none !important; }
         #navigation { display: none !important; }
