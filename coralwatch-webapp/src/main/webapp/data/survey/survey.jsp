@@ -313,7 +313,9 @@ function positionMarker() {
                     dojo.connect(dijit.byId("country"), "onChange", function() {
                         var country = dijit.byId("country").getValue();
 
+                        dijit.byId("reefName").setValue("");
                         dijit.byId("reefName").attr("disabled", typeof country === "undefined" || country.length <3);
+                        document.getElementById("reef_name_not_in_menu").style.visibility = "hidden";
 
                         reefStore.url = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=json&country=" + country;
                         reefStore.close();
@@ -347,6 +349,7 @@ function positionMarker() {
                 dojo.connect(dijit.byId("reefName"), "onChange", function() {
                     var reef = dijit.byId("reefName").getValue();
 
+                    console.log("reefStore = ", reefStore);
                     var match = false;
                     for (var i=0; i<reefStore.length; i++) {
                         if (reefStore[i].name == reef) {
@@ -356,8 +359,7 @@ function positionMarker() {
                     }
                     dijit.byId("confirmReefName").attr("checked", match);
                     dijit.byId("confirmReefName").attr("required", !match);
-                    var reef_name_not_in_menu = document.getElementById("reef_name_not_in_menu");
-                    reef_name_not_in_menu.style.visibility = match ? "hidden" : "visible";
+                    document.getElementById("reef_name_not_in_menu").style.visibility = match ? "hidden" : "visible";
 
                     dijit.byId("latitudeDeg1").setValue("");
                     dijit.byId("longitudeDeg1").setValue("");
