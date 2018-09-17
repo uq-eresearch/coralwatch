@@ -371,7 +371,6 @@ if (items.length) {
             alert('Enter a search key word.');
             return false;
             } else {
-            reefgrid.queryOptions = {ignoreCase: true};
             reefgrid.filter({
             name: "*" + dijit.byId("reefFilterField").getValue() + "*",
             country: "*" + dijit.byId("countryFilterField").getValue() + "*"
@@ -391,8 +390,8 @@ if (items.length) {
                                                      style="width:100px;"
                                                      dojoType="dijit.form.TextBox"
                                                      trim="true"
-                                                     value=""/><input type="submit" name="submit" value="search"/>
-        search is case sensitive
+                                                     value=""/><input type="submit" name="submit" value="Filter"/>
+        Filter is case sensitive
     </form>
 </div>
 <br/>
