@@ -359,10 +359,15 @@ function positionMarker() {
                             }
                         }
                     }
-                    dijit.byId("confirmReefName").attr("checked", match);
-                    dijit.byId("confirmReefName").attr("required", !match);
-                    document.getElementById("reef_name_not_in_menu").style.display = match ? "none" : "block";
-
+                    if (!match) {
+                        document.getElementById("reef_name_not_in_menu").style.display = "block";
+                        dijit.byId("confirmReefName").attr("checked", false);
+                        dijit.byId("btnSubmit").setAttribute('disabled', true);
+                    }else {
+                        document.getElementById("reef_name_not_in_menu").style.display = "none";
+                        dijit.byId("btnSubmit").setAttribute('disabled', false);
+                    }
+                    
                     dijit.byId("latitudeDeg1").setValue("");
                     dijit.byId("longitudeDeg1").setValue("");
 
@@ -414,10 +419,18 @@ function positionMarker() {
                 If not, record the location (such as island or bay) followed by the reef or dive site.
                 Example: Heron Island - Pam's Point.
             </p>
-            <input name="confirmReefName" id="confirmReefName"
-                   dojoType="dijit.form.CheckBox"
-                   checked="checked"
-                   required="true" />
+            
+            <script type="text/javascript">
+                dojo.addOnLoad(function() {
+                    dojo.connect(dijit.byId("confirmReefName"), "onChange", function() {
+                        var checked = dijit.byId("confirmReefName").getValue();
+                        console.log("checbox = ", checked);
+                        dijit.byId("btnSubmit").setAttribute('disabled', !checked);
+                    });
+                });
+            </script>
+            
+            <input name="confirmReefName" id="confirmReefName" dojoType="dijit.form.CheckBox" />
             <label for="confirmReefName">&nbsp;I confirm that I can't find my reef name in the drop down menu.</label>
         </div>
 
