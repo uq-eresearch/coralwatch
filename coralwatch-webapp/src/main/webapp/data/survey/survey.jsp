@@ -315,7 +315,7 @@ function positionMarker() {
 
                         dijit.byId("reefName").setValue("");
                         dijit.byId("reefName").attr("disabled", typeof country === "undefined" || country.length <3);
-                        document.getElementById("reef_name_not_in_menu").style.visibility = "hidden";
+                        document.getElementById("reef_name_not_in_menu").style.display = "none";
 
                         reefStore.url = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=json&country=" + country;
                         reefStore.close();
@@ -361,7 +361,7 @@ function positionMarker() {
                     }
                     dijit.byId("confirmReefName").attr("checked", match);
                     dijit.byId("confirmReefName").attr("required", !match);
-                    document.getElementById("reef_name_not_in_menu").style.visibility = match ? "hidden" : "visible";
+                    document.getElementById("reef_name_not_in_menu").style.display = match ? "none" : "block";
 
                     dijit.byId("latitudeDeg1").setValue("");
                     dijit.byId("longitudeDeg1").setValue("");
@@ -406,7 +406,7 @@ function positionMarker() {
                disabled
                searchAttr="name" />
 
-        <div id="reef_name_not_in_menu" style="visibility: hidden;">
+        <div id="reef_name_not_in_menu" style="display: none;">
             <br/>
             <p style="width: 480px;">
                 Before entering your reef and dive site details, check if they are already listed on the drop down menu.
