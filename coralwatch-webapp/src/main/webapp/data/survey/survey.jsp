@@ -357,7 +357,7 @@ function positionMarker() {
                     dijit.byId("confirmReefName").attr("checked", match);
                     dijit.byId("confirmReefName").attr("required", !match);
                     var reef_name_not_in_menu = document.getElementById("reef_name_not_in_menu");
-                    reef_name_not_in_menu.style.visibility = match ? "hidden" : "visible");
+                    reef_name_not_in_menu.style.visibility = match ? "hidden" : "visible";
 
                     dijit.byId("latitudeDeg1").setValue("");
                     dijit.byId("longitudeDeg1").setValue("");
