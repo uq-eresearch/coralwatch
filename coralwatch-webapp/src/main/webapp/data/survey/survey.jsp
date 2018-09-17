@@ -349,12 +349,14 @@ function positionMarker() {
                 dojo.connect(dijit.byId("reefName"), "onChange", function() {
                     var reef = dijit.byId("reefName").getValue();
 
-                    console.log("reefStore = ", reefStore);
+                    //console.log("reefStore = ", reefStore);
                     var match = false;
-                    for (var i=0; i<reefStore.length; i++) {
-                        if (reefStore[i].name == reef) {
-                            match = true;
-                            break;
+                    if (reefStore && typeof reefStore._arrayOfAllItems !=='undefined') {
+                        for (var i=0; i<reefStore._arrayOfAllItems.length; i++) {
+                            if (reefStore._arrayOfAllItems[i].name[0] == reef) {
+                                match = true;
+                                break;
+                            }
                         }
                     }
                     dijit.byId("confirmReefName").attr("checked", match);
