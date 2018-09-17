@@ -416,7 +416,7 @@ function positionMarker() {
             </p>
             <input name="confirmReefName" id="confirmReefName"
                    dojoType="dijit.form.CheckBox"
-                   checked
+                   checked="checked"
                    required="true" />
             <label for="confirmReefName">&nbsp;I confirm that I can't find my reef name in the drop down menu.</label>
         </div>
