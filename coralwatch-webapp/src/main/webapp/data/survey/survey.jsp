@@ -34,33 +34,9 @@
     dojo.require("dijit.TooltipDialog");
     dojo.require("dijit.form.DropDownButton");
     dojo.require("dojo.data.ItemFileReadStore");
-</script>
 
-<script type="text/javascript">
-  dojo.addOnLoad(function() {
-    dojo.connect(dijit.byId("reefName"), "onChange", function() {
-      var reef = dijit.byId("reefName").getValue();
-      dojo.xhrGet({
-        url: '<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/api/reeflocation',
-        handleAs: "json",
-        content: {
-          reef: reef
-        },
-        load: function(latlng) {
-          function isNumber(obj) {
-            return (obj - parseFloat( obj ) + 1) >= 0;
-          }
-          if(latlng && isNumber(latlng.lat) && isNumber(latlng.lng)) {
-            dijit.byId("latitudeDeg1").setValue(latlng.lat);
-            dijit.byId("longitudeDeg1").setValue(latlng.lng);
-          }
-        },
-        error: function() {
-          console.log('reeflocation call failed')
-        }
-      });
-    });
-  });
+    dojo.require("dojo.dom-style");
+    dojo.require("dijit.registry");
 </script>
 
 <%
@@ -259,14 +235,14 @@ function positionMarker() {
 
 <script type="text/javascript">
     dojo.addOnLoad(
-            function() {
-                dojo.byId("groupName").focus();
-                dojo.byId("latitudeDeg1").style.display = 'inline';
-                var now = new Date();
-                dijit.byId('date').constraints.max = now;
-                //                dijit.byId('time').constraints.max = 'T' + now.getHours() + ':' + now.getMinutes()+ ':00';
-            }
-            );
+        function() {
+            dojo.byId("groupName").focus();
+            dojo.byId("latitudeDeg1").style.display = 'inline';
+            var now = new Date();
+            dijit.byId('date').constraints.max = now;
+            //dijit.byId('time').constraints.max = 'T' + now.getHours() + ':' + now.getMinutes()+ ':00';
+        }
+    );
 </script>
 
 <script type="dojo/method" event="onSubmit">
@@ -334,17 +310,21 @@ function positionMarker() {
         <table>
         <tr>
         <td style="padding: 0; vertical-align: middle;">
+
             <script type="text/javascript">
                 dojo.addOnLoad(function() {
                     dojo.connect(dijit.byId("country"), "onChange", function() {
                         var country = dijit.byId("country").getValue();
+
+                        dijit.byId("reefName").attr("disabled", typeof country === "undefined" || country.length <3));
+
                         reefStore.url = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=json&country=" + country;
                         reefStore.close();
                     });
                 });
             </script>
-            <select name="country"
-                    id="country"
+
+            <select name="country" id="country"
                     dojoType="dijit.form.ComboBox"
                     required="true"
                     hasDownArrow="true"
@@ -365,20 +345,72 @@ function positionMarker() {
         <label for="reefName">Reef Name:</label>
     </th>
     <td>
-        <p style="width: 480px;">
-            Before entering your reef and dive site details, check if they are already listed on the drop down menu.
-            If not, record the location (such as island or bay) followed by the reef or dive site.
-            Example: Heron Island - Pam's Point. 
-        </p>
-        <%
-            String reefServletUrl = "/reefs?format=json&country=all";
-        %>
-        <div dojoType="dojo.data.ItemFileReadStore" id="reefStore" jsId="reefStore" urlPreventCache="true"
-             clearOnClose="true"
-             url="<%=renderResponse.encodeURL(renderRequest.getContextPath() + reefServletUrl)%>">
+        <script type="text/javascript">
+            dojo.addOnLoad(function() {
+                dojo.connect(dijit.byId("reefName"), "onChange", function() {
+                    var reef = dijit.byId("reefName").getValue();
+
+                    var match = false;
+                    for (var i=0; i<reefStore.length; i++) {
+                        if (reefStore[i].name == reef) {
+                            match = true;
+                            break;
+                        }
+                    }
+                    if (!match) domStyle.set(registry.byId(reef_name_not_in_menu).domNode, 'display', 'block');
+                    dijit.byId("confirmReefName").attr("required", !match);
+
+                    dijit.byId("latitudeDeg1").setValue("");
+                    dijit.byId("longitudeDeg1").setValue("");
+
+                    dojo.xhrGet({
+                        url: '<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/api/reeflocation',
+                        handleAs: "json",
+                        content: {
+                            reef: reef
+                        },
+                        load: function(latlng) {
+                            function isNumber(obj) {
+                                return (obj - parseFloat( obj ) + 1) >= 0;
+                            }
+                            if (latlng && isNumber(latlng.lat) && isNumber(latlng.lng)) {
+                                dijit.byId("latitudeDeg1").setValue(latlng.lat);
+                                dijit.byId("longitudeDeg1").setValue(latlng.lng);
+                            }
+                        },
+                        error: function() {
+                            console.log('reeflocation call failed')
+                        }
+                    });
+                });
+            });
+        </script>
+
+        <div id="reefStore" jsId="reefStore"
+             dojoType="dojo.data.ItemFileReadStore"
+             urlPreventCache="true" clearOnClose="true"
+             url="<%=renderResponse.encodeURL(renderRequest.getContextPath() + '/reefs?format=json&country=all')%>">
         </div>
-        <input dojoType="dijit.form.ComboBox" value="<%=reefName == null ? "" : reefName%>" store="reefStore"
-               searchAttr="name" name="reefName" id="reefName" style="width: 360px;">
+        <input name="reefName" id="reefName" style="width: 360px;"
+               dojoType="dijit.form.ComboBox"
+               value="<%=reefName == null ? "" : reefName%>"
+               store="reefStore"
+               required
+               disabled
+               searchAttr="name"/>
+
+        <div id="reef_name_not_in_menu" style="display: none;">
+            <br/>
+            <input name="confirmReefName" id="confirmReefName" dojoType="dijit.form.CheckBox" required/>
+            <label for="confirmReefName">I confirm that I can't find my reef name in the drop down menu.</label>
+
+            <p style="width: 480px;">
+                Before entering your reef and dive site details, check if they are already listed on the drop down menu.
+                If not, record the location (such as island or bay) followed by the reef or dive site.
+                Example: Heron Island - Pam's Point.
+            </p>
+        </div>
+
     </td>
 </tr>
 <tr>
@@ -870,7 +902,7 @@ function positionMarker() {
                 url:'<%=renderResponse.encodeURL(renderRequest.getContextPath())%>' + '/rating?cmd=ratesurvey&raterId=<%=currentUser.getId()%>&surveyId=<%=survey.getId()%>&value=' + widget.value,
                 timeout: 5000,
                 load: function(response, ioArgs) {
-                    //                    alert("Response: " + response)
+                    //alert("Response: " + response)
                     return response;
                 },
                 error: function(response, ioArgs) {
@@ -1065,13 +1097,10 @@ function positionMarker() {
             if (currentUser != null && (currentUser.equals(survey.getCreator()) || currentUser.isSuperUser())) {
         %>
         <tr>
-            <td colspan="2"><input type="button" value="Edit"
-                                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:renderURL>';"/>
-                <input type="button" value="Delete"
-                       onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:actionURL>';"/>
+            <td colspan="2">
+                <input type="button" value="Edit" onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:renderURL>';"/>
+                <input type="button" value="Delete" onClick="self.location = '<portlet:actionURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" /><portlet:param name="surveyId" value="<%= String.valueOf(survey.getId()) %>" /></portlet:actionURL>';"/>
             </td>
-
-
         </tr>
         <%
             }
@@ -1142,7 +1171,6 @@ function positionMarker() {
                     table.appendChild(tbody);
                     dojo.destroy('nodata');
                     dojo.byId('dataTab').appendChild(table);
-
                 }
                 var tbody = table.getElementsByTagName('tbody')[0];
                 var numberOfRaws = tbody.children.length;
@@ -1325,7 +1353,7 @@ function positionMarker() {
                     error: function(response, ioArgs) {
                         graphDiv.style.display = 'none';
                         noGraphDiv.style.display = 'inline';
-                        //                    alert('Cannot get number of records: ' + response);
+                        //alert('Cannot get number of records: ' + response);
                         return response;
                     }
                 });
@@ -1622,7 +1650,6 @@ function positionMarker() {
     
     var layoutSurveys = [
         [
-
             {
                 field: "country",
                 name: "Country",
