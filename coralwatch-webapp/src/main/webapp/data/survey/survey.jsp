@@ -357,8 +357,9 @@ function positionMarker() {
                             break;
                         }
                     }
-                    if (!match) domStyle.set(registry.byId(reef_name_not_in_menu).domNode, 'display', 'block');
+                    dijit.byId("confirmReefName").attr("checked", match);
                     dijit.byId("confirmReefName").attr("required", !match);
+                    domStyle.set(registry.byId(reef_name_not_in_menu).domNode, 'visibility', match ? 'hidden' : 'visible');
 
                     dijit.byId("latitudeDeg1").setValue("");
                     dijit.byId("longitudeDeg1").setValue("");
@@ -399,16 +400,18 @@ function positionMarker() {
                disabled
                searchAttr="name"/>
 
-        <div id="reef_name_not_in_menu" style="display: none;">
+        <div id="reef_name_not_in_menu" style="visibility: hidden;">
             <br/>
-            <input name="confirmReefName" id="confirmReefName" dojoType="dijit.form.CheckBox" required/>
-            <label for="confirmReefName">I confirm that I can't find my reef name in the drop down menu.</label>
-
             <p style="width: 480px;">
                 Before entering your reef and dive site details, check if they are already listed on the drop down menu.
                 If not, record the location (such as island or bay) followed by the reef or dive site.
                 Example: Heron Island - Pam's Point.
             </p>
+            <input name="confirmReefName" id="confirmReefName"
+                   dojoType="dijit.form.CheckBox"
+                   checked
+                   required/>
+            <label for="confirmReefName">&nbsp;I confirm that I can't find my reef name in the drop down menu.</label>
         </div>
 
     </td>
