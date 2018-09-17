@@ -52,14 +52,19 @@
 <script>
 function submitCheck() {
   var isLoggedIn = <%=Boolean.valueOf(currentUser != null).toString()%>;
-  if(!isLoggedIn) {
-    return false;
-  }
+  if (!isLoggedIn) return false;
+    
   var newSurveyForm = dijit.byId('newSurveyForm');
-  if(newSurveyForm && (!newSurveyForm.validate() || !dojo.getAttr(dojo.byId('btnSubmit'), 'reef_name_confirmed')) ) {
-    alert('Form contains invalid data. Please correct errors first.');
+  if (newSurveyForm && !newSurveyForm.validate()) {
+    alert("Form contains invalid data. Please correct errors first.");
     return false;
   }
+    
+  if (!dijit.byId("confirmReefName").attr("checked")) {
+    alert("Please confirm that you can't find your reef name in the drop down menu.");
+    return false;
+  }
+    
   return true;
 }
 
@@ -362,10 +367,9 @@ function positionMarker() {
                     if (!match) {
                         document.getElementById("reef_name_not_in_menu").style.display = "block";
                         dijit.byId("confirmReefName").attr("checked", false);
-                        dojo.byId("btnSubmit").setAttribute('reef_name_confirmed', false);
                     }else {
                         document.getElementById("reef_name_not_in_menu").style.display = "none";
-                        dojo.byId("btnSubmit").setAttribute('reef_name_confirmed', true);
+                        dijit.byId("confirmReefName").attr("checked", true);
                     }
                     
                     dijit.byId("latitudeDeg1").setValue("");
@@ -418,18 +422,8 @@ function positionMarker() {
                 Before entering your reef and dive site details, check if they are already listed on the drop down menu.
                 If not, record the location (such as island or bay) followed by the reef or dive site.
                 Example: Heron Island - Pam's Point.
-            </p>
-            
-            <script type="text/javascript">
-                dojo.addOnLoad(function() {
-                    dojo.connect(dijit.byId("confirmReefName"), "onChange", function() {
-                        var checked = dijit.byId("confirmReefName").getValue();
-                        dojo.byId("btnSubmit").setAttribute('reef_name_confirmed', checked);
-                    });
-                });
-            </script>
-            
-            <input name="confirmReefName" id="confirmReefName" dojoType="dijit.form.CheckBox" />
+            </p>            
+            <input name="confirmReefName" id="confirmReefName" dojoType="dijit.form.CheckBox" checked="checked" />
             <label for="confirmReefName">&nbsp;I confirm that I can't find my reef name in the drop down menu.</label>
         </div>
 
