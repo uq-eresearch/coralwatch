@@ -408,7 +408,7 @@ function positionMarker() {
 
         <div id="reef_name_not_in_menu" style="display: none;">
             <br/>
-            <p style="width: 480px;">
+            <p style="color: darkorange; width: 480px;">
                 Before entering your reef and dive site details, check if they are already listed on the drop down menu.
                 If not, record the location (such as island or bay) followed by the reef or dive site.
                 Example: Heron Island - Pam's Point.
