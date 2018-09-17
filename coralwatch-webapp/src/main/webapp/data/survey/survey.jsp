@@ -367,6 +367,7 @@ function positionMarker() {
                     if (!match) {
                         document.getElementById("reef_name_not_in_menu").style.display = "block";
                         dijit.byId("confirmReefName").attr("checked", false);
+                        if (typeof iframeResize !== "undefined" && typeof iframeResize === "function") iframeResize(); // resize iframe windows in the host site
                     }else {
                         document.getElementById("reef_name_not_in_menu").style.display = "none";
                         dijit.byId("confirmReefName").attr("checked", true);
