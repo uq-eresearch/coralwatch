@@ -401,7 +401,8 @@ function positionMarker() {
         <input name="reefName" id="reefName" style="width: 360px;"
                dojoType="dijit.form.ComboBox"
                value="<%=reefName == null ? "" : reefName%>"
-               store="reefStore"
+               store="reefStore" 
+               placeholder="Select from menu or enter a reef name"
                required="true"
                disabled
                searchAttr="name" />
