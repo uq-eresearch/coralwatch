@@ -56,7 +56,7 @@ function submitCheck() {
     return false;
   }
   var newSurveyForm = dijit.byId('newSurveyForm');
-  if(newSurveyForm && !newSurveyForm.validate()){
+  if(newSurveyForm && (!newSurveyForm.validate() || !dojo.getAttr(dojo.byId('btnSubmit'), 'reef_name_confirmed')) ) {
     alert('Form contains invalid data. Please correct errors first.');
     return false;
   }
@@ -362,10 +362,10 @@ function positionMarker() {
                     if (!match) {
                         document.getElementById("reef_name_not_in_menu").style.display = "block";
                         dijit.byId("confirmReefName").attr("checked", false);
-                        dijit.byId("btnSubmit").setAttribute('disabled', true);
+                        dojo.byId("btnSubmit").setAttribute('reef_name_confirmed', false);
                     }else {
                         document.getElementById("reef_name_not_in_menu").style.display = "none";
-                        dijit.byId("btnSubmit").setAttribute('disabled', false);
+                        dojo.byId("btnSubmit").setAttribute('reef_name_confirmed', true);
                     }
                     
                     dijit.byId("latitudeDeg1").setValue("");
@@ -424,8 +424,7 @@ function positionMarker() {
                 dojo.addOnLoad(function() {
                     dojo.connect(dijit.byId("confirmReefName"), "onChange", function() {
                         var checked = dijit.byId("confirmReefName").getValue();
-                        console.log("checbox = ", checked);
-                        dijit.byId("btnSubmit").setAttribute('disabled', !checked);
+                        dojo.byId("btnSubmit").setAttribute('reef_name_confirmed', checked);
                     });
                 });
             </script>
