@@ -316,7 +316,7 @@ function positionMarker() {
                     dojo.connect(dijit.byId("country"), "onChange", function() {
                         var country = dijit.byId("country").getValue();
 
-                        dijit.byId("reefName").attr("disabled", typeof country === "undefined" || country.length <3));
+                        dijit.byId("reefName").attr("disabled", typeof country === "undefined" || country.length <3);
 
                         reefStore.url = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=json&country=" + country;
                         reefStore.close();
@@ -387,10 +387,14 @@ function positionMarker() {
             });
         </script>
 
+        <%
+            String reefServletUrl = "/reefs?format=json&country=all";
+        %>
+        
         <div id="reefStore" jsId="reefStore"
              dojoType="dojo.data.ItemFileReadStore"
              urlPreventCache="true" clearOnClose="true"
-             url="<%=renderResponse.encodeURL(renderRequest.getContextPath() + '/reefs?format=json&country=all')%>">
+             url="<%=renderResponse.encodeURL(renderRequest.getContextPath() + reefServletUrl)%>">
         </div>
         <input name="reefName" id="reefName" style="width: 360px;"
                dojoType="dijit.form.ComboBox"
@@ -398,7 +402,7 @@ function positionMarker() {
                store="reefStore"
                required
                disabled
-               searchAttr="name"/>
+               searchAttr="name" />
 
         <div id="reef_name_not_in_menu" style="visibility: hidden;">
             <br/>
@@ -410,7 +414,7 @@ function positionMarker() {
             <input name="confirmReefName" id="confirmReefName"
                    dojoType="dijit.form.CheckBox"
                    checked
-                   required/>
+                   required />
             <label for="confirmReefName">&nbsp;I confirm that I can't find my reef name in the drop down menu.</label>
         </div>
 
