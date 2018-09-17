@@ -356,7 +356,7 @@ function positionMarker() {
                     }
                     dijit.byId("confirmReefName").attr("checked", match);
                     dijit.byId("confirmReefName").attr("required", !match);
-                    dijit.byId("reef_name_not_in_menu").css("visibility", match ? "hidden" : "visible");
+                    dojo.byId("reef-name-not-in-menu").css("visibility", match ? "hidden" : "visible");
 
                     dijit.byId("latitudeDeg1").setValue("");
                     dijit.byId("longitudeDeg1").setValue("");
@@ -383,15 +383,11 @@ function positionMarker() {
                 });
             });
         </script>
-
-        <%
-            String reefServletUrl = "/reefs?format=json&country=all";
-        %>
         
         <div id="reefStore" jsId="reefStore"
              dojoType="dojo.data.ItemFileReadStore"
              urlPreventCache="true" clearOnClose="true"
-             url="<%=renderResponse.encodeURL(renderRequest.getContextPath() + reefServletUrl)%>">
+             url="<%=renderResponse.encodeURL(renderRequest.getContextPath() + '/reefs?format=json&country=all')%>">
         </div>
         <input name="reefName" id="reefName" style="width: 360px;"
                dojoType="dijit.form.ComboBox"
@@ -401,7 +397,7 @@ function positionMarker() {
                disabled
                searchAttr="name" />
 
-        <div id="reef_name_not_in_menu" style="visibility: hidden;">
+        <div id="reef-name-not-in-menu" style="visibility: hidden;">
             <br/>
             <p style="width: 480px;">
                 Before entering your reef and dive site details, check if they are already listed on the drop down menu.
