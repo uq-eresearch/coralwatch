@@ -384,10 +384,14 @@ function positionMarker() {
             });
         </script>
         
+        <%
+            String reefServletUrl = "/reefs?format=json&country=all";
+        %>   
+        
         <div id="reefStore" jsId="reefStore"
              dojoType="dojo.data.ItemFileReadStore"
              urlPreventCache="true" clearOnClose="true"
-             url="<%=renderResponse.encodeURL(renderRequest.getContextPath() + '/reefs?format=json&country=all')%>">
+             url="<%=renderResponse.encodeURL(renderRequest.getContextPath() + reefServletUrl)%>">
         </div>
         <input name="reefName" id="reefName" style="width: 360px;"
                dojoType="dijit.form.ComboBox"
