@@ -402,7 +402,7 @@ function positionMarker() {
                dojoType="dijit.form.ComboBox"
                value="<%=reefName == null ? "" : reefName%>"
                store="reefStore"
-               required
+               required="true"
                disabled
                searchAttr="name" />
 
@@ -416,7 +416,7 @@ function positionMarker() {
             <input name="confirmReefName" id="confirmReefName"
                    dojoType="dijit.form.CheckBox"
                    checked
-                   required />
+                   required="true" />
             <label for="confirmReefName">&nbsp;I confirm that I can't find my reef name in the drop down menu.</label>
         </div>
 
