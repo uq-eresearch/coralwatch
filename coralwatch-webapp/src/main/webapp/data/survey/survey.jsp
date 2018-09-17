@@ -34,9 +34,6 @@
     dojo.require("dijit.TooltipDialog");
     dojo.require("dijit.form.DropDownButton");
     dojo.require("dojo.data.ItemFileReadStore");
-
-    dojo.require("dojo.dom-style");
-    dojo.require("dijit.registry");
 </script>
 
 <%
@@ -359,7 +356,7 @@ function positionMarker() {
                     }
                     dijit.byId("confirmReefName").attr("checked", match);
                     dijit.byId("confirmReefName").attr("required", !match);
-                    domStyle.set(registry.byId(reef_name_not_in_menu).domNode, 'visibility', match ? 'hidden' : 'visible');
+                    dijit.byId("reef_name_not_in_menu").css("visibility", match ? "hidden" : "visible");
 
                     dijit.byId("latitudeDeg1").setValue("");
                     dijit.byId("longitudeDeg1").setValue("");
