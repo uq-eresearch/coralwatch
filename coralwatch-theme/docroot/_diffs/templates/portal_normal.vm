@@ -158,9 +158,6 @@
 </body>
 #end
 
-#if ($datamodule)
-#else
-    $theme.include($bottom_include)
-#end
+$theme.include($bottom_include)
 
 </html>
