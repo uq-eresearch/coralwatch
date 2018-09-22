@@ -736,6 +736,7 @@
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.data.XmlStore");
     dojo.require("dojo.data.ItemFileReadStore");
+    dojo.require("dojo.data.ItemFileWriteStore");
     dojo.require("dojox.form.Rating");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.TextBox");
@@ -817,9 +818,9 @@
         ]
     ];
 
-    var brData = {
+    var memberData = {
       identifier: 'id',
-      label: 'title',
+      label: 'name',
       items: []
     }
 
@@ -879,14 +880,14 @@
     }
 
     dojo.addOnLoad(function() {
-        userStore.comparatorMap = {};
-        userStore.comparatorMap.country = cmpIgnoreCase;
-        userStore.comparatorMap.name = cmpIgnoreCase;
+        memberStore.comparatorMap = {};
+        memberStore.comparatorMap.country = cmpIgnoreCase;
+        memberStore.comparatorMap.name = cmpIgnoreCase;
         <%--Rating stuff--%>
         <%
         if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
         %>
-        userStore.comparatorMap.rating = cmpIgnoreCase;
+        memberStore.comparatorMap.rating = cmpIgnoreCase;
         <%
         }
         %>
@@ -905,7 +906,7 @@
 
                     if (data_JSON && typeof data_JSON.members !=='undefined' && typeof data_JSON.members.member !=='undefined' && Array.isArray(data_JSON.members.member)) {
                         data_JSON.members.member.forEach(function(member) {
-                            userStore.newItem({
+                            memberStore.newItem({
                                 id: member.view,
                                 name: member.name,
                                 country: member.country,
@@ -983,13 +984,13 @@
      query="{}" >
 </div>--%>
 
-<div dojoType="dojo.data.ItemFileReadStore" jsId="userStore" data="brData"></div>
+<div dojoType="dojo.data.ItemFileWriteStore" jsId="memberStore" data="memberData"></div>
 
 <div id="grid" style="width: 680px; height: 600px;"
      rowsPerPage="250"
      dojoType="dojox.grid.DataGrid"
-     jsId="brGrid"
-     store="userStore"
+     jsId="memberGrid"
+     store="memberStore"
      structure="layoutMembers"
      queryOptions="{}"
      query="{}" >
