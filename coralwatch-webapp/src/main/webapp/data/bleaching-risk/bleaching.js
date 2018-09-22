@@ -121,6 +121,7 @@ dojo.addOnLoad(function() {
   dojo.xhrGet({
     url: url + '?' + param,
     handleAs: 'json',
+    preventCache: true,
     load: function(data) {
       data.forEach(function(survey) {
         brStore.newItem({
