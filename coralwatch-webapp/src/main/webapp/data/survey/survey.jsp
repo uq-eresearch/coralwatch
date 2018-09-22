@@ -70,7 +70,7 @@ function submitCheck() {
 
 function submitNewSurveyForm() {
   var newSurveyForm = dijit.byId('newSurveyForm');
-  if(newSurveyForm) {
+  if (newSurveyForm) {
     newSurveyForm.submit();
   }
 }
@@ -81,9 +81,9 @@ dojo.addOnLoad(function() {
         dijit.byId("latitudeDeg1").getValue(), dijit.byId("longitudeDeg1").getValue());
   });
   dojo.connect(dojo.byId('btnSubmit'), "onclick", function(e) {
-    if(submitCheck()) {
+    if (submitCheck()) {
       var confirmLocationDialog = dijit.byId("confirmLocationDialog");
-      if(confirmLocationDialog) {
+      if (confirmLocationDialog) {
         confirmLocationDialog.show();
       } else {
         submitNewSurveyForm();
@@ -1454,11 +1454,10 @@ function positionMarker() {
 <tr>
     <th style="width: 120px;"><label for="file">Spreadsheet:</label></th>
     <td>
-        <input
-            type="file"
-            id="file"
-            name="file"
-            required="true" />
+        <input type="file"
+               id="file"
+               name="file"
+               required="true" />
     </td>
 </tr>
 <tr>
@@ -1482,11 +1481,10 @@ function positionMarker() {
 <tr>
     <th style="width: 120px;"><label for="file">Spreadsheet:</label></th>
     <td>
-        <input
-            type="file"
-            id="file"
-            name="file"
-            required="true" />
+        <input type="file"
+               id="file"
+               name="file"
+               required="true" />
     </td>
 </tr>
 <tr>
@@ -1763,17 +1761,17 @@ function positionMarker() {
 <div>
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
         <script type="dojo/method" event="onSubmit">
-            if(!this.validate()){
-            alert('Enter a search key word.');
-            return false;
+            if (!this.validate()) {
+                alert('Enter a search key word.');
+                return false;
             } else {
-            grid.queryOptions = {ignoreCase: true};
-            grid.filter({
-            surveyor: "*" + dijit.byId("surveyorFilterField").getValue() + "*",
-            reef: "*" + dijit.byId("reefFilterField").getValue() + "*",
-            country: "*" + dijit.byId("countryFilterField").getValue() + "*"
-            });
-            return false;
+                grid.queryOptions = {ignoreCase: true};
+                grid.filter({
+                    surveyor: "*" + dijit.byId("surveyorFilterField").getValue() + "*",
+                    reef: "*" + dijit.byId("reefFilterField").getValue() + "*",
+                    country: "*" + dijit.byId("countryFilterField").getValue() + "*"
+                });
+                return false;
             }
         </script>
         Country: <input type="text"
