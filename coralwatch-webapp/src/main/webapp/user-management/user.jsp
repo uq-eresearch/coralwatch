@@ -905,7 +905,7 @@
 
                     if (data_JSON && typeof data_JSON.members !=='undefined' && typeof data_JSON.members.member !=='undefined' && Array.isArray(data_JSON.members.member)) {
                         data_JSON.members.member.forEach(function(member) {
-                            brStore.newItem({
+                            userStore.newItem({
                                 id: member.view,
                                 name: member.name,
                                 country: member.country,
