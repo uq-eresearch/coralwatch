@@ -665,7 +665,6 @@
     <div id="friendsGrid" style="width: 680px; height: 600px;"
          rowsPerPage="250"
          dojoType="dojox.grid.DataGrid"
-         jsId="userStore"
          store="userStore"
          structure="layoutMembers"
          queryOptions="{}"
