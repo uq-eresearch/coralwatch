@@ -663,11 +663,10 @@
          label="title">
     </div>
     <div id="friendsGrid" style="width: 680px; height: 600px;"
-         rowsPerPage="250"
+         rowsPerPage="50"
          dojoType="dojox.grid.DataGrid"
          store="userStore"
          structure="layoutMembers"
-         queryOptions="{}"
          query="{}" >
     </div>
 </div>
