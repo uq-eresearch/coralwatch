@@ -661,7 +661,7 @@
          label="title">
     </div>
     <div id="friendsGrid" style="width: 680px; height: 600px;"
-         rowsPerPage="50"
+         rowsPerPage="40"
          dojoType="dojox.grid.DataGrid"
          store="userStore"
          structure="layoutMembers"
@@ -856,8 +856,12 @@
      jsId="userStore"
      label="title">
 </div>
-<div id="grid" jsId="grid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
-     store="userStore" structure="layoutMembers" query="{}" rowsPerPage="40">
+<div id="grid" style="width: 680px; height: 600px;"
+     rowsPerPage="40"
+     dojoType="dojox.grid.DataGrid"
+     store="userStore"
+     structure="layoutMembers"
+     query="{}" >
 </div>
 <%
     }
