@@ -835,107 +835,101 @@
       }
     }
 
-    function cmpDate(a,b) {
-      if((a === null) && (b === null)) {
-        return 0;
-      } else if(a === null) {
-        return -1;
-      } else if(b === null) {
-        return 1;
-      } else {
-        var aa = Date.parse(a);
-        var bb = Date.parse(b);
-        if(aa === bb) {
-          return 0;
-        } else if(aa < bb) {
-          return -1;
-        } else {
-          return 1;
-        }
-      }
-    }
-
     // Changes XML to JSON
     // Modified version from here: http://davidwalsh.name/convert-xml-json
     function xmlToJson(xml) {
-        if (xml) {
+        // Create the return object
+        var obj = {};
 
-            // Create the return object
-            var obj = {};
-    
-            if (xml.nodeType == 1) { // element
-                // do attributes
-                if (xml.attributes.length > 0) {
-                obj["@attributes"] = {};
-                    for (var j = 0; j < xml.attributes.length; j++) {
-                        var attribute = xml.attributes.item(j);
-                        obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
-                    }
-                }
-            } else if (xml.nodeType == 3) { // text
-                obj = xml.nodeValue;
-            }
-
-            // do children
-            // If just one text node inside
-            if (xml.hasChildNodes() && xml.childNodes.length === 1 && xml.childNodes[0].nodeType === 3) {
-                obj = xml.childNodes[0].nodeValue;
-            }
-            else if (xml.hasChildNodes()) {
-                for(var i = 0; i < xml.childNodes.length; i++) {
-                    var item = xml.childNodes.item(i);
-                    var nodeName = item.nodeName;
-                    if (typeof(obj[nodeName]) == "undefined") {
-                        obj[nodeName] = xmlToJson(item);
-                    } else {
-                        if (typeof(obj[nodeName].push) == "undefined") {
-                            var old = obj[nodeName];
-                            obj[nodeName] = [];
-                            obj[nodeName].push(old);
-                        }
-                        obj[nodeName].push(xmlToJson(item));
-                    }
+        if (xml.nodeType == 1) { // element
+            // do attributes
+            if (xml.attributes.length > 0) {
+            obj["@attributes"] = {};
+                for (var j = 0; j < xml.attributes.length; j++) {
+                    var attribute = xml.attributes.item(j);
+                    obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
                 }
             }
-            return obj;
+        } else if (xml.nodeType == 3) { // text
+            obj = xml.nodeValue;
         }
+
+        // do children
+        // If just one text node inside
+        if (xml.hasChildNodes() && xml.childNodes.length === 1 && xml.childNodes[0].nodeType === 3) {
+            obj = xml.childNodes[0].nodeValue;
+        }
+        else if (xml.hasChildNodes()) {
+            for(var i = 0; i < xml.childNodes.length; i++) {
+                var item = xml.childNodes.item(i);
+                var nodeName = item.nodeName;
+                if (typeof(obj[nodeName]) == "undefined") {
+                    obj[nodeName] = xmlToJson(item);
+                } else {
+                    if (typeof(obj[nodeName].push) == "undefined") {
+                        var old = obj[nodeName];
+                        obj[nodeName] = [];
+                        obj[nodeName].push(old);
+                    }
+                    obj[nodeName].push(xmlToJson(item));
+                }
+            }
+        }
+        return obj;
     }
 
     dojo.addOnLoad(function() {
-      //brStore.comparatorMap = {};
-      //brStore.comparatorMap.country = cmpIgnoreCase;
-      //brStore.comparatorMap.name = cmpIgnoreCase;
-      //brStore.comparatorMap.surveys = cmpIgnoreCase;
-      //brStore.comparatorMap.joined = cmpDate;
-
-      var url = "<portlet:resourceURL id="ajax" />";
-
-      dojo.xhrGet({
-        url: url,
-        handleAs: 'xml',
-        preventCache: true,
-        load: function(data_xml) {
-            console.log("row data = ", data_xml);
-            var data_JSON = xmlToJson(data_xml);
-            console.log("XML data = ", data_JSON);
-
-          //data_JSON.forEach(function(member) {
-            //brStore.newItem({
-              //id: survey[0],
-              //country: survey[1],
-              //reef: survey[2],
-              //surveyor: survey[3],
-              //date: survey[4],
-              //records: survey[5],
-              //view: survey[0]
-            //});
-          //});
-
-        },
-        error: function(e) {
-          console.error('loading bleaching risk data failed %o', e);
+        brStore.comparatorMap = {};
+        brStore.comparatorMap.country = cmpIgnoreCase;
+        brStore.comparatorMap.name = cmpIgnoreCase;
+        <%--Rating stuff--%>
+        <%
+        if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
+        %>
+        brStore.comparatorMap.rating = cmpIgnoreCase;
+        <%
         }
-      });
+        %>
+
+        var url = "<portlet:resourceURL id="ajax" />";
+
+        dojo.xhrGet({
+            url: url,
+            handleAs: 'xml',
+            preventCache: true,
+            load: function(data_xml) {
+                //console.log("row data = ", data_xml);
+                if (data_xml) {
+                    var data_JSON = xmlToJson(data_xml);
+                    //console.log("XML data = ", data_JSON);
+
+                    if (data_JSON && typeof data_JSON.members !=='undefined' && typeof data_JSON.members.member !=='undefined' && Array.isArray(data_JSON.members.member)) {
+                        data_JSON.members.member.forEach(function(member) {
+                            brStore.newItem({
+                                id: member.view,
+                                name: member.name,
+                                country: member.country,
+                                joined: member.joined,
+                                surveys: member.surveys,
+
+                                <%--Rating stuff--%>
+                                <%
+                                    if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
+                                %>
+                                rating: member.rating,
+                                <%
+                                }
+                                %>
+                                view: member.view
+                            });
+                        });
+                    }
+                }
+            },
+            error: function(e) {
+                console.error('loading members data failed %o', e);
+            }
+        });
     });
 </script>
 
@@ -976,7 +970,7 @@
 </div>
 <br/>
 
-<div dojoType="dojox.data.XmlStore"
+<%--<div dojoType="dojox.data.XmlStore"
      url="<portlet:resourceURL id="ajax" />"
      jsId="userStore"
      label="title">
@@ -987,9 +981,9 @@
      store="userStore"
      structure="layoutMembers"
      query="{}" >
-</div>
+</div>--%>
 
-<%--<div dojoType="dojo.data.ItemFileReadStore" jsId="userStore" data="brData"></div>
+<div dojoType="dojo.data.ItemFileReadStore" jsId="userStore" data="brData"></div>
 
 <div id="grid" style="width: 680px; height: 600px;"
      rowsPerPage="250"
@@ -999,7 +993,7 @@
      structure="layoutMembers"
      queryOptions="{}"
      query="{}" >
-</div>--%>
+</div>
 <%
     }
 %>
