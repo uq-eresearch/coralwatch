@@ -847,8 +847,7 @@
                                                 style="width:100px;"
                                                 dojoType="dijit.form.TextBox"
                                                 trim="true"
-                                                value=""/><input type="submit" name="submit" value="Search"/> search is
-        case sensitive
+                                                value=""/><input type="submit" name="submit" value="Search"/>
     </form>
 </div>
 <br/>
