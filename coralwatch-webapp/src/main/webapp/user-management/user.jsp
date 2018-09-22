@@ -724,14 +724,18 @@
 } else if (cmd.equals(Constants.PRINT)) {
     String successMsg = ParamUtil.getString(request, "successMsg");
 %>
-<div class="portlet-msg-success"><%=successMsg%></div>
+<div class="portlet-msg-success"><%=successMsg%>
+</div>
 <%
 } else {
 %>
+
 <h2 style="margin-top:0;">All Members</h2>
+
 <script>
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.data.XmlStore");
+    dojo.require("dojo.data.ItemFileReadStore");
     dojo.require("dojox.form.Rating");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.TextBox");
@@ -812,7 +816,127 @@
             }
         ]
     ];
+
+    var brData = {
+      identifier: 'id',
+      label: 'title',
+      items: []
+    }
+
+    function cmpIgnoreCase(a,b) {
+      if((a === null) && (b === null)) {
+        return 0;
+      } else if(a === null) {
+        return -1;
+      } else if(b === null) {
+        return 1;
+      } else {
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+      }
+    }
+
+    function cmpDate(a,b) {
+      if((a === null) && (b === null)) {
+        return 0;
+      } else if(a === null) {
+        return -1;
+      } else if(b === null) {
+        return 1;
+      } else {
+        var aa = Date.parse(a);
+        var bb = Date.parse(b);
+        if(aa === bb) {
+          return 0;
+        } else if(aa < bb) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+    }
+
+    // Changes XML to JSON
+    // Modified version from here: http://davidwalsh.name/convert-xml-json
+    function xmlToJson(xml) {
+
+        // Create the return object
+        var obj = {};
+
+        if (xml.nodeType == 1) { // element
+            // do attributes
+            if (xml.attributes.length > 0) {
+            obj["@attributes"] = {};
+                for (var j = 0; j < xml.attributes.length; j++) {
+                    var attribute = xml.attributes.item(j);
+                    obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+                }
+            }
+        } else if (xml.nodeType == 3) { // text
+            obj = xml.nodeValue;
+        }
+
+        // do children
+        // If just one text node inside
+        if (xml.hasChildNodes() && xml.childNodes.length === 1 && xml.childNodes[0].nodeType === 3) {
+            obj = xml.childNodes[0].nodeValue;
+        }
+        else if (xml.hasChildNodes()) {
+            for(var i = 0; i < xml.childNodes.length; i++) {
+                var item = xml.childNodes.item(i);
+                var nodeName = item.nodeName;
+                if (typeof(obj[nodeName]) == "undefined") {
+                    obj[nodeName] = xmlToJson(item);
+                } else {
+                    if (typeof(obj[nodeName].push) == "undefined") {
+                        var old = obj[nodeName];
+                        obj[nodeName] = [];
+                        obj[nodeName].push(old);
+                    }
+                    obj[nodeName].push(xmlToJson(item));
+                }
+            }
+        }
+        return obj;
+    }
+
+    dojo.addOnLoad(function() {
+      //brStore.comparatorMap = {};
+      //brStore.comparatorMap.country = cmpIgnoreCase;
+      //brStore.comparatorMap.name = cmpIgnoreCase;
+      //brStore.comparatorMap.surveys = cmpIgnoreCase;
+      //brStore.comparatorMap.joined = cmpDate;
+
+      var url = "<portlet:resourceURL id="export" />";
+
+      dojo.xhrGet({
+        url: url,
+        handleAs: 'xml',
+        preventCache: true,
+        load: function(data_xml) {
+        console.log("row data = ", data);
+        vat data_JSON = xmlToJson(data_xml);
+        console.log("XML data = ", data_JSON);
+
+          //data_JSON.forEach(function(member) {
+            //brStore.newItem({
+              //id: survey[0],
+              //country: survey[1],
+              //reef: survey[2],
+              //surveyor: survey[3],
+              //date: survey[4],
+              //records: survey[5],
+              //view: survey[0]
+            //});
+          //});
+
+        },
+        error: function(e) {
+          console.error('loading bleaching risk data failed %o', e);
+        }
+      });
+    });
 </script>
+
 <div>
     <% if (currentUser != null && currentUser.isSuperUser()) { %>
     <div style="float: right;">
@@ -857,10 +981,23 @@
 </div>
 <div id="grid" style="width: 680px; height: 600px;"
      dojoType="dojox.grid.DataGrid"
+     rowsPerPage="40"
      store="userStore"
      structure="layoutMembers"
      query="{}" >
 </div>
+
+<%--<div dojoType="dojo.data.ItemFileReadStore" jsId="userStore" data="brData"></div>
+
+<div id="grid" style="width: 680px; height: 600px;"
+     rowsPerPage="250"
+     dojoType="dojox.grid.DataGrid"
+     jsId="brGrid"
+     store="userStore"
+     structure="layoutMembers"
+     queryOptions="{}"
+     query="{}" >
+</div>--%>
 <%
     }
 %>
