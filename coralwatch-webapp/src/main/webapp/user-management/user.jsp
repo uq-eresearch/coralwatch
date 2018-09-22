@@ -54,9 +54,9 @@
 
 <form dojoType="dijit.form.Form" action="<portlet:actionURL/>" method="post" name="<portlet:namespace />fm">
 <script type="dojo/method" event="onSubmit">
-    if(!this.validate()){
-    alert('Form contains invalid data. Please correct errors first');
-    return false;
+    if (!this.validate()) {
+        alert('Form contains invalid data. Please correct errors first');
+        return false;
     }
     return true;
 </script>
@@ -272,8 +272,7 @@
             <label for="state">State / Province</label>
         </td>
         <td>
-            <input
-                   type="text"
+            <input type="text"
                    name="state"
                    id="state"
                    required="false"
@@ -314,8 +313,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="2"><input type="submit" name="signup"
-                               value="<%=cmd.equals(Constants.ADD) ? "Sign Up" : "Save"%>"/>
+        <td colspan="2"><input type="submit" name="signup" value="<%=cmd.equals(Constants.ADD) ? "Sign Up" : "Save"%>"/>
             <%
                 if (cmd.equals(Constants.EDIT)) {
             %>
@@ -828,8 +826,9 @@
                 alert('Enter a search key word.');
                 return false;
             } else {
+                grid.queryOptions = {ignoreCase: true};
                 grid.filter({
-                    name: "*" + dijit.byId("reefFilterField").getValue() + "*",
+                    name: "*" + dijit.byId("nameFilterField").getValue() + "*",
                     country: "*" + dijit.byId("countryFilterField").getValue() + "*"
                 });
                 return false;
