@@ -724,8 +724,7 @@
 } else if (cmd.equals(Constants.PRINT)) {
     String successMsg = ParamUtil.getString(request, "successMsg");
 %>
-<div class="portlet-msg-success"><%=successMsg%>
-</div>
+<div class="portlet-msg-success"><%=successMsg%></div>
 <%
 } else {
 %>
@@ -857,7 +856,6 @@
      label="title">
 </div>
 <div id="grid" style="width: 680px; height: 600px;"
-     rowsPerPage="40"
      dojoType="dojox.grid.DataGrid"
      store="userStore"
      structure="layoutMembers"
