@@ -73,7 +73,7 @@
             dojo.require("dojo.date.locale");
             dojo.require("dojo.parser");
             dojo.addOnLoad(function() {
-                //        grid.setSortIndex(1, true);
+                //grid.setSortIndex(1, true);
                 surveyStore.comparatorMap = {};
                 surveyStore.comparatorMap["records"] = function(a, b) {
                     var ret = 0;
@@ -85,7 +85,7 @@
                     }
                     return ret;
                 };
-                //                surveygrid.setSortIndex(0, true);
+                //surveygrid.setSortIndex(0, true);
             });
             var dateFormatter = function(data) {
                 return dojo.date.locale.format(new Date(Number(data)), {
@@ -94,9 +94,6 @@
                     locale: "en"
                 });
             };
-            
-            var datamodule = getCookie('datamodule');
-            
             var layoutSurveys = [
                 [
 
@@ -144,12 +141,8 @@
                         name: "View",
                         width: 9,
                         formatter: function(item) {
-                            var url = window.location.origin + '/web/guest/<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=' + item.toString();
-                            if (datamodule) return '<a target="popup" href="' + url + '" onclick="window.open(\'' + url + '\',\'popup\',\'width=682,height=644\'); return false;">More Info</a>';
-                            else return '<a target="_blank" href="' + url + '">More Info</a>';
-
-                            //var viewURL = "<a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + item.toString() + "\">More info</a>";
-                            //return viewURL;
+                            var viewURL = "<a href=\"<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_surveyportlet_WAR_coralwatch_surveyId=" + item.toString() + "\">More info</a>";
+                            return viewURL;
                         }
                     }
                     <% if ((currentUser != null) && currentUser.isSuperUser()) { %>
@@ -304,7 +297,7 @@ if (items.length) {
     dojo.require("dojo.parser");
 
     dojo.addOnLoad(function() {
-        //        grid.setSortIndex(1, true);
+        //grid.setSortIndex(1, true);
         reefStore.comparatorMap = {};
         reefStore.comparatorMap["surveys"] = function(a, b) {
             var ret = 0;
@@ -316,11 +309,8 @@ if (items.length) {
             }
             return ret;
         };
-        //        reefgrid.setSortIndex(0, true);
+        //reefgrid.setSortIndex(0, true);
     });
-    
-    var datamodule = getCookie('datamodule');
-    
     var layoutReefs = [
         [
             {
@@ -352,12 +342,8 @@ if (items.length) {
                 name: "View",
                 width: 10,
                 formatter: function(item) {
-                    var url = window.location.origin + '/web/guest/<%=renderRequest.getAttribute("reefUrl")%>?p_p_id=reefportlet_WAR_coralwatch&_reefportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_reefportlet_WAR_coralwatch_reefId=' + item.toString();
-                    if (datamodule) return '<a target="popup" href="' + url + '" onclick="window.open(\'' + url + '\',\'popup\',\'width=682,height=644\'); return false;">Graphs</a>';
-                    else return '<a target="_blank" href="' + url + '">Graphs</a>';
- 
-                    //var viewURL = "<a href=\"<%=renderRequest.getAttribute("reefUrl")%>?p_p_id=reefportlet_WAR_coralwatch&_reefportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_reefportlet_WAR_coralwatch_reefId=" + item.toString() + "\">Graphs</a>";
-                    //return viewURL;
+                    var viewURL = "<a href=\"<%=renderRequest.getAttribute("reefUrl")%>?p_p_id=reefportlet_WAR_coralwatch&_reefportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_reefportlet_WAR_coralwatch_reefId=" + item.toString() + "\">Graphs</a>";
+                    return viewURL;
                 }
             },
             {
@@ -381,16 +367,16 @@ if (items.length) {
 <div>
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
         <script type="dojo/method" event="onSubmit">
-            if(!this.validate()){
-            alert('Enter a search key word.');
-            return false;
+            if (!this.validate()) {
+                alert('Enter a search key word.');
+                return false;
             } else {
-            reefgrid.queryOptions = {ignoreCase: true};
-            reefgrid.filter({
-            name: "*" + dijit.byId("reefFilterField").getValue() + "*",
-            country: "*" + dijit.byId("countryFilterField").getValue() + "*"
-            });
-            return false;
+                reefgrid.queryOptions = {ignoreCase: true};
+                reefgrid.filter({
+                    name: "*" + dijit.byId("reefFilterField").getValue() + "*",
+                    country: "*" + dijit.byId("countryFilterField").getValue() + "*"
+                });
+                return false;
             }
         </script>
         Country: <input type="text"
@@ -405,7 +391,8 @@ if (items.length) {
                                                      style="width:100px;"
                                                      dojoType="dijit.form.TextBox"
                                                      trim="true"
-                                                     value=""/><input type="submit" name="submit" value="Search"/>search is case sensitive
+                                                     value=""/><input type="submit" name="submit" value="Filter"/>
+        Filter is case sensitive
     </form>
 </div>
 <br/>
