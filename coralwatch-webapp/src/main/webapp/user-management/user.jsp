@@ -227,8 +227,7 @@
             <label for="addressLine1">Address Line 1</label>
         </td>
         <td>
-            <input
-                   type="text"
+            <input type="text"
                    name="addressLine1"
                    id="addressLine1"
                    required="false"
@@ -243,8 +242,7 @@
             <label for="addressLine2">Address Line 2</label>
         </td>
         <td>
-            <input
-                   type="text"
+            <input type="text"
                    name="addressLine2"
                    id="addressLine2"
                    required="false"
@@ -259,8 +257,7 @@
             <label for="city">City / Town</label>
         </td>
         <td>
-            <input
-                   type="text"
+            <input type="text"
                    name="city"
                    id="city"
                    required="false"
@@ -291,8 +288,7 @@
             <label for="postcode">Postcode</label>
         </td>
         <td>
-            <input
-                   type="text"
+            <input type="text"
                    name="postcode"
                    id="postcode"
                    required="false"
@@ -438,7 +434,7 @@
                 url:'<%=renderResponse.encodeURL(renderRequest.getContextPath())%>' + '/rating?cmd=rateuser&raterId=<%=currentUser.getId()%>&ratedId=<%=user.getId()%>&value=' + widget.value,
                 timeout: 5000,
                 load: function(response, ioArgs) {
-                    //                    alert("Response: " + response)
+                    //alert("Response: " + response)
                     return response;
                 },
                 error: function(response, ioArgs) {
@@ -666,8 +662,14 @@
          jsId="userStore"
          label="title">
     </div>
-    <div id="friendsGrid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
-         store="userStore" structure="layoutMembers" query="{}" rowsPerPage="40">
+    <div id="friendsGrid" style="width: 680px; height: 600px;"
+         rowsPerPage="250"
+         dojoType="dojox.grid.DataGrid"
+         jsId="userStore"
+         store="userStore"
+         structure="layoutMembers"
+         queryOptions="{}"
+         query="{}" >
     </div>
 </div>
 <%--<div id="networkTab" dojoType="dijit.layout.ContentPane" title="Network" style="width:650px; height:60ex">--%>
@@ -824,15 +826,15 @@
     <% } %>
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
         <script type="dojo/method" event="onSubmit">
-            if(!this.validate()){
-            alert('Enter a search key word.');
-            return false;
+            if (!this.validate()) {
+                alert('Enter a search key word.');
+                return false;
             } else {
-            grid.filter({
-            name: "*" + dijit.byId("reefFilterField").getValue() + "*",
-            country: "*" + dijit.byId("countryFilterField").getValue() + "*"
-            });
-            return false;
+                grid.filter({
+                    name: "*" + dijit.byId("reefFilterField").getValue() + "*",
+                    country: "*" + dijit.byId("countryFilterField").getValue() + "*"
+                });
+                return false;
             }
         </script>
         Name: <input type="text"
