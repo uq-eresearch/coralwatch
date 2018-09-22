@@ -913,9 +913,9 @@
         handleAs: 'xml',
         preventCache: true,
         load: function(data_xml) {
-        console.log("row data = ", data);
-        vat data_JSON = xmlToJson(data_xml);
-        console.log("XML data = ", data_JSON);
+            console.log("row data = ", data_xml);
+            var data_JSON = xmlToJson(data_xml);
+            console.log("XML data = ", data_JSON);
 
           //data_JSON.forEach(function(member) {
             //brStore.newItem({
