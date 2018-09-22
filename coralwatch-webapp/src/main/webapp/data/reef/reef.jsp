@@ -73,7 +73,7 @@
             dojo.require("dojo.date.locale");
             dojo.require("dojo.parser");
             dojo.addOnLoad(function() {
-                //grid.setSortIndex(1, true);
+                //        grid.setSortIndex(1, true);
                 surveyStore.comparatorMap = {};
                 surveyStore.comparatorMap["records"] = function(a, b) {
                     var ret = 0;
@@ -85,7 +85,7 @@
                     }
                     return ret;
                 };
-                //surveygrid.setSortIndex(0, true);
+                //                surveygrid.setSortIndex(0, true);
             });
             var dateFormatter = function(data) {
                 return dojo.date.locale.format(new Date(Number(data)), {
@@ -297,7 +297,7 @@ if (items.length) {
     dojo.require("dojo.parser");
 
     dojo.addOnLoad(function() {
-        //grid.setSortIndex(1, true);
+        //        grid.setSortIndex(1, true);
         reefStore.comparatorMap = {};
         reefStore.comparatorMap["surveys"] = function(a, b) {
             var ret = 0;
@@ -309,7 +309,7 @@ if (items.length) {
             }
             return ret;
         };
-        //reefgrid.setSortIndex(0, true);
+        //        reefgrid.setSortIndex(0, true);
     });
     var layoutReefs = [
         [
@@ -367,16 +367,15 @@ if (items.length) {
 <div>
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
         <script type="dojo/method" event="onSubmit">
-            if (!this.validate()) {
-                alert('Enter a search key word.');
-                return false;
+            if(!this.validate()){
+            alert('Enter a search key word.');
+            return false;
             } else {
-                reefgrid.queryOptions = {ignoreCase: true};
-                reefgrid.filter({
-                    name: "*" + dijit.byId("reefFilterField").getValue() + "*",
-                    country: "*" + dijit.byId("countryFilterField").getValue() + "*"
-                });
-                return false;
+            reefgrid.filter({
+            name: "*" + dijit.byId("reefFilterField").getValue() + "*",
+            country: "*" + dijit.byId("countryFilterField").getValue() + "*"
+            });
+            return false;
             }
         </script>
         Country: <input type="text"
