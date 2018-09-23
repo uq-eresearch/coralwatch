@@ -783,7 +783,7 @@
                 name: "Surveys",
                 width: 10,
                 formatter: function(item) {
-                    return item.toString();
+                    return Number(item);
                 }
             },
 
@@ -907,12 +907,11 @@
                     if (data_JSON && typeof data_JSON.members !=='undefined' && typeof data_JSON.members.member !=='undefined' && Array.isArray(data_JSON.members.member)) {
                         data_JSON.members.member.forEach(function(member) {
                             memberStore.newItem({
-                                id: member.view,
-                                name: member.name,
-                                country: member.country,
-                                joined: member.joined,
-                                surveys: member.surveys,
-
+                                id: Number(member.view),
+                                name: ((member.name).replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/"/g,"\\\"").replace(/'/g,"\\\'").replace(/\&/g, "\\&")).toString(),
+                                country: ((member.country)..replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/"/g,"\\\"").replace(/'/g,"\\\'").replace(/\&/g, "\\&")).toString(),
+                                joined: (member.joined).toString(),
+                                surveys: (Number(member.surveys) !== -1 ? member.surveys : '0'),
                                 <%--Rating stuff--%>
                                 <%
                                     if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
