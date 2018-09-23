@@ -286,29 +286,14 @@ if (items.length) {
 
 <script>
     dojo.require("dojox.grid.DataGrid");
-    dojo.require("dojox.data.XmlStore");
+    dojo.require("dojo.data.ItemFileReadStore");
+    dojo.require("dojo.data.ItemFileWriteStore");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.TextBox");
     dojo.require("dijit.form.Button");
     dojo.require("dojo.date.locale");
     dojo.require("dojo.parser");
 
-    dojo.addOnLoad(function() {
-        //grid.setSortIndex(1, true);
-        reefStore.comparatorMap = {};
-        reefStore.comparatorMap["surveys"] = function(a, b) {
-            var ret = 0;
-            if (Number(a) > Number(b)) {
-                ret = 1;
-            }
-            if (Number(a) < Number(b)) {
-                ret = -1;
-            }
-            return ret;
-        };
-        //reefgrid.setSortIndex(0, true);
-    });
-    
     var layoutReefs = [
         [
             {
@@ -360,49 +345,170 @@ if (items.length) {
             }
         ]
     ];
+
+    var reefData = {
+      identifier: 'id',
+      label: 'name',
+      items: []
+    }
+
+    function cmpIgnoreCase(a,b) {
+      if((a === null) && (b === null)) {
+        return 0;
+      } else if(a === null) {
+        return -1;
+      } else if(b === null) {
+        return 1;
+      } else {
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+      }
+    }
+
+    // Changes XML to JSON
+    // Modified version from here: http://davidwalsh.name/convert-xml-json
+    function xmlToJson(xml) {
+        // Create the return object
+        var obj = {};
+
+        if (xml.nodeType == 1) { // element
+            // do attributes
+            if (xml.attributes.length > 0) {
+            obj["@attributes"] = {};
+                for (var j = 0; j < xml.attributes.length; j++) {
+                    var attribute = xml.attributes.item(j);
+                    obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+                }
+            }
+        } else if (xml.nodeType == 3) { // text
+            obj = xml.nodeValue;
+        }
+
+        // do children
+        // If just one text node inside
+        if (xml.hasChildNodes() && xml.childNodes.length === 1 && xml.childNodes[0].nodeType === 3) {
+            obj = xml.childNodes[0].nodeValue;
+        }
+        else if (xml.hasChildNodes()) {
+            for(var i = 0; i < xml.childNodes.length; i++) {
+                var item = xml.childNodes.item(i);
+                var nodeName = item.nodeName;
+                if (typeof(obj[nodeName]) == "undefined") {
+                    obj[nodeName] = xmlToJson(item);
+                } else {
+                    if (typeof(obj[nodeName].push) == "undefined") {
+                        var old = obj[nodeName];
+                        obj[nodeName] = [];
+                        obj[nodeName].push(old);
+                    }
+                    obj[nodeName].push(xmlToJson(item));
+                }
+            }
+        }
+        return obj;
+    }
+
+    dojo.addOnLoad(function() {
+        reefStore.comparatorMap = {};
+        reefStore.comparatorMap["country"] = cmpIgnoreCase;
+        reefStore.comparatorMap["name"] = cmpIgnoreCase;
+        reefStore.comparatorMap["surveys"] = function(a, b) {
+            var ret = 0;
+            if (Number(a) > Number(b)) ret = 1;
+            if (Number(a) < Number(b)) ret = -1;
+            return ret;
+        };
+
+        var url = "<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=xml";
+
+        dojo.xhrGet({
+            url: url,
+            handleAs: 'xml',
+            preventCache: true,
+            load: function(data_xml) {
+                //console.log("row data = ", data_xml);
+                if (data_xml) {
+                    var data_JSON = xmlToJson(data_xml);
+                    //console.log("XML data = ", data_JSON);
+
+                    if (data_JSON && typeof data_JSON.reefs !=='undefined' && typeof data_JSON.reefs.reef !=='undefined' && Array.isArray(data_JSON.reefs.reef)) {
+                        data_JSON.reefs.reef.forEach(function(reef, index) {
+
+                            if (typeof reef["country"] !== "string") { reef["country"] = null; reef["country"] = ""; }
+                            if (typeof reef["name"] !== "string") { reef["name"] = null; reef["name"] = ""; }
+                            if (typeof reef["surveys"] !== "string") { reef["surveys"] = null; reef["surveys"] = "0"; }
+                            if (typeof reef["view"] !== "string") { reef["view"] = null; reef["view"] = "0"; }
+                            if (typeof reef["download"] !== "string") { reef["download"] = null; reef["download"] = "0"; }
+
+                            reefStore.newItem({
+                                //id: Number(reef["view"]),
+                                id: (index +1),
+                                country: reef["country"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
+                                name: reef["name"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
+                                surveys: (Number(reef["surveys"]) !== "NaN" ? Number(reef["surveys"]) : 0),
+                                view: reef["view"],
+                                download: reef["download"]
+                            });
+                        });
+                    }
+                }
+            },
+            error: function(e) {
+                console.error('loading reefs data failed %o', e);
+            }
+        });
+    });
+
+    function apply_search () {
+        reefgrid.queryOptions = {ignoreCase: true};
+        reefgrid.filter({
+            name: "*" + dijit.byId("nameFilterField").getValue() + "*",
+            country: "*" + dijit.byId("countryFilterField").getValue() + "*"
+        });
+    }
 </script>
 
 <div>
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
-        <script type="dojo/method" event="onSubmit">
-            if (!this.validate()) {
-                alert('Enter a search key word.');
-                return false;
-            } else {
-                reefgrid.queryOptions = {ignoreCase: true};
-                reefgrid.filter({
-                    name: "*" + dijit.byId("reefFilterField").getValue() + "*",
-                    country: "*" + dijit.byId("countryFilterField").getValue() + "*"
-                });
-                return false;
-            }
-        </script>
+
         Country: <input type="text"
                         id="countryFilterField"
                         name="countryFilterField"
                         style="width:100px;"
                         dojoType="dijit.form.TextBox"
                         trim="true"
-                        value=""/> Reef Name: <input type="text"
-                                                     id="reefFilterField"
-                                                     name="reefFilterField"
-                                                     style="width:100px;"
-                                                     dojoType="dijit.form.TextBox"
-                                                     trim="true"
-                                                     value=""/>&nbsp;<input type="submit"
-                                                                            name="submit"
-                                                                            value="Search"/>
+                        value=""/>&nbsp;&nbsp;Reef Name:&nbsp;<input type="text"
+                                                                     id="nameFilterField"
+                                                                     name="nameFilterField"
+                                                                     style="width:100px;"
+                                                                     dojoType="dijit.form.TextBox"
+                                                                     trim="true"
+                                                                     value=""/>&nbsp;&nbsp;<input type="button"
+                                                                                                name="search"
+                                                                                                value="Search"
+                                                                                                onClick="apply_search()" />
     </form>
 </div>
 <br/>
 
-<div dojoType="dojox.data.XmlStore"
-     url="<%=renderResponse.encodeURL(renderRequest.getContextPath())%>/reefs?format=xml"
-     jsId="reefStore" label="title">
+<div dojoType="dojo.data.ItemFileWriteStore" jsId="reefStore" data="reefData"></div>
+
+<div style="width: 680px; height: 600px;"
+     id="reefgrid"
+     jsId="reefgrid"
+     dojoType="dojox.grid.DataGrid"
+     rowsPerPage="250"
+     store="reefStore"
+     structure="layoutReefs"
+     queryOptions="{}"
+     query="{}" >
 </div>
-<div id="reefgrid" jsId="reefgrid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
-     store="reefStore" structure="layoutReefs" query="{}" rowsPerPage="40">
-</div>
+
+<script>
+    dojo.addOnLoad(function() {
+        reefgrid.setSortIndex(1, true);
+    });
+</script>
+
 <%
     }
 %>
