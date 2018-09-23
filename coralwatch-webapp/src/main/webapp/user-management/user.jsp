@@ -956,34 +956,22 @@
     <% } %>
 
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
-
-        <%--<script type="dojo/method" event="click">
-            if (!this.validate() && false) {
-                alert('Enter a search key word.');
-                return false;
-            } else {
-                grid.queryOptions = {ignoreCase: true};
-                grid.filter({
-                    name: "*" + dijit.byId("nameFilterField").getValue() + "*",
-                    country: "*" + dijit.byId("countryFilterField").getValue() + "*"
-                });
-                return false;
-            }
-        </script>--%>
-
         Name: <input type="text"
                      id="nameFilterField"
                      name="nameFilterField"
                      style="width:100px;"
                      dojoType="dijit.form.TextBox"
                      trim="true"
+                     placeholder="Search string"
                      value="" />&nbsp;&nbsp;
+        
         Country: <input type="text"
                         id="countryFilterField"
                         name="countryFilterField"
                         style="width:100px;"
                         dojoType="dijit.form.TextBox"
                         trim="true"
+                        placeholder="Search string"
                         value="" />&nbsp;&nbsp;
 
         <input type="button" name="search" value="Search" onClick="apply_search()" />
@@ -991,7 +979,7 @@
 </div>
 <br/>
 
-<div dojoType="dojo.data.ItemFileWriteStore" jsId="memberStore" data="memberData"></div>
+<div dojoType="dojo.data.ItemFileReadStore" jsId="memberStore" data="memberData"></div>
 
 <div style="width: 680px; height: 600px;"
      id="membergrid"
