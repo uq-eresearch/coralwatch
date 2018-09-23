@@ -1861,13 +1861,13 @@ function positionMarker() {
                                 date: survey["date"],
                                 records: (Number(survey["records"]) !== "NaN" ? Number(survey["records"]) : 0),
                                 <%--Rating stuff--%>
-                                <%
-                                    if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
-                                %>
-                                rating: survey["rating"],
-                                <%
-                                }
-                                %>
+                                <%--<%--%>
+                                    <%--if (CoralwatchApplication.getConfiguration().isRatingSetup()) {--%>
+                                <%--%>--%>
+                                <%--rating: survey["rating"],--%>
+                                <%--<%--%>
+                                <%--}--%>
+                                <%--%>--%>
                                 view: survey["view"],
                                 reviewState: survey["reviewState"]
                             });
