@@ -928,7 +928,6 @@
                                 view: member["view"]
                             });
                         });
-                        membergrid.setSortIndex(1, true);
                     }
                 }
             },
@@ -993,6 +992,11 @@
      queryOptions="{}"
      query="{}" >
 </div>
+
+<script>
+    membergrid.setSortIndex(1, true);
+</script>
+
 <%
     }
 %>
