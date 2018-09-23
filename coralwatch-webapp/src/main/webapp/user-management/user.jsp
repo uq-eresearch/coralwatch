@@ -914,8 +914,8 @@
                             memberStore.newItem({
                                 //id: Number(member["view"]),
                                 id: (index +1),
-                                name: member["name"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\&/g, ""),
-                                country: member["country"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\&/g, ""),
+                                name: member["name"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
+                                country: member["country"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
                                 joined: member["joined"],
                                 surveys: (Number(member["surveys"]) !== "NaN" ? Number(member["surveys"]) : 0),
                                 <%--Rating stuff--%>
@@ -947,7 +947,7 @@
     </div>
     <% } %>
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
-        <script type="dojo/method" event="onSubmit">
+        <script type="dojo/method" event="click">
             if (!this.validate()) {
                 alert('Enter a search key word.');
                 return false;
@@ -972,7 +972,7 @@
                                                 style="width:100px;"
                                                 dojoType="dijit.form.TextBox"
                                                 trim="true"
-                                                value=""/>&nbsp;<input type="submit"
+                                                value=""/>&nbsp;<input type="button"
                                                                        name="submit"
                                                                        value="Search"/>
     </form>
