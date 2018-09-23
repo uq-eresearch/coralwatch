@@ -878,13 +878,13 @@
 
     dojo.addOnLoad(function() {
         memberStore.comparatorMap = {};
-        memberStore.comparatorMap.country = cmpIgnoreCase;
-        memberStore.comparatorMap.name = cmpIgnoreCase;
+        memberStore.comparatorMap["country"] = cmpIgnoreCase;
+        memberStore.comparatorMap["name"] = cmpIgnoreCase;
         <%--Rating stuff--%>
         <%
         if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
         %>
-        memberStore.comparatorMap.rating = cmpIgnoreCase;
+        memberStore.comparatorMap["rating"] = cmpIgnoreCase;
         <%
         }
         %>
