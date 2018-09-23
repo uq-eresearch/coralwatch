@@ -994,7 +994,9 @@
 </div>
 
 <script>
-    membergrid.setSortIndex(1, true);
+    dojo.addOnLoad(function() {
+        membergrid.setSortIndex(1, true);
+    });
 </script>
 
 <%
