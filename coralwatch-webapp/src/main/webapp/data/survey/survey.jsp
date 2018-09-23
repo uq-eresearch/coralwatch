@@ -1872,7 +1872,6 @@ function positionMarker() {
                                 reviewState: survey["reviewState"]
                             });
                         });
-                        surveygrid.setSortIndex(1, true);
                     }
                 }
             },
@@ -1942,6 +1941,11 @@ function positionMarker() {
      queryOptions="{}"
      query="{}" >
 </div>
+
+<script>
+    surveygrid.setSortIndex(1, true);
+</script>
+
 <%
     }
 %>
