@@ -940,8 +940,8 @@
     });
 
     function apply_search () {
-        grid.queryOptions = {ignoreCase: true};
-        grid.filter({
+        membergrid.queryOptions = {ignoreCase: true};
+        membergrid.filter({
             name: "*" + dijit.byId("nameFilterField").getValue() + "*",
             country: "*" + dijit.byId("countryFilterField").getValue() + "*"
         });
@@ -977,26 +977,27 @@
                      style="width:100px;"
                      dojoType="dijit.form.TextBox"
                      trim="true"
-                     value=""/>&nbsp;
+                     value="" />&nbsp;&nbsp;
         Country: <input type="text"
                         id="countryFilterField"
                         name="countryFilterField"
                         style="width:100px;"
                         dojoType="dijit.form.TextBox"
                         trim="true"
-                        value=""/>&nbsp;&nbsp;
+                        value="" />&nbsp;&nbsp;
 
-        <button type="button" name="search" value="Search" onClick="apply_search()"></button>
+        <input type="button" name="search" value="Search" onClick="apply_search()" />
     </form>
 </div>
 <br/>
 
 <div dojoType="dojo.data.ItemFileWriteStore" jsId="memberStore" data="memberData"></div>
 
-<div id="grid" style="width: 680px; height: 600px;"
-     rowsPerPage="250"
+<div style="width: 680px; height: 600px;"
+     id="membergrid"
+     jsId="membergrid"
      dojoType="dojox.grid.DataGrid"
-     jsId="memberGrid"
+     rowsPerPage="250"
      store="memberStore"
      structure="layoutMembers"
      queryOptions="{}"
