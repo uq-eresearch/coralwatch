@@ -904,20 +904,20 @@
                     if (data_JSON && typeof data_JSON.members !=='undefined' && typeof data_JSON.members.member !=='undefined' && Array.isArray(data_JSON.members.member)) {
                         data_JSON.members.member.forEach(function(member, index) {
 
-                            if (typeof member.name !== "string") { member["name"] = null; member["name"] = ""; }
-                            if (typeof member.country !== "string") { member["country"] = null; member["country"] = ""; }
-                            if (typeof member.joined !== "string") { var d = new Date("01/01/2001"); member["joined"] = null; member["joined"] = (d.getTime()).toString(); }
-                            if (typeof member.surveys !== "string") { member["surveys"] = null; member["surveys"] = "0"; }
-                            if (typeof member.rating !== "string") { member["rating"] = null; member["rating"] = "0"; }
-                            if (typeof member.view !== "string") { member["view"] = null; member["view"] = "0"; }
+                            if (typeof member["name"] !== "string") { member["name"] = null; member["name"] = ""; }
+                            if (typeof member["country"] !== "string") { member["country"] = null; member["country"] = ""; }
+                            if (typeof member["joined"] !== "string") { var d = new Date("01/01/2001"); member["joined"] = null; member["joined"] = (d.getTime()).toString(); }
+                            if (typeof member["surveys"] !== "string") { member["surveys"] = null; member["surveys"] = "0"; }
+                            if (typeof member["rating"] !== "string") { member["rating"] = null; member["rating"] = "0"; }
+                            if (typeof member["view"] !== "string") { member["view"] = null; member["view"] = "0"; }
 
                             memberStore.newItem({
                                 //id: Number(member["view"]),
-                                id: index +1,
-                                name: (member["name"]).replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\&/g, ""),
-                                country: (member["country"]).replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\&/g, ""),
+                                id: (index +1),
+                                name: member["name"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\&/g, ""),
+                                country: member["country"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\&/g, ""),
                                 joined: member["joined"],
-                                surveys: (Number(member["surveys"]) !-- "NaN" ? Number(member["surveys"]) : 0),
+                                surveys: (Number(member["surveys"]) !== "NaN" ? Number(member["surveys"]) : 0),
                                 <%--Rating stuff--%>
                                 <%
                                     if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
