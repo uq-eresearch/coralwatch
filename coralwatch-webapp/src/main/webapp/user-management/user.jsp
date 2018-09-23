@@ -907,8 +907,8 @@
                             if (typeof member.name !== "string") member.name = "";
                             if (typeof member.country !== "string") member.country = "";
                             if (typeof member.joined !== "string") { var d = new Date("01/01/2001"); member.joined = (d.getTime()).toString(); }
-                            if (typeof member.surveys !== "string") member.country = "0";
-                            if (typeof member.rating !== "string") member.country = "0";
+                            if (typeof member.surveys !== "string") member.surveys = "0";
+                            if (typeof member.rating !== "string") member.rating = "0";
                             if (typeof member.view !== "string") member.view = "0";
 
                             memberStore.newItem({
