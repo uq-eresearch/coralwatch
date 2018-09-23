@@ -269,22 +269,22 @@ function positionMarker() {
     <th><label for="groupName">Group Name:</label></th>
     <td>
         <table>
-        <tr>
-        <td style="padding: 0; vertical-align: middle;">
-        <input type="text"
-            id="groupName"
-            name="groupName"
-            required="true"
-            dojoType="dijit.form.ValidationTextBox"
-            regExp="...*"
-            invalidMessage="Enter the name of the group you are participating with"
-            value="<%=groupName == null ? "" : groupName%>" />
-        </td>
-        <td style="width: 320px; padding: 0; vertical-align: middle;">
-            e.g. EarthCheck, ReefCheck, OceansWatch.<br />
-            Enter your own name if you do not belong to a group.
-        </td>
-        </tr>
+            <tr>
+                <td style="padding: 0; vertical-align: middle;">
+                    <input type="text"
+                        id="groupName"
+                        name="groupName"
+                        required="true"
+                        dojoType="dijit.form.ValidationTextBox"
+                        regExp="...*"
+                        invalidMessage="Enter the name of the group you are participating with"
+                        value="<%=groupName == null ? "" : groupName%>" />
+                </td>
+                <td style="width: 320px; padding: 0; vertical-align: middle;">
+                    e.g. EarthCheck, ReefCheck, OceansWatch.<br />
+                    Enter your own name if you do not belong to a group.
+                </td>
+            </tr>
         </table>
     </td>
 </tr>
@@ -296,13 +296,13 @@ function positionMarker() {
                 required="true"
                 hasDownArrow="true"
                 value="<%=participatingAs == null ? "" : participatingAs%>">
-        <option selected="selected" value=""></option>
-        <option value="Dive Centre">Dive Centre</option>
-        <option value="Scientist">Scientist</option>
-        <option value="Conservation Group">Conservation Group</option>
-        <option value="School/University">School/University</option>
-        <option value="Tourist">Tourist</option>
-        <option value="Other">Other</option>
+            <option selected="selected" value=""></option>
+            <option value="Dive Centre">Dive Centre</option>
+            <option value="Scientist">Scientist</option>
+            <option value="Conservation Group">Conservation Group</option>
+            <option value="School/University">School/University</option>
+            <option value="Tourist">Tourist</option>
+            <option value="Other">Other</option>
     </select>
     </td>
 </tr>
@@ -1631,28 +1631,19 @@ function positionMarker() {
 <%
     }
 %>
+
 <h2 style="margin-top:0;">All Surveys</h2>
+
 <script>
     dojo.require("dojox.grid.DataGrid");
-    dojo.require("dojox.data.XmlStore");
+    dojo.require("dojo.data.ItemFileReadStore");
+    dojo.require("dojo.data.ItemFileWriteStore");
     dojo.require("dojox.form.Rating");
+    dojo.require("dijit.form.Form");
+    dojo.require("dijit.form.Button");
     dojo.require("dojo.date.locale");
     dojo.require("dojo.parser");
 
-    dojo.addOnLoad(function() {
-        //        grid.setSortIndex(1, true);
-        surveyStore.comparatorMap = {};
-        surveyStore.comparatorMap["records"] = function(a, b) {
-            var ret = 0;
-            if (Number(a) > Number(b)) {
-                ret = 1;
-            }
-            if (Number(a) < Number(b)) {
-                ret = -1;
-            }
-            return ret;
-        }
-    });
     var dateFormatter = function(data) {
         return dojo.date.locale.format(new Date(Number(data)), {
             datePattern: "dd MMM yyyy",
@@ -1756,64 +1747,200 @@ function positionMarker() {
             <% } %>
         ]
     ];
+
+    var surveyData = {
+      identifier: 'id',
+      label: 'name',
+      items: []
+    }
+
+    function cmpIgnoreCase(a,b) {
+      if((a === null) && (b === null)) {
+        return 0;
+      } else if(a === null) {
+        return -1;
+      } else if(b === null) {
+        return 1;
+      } else {
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+      }
+    }
+
+    // Changes XML to JSON
+    // Modified version from here: http://davidwalsh.name/convert-xml-json
+    function xmlToJson(xml) {
+        // Create the return object
+        var obj = {};
+
+        if (xml.nodeType == 1) { // element
+            // do attributes
+            if (xml.attributes.length > 0) {
+            obj["@attributes"] = {};
+                for (var j = 0; j < xml.attributes.length; j++) {
+                    var attribute = xml.attributes.item(j);
+                    obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+                }
+            }
+        } else if (xml.nodeType == 3) { // text
+            obj = xml.nodeValue;
+        }
+
+        // do children
+        // If just one text node inside
+        if (xml.hasChildNodes() && xml.childNodes.length === 1 && xml.childNodes[0].nodeType === 3) {
+            obj = xml.childNodes[0].nodeValue;
+        }
+        else if (xml.hasChildNodes()) {
+            for(var i = 0; i < xml.childNodes.length; i++) {
+                var item = xml.childNodes.item(i);
+                var nodeName = item.nodeName;
+                if (typeof(obj[nodeName]) == "undefined") {
+                    obj[nodeName] = xmlToJson(item);
+                } else {
+                    if (typeof(obj[nodeName].push) == "undefined") {
+                        var old = obj[nodeName];
+                        obj[nodeName] = [];
+                        obj[nodeName].push(old);
+                    }
+                    obj[nodeName].push(xmlToJson(item));
+                }
+            }
+        }
+        return obj;
+    }
+
+    dojo.addOnLoad(function() {
+        surveyStore.comparatorMap = {};
+        surveyStore.comparatorMap["country"] = cmpIgnoreCase;
+        surveyStore.comparatorMap["reef"] = cmpIgnoreCase;
+        surveyStore.comparatorMap["surveyor"] = cmpIgnoreCase;
+        surveyStore.comparatorMap["records"] = function(a, b) {
+            var ret = 0;
+            if (Number(a) > Number(b)) ret = 1;
+            if (Number(a) < Number(b)) ret = -1;
+            return ret;
+        };
+
+        <portlet:resourceURL var="listURL" id="list">
+            <portlet:param name="format" value="xml" />
+            <% if (createdByUserId != null) { %>
+            <portlet:param name="createdByUserId" value="<%= String.valueOf(createdByUserId) %>" />
+            <% } %>
+        </portlet:resourceURL>
+
+        var url = "<%= listURL %>";
+
+        dojo.xhrGet({
+            url: url,
+            handleAs: 'xml',
+            preventCache: true,
+            load: function(data_xml) {
+                //console.log("row data = ", data_xml);
+                if (data_xml) {
+                    var data_JSON = xmlToJson(data_xml);
+                    //console.log("XML data = ", data_JSON);
+
+                    if (data_JSON && typeof data_JSON.members !=='undefined' && typeof data_JSON.members.member !=='undefined' && Array.isArray(data_JSON.members.member)) {
+                        data_JSON.members.member.forEach(function(member, index) {
+
+                            if (typeof member["reef"] !== "string") { member["reef"] = null; member["reef"] = ""; }
+                            if (typeof member["country"] !== "string") { member["country"] = null; member["country"] = ""; }
+                            if (typeof member["date"] !== "string") { var d = new Date("01/01/2001"); member["date"] = null; member["date"] = (d.getTime()).toString(); }
+                            if (typeof member["surveyor"] !== "string") { member["surveyor"] = null; member["surveyor"] = ""; }
+                            if (typeof member["rating"] !== "string") { member["rating"] = null; member["rating"] = "0"; }
+                            if (typeof member["view"] !== "string") { member["view"] = null; member["view"] = "0"; }
+                            if (typeof member["records"] !== "string") { member["records"] = null; member["records"] = "0"; }
+                            if (typeof member["reviewState"] !== "string") { member["reviewState"] = null; member["reviewState"] = ""; }
+
+                            surveyStore.newItem({
+                                //id: Number(member["view"]),
+                                id: (index +1),
+                                reef: member["reef"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
+                                country: member["country"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
+                                surveyor: member["surveyor"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
+                                date: member["date"],
+                                records: (Number(member["records"]) !== "NaN" ? Number(member["records"]) : 0),
+                                <%--Rating stuff--%>
+                                <%
+                                    if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
+                                %>
+                                rating: member["rating"],
+                                <%
+                                }
+                                %>
+                                view: member["view"],
+                                reviewState: member["reviewState"]
+                            });
+                        });
+                        surveygrid.setSortIndex(1, true);
+                    }
+                }
+            },
+            error: function(e) {
+                console.error('loading surveys data failed %o', e);
+            }
+        });
+    });
+
+    function apply_search () {
+        surveygrid.queryOptions = {ignoreCase: true};
+        surveygrid.filter({
+            surveyor: "*" + dijit.byId("surveyorFilterField").getValue() + "*",
+            reef: "*" + dijit.byId("reefFilterField").getValue() + "*",
+            country: "*" + dijit.byId("countryFilterField").getValue() + "*"
+        });
+    }
 </script>
 
 <div>
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
-        <script type="dojo/method" event="onSubmit">
-            if (!this.validate()) {
-                alert('Enter a search key word.');
-                return false;
-            } else {
-                grid.queryOptions = {ignoreCase: true};
-                grid.filter({
-                    surveyor: "*" + dijit.byId("surveyorFilterField").getValue() + "*",
-                    reef: "*" + dijit.byId("reefFilterField").getValue() + "*",
-                    country: "*" + dijit.byId("countryFilterField").getValue() + "*"
-                });
-                return false;
-            }
-        </script>
-        Country: <input type="text"
-                        id="countryFilterField"
-                        name="countryFilterField"
-                        style="width:100px;"
-                        dojoType="dijit.form.TextBox"
-                        trim="true"
-                        value=""/> Reef Name: <input type="text"
-                                                     id="reefFilterField"
-                                                     name="reefFilterField"
-                                                     style="width:100px;"
-                                                     dojoType="dijit.form.TextBox"
-                                                     trim="true"
-                                                     value=""/> Surveyor: <input type="text"
-                                                                                 id="surveyorFilterField"
-                                                                                 name="surveyorFilterField"
-                                                                                 style="width:100px;"
-                                                                                 dojoType="dijit.form.TextBox"
-                                                                                 trim="true"
-                                                                                 value=""/>&nbsp;<input type="submit"
-                                                                                                        name="submit"
-                                                                                                        value="Search"/>
+
+        Country:&nbsp;
+        <input type="text"
+               id="countryFilterField"
+               name="countryFilterField"
+               style="width:100px;"
+               dojoType="dijit.form.TextBox"
+               trim="true"
+               placeholder="Search string"
+               value="" />&nbsp;&nbsp;
+
+        Reef Name:&nbsp;
+        <input type="text"
+               id="reefFilterField"
+               name="reefFilterField"
+               style="width:100px;"
+               dojoType="dijit.form.TextBox"
+               trim="true"
+               placeholder="Search string"
+               value="" />&nbsp;&nbsp;
+
+        Surveyor:&nbsp;
+        <input type="text"
+               id="surveyorFilterField"
+               name="surveyorFilterField"
+               style="width:100px;"
+               dojoType="dijit.form.TextBox"
+               trim="true"
+               placeholder="Search string"
+               value="" />&nbsp;&nbsp;
+
+        <input type="button" name="search" value="Search" onClick="apply_search()" />
     </form>
 </div>
 <br/>
 
-<portlet:resourceURL var="listURL" id="list">
-    <portlet:param name="format" value="xml" />
-    <% if (createdByUserId != null) { %>
-    <portlet:param name="createdByUserId" value="<%= String.valueOf(createdByUserId) %>" />
-    <% } %>
-</portlet:resourceURL>
-<div dojoType="dojox.data.XmlStore"
-     url="<%= listURL %>"
-     jsId="surveyStore" label="title">
-    <script type="dojo/method" event="onLoad">
-        grid.setSortIndex(1, true);
-    </script>
-</div>
-<div id="grid" jsId="grid" style="width: 680px; height: 600px;" dojoType="dojox.grid.DataGrid"
-     store="surveyStore" structure="layoutSurveys" query="{}" rowsPerPage="40">
+<div dojoType="dojo.data.ItemFileReadStore" jsId="surveyStore" data="surveyData"></div>
+
+<div style="width: 680px; height: 600px;"
+     id="surveygrid"
+     jsId="surveygrid"
+     dojoType="dojox.grid.DataGrid"
+     rowsPerPage="250"
+     store="surveyStore"
+     structure="layoutSurveys"
+     queryOptions="{}"
+     query="{}" >
 </div>
 <%
     }
