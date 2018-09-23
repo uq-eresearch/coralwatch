@@ -956,23 +956,26 @@
     <% } %>
 
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
-        Name: <input type="text"
-                     id="nameFilterField"
-                     name="nameFilterField"
-                     style="width:100px;"
-                     dojoType="dijit.form.TextBox"
-                     trim="true"
-                     placeholder="Search string"
-                     value="" />&nbsp;&nbsp;
-        
-        Country: <input type="text"
-                        id="countryFilterField"
-                        name="countryFilterField"
-                        style="width:100px;"
-                        dojoType="dijit.form.TextBox"
-                        trim="true"
-                        placeholder="Search string"
-                        value="" />&nbsp;&nbsp;
+    
+        Name:&nbsp;
+        <input type="text"
+               id="nameFilterField"
+               name="nameFilterField"
+               style="width:100px;"
+               dojoType="dijit.form.TextBox"
+               trim="true"
+               placeholder="Search string"
+               value="" />&nbsp;&nbsp;
+
+        Country:&nbsp;
+        <input type="text"
+               id="countryFilterField"
+               name="countryFilterField"
+               style="width:100px;"
+               dojoType="dijit.form.TextBox"
+               trim="true"
+               placeholder="Search string"
+               value="" />&nbsp;&nbsp;
 
         <input type="button" name="search" value="Search" onClick="apply_search()" />
     </form>
