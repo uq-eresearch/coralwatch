@@ -972,7 +972,9 @@
                                                 style="width:100px;"
                                                 dojoType="dijit.form.TextBox"
                                                 trim="true"
-                                                value=""/><input type="submit" name="submit" value="Search"/>
+                                                value=""/>&nbsp;<input type="submit"
+                                                                 name="submit"
+                                                                 value="Search"/>
     </form>
 </div>
 <br/>
