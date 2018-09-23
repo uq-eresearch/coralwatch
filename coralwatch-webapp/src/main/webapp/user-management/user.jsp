@@ -904,15 +904,15 @@
                     if (data_JSON && typeof data_JSON.members !=='undefined' && typeof data_JSON.members.member !=='undefined' && Array.isArray(data_JSON.members.member)) {
                         data_JSON.members.member.forEach(function(member, index) {
 
-                            if (typeof member.name !== "string") member.name = "");
-                            if (typeof member.country !== "string") member.country = "");
+                            if (typeof member.name !== "string") member.name = "";
+                            if (typeof member.country !== "string") member.country = "";
                             if (typeof member.joined !== "string") { var d = new Date("01/01/2001"); member.joined = (d.getTime()).toString(); }
-                            if (typeof member.surveys !== "string") member.country = "0");
-                            if (typeof member.rating !== "string") member.country = "0");
-                            if (typeof member.view !== "string") member.view = "0");
+                            if (typeof member.surveys !== "string") member.country = "0";
+                            if (typeof member.rating !== "string") member.country = "0";
+                            if (typeof member.view !== "string") member.view = "0";
 
                             memberStore.newItem({
-                                id: Number(member.view) || (index +1),
+                                id: (Number(member.view) || (index +1)),
                                 name: (member.name).replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\&/g, ""),
                                 country: (member.country).replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\&/g, ""),
                                 joined: member.joined,
