@@ -929,6 +929,7 @@
                                 view: member["view"]
                             });
                         });
+                        //grid.setSortIndex(1, true);
                     }
                 }
             },
