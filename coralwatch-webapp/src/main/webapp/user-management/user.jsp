@@ -444,238 +444,236 @@
     });
     <%}%>
 </script>
+
 <h2 style="margin-top:0;">User Profile</h2>
 
 <div id="userProfileContainer" dojoType="dijit.layout.TabContainer" style="width:650px;height:60ex">
-<div id="userDetailsTab" dojoType="dijit.layout.ContentPane" title="Details" style="width:650px; height:60ex">
-    <table>
-        <tr>
-            <th>Display Name:</th>
-            <td><%=user.getDisplayName()%>
-            </td>
-            <td rowspan="4" style="text-align:right">
-                <img src="<%=user.getGravatarUrl()%>" alt="<%=user.getDisplayName()%>"/>
-                <%
-                    if (user.equals(currentUser)) {
-                %>
-                <br/>
-                <a href="http://www.gravatar.com" target="_blank">Change Image</a>
-                <%
-                    }
-                %>
-            </td>
-        </tr>
-        <%
-            if (currentUser != null && (user.equals(currentUser) || currentUser.isSuperUser())) {
-        %>
-        <tr>
-            <th>Full Name:</th>
-            <td><%=(user.getFirstName() == null || user.getLastName() == null) ? "Not Set" : user.getFirstName() + " " + user.getLastName()%>
-            </td>
-        </tr>
-        <tr>
-            <th>Email:</th>
-            <td><a href="mailto:<%=user.getEmail()%>"><%=user.getEmail()%>
-            </a></td>
-        </tr>
-        <%
-            }
-        %>
-        <tr>
-            <th>Member since (d/m/y):</th>
-            <td><%=dateFormat.format(user.getRegistrationDate())%>
-            </td>
-        </tr>
-        <tr>
-            <th>Position Description:</th>
-            <td><%=user.getPositionDescription() == null ? "Not Set" : user.getPositionDescription()%>
-            </td>
-        </tr>
-        <%
-            if (currentUser != null && (user.equals(currentUser) || currentUser.isSuperUser())) {
-        %>
-        <tr>
-            <th>Phone:</th>
-            <td><%=user.getPhone() == null ? "Not Set" : user.getPhone()%>
-            </td>
-        </tr>
-        <tr>
-            <th>Address:</th>
-            <td><%=user.getAddressString() == null ? "Not Set" : user.getAddressString().replaceAll("\\n", "<br />")%>
-            </td>
-        </tr>
-        <%
-            }
-        %>
-        <tr>
-            <th>Country:</th>
-            <td><%= user.getCountry() == null ? "Not Set" : user.getCountry()%>
-            </td>
-        </tr>
-        <tr>
-            <th>Surveys:</th>
-            <td>
-                <a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_userId=<%=String.valueOf(user.getId())%>"><%=userDao.getSurveyEntriesCreated(user).size()%>
-                    survey(s)</a></td>
-        </tr>
-
-
-        <%--Rating stuff--%>
-        <%
-            if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
-                if (currentUser != null && !currentUser.equals(user)) {
-        %>
-        <tr>
-            <th>Your Rating:</th>
-            <td>
-                    <span id="connectRating" dojoType="dojox.form.Rating" numStars="5"
-                          value="<%=ReputationService.getRaterRating(currentUser, user)%>"></span>
-            </td>
-        </tr>
-        <%
-            }
-        %>
-        <tr>
-            <th>Overall Rating: <img
-                    src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/icon/information.png")%>"
-                    id="overAllRatingHelp"/>
-                <span dojoType="dijit.Tooltip" connectId="overAllRatingHelp" id="overAllRatingHelp_tooltip">
-                        <strong>How is this rating calculated?</strong><br>
-                        <p>This rating is calculated based on the following:</p>
-                        <ul>
-                            <li>Direct ranking from other volunteers</li>
-                            <li>Completeness of the volunteer's profile</li>
-                            <li>Direct rating on the volunteer's data</li>
-                            <li>Amount of data contributed by the volunteer</li>
-                            <li>Frequency of contribution of the volunteer</li>
-                            <li>Cleanness and accuracy of data contributed by the volunteer</li>
-                            <li>Completeness of data contributed by the volunteer</li>
-                        </ul>
-                    </span>
-            </th>
-            <td>
-                    <span id="overAllRating" dojoType="dojox.form.Rating" numStars="5" disabled="disabled"
-                          value="<%=ReputationService.getOverAllRating(user)%>"></span>
-            </td>
-        </tr>
-        <%
-            }
-        %>
-
-
-        <tr>
+    <div id="userDetailsTab" dojoType="dijit.layout.ContentPane" title="Details" style="width:650px; height:60ex">
+        <table>
+            <tr>
+                <th>Display Name:</th>
+                <td><%=user.getDisplayName()%>
+                </td>
+                <td rowspan="4" style="text-align:right">
+                    <img src="<%=user.getGravatarUrl()%>" alt="<%=user.getDisplayName()%>"/>
+                    <%
+                        if (user.equals(currentUser)) {
+                    %>
+                    <br/>
+                    <a href="http://www.gravatar.com" target="_blank">Change Image</a>
+                    <%
+                        }
+                    %>
+                </td>
+            </tr>
             <%
-                if (currentUser != null && (currentUser.equals(user) || currentUser.isSuperUser())) {
+                if (currentUser != null && (user.equals(currentUser) || currentUser.isSuperUser())) {
             %>
-            <td colspan="2"><input type="button" value="Edit"
-                                   onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
+            <tr>
+                <th>Full Name:</th>
+                <td><%=(user.getFirstName() == null || user.getLastName() == null) ? "Not Set" : user.getFirstName() + " " + user.getLastName()%>
+                </td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td><a href="mailto:<%=user.getEmail()%>"><%=user.getEmail()%>
+                </a></td>
+            </tr>
+            <%
+                }
+            %>
+            <tr>
+                <th>Member since (d/m/y):</th>
+                <td><%=dateFormat.format(user.getRegistrationDate())%>
+                </td>
+            </tr>
+            <tr>
+                <th>Position Description:</th>
+                <td><%=user.getPositionDescription() == null ? "Not Set" : user.getPositionDescription()%>
+                </td>
+            </tr>
+            <%
+                if (currentUser != null && (user.equals(currentUser) || currentUser.isSuperUser())) {
+            %>
+            <tr>
+                <th>Phone:</th>
+                <td><%=user.getPhone() == null ? "Not Set" : user.getPhone()%>
+                </td>
+            </tr>
+            <tr>
+                <th>Address:</th>
+                <td><%=user.getAddressString() == null ? "Not Set" : user.getAddressString().replaceAll("\\n", "<br />")%>
+                </td>
+            </tr>
+            <%
+                }
+            %>
+            <tr>
+                <th>Country:</th>
+                <td><%= user.getCountry() == null ? "Not Set" : user.getCountry()%>
+                </td>
+            </tr>
+            <tr>
+                <th>Surveys:</th>
+                <td>
+                    <a href="<%=renderRequest.getAttribute("surveyUrl")%>?p_p_id=surveyportlet_WAR_coralwatch&_surveyportlet_WAR_coralwatch_userId=<%=String.valueOf(user.getId())%>"><%=userDao.getSurveyEntriesCreated(user).size()%> survey(s)</a>
+                </td>
+            </tr>
 
+            <%--Rating stuff--%>
+            <%
+                if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
+                    if (currentUser != null && !currentUser.equals(user)) {
+            %>
+            <tr>
+                <th>Your Rating:</th>
+                <td>
+                        <span id="connectRating" dojoType="dojox.form.Rating" numStars="5"
+                              value="<%=ReputationService.getRaterRating(currentUser, user)%>"></span>
+                </td>
+            </tr>
+            <%
+                }
+            %>
+            <tr>
+                <th>Overall Rating: <img
+                        src="<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/icon/information.png")%>"
+                        id="overAllRatingHelp"/>
+                    <span dojoType="dijit.Tooltip" connectId="overAllRatingHelp" id="overAllRatingHelp_tooltip">
+                            <strong>How is this rating calculated?</strong><br>
+                            <p>This rating is calculated based on the following:</p>
+                            <ul>
+                                <li>Direct ranking from other volunteers</li>
+                                <li>Completeness of the volunteer's profile</li>
+                                <li>Direct rating on the volunteer's data</li>
+                                <li>Amount of data contributed by the volunteer</li>
+                                <li>Frequency of contribution of the volunteer</li>
+                                <li>Cleanness and accuracy of data contributed by the volunteer</li>
+                                <li>Completeness of data contributed by the volunteer</li>
+                            </ul>
+                        </span>
+                </th>
+                <td>
+                    <span id="overAllRating" dojoType="dojox.form.Rating" numStars="5" disabled="disabled"
+                          value="<%=ReputationService.getOverAllRating(user)%>">
+                    </span>
+                </td>
+            </tr>
+            <%
+                }
+            %>
+
+            <tr>
+                <%
+                    if (currentUser != null && (currentUser.equals(user) || currentUser.isSuperUser())) {
+                %>
+                <td colspan="2">
+                    <input type="button" value="Edit" onClick="self.location = '<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.EDIT %>" /><portlet:param name="userId" value="<%= String.valueOf(user.getId()) %>" /></portlet:renderURL>';"/>
                 <%
                     }
                 %>
-            </td>
-        </tr>
-    </table>
-</div>
-
-<%--Rating stuff--%>
-<%
-    if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
-%>
-<div id="friendsTab" dojoType="dijit.layout.ContentPane" title="Friends" style="width:650px; height:60ex">
-    <script>
-        dojo.require("dojox.grid.DataGrid");
-        dojo.require("dojox.data.XmlStore");
-        dojo.require("dojox.form.Rating");
-        dojo.require("dojo.date.locale");
-
-        var dateFormatter = function(data) {
-            return dojo.date.locale.format(new Date(Number(data)), {
-                datePattern: "dd MMM yyyy",
-                selector: "date",
-                locale: "en"
-            });
-        };
-
-        var layoutMembers = [
-            [
-                {
-                    field: "name",
-                    name: "Name",
-                    width: 10,
-                    formatter: function(item) {
-                        return item.toString();
-                    }
-                },
-                {
-                    field: "country",
-                    name: "Country",
-                    width: 10,
-                    formatter: function(item) {
-                        return item.toString();
-                    }
-                },
-                {
-                    field: "joined",
-                    name: "Member Since",
-                    width: 10,
-                    formatter: dateFormatter
-
-                },
-                {
-                    field: "surveys",
-                    name: "Surveys",
-                    width: 10,
-                    formatter: function(item) {
-                        return item.toString();
-                    }
-                },
-                {
-                    field: "rating",
-                    name: "Overall Rating",
-                    width: 10,
-                    formatter: function(item) {
-                        return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});
-                    }
-                },
-                {
-                    field: "view",
-                    name: "View",
-                    width: 10,
-                    formatter: function(item) {
-                        var viewURL = "<a href=\"<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=" + item.toString() + "\">Profile</a>";
-                        return viewURL;
-                    }
-                }
-            ]
-        ];
-    </script>
-    <portlet:resourceURL var="friendsOfAjaxURL" id="ajax">
-        <portlet:param name="friendsOf">
-            <jsp:attribute name="value"><%= user.getId() %></jsp:attribute>
-        </portlet:param>
-    </portlet:resourceURL>
-    <div dojoType="dojox.data.XmlStore"
-         url="<%= friendsOfAjaxURL %>"
-         jsId="userStore"
-         label="title">
+                </td>
+            </tr>
+        </table>
     </div>
-    <div id="friendsGrid" style="width: 680px; height: 600px;"
-         rowsPerPage="40"
-         dojoType="dojox.grid.DataGrid"
-         store="userStore"
-         structure="layoutMembers"
-         query="{}" >
+
+    <%--Rating stuff--%>
+    <%
+        if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
+    %>
+    <div id="friendsTab" dojoType="dijit.layout.ContentPane" title="Friends" style="width:650px; height:60ex">
+        <script>
+            dojo.require("dojox.grid.DataGrid");
+            dojo.require("dojox.data.XmlStore");
+            dojo.require("dojox.form.Rating");
+            dojo.require("dojo.date.locale");
+
+            var dateFormatter = function(data) {
+                return dojo.date.locale.format(new Date(Number(data)), {
+                    datePattern: "dd MMM yyyy",
+                    selector: "date",
+                    locale: "en"
+                });
+            };
+
+            var layoutMembers = [
+                [
+                    {
+                        field: "name",
+                        name: "Name",
+                        width: 10,
+                        formatter: function(item) {
+                            return item.toString();
+                        }
+                    },
+                    {
+                        field: "country",
+                        name: "Country",
+                        width: 10,
+                        formatter: function(item) {
+                            return item.toString();
+                        }
+                    },
+                    {
+                        field: "joined",
+                        name: "Member Since",
+                        width: 10,
+                        formatter: dateFormatter
+
+                    },
+                    {
+                        field: "surveys",
+                        name: "Surveys",
+                        width: 10,
+                        formatter: function(item) {
+                            return item.toString();
+                        }
+                    },
+                    {
+                        field: "rating",
+                        name: "Overall Rating",
+                        width: 10,
+                        formatter: function(item) {
+                            return new dojox.form.Rating({value: item.toString(), numStars:5, disabled: true});
+                        }
+                    },
+                    {
+                        field: "view",
+                        name: "View",
+                        width: 10,
+                        formatter: function(item) {
+                            var viewURL = "<a href=\"<%=renderRequest.getAttribute("userPageUrl")%>?p_p_id=userportlet_WAR_coralwatch&_userportlet_WAR_coralwatch_<%= Constants.CMD %>=<%= Constants.VIEW %>&_userportlet_WAR_coralwatch_userId=" + item.toString() + "\">Profile</a>";
+                            return viewURL;
+                        }
+                    }
+                ]
+            ];
+        </script>
+        <portlet:resourceURL var="friendsOfAjaxURL" id="ajax">
+            <portlet:param name="friendsOf">
+                <jsp:attribute name="value"><%= user.getId() %></jsp:attribute>
+            </portlet:param>
+        </portlet:resourceURL>
+        <div dojoType="dojox.data.XmlStore"
+             url="<%= friendsOfAjaxURL %>"
+             jsId="userStore"
+             label="title">
+        </div>
+        <div id="friendsGrid" style="width: 680px; height: 600px;"
+             rowsPerPage="40"
+             dojoType="dojox.grid.DataGrid"
+             store="userStore"
+             structure="layoutMembers"
+             query="{}" >
+        </div>
     </div>
+    <%--<div id="networkTab" dojoType="dijit.layout.ContentPane" title="Network" style="width:650px; height:60ex">--%>
+
+    <%
+        }
+    %>
 </div>
-<%--<div id="networkTab" dojoType="dijit.layout.ContentPane" title="Network" style="width:650px; height:60ex">--%>
 
-<%
-    }
-%>
-
-
-</div>
 <%
     if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
 %>
@@ -736,7 +734,6 @@
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.data.XmlStore");
     dojo.require("dojo.data.ItemFileReadStore");
-    dojo.require("dojo.data.ItemFileWriteStore");
     dojo.require("dojox.form.Rating");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.TextBox");
@@ -911,7 +908,7 @@
                                 name: ((member.name).replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/"/g,"\\\"").replace(/'/g,"\\\'").replace(/\&/g, "\\&")).toString(),
                                 country: ((member.country)..replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/"/g,"\\\"").replace(/'/g,"\\\'").replace(/\&/g, "\\&")).toString(),
                                 joined: (member.joined).toString(),
-                                surveys: (Number(member.surveys) !== -1 ? member.surveys : '0'),
+                                surveys: (Number(member.surveys) !== -1 ? member.surveys : "0"),
                                 <%--Rating stuff--%>
                                 <%
                                     if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
@@ -970,20 +967,7 @@
 </div>
 <br/>
 
-<%--<div dojoType="dojox.data.XmlStore"
-     url="<portlet:resourceURL id="ajax" />"
-     jsId="userStore"
-     label="title">
-</div>
-<div id="grid" style="width: 680px; height: 600px;"
-     dojoType="dojox.grid.DataGrid"
-     rowsPerPage="40"
-     store="userStore"
-     structure="layoutMembers"
-     query="{}" >
-</div>--%>
-
-<div dojoType="dojo.data.ItemFileWriteStore" jsId="memberStore" data="memberData"></div>
+<div dojoType="dojo.data.ItemFileReadStore" jsId="memberStore" data="memberData"></div>
 
 <div id="grid" style="width: 680px; height: 600px;"
      rowsPerPage="250"
