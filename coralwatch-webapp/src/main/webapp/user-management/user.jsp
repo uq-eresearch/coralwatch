@@ -734,6 +734,7 @@
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.data.XmlStore");
     dojo.require("dojo.data.ItemFileReadStore");
+    dojo.require("dojo.data.ItemFileWriteStore");
     dojo.require("dojox.form.Rating");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.TextBox");
@@ -967,7 +968,7 @@
 </div>
 <br/>
 
-<div dojoType="dojo.data.ItemFileReadStore" jsId="memberStore" data="memberData"></div>
+<div dojoType="dojo.data.ItemFileWriteStore" jsId="memberStore" data="memberData"></div>
 
 <div id="grid" style="width: 680px; height: 600px;"
      rowsPerPage="250"
