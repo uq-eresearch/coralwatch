@@ -938,6 +938,14 @@
             }
         });
     });
+
+    function apply_search () {
+        grid.queryOptions = {ignoreCase: true};
+        grid.filter({
+            name: "*" + dijit.byId("nameFilterField").getValue() + "*",
+            country: "*" + dijit.byId("countryFilterField").getValue() + "*"
+        });
+    }
 </script>
 
 <div>
@@ -946,7 +954,22 @@
         <a href="<portlet:resourceURL id="export" />">Export member details</a>
     </div>
     <% } %>
+
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
+
+        <%--<script type="dojo/method" event="click">
+            if (!this.validate() && false) {
+                alert('Enter a search key word.');
+                return false;
+            } else {
+                grid.queryOptions = {ignoreCase: true};
+                grid.filter({
+                    name: "*" + dijit.byId("nameFilterField").getValue() + "*",
+                    country: "*" + dijit.byId("countryFilterField").getValue() + "*"
+                });
+                return false;
+            }
+        </script>--%>
 
         Name: <input type="text"
                      id="nameFilterField"
@@ -963,21 +986,7 @@
                         trim="true"
                         value=""/>&nbsp;&nbsp;
 
-        <button type="button" name="search" value="Search">
-            <script type="dojo/method" event="click">
-                if (!this.validate() && false) {
-                    alert('Enter a search key word.');
-                    return false;
-                } else {
-                    grid.queryOptions = {ignoreCase: true};
-                    grid.filter({
-                        name: "*" + dijit.byId("nameFilterField").getValue() + "*",
-                        country: "*" + dijit.byId("countryFilterField").getValue() + "*"
-                    });
-                    return false;
-                }
-            </script>
-        </button>
+        <button type="button" name="search" value="Search" onClick="apply_search()"></button>
     </form>
 </div>
 <br/>
