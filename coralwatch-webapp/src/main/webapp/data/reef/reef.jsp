@@ -67,6 +67,7 @@
             </portlet:resourceURL>
             <a href="<%= surveyExportURL %>%>">Download Data</a>
         </div>
+        
         <script>
             dojo.require("dojox.grid.DataGrid");
             dojo.require("dojox.data.XmlStore");
@@ -77,16 +78,13 @@
                 surveyStore.comparatorMap = {};
                 surveyStore.comparatorMap["records"] = function(a, b) {
                     var ret = 0;
-                    if (Number(a) > Number(b)) {
-                        ret = 1;
-                    }
-                    if (Number(a) < Number(b)) {
-                        ret = -1;
-                    }
+                    if (Number(a) > Number(b)) ret = 1;
+                    if (Number(a) < Number(b)) ret = -1;
                     return ret;
                 };
                 //surveygrid.setSortIndex(0, true);
             });
+            
             var dateFormatter = function(data) {
                 return dojo.date.locale.format(new Date(Number(data)), {
                     datePattern: "dd MMM yyyy",
@@ -94,6 +92,7 @@
                     locale: "en"
                 });
             };
+            
             var layoutSurveys = [
                 [
                     {
@@ -161,15 +160,14 @@
                             if (reviewStateColour && reviewStateText) {
                                 return '<img src="<%= renderRequest.getContextPath() %>/icon/timemap/' + reviewStateColour + '-circle.png" title="' + reviewStateText + '" />';
                             }
-                            else {
-                                return '';
-                            }
+                            else return '';
                         }
                     }
                     <% } %>
                 ]
             ];
         </script>
+        
         <liferay-portlet:resourceURL var="resourceURL" portletName="surveyportlet_WAR_coralwatch">
             <liferay-portlet:param name="format" value="xml" />
             <liferay-portlet:param name="reefId" value="<%= String.valueOf(reefId) %>" />
@@ -310,6 +308,7 @@ if (items.length) {
         };
         //reefgrid.setSortIndex(0, true);
     });
+    
     var layoutReefs = [
         [
             {
@@ -390,7 +389,9 @@ if (items.length) {
                                                      style="width:100px;"
                                                      dojoType="dijit.form.TextBox"
                                                      trim="true"
-                                                     value=""/><input type="submit" name="submit" value="Search"/>
+                                                     value=""/>&nbsp;<input type="submit"
+                                                                            name="submit"
+                                                                            value="Search"/>
     </form>
 </div>
 <br/>
