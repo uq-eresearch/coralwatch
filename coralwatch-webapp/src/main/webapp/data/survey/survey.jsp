@@ -1943,7 +1943,9 @@ function positionMarker() {
 </div>
 
 <script>
-    surveygrid.setSortIndex(1, true);
+    dojo.addOnLoad(function() {
+        surveygrid.setSortIndex(1, true);
+    });
 </script>
 
 <%
