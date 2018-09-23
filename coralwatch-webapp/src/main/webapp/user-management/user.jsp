@@ -929,7 +929,7 @@
                                 view: member["view"]
                             });
                         });
-                        //grid.setSortIndex(1, true);
+                        membergrid.setSortIndex(1, true);
                     }
                 }
             },
