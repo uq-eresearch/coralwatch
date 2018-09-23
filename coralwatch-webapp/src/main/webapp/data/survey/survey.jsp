@@ -1894,37 +1894,31 @@ function positionMarker() {
 <div>
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
 
-        Country:&nbsp;
-        <input type="text"
-               id="countryFilterField"
-               name="countryFilterField"
-               style="width:100px;"
-               dojoType="dijit.form.TextBox"
-               trim="true"
-               placeholder="Search string"
-               value="" />&nbsp;&nbsp;
-
-        Reef Name:&nbsp;
-        <input type="text"
-               id="reefFilterField"
-               name="reefFilterField"
-               style="width:100px;"
-               dojoType="dijit.form.TextBox"
-               trim="true"
-               placeholder="Search string"
-               value="" />&nbsp;&nbsp;
-
-        Surveyor:&nbsp;
-        <input type="text"
-               id="surveyorFilterField"
-               name="surveyorFilterField"
-               style="width:100px;"
-               dojoType="dijit.form.TextBox"
-               trim="true"
-               placeholder="Search string"
-               value="" />&nbsp;&nbsp;
-
-        <input type="button" name="search" value="Search" onClick="apply_search()" />
+        Country: <input type="text"
+                       id="countryFilterField"
+                       name="countryFilterField"
+                       style="width:100px;"
+                       dojoType="dijit.form.TextBox"
+                       trim="true"
+                       placeholder="Search string"
+                       value="" />&nbsp;&nbsp;Reef Name:&nbsp;<input type="text"
+                                                                   id="reefFilterField"
+                                                                   name="reefFilterField"
+                                                                   style="width:100px;"
+                                                                   dojoType="dijit.form.TextBox"
+                                                                   trim="true"
+                                                                   placeholder="Search string"
+                                                                   value="" />&nbsp;&nbsp;Surveyor:&nbsp;<input type="text"
+                                                                                                               id="surveyorFilterField"
+                                                                                                               name="surveyorFilterField"
+                                                                                                               style="width:100px;"
+                                                                                                               dojoType="dijit.form.TextBox"
+                                                                                                               trim="true"
+                                                                                                               placeholder="Search string"
+                                                                                                               value="" />&nbsp;&nbsp;<input type="button"
+                                                                                                                                           name="search"
+                                                                                                                                           value="Search"
+                                                                                                                                           onClick="apply_search()" />
     </form>
 </div>
 <br/>
