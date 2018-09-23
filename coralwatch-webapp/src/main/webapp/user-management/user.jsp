@@ -973,8 +973,8 @@
                                                 dojoType="dijit.form.TextBox"
                                                 trim="true"
                                                 value=""/>&nbsp;<input type="submit"
-                                                                 name="submit"
-                                                                 value="Search"/>
+                                                                       name="submit"
+                                                                       value="Search"/>
     </form>
 </div>
 <br/>
