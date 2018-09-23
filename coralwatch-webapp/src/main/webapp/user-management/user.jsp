@@ -947,34 +947,37 @@
     </div>
     <% } %>
     <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
-        <script type="dojo/method" event="click">
-            if (!this.validate()) {
-                alert('Enter a search key word.');
-                return false;
-            } else {
-                grid.queryOptions = {ignoreCase: true};
-                grid.filter({
-                    name: "*" + dijit.byId("nameFilterField").getValue() + "*",
-                    country: "*" + dijit.byId("countryFilterField").getValue() + "*"
-                });
-                return false;
-            }
-        </script>
+
         Name: <input type="text"
-                     id="reefFilterField"
-                     name="reefFilterField"
+                     id="nameFilterField"
+                     name="nameFilterField"
                      style="width:100px;"
                      dojoType="dijit.form.TextBox"
                      trim="true"
-                     value=""/> Country: <input type="text"
-                                                id="countryFilterField"
-                                                name="countryFilterField"
-                                                style="width:100px;"
-                                                dojoType="dijit.form.TextBox"
-                                                trim="true"
-                                                value=""/>&nbsp;<input type="button"
-                                                                       name="submit"
-                                                                       value="Search"/>
+                     value=""/>&nbsp;
+        Country: <input type="text"
+                        id="countryFilterField"
+                        name="countryFilterField"
+                        style="width:100px;"
+                        dojoType="dijit.form.TextBox"
+                        trim="true"
+                        value=""/>&nbsp;&nbsp;
+
+        <button type="button" name="search" value="Search">
+            <script type="dojo/method" event="click">
+                if (!this.validate() && false) {
+                    alert('Enter a search key word.');
+                    return false;
+                } else {
+                    grid.queryOptions = {ignoreCase: true};
+                    grid.filter({
+                        name: "*" + dijit.byId("nameFilterField").getValue() + "*",
+                        country: "*" + dijit.byId("countryFilterField").getValue() + "*"
+                    });
+                    return false;
+                }
+            </script>
+        </button>
     </form>
 </div>
 <br/>
