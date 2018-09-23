@@ -1840,36 +1840,36 @@ function positionMarker() {
                     var data_JSON = xmlToJson(data_xml);
                     //console.log("XML data = ", data_JSON);
 
-                    if (data_JSON && typeof data_JSON.members !=='undefined' && typeof data_JSON.members.member !=='undefined' && Array.isArray(data_JSON.members.member)) {
-                        data_JSON.members.member.forEach(function(member, index) {
+                    if (data_JSON && typeof data_JSON.surveys !=='undefined' && typeof data_JSON.surveys.survey !=='undefined' && Array.isArray(data_JSON.surveys.survey)) {
+                        data_JSON.surveys.survey.forEach(function(survey, index) {
 
-                            if (typeof member["reef"] !== "string") { member["reef"] = null; member["reef"] = ""; }
-                            if (typeof member["country"] !== "string") { member["country"] = null; member["country"] = ""; }
-                            if (typeof member["date"] !== "string") { var d = new Date("01/01/2001"); member["date"] = null; member["date"] = (d.getTime()).toString(); }
-                            if (typeof member["surveyor"] !== "string") { member["surveyor"] = null; member["surveyor"] = ""; }
-                            if (typeof member["rating"] !== "string") { member["rating"] = null; member["rating"] = "0"; }
-                            if (typeof member["view"] !== "string") { member["view"] = null; member["view"] = "0"; }
-                            if (typeof member["records"] !== "string") { member["records"] = null; member["records"] = "0"; }
-                            if (typeof member["reviewState"] !== "string") { member["reviewState"] = null; member["reviewState"] = ""; }
+                            if (typeof survey["reef"] !== "string") { survey["reef"] = null; survey["reef"] = ""; }
+                            if (typeof survey["country"] !== "string") { survey["country"] = null; survey["country"] = ""; }
+                            if (typeof survey["date"] !== "string") { var d = new Date("01/01/2001"); survey["date"] = null; survey["date"] = (d.getTime()).toString(); }
+                            if (typeof survey["surveyor"] !== "string") { survey["surveyor"] = null; survey["surveyor"] = ""; }
+                            if (typeof survey["rating"] !== "string") { survey["rating"] = null; survey["rating"] = "0"; }
+                            if (typeof survey["view"] !== "string") { survey["view"] = null; survey["view"] = "0"; }
+                            if (typeof survey["records"] !== "string") { survey["records"] = null; survey["records"] = "0"; }
+                            if (typeof survey["reviewState"] !== "string") { survey["reviewState"] = null; survey["reviewState"] = ""; }
 
                             surveyStore.newItem({
-                                //id: Number(member["view"]),
+                                //id: Number(survey["view"]),
                                 id: (index +1),
-                                reef: member["reef"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
-                                country: member["country"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
-                                surveyor: member["surveyor"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
-                                date: member["date"],
-                                records: (Number(member["records"]) !== "NaN" ? Number(member["records"]) : 0),
+                                reef: survey["reef"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
+                                country: survey["country"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
+                                surveyor: survey["surveyor"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
+                                date: survey["date"],
+                                records: (Number(survey["records"]) !== "NaN" ? Number(survey["records"]) : 0),
                                 <%--Rating stuff--%>
                                 <%
                                     if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
                                 %>
-                                rating: member["rating"],
+                                rating: survey["rating"],
                                 <%
                                 }
                                 %>
-                                view: member["view"],
-                                reviewState: member["reviewState"]
+                                view: survey["view"],
+                                reviewState: survey["reviewState"]
                             });
                         });
                         surveygrid.setSortIndex(1, true);
