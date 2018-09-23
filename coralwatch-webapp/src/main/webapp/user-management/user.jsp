@@ -905,10 +905,10 @@
                         data_JSON.members.member.forEach(function(member) {
                             memberStore.newItem({
                                 id: Number(member.view),
-                                name: ((member.name).replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/"/g,"\\\"").replace(/'/g,"\\\'").replace(/\&/g, "\\&")).toString(),
-                                country: ((member.country)..replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/"/g,"\\\"").replace(/'/g,"\\\'").replace(/\&/g, "\\&")).toString(),
+                                name: ((member.name).replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/"/g,"\\\"").replace(/'/g,"\\\'").replace(/\&/g, "\\&")).toString() || '',
+                                country: ((member.country).replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/"/g,"\\\"").replace(/'/g,"\\\'").replace(/\&/g, "\\&")).toString() || '',
                                 joined: (member.joined).toString(),
-                                surveys: (Number(member.surveys) !== -1 ? member.surveys : "0"),
+                                surveys: (Number(member.surveys) !== 'NaN' ? member.surveys : "0"),
                                 <%--Rating stuff--%>
                                 <%
                                     if (CoralwatchApplication.getConfiguration().isRatingSetup()) {
