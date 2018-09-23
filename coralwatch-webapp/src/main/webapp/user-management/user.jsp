@@ -731,7 +731,6 @@
 
 <script>
     dojo.require("dojox.grid.DataGrid");
-    dojo.require("dojox.data.XmlStore");
     dojo.require("dojo.data.ItemFileReadStore");
     dojo.require("dojo.data.ItemFileWriteStore");
     dojo.require("dojox.form.Rating");
