@@ -722,8 +722,7 @@
 } else if (cmd.equals(Constants.PRINT)) {
     String successMsg = ParamUtil.getString(request, "successMsg");
 %>
-<div class="portlet-msg-success"><%=successMsg%>
-</div>
+<div class="portlet-msg-success"><%=successMsg%></div>
 <%
 } else {
 %>
