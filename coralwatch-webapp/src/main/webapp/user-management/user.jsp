@@ -595,6 +595,8 @@
                     locale: "en"
                 });
             };
+            
+            var datamodule = getCookie('datamodule');
 
             var layoutMembers = [
                 [
