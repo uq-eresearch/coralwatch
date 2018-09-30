@@ -293,6 +293,8 @@ if (items.length) {
     dojo.require("dijit.form.Button");
     dojo.require("dojo.date.locale");
     dojo.require("dojo.parser");
+    
+    var datamodule = getCookie('datamodule');
 
     var layoutReefs = [
         [
