@@ -1673,8 +1673,24 @@ function positionMarker() {
                 }
             },
             {
+                field: "groupname",
+                name: "Group",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
+            {
                 field: "surveyor",
                 name: "Surveyor",
+                width: 10,
+                formatter: function(item) {
+                    return item.toString();
+                }
+            },
+            {
+                field: "comments",
+                name: "Comment",
                 width: 10,
                 formatter: function(item) {
                     return item.toString();
@@ -1851,12 +1867,16 @@ function positionMarker() {
                             if (typeof survey["view"] !== "string") { survey["view"] = null; survey["view"] = "0"; }
                             if (typeof survey["records"] !== "string") { survey["records"] = null; survey["records"] = "0"; }
                             if (typeof survey["reviewState"] !== "string") { survey["reviewState"] = null; survey["reviewState"] = ""; }
+                            if (typeof survey["groupname"] !== "string") { survey["groupname"] = null; survey["groupname"] = ""; }
+                            if (typeof survey["comments"] !== "string") { survey["comments"] = null; survey["comments"] = ""; }
 
                             surveyStore.newItem({
                                 //id: Number(survey["view"]),
                                 id: (index +1),
                                 reef: survey["reef"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
                                 country: survey["country"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
+                                groupname: survey["groupname"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
+                                comments: survey["comments"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
                                 surveyor: survey["surveyor"].replace(/\\/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/\t/g, "").replace(/\f/g, "").replace(/\b/g, "").replace(/\v/g, "").replace(/\0/g, ""),
                                 date: survey["date"],
                                 records: (Number(survey["records"]) !== "NaN" ? Number(survey["records"]) : 0),
