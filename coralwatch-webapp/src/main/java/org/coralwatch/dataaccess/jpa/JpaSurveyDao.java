@@ -90,9 +90,9 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             "    survey.reef.country,\n" +
             "    count(surveyRecord),\n" +
             "    survey.id,\n" +
-            "    survey.reviewState\n" +
+            "    survey.reviewState,\n" +
             "    survey.groupname,\n" +
-            "    survey.comments,\n" +
+            "    survey.comments\n" +
             "FROM Survey survey\n" +
             "JOIN survey.dataset as surveyRecord\n";
         if (reef != null) {
