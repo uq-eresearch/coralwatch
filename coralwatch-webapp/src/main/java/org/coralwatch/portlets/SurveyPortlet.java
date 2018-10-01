@@ -1134,7 +1134,7 @@ public class SurveyPortlet extends GenericPortlet {
                     Long surveyId = (Long) results.get(5);
                     Survey.ReviewState reviewState = (Survey.ReviewState) results.get(6);
                     String groupname = (String) results.get(7);
-                    String comments = (String) results.get(8);
+                    String comments = (String) results.get(7);
 
                     writer.writeStartElement("survey");
 
