@@ -91,8 +91,7 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             "    count(surveyRecord),\n" +
             "    survey.id,\n" +
             "    survey.reviewState,\n" +
-            "    survey.reef.groupname,\n" +
-            "    survey.reef.comments\n" +
+            "    survey.comments\n" +
             "FROM Survey survey\n" +
             "JOIN survey.dataset as surveyRecord\n";
         if (reef != null) {
@@ -101,7 +100,7 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
         if (surveyCreator != null) {
             queryString += ((reef != null) ? "AND" : "WHERE") + " survey.creator.id = :surveyCreatorId\n";
         }
-        queryString += "GROUP BY survey.id, survey.date, survey.reviewState, survey.reef.groupname, survey.reef.comments, survey.creator.displayName, survey.reef.name, survey.reef.country\n";
+        queryString += "GROUP BY survey.id, survey.date, survey.reviewState, survey.comments, survey.creator.displayName, survey.reef.name, survey.reef.country\n";
         queryString += "ORDER BY survey.date DESC";
         Query query = entityManager.getSession()
             .createQuery(queryString)
