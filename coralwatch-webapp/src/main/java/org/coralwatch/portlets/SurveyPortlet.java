@@ -1133,6 +1133,8 @@ public class SurveyPortlet extends GenericPortlet {
                     Number numSurveyRecords = (Number) results.get(4);
                     Long surveyId = (Long) results.get(5);
                     Survey.ReviewState reviewState = (Survey.ReviewState) results.get(6);
+                    String groupname = (String) results.get(7);
+                    String comments = (String) results.get(8);
 
                     writer.writeStartElement("survey");
 
@@ -1171,6 +1173,14 @@ public class SurveyPortlet extends GenericPortlet {
                         writer.writeCharacters(reviewState.name());
                         writer.writeEndElement();
                     }
+
+                    writer.writeStartElement("groupname");
+                    writer.writeCharacters(groupname == null ? "" : groupname);
+                    writer.writeEndElement();
+
+                    writer.writeStartElement("comments");
+                    writer.writeCharacters(comments == null ? "" : comments);
+                    writer.writeEndElement();
 
                     writer.writeEndElement();
                 }
