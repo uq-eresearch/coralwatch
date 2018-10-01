@@ -1945,7 +1945,7 @@ function positionMarker() {
 
 <div dojoType="dojo.data.ItemFileWriteStore" jsId="surveyStore" data="surveyData"></div>
 
-<div style="width: 680px; height: 600px;"
+<div style="width: 830px; height: 600px;"
      id="surveygrid"
      jsId="surveygrid"
      dojoType="dojox.grid.DataGrid"
