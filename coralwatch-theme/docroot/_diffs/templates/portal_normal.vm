@@ -80,18 +80,16 @@
         }
 
         function iframeResize() {
-            postToParent({action: 'resizeHeight', data: document.body.scrollHeight});
+            postToParent({action: 'resizeHeight', data: document.body.scrollHeight + 28});
         }
     </script>
 
     <style type="text/css">
-        html, body { overflow-x: auto; overflow-y: auto; }
+        html, body { overflow-x: auto; overflow-y: hidden; }
         body { background: none !important; }
         #banner { display: none !important; }
         #navigation { display: none !important; }
         #content-wrapper { width: 100%; }
-        #content-wrapper table tbody tr #column-1 { width: 20%; }
-        #content-wrapper table tbody tr #column-1 form table tbody tr td { width: initial; }
         #footer { display: none !important; }
         iframe { display: none !important; }
     </style>
