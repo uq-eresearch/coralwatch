@@ -498,7 +498,7 @@ if (items.length) {
 
 <div dojoType="dojo.data.ItemFileWriteStore" jsId="reefStore" data="reefData"></div>
 
-<div style="width: 680px; height: 600px;"
+<div style="width: 630px; height: 600px;"
      id="reefgrid"
      jsId="reefgrid"
      dojoType="dojox.grid.DataGrid"
