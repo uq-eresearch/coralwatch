@@ -15,11 +15,15 @@ select
   trim(r.country) as "country",
   trim(r.name) as "reef",
   trim(u.displayname) as "surveyor",
-  s.date, m.ctotal as "records",
+  s.date,
+  m.ctotal as "records",
   s.latitude,
   s.longitude,
   csoft/ctotal as "soft coral ratio",
-  cdarkest, cdarkest/ctotal as "darkest score ratio"
+  cdarkest,
+  cdarkest/ctotal as "darkest score ratio",
+  s.groupName,
+  s.comments
 from survey s
   join min_records m on s.id = m.survey_id
   left join soft_corals soft on s.id = soft.survey_id
