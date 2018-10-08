@@ -15,6 +15,7 @@ dojo.locale = "en";
 dojo.require("dojox.grid.DataGrid");
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dojo.data.ItemFileWriteStore");
+
 dojo.require("dojox.form.Rating");
 dojo.require("dijit.form.Form");
 dojo.require("dijit.form.Button");
