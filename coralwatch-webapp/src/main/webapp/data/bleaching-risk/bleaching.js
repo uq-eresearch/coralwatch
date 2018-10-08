@@ -15,6 +15,11 @@ dojo.locale = "en";
 dojo.require("dojox.grid.DataGrid");
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dojo.data.ItemFileWriteStore");
+dojo.require("dojox.form.Rating");
+dojo.require("dijit.form.Form");
+dojo.require("dijit.form.Button");
+dojo.require("dojo.date.locale");
+dojo.require("dojo.parser");
 
 var dateFormatter = function(data) {
     return dojo.date.locale.format(new Date(Number(data)), {
