@@ -15,21 +15,76 @@
   be carried out to determine if a true bleaching event is occurring.
 </p>
 
-<div style="margin-bottom: 0.5em;">
+<div>
   <label><input id="rdAll" type="radio" name="rd1" value="all" style="margin-right:6px;">Since 2002</label>
   <label><input id="rdPast48m" type="radio" name="rd1" value="48m" style="margin-right:6px;margin-left:6px">Past 48 months</label>
   <label><input id="rdPast12m" type="radio" name="rd1" value="12m" style="margin-right:6px;margin-left:6px">Past 12 months</label>
   <label><input id="rdPast3m" type="radio" name="rd1" value="3m" style="margin-right:6px;margin-left:6px">Past 3 months</label>
 </div>
+<br/>
+
+<div>
+  <form dojoType="dijit.form.Form" jsId="filterForm" id="filterForm">
+
+    Country: <input type="text"
+                    id="countryFilterField"
+                    name="countryFilterField"
+                    style="width:100px;"
+                    dojoType="dijit.form.TextBox"
+                    trim="true"
+                    placeholder="Search string"
+                    value="" />&nbsp;&nbsp;Reef Name:&nbsp;<input type="text"
+                                                                  id="reefFilterField"
+                                                                  name="reefFilterField"
+                                                                  style="width:100px;"
+                                                                  dojoType="dijit.form.TextBox"
+                                                                  trim="true"
+                                                                  placeholder="Search string"
+                                                                  value="" />&nbsp;&nbsp;Group:&nbsp;<input type="text"
+                                                                                                            id="groupFilterField"
+                                                                                                            name="groupFilterField"
+                                                                                                            style="width:100px;"
+                                                                                                            dojoType="dijit.form.TextBox"
+                                                                                                            trim="true"
+                                                                                                            placeholder="Search string"
+                                                                                                            value="" />&nbsp;&nbsp;Surveyor:&nbsp;<input type="text"
+                                                                                                                                                         id="surveyorFilterField"
+                                                                                                                                                         name="surveyorFilterField"
+                                                                                                                                                         style="width:100px;"
+                                                                                                                                                         dojoType="dijit.form.TextBox"
+                                                                                                                                                         trim="true"
+                                                                                                                                                         placeholder="Search string"
+                                                                                                                                                         value="" />&nbsp;&nbsp;Comment:&nbsp;<input type="text"
+                                                                                                                                                                                                     id="commentFilterField"
+                                                                                                                                                                                                     name="commentFilterField"
+                                                                                                                                                                                                     style="width:100px;"
+                                                                                                                                                                                                     dojoType="dijit.form.TextBox"
+                                                                                                                                                                                                     trim="true"
+                                                                                                                                                                                                     placeholder="Search string"
+                                                                                                                                                                                                     value="" />&nbsp;&nbsp;<input type="button"
+                                                                                                                                                                                                                                   name="search"
+                                                                                                                                                                                                                                   value="Search"
+                                                                                                                                                                                                                                   onClick="apply_search()" />
+  </form>
+</div>
+<br/>
 
 <div dojoType="dojo.data.ItemFileWriteStore" jsId="brStore" data="brData"></div>
 
-<div id="grid" style="width: 700px; height: 500px;"
+<div style="width: 830px; height: 600px;"
+     id="brGrid"
+     jsId="brGrid"
      rowsPerPage="250"
      dojoType="dojox.grid.DataGrid"
-     jsId="brGrid"
+     rowsPerPage="250"
      store="brStore"
      structure="brLayout"
      queryOptions="{}"
      query="{}">
 </div>
+
+<script>
+    dojo.addOnLoad(function() {
+        surveygrid.setSortIndex(1, true);
+    });
+</script>
