@@ -1,4 +1,5 @@
 <script>
+  
   (function($) {
     $.QueryString = (function(a) {
       if (a === "") return {};
@@ -203,19 +204,20 @@
   
       window.location.href = url;
     });
-  
-    function apply_search () {
-        brGrid.queryOptions = {ignoreCase: true};
-        brGrid.filter({
-            surveyor: "*" + dijit.byId("surveyorFilterField").getValue() + "*",
-            reef: "*" + dijit.byId("reefFilterField").getValue() + "*",
-            country: "*" + dijit.byId("countryFilterField").getValue() + "*",
-            groupname: "*" + dijit.byId("groupFilterField").getValue() + "*",
-            comments: "*" + dijit.byId("commentFilterField").getValue() + "*"
-        });
-    }
-  
+
   });
+  
+  function apply_search () {
+    brGrid.queryOptions = {ignoreCase: true};
+    brGrid.filter({
+        surveyor: "*" + dijit.byId("surveyorFilterField").getValue() + "*",
+        reef: "*" + dijit.byId("reefFilterField").getValue() + "*",
+        country: "*" + dijit.byId("countryFilterField").getValue() + "*",
+        groupname: "*" + dijit.byId("groupFilterField").getValue() + "*",
+        comments: "*" + dijit.byId("commentFilterField").getValue() + "*"
+    });
+  }
+  
 </script>
 
 <h2 style="margin-top:0px;">Surveys with a potential bleaching risk</h2>
