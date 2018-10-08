@@ -32,6 +32,7 @@ var dateFormatter = function(data) {
 var datamodule = getCookie('datamodule');
 
 var brLayout = [
+    {
         {
             field: "country",
             name: "Country",
@@ -79,7 +80,7 @@ var brLayout = [
             //return '<a target="popup" href="/web/guest/survey?p_p_id=surveyportlet_WAR_coralwatch&' + '_surveyportlet_WAR_coralwatch_cmd=view&_surveyportlet_WAR_coralwatch_surveyId=' + id + '">More Info</a>';
           }
         }
-    ]
+    }
 ];
 
 var brData = {
