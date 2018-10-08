@@ -16,39 +16,57 @@ dojo.require("dojox.grid.DataGrid");
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dojo.data.ItemFileWriteStore");
 
+var dateFormatter = function(data) {
+    return dojo.date.locale.format(new Date(Number(data)), {
+        datePattern: "dd MMM yyyy",
+        selector: "date",
+        locale: "en"
+    });
+};
+
 var datamodule = getCookie('datamodule');
 
 var brLayout = [
-    [
         {
-          field: 'country',
-          name: 'Country',
-          width: '140px'
+            field: "country",
+            name: "Country",
+            width: 10
         },
         {
-          field: 'reef',
-          name: 'Reef',
-          width: '180px'
+            field: "reef",
+            name: "Reef",
+            width: 10
         },
         {
-          field: 'surveyor',
-          name: 'Surveyor',
-          width: '130px'
+            field: "groupname",
+            name: "Group",
+            width: 10
         },
         {
-          field: 'date',
-          name: 'Date',
-          width: '75px'
+            field: "surveyor",
+            name: "Surveyor",
+            width: 10
         },
         {
-          field: 'records',
-          name: 'Records',
-          width: '55px'
+            field: "comments",
+            name: "Comment",
+            width: 10
+        },
+        {
+            field: "date",
+            name: "Date",
+            width: 10,
+            formatter: dateFormatter
+        },
+        {
+            field: "records",
+            name: "Records",
+            width: 5
         },
         {
           field: 'view',
           name: 'View',
-          width: '55px',
+          width: 10,
           formatter: function(id) {
             var url = window.location.origin + "/web/guest/survey?p_p_id=surveyportlet_WAR_coralwatch&" + "_surveyportlet_WAR_coralwatch_cmd=view&_surveyportlet_WAR_coralwatch_surveyId=" + id;
             if (datamodule) return '<a target="popup" href="' + url + '" onclick="window.open(\'' + url + '\',\'popup\',\'width=682,height=644\'); return false;">More Info</a>';
@@ -99,10 +117,19 @@ function cmpDate(a,b) {
 
 dojo.addOnLoad(function() {
   brStore.comparatorMap = {};
-  brStore.comparatorMap.country = cmpIgnoreCase;
-  brStore.comparatorMap.reef = cmpIgnoreCase;
-  brStore.comparatorMap.surveyor = cmpIgnoreCase;
-  brStore.comparatorMap.date = cmpDate;
+
+  brStore.comparatorMap["country"] = cmpIgnoreCase;
+  brStore.comparatorMap["reef"] = cmpIgnoreCase;
+  brStore.comparatorMap["surveyor"] = cmpIgnoreCase;
+  brStore.comparatorMap["groupname"] = cmpIgnoreCase;
+  brStore.comparatorMap["comments"] = cmpIgnoreCase;
+  brStore.comparatorMap["date"] = cmpDate;
+  brStore.comparatorMap["records"] = function(a, b) {
+      var ret = 0;
+      if (Number(a) > Number(b)) ret = 1;
+      if (Number(a) < Number(b)) ret = -1;
+      return ret;
+  };
 
   var url = '/coralwatch/api/bleaching-risk';
 
@@ -141,7 +168,9 @@ dojo.addOnLoad(function() {
                     id: br[0],
                     country: br[1],
                     reef: br[2],
+                    groupname: br[11],
                     surveyor: br[3],
+                    comments: br[12],
                     date: br[4],
                     records: br[5],
                     view: br[0]
@@ -168,5 +197,16 @@ dojo.addOnLoad(function() {
 
     window.location.href = url;
   });
+
+  function apply_search () {
+      brGrid.queryOptions = {ignoreCase: true};
+      brGrid.filter({
+          surveyor: "*" + dijit.byId("surveyorFilterField").getValue() + "*",
+          reef: "*" + dijit.byId("reefFilterField").getValue() + "*",
+          country: "*" + dijit.byId("countryFilterField").getValue() + "*",
+          groupname: "*" + dijit.byId("groupFilterField").getValue() + "*",
+          comments: "*" + dijit.byId("commentFilterField").getValue() + "*"
+      });
+  }
 
 });
