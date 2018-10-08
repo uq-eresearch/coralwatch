@@ -1659,56 +1659,40 @@ function positionMarker() {
             {
                 field: "country",
                 name: "Country",
-                width: 10,
-                formatter: function(item) {
-                    return item.toString();
-                }
+                width: 10
             },
             {
                 field: "reef",
                 name: "Reef",
-                width: 10,
-                formatter: function(item) {
-                    return item.toString();
-                }
+                width: 10
             },
             {
                 field: "groupname",
                 name: "Group",
-                width: 10,
-                formatter: function(item) {
-                    return item.toString();
-                }
+                width: 10
             },
             {
                 field: "surveyor",
                 name: "Surveyor",
-                width: 10,
-                formatter: function(item) {
-                    return item.toString();
-                }
+                width: 10
             },
             {
                 field: "comments",
                 name: "Comment",
-                width: 10,
-                formatter: function(item) {
-                    return item.toString();
-                }
+                width: 10
             },
             {
                 field: "date",
                 name: "Date",
                 width: 10,
                 formatter: dateFormatter
-
             },
             {
                 field: "records",
                 name: "Records",
                 width: 5,
                 formatter: function(item) {
-                    return Number(item.toString());
+                    return Number(item);
                 }
             },
             <%--<%--%>
@@ -1782,6 +1766,26 @@ function positionMarker() {
       }
     }
 
+    function cmpDate(a,b) {
+      if((a === null) && (b === null)) {
+        return 0;
+      } else if(a === null) {
+        return -1;
+      } else if(b === null) {
+        return 1;
+      } else {
+        var aa = Date.parse(a);
+        var bb = Date.parse(b);
+        if(aa === bb) {
+          return 0;
+        } else if(aa < bb) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+    }
+
     // Changes XML to JSON
     // Modified version from here: http://davidwalsh.name/convert-xml-json
     function xmlToJson(xml) {
@@ -1832,6 +1836,7 @@ function positionMarker() {
         surveyStore.comparatorMap["surveyor"] = cmpIgnoreCase;
         surveyStore.comparatorMap["groupname"] = cmpIgnoreCase;
         surveyStore.comparatorMap["comments"] = cmpIgnoreCase;
+        surveyStore.comparatorMap["date"] = cmpDate;
         surveyStore.comparatorMap["records"] = function(a, b) {
             var ret = 0;
             if (Number(a) > Number(b)) ret = 1;
