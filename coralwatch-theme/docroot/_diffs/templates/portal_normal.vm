@@ -90,6 +90,7 @@
         #banner { display: none !important; }
         #navigation { display: none !important; }
         #content-wrapper { width: 100%; }
+        #content-wrapper .portlet { border: none !important; }
         #footer { display: none !important; }
         iframe { display: none !important; }
     </style>
