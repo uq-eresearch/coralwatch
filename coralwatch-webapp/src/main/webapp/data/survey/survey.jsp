@@ -1868,7 +1868,7 @@ function positionMarker() {
 
                             if (typeof survey["reef"] !== "string") { survey["reef"] = null; survey["reef"] = ""; }
                             if (typeof survey["country"] !== "string") { survey["country"] = null; survey["country"] = ""; }
-                            if (typeof survey["date"] !== "string") { var d = new Date("01/01/2001"); survey["date"] = null; survey["date"] = (d.getTime()).toString(); }
+                            if (typeof survey["date"] !== "string") { survey["date"] = null; survey["date"] = "Jan 1, 2001"; }
                             if (typeof survey["surveyor"] !== "string") { survey["surveyor"] = null; survey["surveyor"] = ""; }
                             if (typeof survey["rating"] !== "string") { survey["rating"] = null; survey["rating"] = "0"; }
                             if (typeof survey["view"] !== "string") { survey["view"] = null; survey["view"] = "0"; }
