@@ -1,4 +1,4 @@
-min_records as (
+with min_records as (
   select survey_id, cast(count(id) as real) as ctotal
   from surveyrecord group by survey_id having count(id) >= 20
 ),
