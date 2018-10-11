@@ -1,10 +1,6 @@
-with soft_corals as (
-  select survey_id, cast(count(id) as real) as csoft
-  from surveyrecord where coraltype = 'Soft' group by survey_id
-),
 min_records as (
   select survey_id, cast(count(id) as real) as ctotal
-  from surveyrecord group by survey_id having count(id) >= 6
+  from surveyrecord group by survey_id having count(id) >= 20
 ),
 darkest as (
   select survey_id, cast(count(id) as real) as cdarkest
@@ -26,11 +22,9 @@ select
   s.comments
 from survey s
   join min_records m on s.id = m.survey_id
-  left join soft_corals soft on s.id = soft.survey_id
   join darkest d on s.id = d.survey_id
   join reef r on s.reef_id = r.id
   join appuser u on u.id = s.creator_id
 where 
-  ((csoft is null) or ((csoft/ctotal) < 0.3)) and
-  ((cdarkest/ctotal) > 0.0465)
+  ((cdarkest/ctotal) > 0.3)
 order by s.date desc
