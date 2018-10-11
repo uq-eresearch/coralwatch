@@ -160,7 +160,7 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
 
     public Object bleachingRiskAll() {
       return entityManagerSource.getEntityManager().createNativeQuery(
-          sql("bleaching-risk-all")).getResultList();
+          sql("bleaching-risk-all_new")).getResultList();
     }
 
     public Object bleachingRiskPast48Months() {
