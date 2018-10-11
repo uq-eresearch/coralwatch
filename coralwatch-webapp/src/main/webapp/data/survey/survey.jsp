@@ -1766,26 +1766,6 @@ function positionMarker() {
       }
     }
 
-    function cmpDate(a,b) {
-      if((a === null) && (b === null)) {
-        return 0;
-      } else if(a === null) {
-        return -1;
-      } else if(b === null) {
-        return 1;
-      } else {
-        var aa = Date.parse(a);
-        var bb = Date.parse(b);
-        if(aa === bb) {
-          return 0;
-        } else if(aa < bb) {
-          return -1;
-        } else {
-          return 1;
-        }
-      }
-    }
-
     // Changes XML to JSON
     // Modified version from here: http://davidwalsh.name/convert-xml-json
     function xmlToJson(xml) {
@@ -1836,7 +1816,6 @@ function positionMarker() {
         surveyStore.comparatorMap["surveyor"] = cmpIgnoreCase;
         surveyStore.comparatorMap["groupname"] = cmpIgnoreCase;
         surveyStore.comparatorMap["comments"] = cmpIgnoreCase;
-        surveyStore.comparatorMap["date"] = cmpDate;
         surveyStore.comparatorMap["records"] = function(a, b) {
             var ret = 0;
             if (Number(a) > Number(b)) ret = 1;
@@ -1868,7 +1847,7 @@ function positionMarker() {
 
                             if (typeof survey["reef"] !== "string") { survey["reef"] = null; survey["reef"] = ""; }
                             if (typeof survey["country"] !== "string") { survey["country"] = null; survey["country"] = ""; }
-                            if (typeof survey["date"] !== "string") { survey["date"] = null; survey["date"] = "Jan 1, 2001"; }
+                            if (typeof survey["date"] !== "string") { var d = new Date("01/01/2001"); survey["date"] = null; survey["date"] = (d.getTime()).toString(); }
                             if (typeof survey["surveyor"] !== "string") { survey["surveyor"] = null; survey["surveyor"] = ""; }
                             if (typeof survey["rating"] !== "string") { survey["rating"] = null; survey["rating"] = "0"; }
                             if (typeof survey["view"] !== "string") { survey["view"] = null; survey["view"] = "0"; }
