@@ -87,23 +87,23 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             "FROM Survey o\n";
         boolean WHERE_was_used = false;
         if (StringUtils.isBlank(country) == false) {
-            queryString += "WHERE o.reef.country = :countryId\n";
+            queryString += "WHERE LOWER(o.reef.country) = :countryId\n";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(reefName) == false) {
-            queryString += (WHERE_was_used ? "AND" : "WHERE") + " o.reef.name = :reefNameId\n";
+            queryString += (WHERE_was_used ? "AND" : "WHERE") + " LOWER(o.reef.name) = :reefNameId\n";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(reefName) == false) {
-            queryString += (WHERE_was_used ? "AND" : "WHERE") + " o.groupName = :groupId\n";
+            queryString += (WHERE_was_used ? "AND" : "WHERE") + " LOWER(o.groupName) = :groupId\n";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(reefName) == false) {
-            queryString += (WHERE_was_used ? "AND" : "WHERE") + " o.creator.displayName = :surveyorId\n";
+            queryString += (WHERE_was_used ? "AND" : "WHERE") + " LOWER(o.creator.displayName) = :surveyorId\n";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(reefName) == false) {
-            queryString += (WHERE_was_used ? "AND" : "WHERE") + " o.comments = :commentId\n";
+            queryString += (WHERE_was_used ? "AND" : "WHERE") + " LOWER(o.comments) = :commentId\n";
             WHERE_was_used = true;
         }
         queryString += "ORDER BY date DESC";
