@@ -31,7 +31,6 @@ from survey s
   join reef r on s.reef_id = r.id
   join appuser u on u.id = s.creator_id
 where 
-  ((csoft is null) or ((csoft/ctotal) < 0.3)) and
-  ((cdarkest/ctotal) > 0.0465) and
+  ((cdarkest/ctotal) > 0.3) and
   s.date > (now() - interval '12 months')
 order by s.date desc
