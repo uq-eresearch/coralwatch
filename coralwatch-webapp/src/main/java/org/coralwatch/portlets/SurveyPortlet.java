@@ -1063,6 +1063,7 @@ public class SurveyPortlet extends GenericPortlet {
         SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
         Random rand = new Random();
         String format = request.getParameter("format");
+
         if (format.equals("json")) {
             response.setContentType("application/json;charset=utf-8");
             PrintWriter out = response.getWriter();
@@ -1086,17 +1087,17 @@ public class SurveyPortlet extends GenericPortlet {
                             writer.value(survey.getDate().getTime());
                             writer.endObject();
                         }
-                    }
-                    catch (JSONException e) {
-                        _log.error("Exception creating survey JSON", e);
+                    } catch (JSONException e) {
+                        _log.error("Exception creating survey json", e);
                     }
                 }
                 writer.endArray();
+            } catch (JSONException e) {
+                throw new PortletException("Exception creating surveys json", e);
             }
-            catch (JSONException e) {
-                throw new PortletException("Exception creating surveys JSON", e);
-            }
-        } else if (format.equals("xml")) {
+        }
+
+        else if (format.equals("xml")) {
             response.setContentType("text/xml;charset=utf-8");
             PrintWriter out = response.getWriter();
             try {
@@ -1187,7 +1188,7 @@ public class SurveyPortlet extends GenericPortlet {
                 writer.writeEndElement();
             }
             catch (Exception e) {
-                _log.error("Exception creating survey XML", e);
+                _log.error("Exception creating survey xml", e);
             }
         }
     }
@@ -1198,7 +1199,14 @@ public class SurveyPortlet extends GenericPortlet {
         ScrollableResults surveys = null;
         String fileNamePrefix = null;
 
+        String countryParam = request.getParameter("country");
+        String reefNameParam = request.getParameter("reefName");
+        String groupParam = request.getParameter("group");
+        String surveyorParam = request.getParameter("surveyor");
+        String commentParam = request.getParameter("comment");
+
         String reefIdParam = request.getParameter("reefId");
+
         if (reefIdParam != null) {
             ReefDao reefDao = CoralwatchApplication.getConfiguration().getReefDao();
             Reef reef = reefDao.getById(Long.valueOf(reefIdParam));
@@ -1206,6 +1214,18 @@ public class SurveyPortlet extends GenericPortlet {
             surveys = surveyDao.getSurveysIterator(reef);
             fileNamePrefix = reef.getName();
         }
+
+        else if (countryParam != null || reefNameParam != null || groupParam != null || surveyorParam != null || commentParam != null) {
+            PortletSession session = request.getPortletSession(true);
+            UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
+            if (currentUser == null || !currentUser.isSuperUser()) {
+                throw new PortletException("Only the administrator can export all survey data");
+            }
+            SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
+            surveys = surveyDao.getSurveysIterator(countryParam, reefNameParam, groupParam, surveyorParam, commentParam);
+            fileNamePrefix = "surveys";
+        }
+
         else {
             PortletSession session = request.getPortletSession(true);
             UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
