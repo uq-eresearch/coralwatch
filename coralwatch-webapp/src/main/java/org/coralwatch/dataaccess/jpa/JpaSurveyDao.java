@@ -94,15 +94,15 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             queryString += (WHERE_was_used ? "AND" : "WHERE") + " LOWER(o.reef.name) = :reefNameId\n";
             WHERE_was_used = true;
         }
-        if (StringUtils.isBlank(reefName) == false) {
+        if (StringUtils.isBlank(group) == false) {
             queryString += (WHERE_was_used ? "AND" : "WHERE") + " LOWER(o.groupName) = :groupId\n";
             WHERE_was_used = true;
         }
-        if (StringUtils.isBlank(reefName) == false) {
+        if (StringUtils.isBlank(surveyor) == false) {
             queryString += (WHERE_was_used ? "AND" : "WHERE") + " LOWER(o.creator.displayName) = :surveyorId\n";
             WHERE_was_used = true;
         }
-        if (StringUtils.isBlank(reefName) == false) {
+        if (StringUtils.isBlank(comment) == false) {
             queryString += (WHERE_was_used ? "AND" : "WHERE") + " LOWER(o.comments) = :commentId\n";
             WHERE_was_used = true;
         }
