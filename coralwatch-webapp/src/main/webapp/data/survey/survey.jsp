@@ -1899,11 +1899,11 @@ function positionMarker() {
 
         var export_survey_link = document.getElementById("export-survey-data").getAttribute("href") || ''; // Full link
         if (export_survey_link.indexOf('&country=') !== -1) export_survey_link = export_survey_link.substr(0, export_survey_link.indexOf('&country=')); // remove all search params (if any)
-        export_survey_link += '&country=' + dijit.byId("countryFilterField").getValue();
-        export_survey_link += '&reefName=' + dijit.byId("reefFilterField").getValue();
-        export_survey_link += '&group=' + dijit.byId("groupFilterField").getValue();
-        export_survey_link += '&surveyor=' + dijit.byId("surveyorFilterField").getValue();
-        export_survey_link += '&comment=' + dijit.byId("commentFilterField").getValue();
+        export_survey_link += '&country=' + (dijit.byId("countryFilterField").getValue() || '').toLowerCase();
+        export_survey_link += '&reefName=' + (dijit.byId("reefFilterField").getValue() || '').toLowerCase();
+        export_survey_link += '&group=' + (dijit.byId("groupFilterField").getValue() || '').toLowerCase();
+        export_survey_link += '&surveyor=' + (dijit.byId("surveyorFilterField").getValue() || '').toLowerCase();
+        export_survey_link += '&comment=' + (dijit.byId("commentFilterField").getValue() || '').toLowerCase();
         document.getElementById("export-survey-data").setAttribute("href", export_survey_link);
     }
 </script>
