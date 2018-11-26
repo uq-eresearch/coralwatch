@@ -19,7 +19,7 @@ select
   m.ctotal as "records",
   s.latitude,
   s.longitude,
-  csoft/ctotal as "soft coral ratio",
+  0/ctotal as "soft coral ratio",
   cdarkest,
   cdarkest/ctotal as "darkest score ratio",
   s.groupName,
@@ -31,6 +31,5 @@ from survey s
   join reef r on s.reef_id = r.id
   join appuser u on u.id = s.creator_id
 where 
-  ((csoft is null) or ((csoft/ctotal) < 0.3)) and
-  ((cdarkest/ctotal) > 0.0465)
+  ((cdarkest/ctotal) > 0.3)
 order by s.date desc

@@ -21,15 +21,7 @@
   dojo.require("dijit.form.TextBox");
   dojo.require("dojo.date.locale");
   dojo.require("dojo.parser");
-  
-  var dateFormatter = function(data) {
-      return dojo.date.locale.format(new Date(Number(data)), {
-          datePattern: "dd MMM yyyy",
-          selector: "date",
-          locale: "en"
-      });
-  };
-  
+   
   var datamodule = getCookie('datamodule');
   
   var brLayout = [
@@ -62,8 +54,7 @@
           {
               field: "date",
               name: "Date",
-              width: 10,
-              formatter: dateFormatter
+              width: 10
           },
           {
               field: "records",

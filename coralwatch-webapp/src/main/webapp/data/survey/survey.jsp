@@ -1625,7 +1625,7 @@ function positionMarker() {
             <portlet:param name="singleSheet" value="true" />
             <portlet:param name="format" value="csv" />
         </portlet:resourceURL>
-        | <a href="<%= exportURL %>">Export survey data</a>
+        | <a id="export-survey-data" href="<%= exportURL %>">Export survey data</a>
     <% } %>
 </div>
 <%
@@ -1766,26 +1766,6 @@ function positionMarker() {
       }
     }
 
-    function cmpDate(a,b) {
-      if((a === null) && (b === null)) {
-        return 0;
-      } else if(a === null) {
-        return -1;
-      } else if(b === null) {
-        return 1;
-      } else {
-        var aa = Date.parse(a);
-        var bb = Date.parse(b);
-        if(aa === bb) {
-          return 0;
-        } else if(aa < bb) {
-          return -1;
-        } else {
-          return 1;
-        }
-      }
-    }
-
     // Changes XML to JSON
     // Modified version from here: http://davidwalsh.name/convert-xml-json
     function xmlToJson(xml) {
@@ -1836,7 +1816,6 @@ function positionMarker() {
         surveyStore.comparatorMap["surveyor"] = cmpIgnoreCase;
         surveyStore.comparatorMap["groupname"] = cmpIgnoreCase;
         surveyStore.comparatorMap["comments"] = cmpIgnoreCase;
-        surveyStore.comparatorMap["date"] = cmpDate;
         surveyStore.comparatorMap["records"] = function(a, b) {
             var ret = 0;
             if (Number(a) > Number(b)) ret = 1;
@@ -1917,6 +1896,15 @@ function positionMarker() {
             groupname: "*" + dijit.byId("groupFilterField").getValue() + "*",
             comments: "*" + dijit.byId("commentFilterField").getValue() + "*"
         });
+
+        var export_survey_link = document.getElementById("export-survey-data").getAttribute("href") || ''; // Full link
+        if (export_survey_link.indexOf('&country=') !== -1) export_survey_link = export_survey_link.substr(0, export_survey_link.indexOf('&country=')); // remove all search params (if any)
+        export_survey_link += '&country=' + dijit.byId("countryFilterField").getValue();
+        export_survey_link += '&reefName=' + dijit.byId("reefFilterField").getValue();
+        export_survey_link += '&group=' + dijit.byId("groupFilterField").getValue();
+        export_survey_link += '&surveyor=' + dijit.byId("surveyorFilterField").getValue();
+        export_survey_link += '&comment=' + dijit.byId("commentFilterField").getValue();
+        document.getElementById("export-survey-data").setAttribute("href", export_survey_link);
     }
 </script>
 
