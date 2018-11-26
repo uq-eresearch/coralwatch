@@ -19,7 +19,7 @@ select
   m.ctotal as "records",
   s.latitude,
   s.longitude,
-  0/ctotal as "soft coral ratio",
+  csoft/ctotal as "soft coral ratio",
   cdarkest,
   cdarkest/ctotal as "darkest score ratio",
   s.groupName,
