@@ -1625,7 +1625,7 @@ function positionMarker() {
             <portlet:param name="singleSheet" value="true" />
             <portlet:param name="format" value="csv" />
         </portlet:resourceURL>
-        | <a href="<%= exportURL %>">Export survey data</a>
+        | <a id="export-survey-data" href="<%= exportURL %>">Export survey data</a>
     <% } %>
 </div>
 <%
@@ -1896,6 +1896,15 @@ function positionMarker() {
             groupname: "*" + dijit.byId("groupFilterField").getValue() + "*",
             comments: "*" + dijit.byId("commentFilterField").getValue() + "*"
         });
+
+        var export_survey_link = document.getElementById("export-survey-data").getAttribute("href") || ''; // Full link
+        export_survey_link = export_survey_link.substr(0, export_survey_link.indexOf('&country=')); // remove all search params (if any)
+        export_survey_link += '&country=' + dijit.byId("countryFilterField").getValue();
+        export_survey_link += '&reefName=' + dijit.byId("reefFilterField").getValue();
+        export_survey_link += '&group=' + dijit.byId("groupFilterField").getValue();
+        export_survey_link += '&surveyor=' + dijit.byId("surveyorFilterField").getValue();
+        export_survey_link += '&comment=' + dijit.byId("commentFilterField").getValue();
+        document.getElementById("export-survey-data").setAttribute("href", export_survey_link);
     }
 </script>
 
