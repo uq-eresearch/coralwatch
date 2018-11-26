@@ -17,8 +17,7 @@ from survey s
   left join soft_corals soft on s.id = soft.survey_id
   join darkest d on s.id = d.survey_id
 where 
-  ((csoft is null) or ((csoft/ctotal) < 0.3)) and
-  ((cdarkest/ctotal) > 0.0465) and
+  ((cdarkest/ctotal) > 0.3) and
   s.datesubmitted < (now() at time zone 'utc' - interval '12 hour') and
   br_mailed is null
 order by s.date desc
