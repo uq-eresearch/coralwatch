@@ -80,6 +80,56 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
     }
 
     @Override
+    public ScrollableResults getSurveysIterator(String country, String reefName, String group, String surveyor, String comment) {
+        HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
+        String queryString =
+            "SELECT o\n" +
+            "FROM Survey o\n";
+        boolean WHERE_was_used = false;
+        if (StringUtils.isBlank(country) == false) {
+            queryString += "WHERE o.reef.country = :countryId\n";
+            WHERE_was_used = true;
+        }
+        if (StringUtils.isBlank(reefName) == false) {
+            queryString += (WHERE_was_used ? "AND" : "WHERE") + " o.reef.name = :reefNameId\n";
+            WHERE_was_used = true;
+        }
+        if (StringUtils.isBlank(reefName) == false) {
+            queryString += (WHERE_was_used ? "AND" : "WHERE") + " o.groupName = :groupId\n";
+            WHERE_was_used = true;
+        }
+        if (StringUtils.isBlank(reefName) == false) {
+            queryString += (WHERE_was_used ? "AND" : "WHERE") + " o.creator.displayName = :surveyorId\n";
+            WHERE_was_used = true;
+        }
+        if (StringUtils.isBlank(reefName) == false) {
+            queryString += (WHERE_was_used ? "AND" : "WHERE") + " o.comments = :commentId\n";
+            WHERE_was_used = true;
+        }
+        queryString += "ORDER BY date DESC";
+        Query query = entityManager.getSession()
+                .createQuery(queryString)
+                .setCacheMode(CacheMode.IGNORE)
+                .setFetchSize(50);
+        if (StringUtils.isBlank(country) == false) {
+            query.setParameter("countryId", country);
+        }
+        if (StringUtils.isBlank(reefName) == false) {
+            query.setParameter("reefNameId", reefName);
+        }
+        if (StringUtils.isBlank(group) == false) {
+            query.setParameter("groupId", group);
+        }
+        if (StringUtils.isBlank(surveyor) == false) {
+            query.setParameter("surveyorId", surveyor);
+        }
+        if (StringUtils.isBlank(comment) == false) {
+            query.setParameter("commentId", comment);
+        }
+        return query.scroll();
+    }
+
+    @Override
     public ScrollableResults getSurveysForDojo(Reef reef, UserImpl surveyCreator) {
         HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
         String queryString =
