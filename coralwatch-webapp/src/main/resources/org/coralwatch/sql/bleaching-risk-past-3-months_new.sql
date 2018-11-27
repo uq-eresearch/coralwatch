@@ -4,7 +4,7 @@ with soft_corals as (
 ),
 min_records as (
   select survey_id, cast(count(id) as real) as ctotal
-  from surveyrecord group by survey_id having count(id) >= 6
+  from surveyrecord group by survey_id having count(id) >= 20
 ),
 darkest as (
   select survey_id, cast(count(id) as real) as cdarkest
