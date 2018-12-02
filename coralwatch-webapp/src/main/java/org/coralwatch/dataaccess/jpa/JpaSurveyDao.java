@@ -84,19 +84,19 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(reefName) == false) {
-            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.reef.name) = :reefNameId";
+            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.reef.name) LIKE '%" + reefName + "%'";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(group) == false) {
-            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.groupName) = :groupId";
+            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.groupName) LIKE '%" + group + "%'";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(surveyor) == false) {
-            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.creator.displayName) = :surveyorId";
+            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.creator.displayName) LIKE '%" + surveyor + "%'";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(comment) == false) {
-            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.comments) = :commentId";
+            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.comments) LIKE '%" + comment + "%'";
             WHERE_was_used = true;
         }
         queryString += " ORDER BY date DESC";
@@ -104,21 +104,6 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             .createQuery(queryString)
             .setCacheMode(CacheMode.IGNORE)
             .setFetchSize(50);
-        /*if (StringUtils.isBlank(country) == false) {
-            query.setParameter("countryId", country);
-        }*/
-        if (StringUtils.isBlank(reefName) == false) {
-            query.setParameter("reefNameId", reefName);
-        }
-        if (StringUtils.isBlank(group) == false) {
-            query.setParameter("groupId", group);
-        }
-        if (StringUtils.isBlank(surveyor) == false) {
-            query.setParameter("surveyorId", surveyor);
-        }
-        if (StringUtils.isBlank(comment) == false) {
-            query.setParameter("commentId", comment);
-        }
         return query.scroll();
     }
 
