@@ -80,7 +80,7 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
         String queryString = "SELECT o FROM Survey o";
         boolean WHERE_was_used = false;
         if (StringUtils.isBlank(country) == false) {
-            queryString += " WHERE LOWER(o.reef.country) ILIKE '%" + country + "%'";
+            queryString += " WHERE o.reef.country ILIKE '%" + country + "%'";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(reefName) == false) {
