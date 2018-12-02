@@ -28,36 +28,36 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
     @Override
     @SuppressWarnings("unchecked")
     public List<Survey> getAll() {
-        return entityManagerSource.getEntityManager().createQuery("SELECT o FROM Survey o ORDER BY date DESC").getResultList();
+        return entityManagerSource.getEntityManager()
+            .createQuery("SELECT o FROM Survey o ORDER BY date DESC")
+            .getResultList();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<SurveyRecord> getSurveyRecords(Survey survey) {
-        return entityManagerSource.getEntityManager().createQuery("SELECT o FROM SurveyRecord o WHERE o.survey = :survey ORDER BY o.id").setParameter("survey",
-                survey).getResultList();
+        return entityManagerSource.getEntityManager()
+            .createQuery("SELECT o FROM SurveyRecord o WHERE o.survey = :survey ORDER BY o.id")
+            .setParameter("survey",
+            survey).getResultList();
     }
 
     @Override
     public Survey getById(Long id) {
-        List<?> resultList = entityManagerSource.getEntityManager().createQuery("SELECT o FROM Survey o WHERE o.id = :id").setParameter("id", id).getResultList();
-        if (resultList.isEmpty()) {
-            return null;
-        }
+        List<?> resultList = entityManagerSource.getEntityManager()
+            .createQuery("SELECT o FROM Survey o WHERE o.id = :id")
+            .setParameter("id", id)
+            .getResultList();
+        if (resultList.isEmpty()) { return null; }
         assert resultList.size() == 1 : "id should be unique";
         return (Survey) resultList.get(0);
-
     }
 
     @Override
     public ScrollableResults getSurveysIterator() {
         HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
         return entityManager.getSession()
-            .createQuery(
-                "SELECT o\n" +
-                "FROM Survey o\n" +
-                "ORDER BY date DESC"
-            )
+            .createQuery("SELECT o FROM Survey o ORDER BY date DESC")
             .setCacheMode(CacheMode.IGNORE)
             .setFetchSize(50)
             .scroll();
@@ -67,12 +67,7 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
     public ScrollableResults getSurveysIterator(Reef reef) {
         HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
         return entityManager.getSession()
-            .createQuery(
-                "SELECT o\n" +
-                "FROM Survey o\n" +
-                "WHERE o.reef.id = :reefId\n" +
-                "ORDER BY date DESC"
-            )
+            .createQuery("SELECT o FROM Survey o WHERE o.reef.id = :reefId ORDER BY date DESC")
             .setCacheMode(CacheMode.IGNORE)
             .setFetchSize(50)
             .setParameter("reefId", reef.getId())
@@ -80,33 +75,31 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
     }
 
     @Override
-    public ScrollableResults getSurveysIterator(String country, String reefName, String group, String surveyor, String comment) {
+    public ScrollableResults getSurveysIteratorWithFilters(String country, String reefName, String group, String surveyor, String comment) {
         HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
-        String queryString =
-            "SELECT o\n" +
-            "FROM Survey o\n";
+        String queryString = "SELECT o FROM Survey o";
         boolean WHERE_was_used = false;
         if (StringUtils.isBlank(country) == false) {
-            queryString += "WHERE LOWER(o.reef.country) = :countryId\n";
+            queryString += " WHERE LOWER(o.reef.country) = :countryId";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(reefName) == false) {
-            queryString += (WHERE_was_used ? "AND" : "WHERE") + " LOWER(o.reef.name) = :reefNameId\n";
+            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.reef.name) = :reefNameId";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(group) == false) {
-            queryString += (WHERE_was_used ? "AND" : "WHERE") + " LOWER(o.groupName) = :groupId\n";
+            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.groupName) = :groupId";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(surveyor) == false) {
-            queryString += (WHERE_was_used ? "AND" : "WHERE") + " LOWER(o.creator.displayName) = :surveyorId\n";
+            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.creator.displayName) = :surveyorId";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(comment) == false) {
-            queryString += (WHERE_was_used ? "AND" : "WHERE") + " LOWER(o.comments) = :commentId\n";
+            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.comments) = :commentId";
             WHERE_was_used = true;
         }
-        queryString += "ORDER BY date DESC";
+        queryString += " ORDER BY date DESC";
         Query query = entityManager.getSession()
                 .createQuery(queryString)
                 .setCacheMode(CacheMode.IGNORE)
@@ -133,26 +126,26 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
     public ScrollableResults getSurveysForDojo(Reef reef, UserImpl surveyCreator) {
         HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
         String queryString =
-            "SELECT\n" +
-            "    survey.creator.displayName,\n" +
-            "    survey.date,\n" +
-            "    survey.reef.name,\n" +
-            "    survey.reef.country,\n" +
-            "    count(surveyRecord),\n" +
-            "    survey.id,\n" +
-            "    survey.reviewState,\n" +
-            "    survey.groupName,\n" +
-            "    survey.comments\n" +
-            "FROM Survey survey\n" +
-            "JOIN survey.dataset as surveyRecord\n";
+            "SELECT" +
+            " survey.creator.displayName," +
+            " survey.date," +
+            " survey.reef.name," +
+            " survey.reef.country," +
+            " count(surveyRecord)," +
+            " survey.id," +
+            " survey.reviewState," +
+            " survey.groupName," +
+            " survey.comments" +
+            " FROM Survey survey" +
+            " JOIN survey.dataset as surveyRecord";
         if (reef != null) {
-            queryString += "WHERE survey.reef.id = :reefId\n";
+            queryString += " WHERE survey.reef.id = :reefId";
         }
         if (surveyCreator != null) {
-            queryString += ((reef != null) ? "AND" : "WHERE") + " survey.creator.id = :surveyCreatorId\n";
+            queryString += ((reef != null) ? " AND" : " WHERE") + " survey.creator.id = :surveyCreatorId";
         }
-        queryString += "GROUP BY survey.id, survey.date, survey.reviewState, survey.groupName, survey.comments, survey.creator.displayName, survey.reef.name, survey.reef.country\n";
-        queryString += "ORDER BY survey.date DESC";
+        queryString += " GROUP BY survey.id, survey.date, survey.reviewState, survey.groupName, survey.comments, survey.creator.displayName, survey.reef.name, survey.reef.country";
+        queryString += " ORDER BY survey.date DESC";
         Query query = entityManager.getSession()
             .createQuery(queryString)
             .setCacheMode(CacheMode.IGNORE)
@@ -174,8 +167,8 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
               "select count(id) from Survey").getSingleResult()).intValue();
         } else {
           return ((Number)entityManagerSource.getEntityManager().createNativeQuery(
-              "select count(survey.id) from Survey inner join reef on survey.reef_id = reef.id "
-              + "where reef.country = ?").setParameter(1, country).getSingleResult()).intValue();
+              "select count(survey.id) from Survey inner join reef on survey.reef_id = reef.id"
+              + " where reef.country = ?").setParameter(1, country).getSingleResult()).intValue();
         }
       } catch(Exception e) {
         e.printStackTrace();
