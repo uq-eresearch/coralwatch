@@ -80,7 +80,7 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
         String queryString = "SELECT o FROM Survey o";
         boolean WHERE_was_used = false;
         if (StringUtils.isBlank(country) == false) {
-            queryString += " WHERE o.reef.country ILIKE '%:countryId%'";
+            queryString += " WHERE LOWER(o.reef.country) ILIKE '%" + country + "%'";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(reefName) == false) {
@@ -104,9 +104,9 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             .createQuery(queryString)
             .setCacheMode(CacheMode.IGNORE)
             .setFetchSize(50);
-        if (StringUtils.isBlank(country) == false) {
+        /*if (StringUtils.isBlank(country) == false) {
             query.setParameter("countryId", country);
-        }
+        }*/
         if (StringUtils.isBlank(reefName) == false) {
             query.setParameter("reefNameId", reefName);
         }
