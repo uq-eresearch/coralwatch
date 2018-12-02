@@ -101,9 +101,9 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
         }
         queryString += " ORDER BY date DESC";
         Query query = entityManager.getSession()
-                .createQuery(queryString)
-                .setCacheMode(CacheMode.IGNORE)
-                .setFetchSize(50);
+            .createQuery(queryString)
+            .setCacheMode(CacheMode.IGNORE)
+            .setFetchSize(50);
         if (StringUtils.isBlank(country) == false) {
             query.setParameter("countryId", country);
         }
