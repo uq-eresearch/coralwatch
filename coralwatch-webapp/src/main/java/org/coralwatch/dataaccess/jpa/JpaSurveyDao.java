@@ -80,23 +80,23 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
         String queryString = "SELECT o FROM Survey o";
         boolean WHERE_was_used = false;
         if (StringUtils.isBlank(country) == false) {
-            queryString += " WHERE LOWER(o.reef.country) ~* :countryId";
+            queryString += " WHERE LOWER(o.reef.country) ILIKE '%:countryId%'";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(reefName) == false) {
-            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.reef.name) ~* :reefNameId";
+            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.reef.name) ILIKE '%:reefNameId'";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(group) == false) {
-            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.groupName) ~* :groupId";
+            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.groupName) ILIKE '%:groupId'";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(surveyor) == false) {
-            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.creator.displayName) ~* :surveyorId";
+            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.creator.displayName) ILIKE '%:surveyorId'";
             WHERE_was_used = true;
         }
         if (StringUtils.isBlank(comment) == false) {
-            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.comments) ~* :commentId";
+            queryString += (WHERE_was_used ? " AND" : " WHERE") + " LOWER(o.comments) ILIKE '%:commentId'";
             WHERE_was_used = true;
         }
         queryString += " ORDER BY date DESC";
