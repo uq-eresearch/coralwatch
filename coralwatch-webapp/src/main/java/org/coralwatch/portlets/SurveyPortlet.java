@@ -1215,14 +1215,14 @@ public class SurveyPortlet extends GenericPortlet {
             fileNamePrefix = reef.getName();
         }
 
-        else if (countryParam != null || reefNameParam != null || groupParam != null || surveyorParam != null || commentParam != null) {
+        else if ((countryParam != null) || (reefNameParam != null) || (groupParam != null) || (surveyorParam != null) || (commentParam != null)) {
             PortletSession session = request.getPortletSession(true);
             UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
             if (currentUser == null || !currentUser.isSuperUser()) {
                 throw new PortletException("Only the administrator can export all survey data");
             }
             SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
-            surveys = surveyDao.getSurveysIterator(countryParam, reefNameParam, groupParam, surveyorParam, commentParam);
+            surveys = surveyDao.getSurveysIteratorWithFilters(countryParam, reefNameParam, groupParam, surveyorParam, commentParam);
             fileNamePrefix = "surveys";
         }
 
