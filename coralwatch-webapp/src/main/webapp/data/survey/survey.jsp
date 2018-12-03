@@ -1620,7 +1620,7 @@ function positionMarker() {
 %>
 <div style="float: right;">
     <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">New survey</a>
-    <% if (currentUser != null && currentUser.isSuperUser()) { %>
+    <% if (currentUser != null && currentUser.isSuperUser() && false) { %>
         <portlet:resourceURL var="exportURL" id="export">
             <portlet:param name="singleSheet" value="true" />
             <portlet:param name="format" value="csv" />
@@ -1633,6 +1633,11 @@ function positionMarker() {
 %>
 
 <h2 style="float: left; margin-top:0; margin-right: 2em;">All Surveys</h2>
+
+<portlet:resourceURL var="exportURL" id="export">
+    <portlet:param name="singleSheet" value="true" />
+    <portlet:param name="format" value="csv" />
+</portlet:resourceURL>
 <a style="float: left;" id="export-survey-data" href="<%= exportURL %>">Export filtered surveys data</a>
 
 <script>
