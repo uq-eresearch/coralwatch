@@ -1621,11 +1621,11 @@ function positionMarker() {
 <div style="float: right;">
     <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">New survey</a>
     <% if (currentUser != null && currentUser.isSuperUser()) { %>
-        <portlet:resourceURL var="exportURL" id="export">
+        <portlet:resourceURL var="exportURL1" id="export1">
             <portlet:param name="singleSheet" value="true" />
             <portlet:param name="format" value="csv" />
         </portlet:resourceURL>
-        | <a id="export-survey-data" href="<%= exportURL %>">Export filtered surveys data</a>
+        | <a id="export-survey-data1" href="<%= exportURL1 %>">Export filtered surveys data</a>
     <% } %>
 </div>
 <%
