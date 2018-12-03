@@ -1640,7 +1640,7 @@ function positionMarker() {
     }
 %>
 
-<h2 style="float: left; margin-top:0; margin-right: 2em;">All Surveys</h2>
+<h2 style="margin-top:0;">All Surveys</h2>
 
 <portlet:resourceURL var="exportURL" id="export">
     <portlet:param name="singleSheet" value="true" />
