@@ -54,6 +54,16 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
     }
 
     @Override
+    public ScrollableResults getSurveysIterator() {
+        HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
+        return entityManager.getSession()
+            .createQuery("SELECT o FROM Survey o ORDER BY date DESC")
+            .setCacheMode(CacheMode.IGNORE)
+            .setFetchSize(50)
+            .scroll();
+    }
+
+    @Override
     public ScrollableResults getSurveysIterator(Reef reef) {
         HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
         return entityManager.getSession()
@@ -61,16 +71,6 @@ public class JpaSurveyDao extends JpaDao<Survey> implements SurveyDao, Serializa
             .setCacheMode(CacheMode.IGNORE)
             .setFetchSize(50)
             .setParameter("reefId", reef.getId())
-            .scroll();
-    }
-
-    @Override
-    public ScrollableResults getSurveysIterator() {
-        HibernateEntityManager entityManager = (HibernateEntityManager) entityManagerSource.getEntityManager();
-        return entityManager.getSession()
-            .createQuery("SELECT o FROM Survey o ORDER BY date DESC")
-            .setCacheMode(CacheMode.IGNORE)
-            .setFetchSize(50)
             .scroll();
     }
 
