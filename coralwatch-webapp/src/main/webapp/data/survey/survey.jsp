@@ -1626,6 +1626,7 @@ function positionMarker() {
             <portlet:param name="format" value="csv" />
         </portlet:resourceURL>
     <% } %>
+    | <a id="export-survey-data" href="<%= exportURL %>">Export filtered surveys data</a>
 </div>
 <%
     }
