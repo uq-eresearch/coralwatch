@@ -1626,13 +1626,13 @@ function positionMarker() {
             <portlet:param name="format" value="csv" />
         </portlet:resourceURL>
     <% } %>
-    | <a id="export-survey-data" href="<%= exportURL %>">Export filtered surveys data</a>
 </div>
 <%
     }
 %>
 
-<h2 style="margin-top:0;">All Surveys</h2>
+<h2 style="float: left; margin-top:0; margin-right: 2em;">All Surveys</h2>
+<a style="float: left;" id="export-survey-data" href="<%= exportURL %>">Export filtered surveys data</a>
 
 <script>
     dojo.require("dojox.grid.DataGrid");
