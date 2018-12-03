@@ -1642,12 +1642,6 @@ function positionMarker() {
 
 <h2 style="margin-top:0;">All Surveys</h2>
 
-<portlet:resourceURL var="exportURL" id="export">
-    <portlet:param name="singleSheet" value="true" />
-    <portlet:param name="format" value="csv" />
-</portlet:resourceURL>
-<a style="float: left;" id="export-survey-data" href="<%= exportURL %>">Export filtered surveys data</a>
-
 <script>
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojo.data.ItemFileReadStore");
