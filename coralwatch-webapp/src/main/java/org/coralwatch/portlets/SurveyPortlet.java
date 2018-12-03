@@ -1199,9 +1199,9 @@ public class SurveyPortlet extends GenericPortlet {
         else {
             PortletSession session = request.getPortletSession(true);
             UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
-/*            if (currentUser == null || !currentUser.isSuperUser()) {
+            if (currentUser == null || !currentUser.isSuperUser()) {
                 throw new PortletException("Only the administrator can export all survey data");
-            }*/
+            }
             SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
             surveys = surveyDao.getSurveysIterator();
             fileNamePrefix = "surveys";
