@@ -16,9 +16,9 @@ public interface SurveyDao extends Dao<Survey> {
 
     Survey getById(Long id);
     
+    public ScrollableResults getSurveysIterator();
     public ScrollableResults getSurveysIterator(Reef reef);
     public ScrollableResults getSurveysIteratorWithFilters(String country, String reefName, String group, String surveyor, String comment);
-    public ScrollableResults getSurveysIterator();
     public ScrollableResults getSurveysForDojo(Reef reef, UserImpl surveyCreator);
 
     int count(String country);
