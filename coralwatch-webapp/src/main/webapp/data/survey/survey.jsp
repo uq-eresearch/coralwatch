@@ -1620,7 +1620,7 @@ function positionMarker() {
 %>
 <div style="float: right;">
     <a href="<portlet:renderURL><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /></portlet:renderURL>">New survey</a>
-    <% if (currentUser != null && currentUser.isSuperUser() && false) { %>
+    <% if (currentUser != null && currentUser.isSuperUser()) { %>
 
     <% } %>
 </div>
