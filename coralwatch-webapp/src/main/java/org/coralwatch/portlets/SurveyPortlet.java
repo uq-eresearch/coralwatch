@@ -1215,10 +1215,10 @@ public class SurveyPortlet extends GenericPortlet {
             fileNamePrefix = reef.getName();
         }
 
-        else if ((countryParam != null) || (reefNameParam != null) || (groupParam != null) || (surveyorParam != null) || (commentParam != null)) {
+        else ((countryParam != null) || (reefNameParam != null) || (groupParam != null) || (surveyorParam != null) || (commentParam != null)) {
             PortletSession session = request.getPortletSession(true);
-            UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
-/*            if (currentUser == null || !currentUser.isSuperUser()) {
+/*            UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
+            if (currentUser == null || !currentUser.isSuperUser()) {
                 throw new PortletException("Only the administrator can export all survey data");
             }*/
             SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
@@ -1226,7 +1226,7 @@ public class SurveyPortlet extends GenericPortlet {
             fileNamePrefix = "surveys";
         }
 
-        else {
+/*        else {
             PortletSession session = request.getPortletSession(true);
             UserImpl currentUser = (UserImpl) session.getAttribute("currentUser", PortletSession.APPLICATION_SCOPE);
             if (currentUser == null || !currentUser.isSuperUser()) {
@@ -1235,7 +1235,7 @@ public class SurveyPortlet extends GenericPortlet {
             SurveyDao surveyDao = CoralwatchApplication.getConfiguration().getSurveyDao();
             surveys = surveyDao.getSurveysIterator();
             fileNamePrefix = "surveys";
-        }
+        }*/
 
         String singleSheetParam = request.getParameter("singleSheet");
         boolean singleSheet = (singleSheetParam != null && singleSheetParam.equals("true"));
