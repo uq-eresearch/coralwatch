@@ -244,7 +244,7 @@
 <h2 style="margin-top:0;">All Reefs</h2>
 
 <%
-  if((currentUser != null) && currentUser.isSuperUser()) {
+  if((currentUser != null) && currentUser.isSuperUser() && false) {
 %>
 <div dojoType="dijit.form.Button">
     Remove Selected Reefs (only reefs with 0 surveys can be deleted this way)
