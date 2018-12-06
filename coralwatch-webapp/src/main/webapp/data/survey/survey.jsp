@@ -297,8 +297,7 @@ function positionMarker() {
                 required="true"
                 hasDownArrow="true"
                 value="<%=participatingAs == null ? "Dive Centre" : participatingAs%>">
-            <option selected="selected" value=""></option>
-            <option value="Dive Centre">Dive Centre</option>
+            <option selected value="Dive Centre">Dive Centre</option>
             <option value="Scientist">Scientist</option>
             <option value="Conservation Group">Conservation Group</option>
             <option value="School/University">School/University</option>
@@ -332,7 +331,6 @@ function positionMarker() {
                     required="true"
                     hasDownArrow="true"
                     value="<%=country == null ? "Australia" : country%>">
-                <option selected="selected" value=""></option>
                 <jsp:include page="/include/countrylist.jsp"/>
             </select>
         </td>
@@ -1517,14 +1515,13 @@ function positionMarker() {
                 required="true"
                 hasDownArrow="true"
                 value="Dive Centre">
-        <option selected="selected" value=""></option>
-        <option value="Dive Centre">Dive Centre</option>
-        <option value="Scientist">Scientist</option>
-        <option value="Conservation Group">Conservation Group</option>
-        <option value="School/University">School/University</option>
-        <option value="Tourist">Tourist</option>
-        <option value="Other">Other</option>
-    </select>
+            <option selected value="Dive Centre">Dive Centre</option>
+            <option value="Scientist">Scientist</option>
+            <option value="Conservation Group">Conservation Group</option>
+            <option value="School/University">School/University</option>
+            <option value="Tourist">Tourist</option>
+            <option value="Other">Other</option>
+        </select>
     </td>
 </tr>
 <tr>
@@ -1548,7 +1545,6 @@ function positionMarker() {
                     required="true"
                     hasDownArrow="true"
                     value="Australia">
-                <option selected="selected" value=""></option>
                 <jsp:include page="/include/countrylist.jsp"/>
             </select>
         </td>
