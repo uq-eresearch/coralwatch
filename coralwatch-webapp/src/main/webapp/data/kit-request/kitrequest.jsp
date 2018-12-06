@@ -134,11 +134,10 @@
                             style="width: 300px;"
                             required="true"
                             dojoType="dijit.form.FilteringSelect"
-                            hasDownArrow="true" 
-			    value="Chart Only">
-			    <option selected="selected" value=""></option>
-	                    <option value="Chart Only">Coral Health Chart only</option>
-	                    <option value="Do It Yourself Kit">Complete Do it Yourself Kit (includes Coral Health Chart)</option>
+                            hasDownArrow="true"
+                            value="Chart Only">
+                        <option selected value="Chart Only">Coral Health Chart only</option>
+                        <option value="Do It Yourself Kit">Complete Do it Yourself Kit (includes Coral Health Chart)</option>
 	                </select>
                 </td>
                 <td rowspan="5">
@@ -156,15 +155,14 @@
                             style="width: 300px;"
                             required="true"
                             dojoType="dijit.form.FilteringSelect"
-                            hasDownArrow="true" 
-			    value="English">
-			    <option selected="selected" value=""></option>
-	                    <option value="English">English</option>
-	                    <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-	                    <option value="Japanese">Japanese</option>
-	                    <option value="Spanish">Spanish</option>
-	                    <option value="Traditional Chinese (Taiwan)">Traditional Chinese (Taiwan)</option>
-	                    <option value="Traditional Chinese (Hong Kong)">Traditional Chinese (Hong Kong)</option>
+                            hasDownArrow="true"
+                            value="English">
+                        <option selected value="English">English</option>
+                        <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                        <option value="Japanese">Japanese</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="Traditional Chinese (Taiwan)">Traditional Chinese (Taiwan)</option>
+                        <option value="Traditional Chinese (Hong Kong)">Traditional Chinese (Hong Kong)</option>
 	                </select>
                 </td>
             </tr>
@@ -275,9 +273,8 @@
                             dojoType="dijit.form.FilteringSelect"
                             hasDownArrow="true"
                             value="<%=currentUser == null || currentUser.getCountry() == null ? "Australia" : currentUser.getCountry()%>">
-                    <option selected="selected" value=""></option>
-                    <jsp:include page="/include/countrylist.jsp"/>
-                </select>
+                        <jsp:include page="/include/countrylist.jsp"/>
+                    </select>
                 </td>
             </tr>
             <tr>
