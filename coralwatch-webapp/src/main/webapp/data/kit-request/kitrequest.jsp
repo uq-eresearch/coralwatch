@@ -135,8 +135,8 @@
                             required="true"
                             dojoType="dijit.form.FilteringSelect"
                             hasDownArrow="true"
-                            value="Chart Only">
-                        <option selected value="Chart Only">Coral Health Chart only</option>
+                            value="">
+                        <option value="Chart Only">Coral Health Chart only</option>
                         <option value="Do It Yourself Kit">Complete Do it Yourself Kit (includes Coral Health Chart)</option>
 	                </select>
                 </td>
@@ -156,8 +156,8 @@
                             required="true"
                             dojoType="dijit.form.FilteringSelect"
                             hasDownArrow="true"
-                            value="English">
-                        <option selected value="English">English</option>
+                            value="">
+                        <option value="English">English</option>
                         <option value="Bahasa Indonesia">Bahasa Indonesia</option>
                         <option value="Japanese">Japanese</option>
                         <option value="Spanish">Spanish</option>
@@ -272,7 +272,7 @@
                             style="width: 300px;"
                             dojoType="dijit.form.FilteringSelect"
                             hasDownArrow="true"
-                            value="<%=currentUser == null || currentUser.getCountry() == null ? "Australia" : currentUser.getCountry()%>">
+                            value="<%=currentUser == null || currentUser.getCountry() == null ? "" : currentUser.getCountry()%>">
                         <jsp:include page="/include/countrylist.jsp"/>
                     </select>
                 </td>
