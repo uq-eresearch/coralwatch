@@ -296,7 +296,7 @@ function positionMarker() {
                 dojoType="dijit.form.FilteringSelect"
                 required="true"
                 hasDownArrow="true"
-                value="<%=participatingAs == null ? "" : participatingAs%>">
+                value="<%=participatingAs == null ? "Dive Centre" : participatingAs%>">
             <option selected="selected" value=""></option>
             <option value="Dive Centre">Dive Centre</option>
             <option value="Scientist">Scientist</option>
@@ -331,7 +331,7 @@ function positionMarker() {
                     dojoType="dijit.form.FilteringSelect"
                     required="true"
                     hasDownArrow="true"
-                    value="<%=country == null ? "" : country%>">
+                    value="<%=country == null ? "Australia" : country%>">
                 <option selected="selected" value=""></option>
                 <jsp:include page="/include/countrylist.jsp"/>
             </select>
@@ -1516,7 +1516,7 @@ function positionMarker() {
                 dojoType="dijit.form.FilteringSelect"
                 required="true"
                 hasDownArrow="true"
-                value="">
+                value="Dive Centre">
         <option selected="selected" value=""></option>
         <option value="Dive Centre">Dive Centre</option>
         <option value="Scientist">Scientist</option>
@@ -1547,7 +1547,7 @@ function positionMarker() {
                     dojoType="dijit.form.FilteringSelect"
                     required="true"
                     hasDownArrow="true"
-                    value="">
+                    value="Australia">
                 <option selected="selected" value=""></option>
                 <jsp:include page="/include/countrylist.jsp"/>
             </select>
