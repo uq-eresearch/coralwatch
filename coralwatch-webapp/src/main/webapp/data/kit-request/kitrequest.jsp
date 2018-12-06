@@ -13,6 +13,7 @@
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.SimpleTextarea");
     dojo.require("dijit.form.CheckBox");
+    dojo.require("dijit.form.FilteringSelect");
     dojo.require("dijit.form.ComboBox");
     dojo.require("dijit.form.TextBox");
     dojo.require("dijit.layout.ContentPane");
@@ -132,7 +133,7 @@
                     <select name="kitType" id="kitType"
                             style="width: 300px;"
                             required="true"
-                            dojoType="dijit.form.ComboBox"
+                            dojoType="dijit.form.FilteringSelect"
                             hasDownArrow="true"
                             value="">
 	                    <option selected="selected" value=""></option>
@@ -154,7 +155,7 @@
                     <select name="language" id="language"
                             style="width: 300px;"
                             required="true"
-                            dojoType="dijit.form.ComboBox"
+                            dojoType="dijit.form.FilteringSelect"
                             hasDownArrow="true"
                             value="">
 	                    <option selected="selected" value=""></option>
@@ -271,7 +272,7 @@
                     <select name="country" id="country"
                             required="true"
                             style="width: 300px;"
-                            dojoType="dijit.form.ComboBox"
+                            dojoType="dijit.form.FilteringSelect"
                             hasDownArrow="true"
                             value="<%=currentUser == null || currentUser.getCountry() == null ? "" : currentUser.getCountry()%>">
                     <option selected="selected" value=""></option>
