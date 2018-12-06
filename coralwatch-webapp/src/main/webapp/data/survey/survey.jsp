@@ -296,8 +296,8 @@ function positionMarker() {
                 dojoType="dijit.form.FilteringSelect"
                 required="true"
                 hasDownArrow="true"
-                value="<%=participatingAs == null ? "Dive Centre" : participatingAs%>">
-            <option selected value="Dive Centre">Dive Centre</option>
+                value="<%=participatingAs == null ? "" : participatingAs%>">
+            <option value="Dive Centre">Dive Centre</option>
             <option value="Scientist">Scientist</option>
             <option value="Conservation Group">Conservation Group</option>
             <option value="School/University">School/University</option>
@@ -330,7 +330,7 @@ function positionMarker() {
                     dojoType="dijit.form.FilteringSelect"
                     required="true"
                     hasDownArrow="true"
-                    value="<%=country == null ? "Australia" : country%>">
+                    value="<%=country == null ? "" : country%>">
                 <jsp:include page="/include/countrylist.jsp"/>
             </select>
         </td>
@@ -1514,8 +1514,8 @@ function positionMarker() {
                 dojoType="dijit.form.FilteringSelect"
                 required="true"
                 hasDownArrow="true"
-                value="Dive Centre">
-            <option selected value="Dive Centre">Dive Centre</option>
+                value="">
+            <option value="Dive Centre">Dive Centre</option>
             <option value="Scientist">Scientist</option>
             <option value="Conservation Group">Conservation Group</option>
             <option value="School/University">School/University</option>
@@ -1544,7 +1544,7 @@ function positionMarker() {
                     dojoType="dijit.form.FilteringSelect"
                     required="true"
                     hasDownArrow="true"
-                    value="Australia">
+                    value="">
                 <jsp:include page="/include/countrylist.jsp"/>
             </select>
         </td>
