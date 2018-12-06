@@ -21,6 +21,7 @@
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.Button");
     dojo.require("dijit.form.ComboBox");
+    dojo.require("dijit.form.FilteringSelect");
     dojo.require("dijit.form.CheckBox");
     dojo.require("dijit.form.DateTextBox");
     dojo.require("dijit.form.TimeTextBox");
@@ -292,7 +293,7 @@ function positionMarker() {
     <th><label for="participatingAs">Participating As:</label></th>
     <td><select name="participatingAs"
                 id="participatingAs"
-                dojoType="dijit.form.ComboBox"
+                dojoType="dijit.form.FilteringSelect"
                 required="true"
                 hasDownArrow="true"
                 value="<%=participatingAs == null ? "" : participatingAs%>">
@@ -312,7 +313,6 @@ function positionMarker() {
         <table>
         <tr>
         <td style="padding: 0; vertical-align: middle;">
-
             <script type="text/javascript">
                 dojo.addOnLoad(function() {
                     dojo.connect(dijit.byId("country"), "onChange", function() {
@@ -327,9 +327,8 @@ function positionMarker() {
                     });
                 });
             </script>
-
             <select name="country" id="country"
-                    dojoType="dijit.form.ComboBox"
+                    dojoType="dijit.form.FilteringSelect"
                     required="true"
                     hasDownArrow="true"
                     value="<%=country == null ? "" : country%>">
@@ -1514,7 +1513,7 @@ function positionMarker() {
     <th><label for="participatingAs">Participating As:</label></th>
     <td><select name="participatingAs"
                 id="participatingAs"
-                dojoType="dijit.form.ComboBox"
+                dojoType="dijit.form.FilteringSelect"
                 required="true"
                 hasDownArrow="true"
                 value="">
@@ -1545,7 +1544,7 @@ function positionMarker() {
             </script>
             <select name="country"
                     id="country"
-                    dojoType="dijit.form.ComboBox"
+                    dojoType="dijit.form.FilteringSelect"
                     required="true"
                     hasDownArrow="true"
                     value="">
