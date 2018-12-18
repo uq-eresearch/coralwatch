@@ -44,7 +44,7 @@ public class KitRequestPortlet extends GenericPortlet {
         AppUtil.clearCache();
         PortletPreferences prefs = renderRequest.getPreferences();
         renderRequest.setAttribute("userUrl", prefs.getValue("userUrl", "user"));
-        renderRequest.setAttribute("orderFormUrl", prefs.getValue("orderFormUrl", "http://coralwatch.org/c/document_library/get_file?p_l_id=10132&folderId=10790&name=DLFE-510.pdf"));
+        renderRequest.setAttribute("orderFormUrl", prefs.getValue("orderFormUrl", "http://coralwatch-old.org/c/document_library/get_file?p_l_id=10132&folderId=10790&name=DLFE-510.pdf"));
         renderRequest.setAttribute("kitrequestdao", kitRequestDao);
         include(viewJSP, renderRequest, renderResponse);
     }
