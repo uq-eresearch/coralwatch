@@ -6,7 +6,7 @@
     <packaging>war</packaging>
     <name>coralwatch-webapp</name>
     <version>1.0-SNAPSHOT</version>
-    <url>http://coralwatch.org</url>
+    <url>http://coralwatch-old.org</url>
     <inceptionYear>2009</inceptionYear>
     <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
