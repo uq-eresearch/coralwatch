@@ -329,6 +329,7 @@ function positionMarker() {
             <select name="country" id="country"
                     dojoType="dijit.form.FilteringSelect"
                     required="true"
+                    invalidMessage="You must select a country"
                     hasDownArrow="true"
                     value="<%=country == null ? "" : country%>">
                 <jsp:include page="/include/countrylist.jsp"/>
@@ -411,7 +412,7 @@ function positionMarker() {
                store="reefStore" 
                placeholder="Select from menu or enter a reef name"
                required="true"
-               disabled
+               invalidMessage="You must select or enter a reef"
                searchAttr="name" />
 
         <div id="reef_name_not_in_menu" style="display: none;">
