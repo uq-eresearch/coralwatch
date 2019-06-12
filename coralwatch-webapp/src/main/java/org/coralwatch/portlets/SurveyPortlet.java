@@ -155,7 +155,7 @@ public class SurveyPortlet extends GenericPortlet {
                     String reefName = actionRequest.getParameter("reefName");
                     String latitudeStr = actionRequest.getParameter("latitude");
                     String longitudeStr = actionRequest.getParameter("longitude");
-                    boolean isGpsDevice = ParamUtil.getBoolean(actionRequest, "isGpsDevice");
+                    boolean isGpsDevice = ParamUtil.getBoolean(actionRequest, "isGpsDevice") == "on";
                     Date date = ParamUtil.getDate(actionRequest, "date", new SimpleDateFormat("yyyy-MM-dd"));
                     Date time = ParamUtil.getDate(actionRequest, "time", new SimpleDateFormat("'T'HH:mm:ss"));
                     String lightCondition = actionRequest.getParameter("lightCondition");
